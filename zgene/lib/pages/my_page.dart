@@ -11,7 +11,9 @@ class _MyPageState extends State<MyPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Text("我的"),
+      body: Center(
+        child: Text("我的"),
+      ),
     );
   }
 }

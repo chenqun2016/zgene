@@ -14,11 +14,11 @@ class SpUtils {
 
   /// 命名构造函数 用于初始化SharedPreferences实例对象
   SpUtils._init() {
-    _initStorage();
+    // _initStorage();
   }
 
   /// 初始化
-  _initStorage() async {
+  initStorage() async {
     // 若_不存在 则创建SharedPreferences实例
     if (_storage == null) _storage = await SharedPreferences.getInstance();
   }

@@ -11,7 +11,9 @@ class _ReportPageState extends State<ReportPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Text("报告"),
+      body: Center(
+        child: Text("报告"),
+      ),
     );
   }
 }

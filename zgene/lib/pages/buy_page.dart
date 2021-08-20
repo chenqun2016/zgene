@@ -11,7 +11,9 @@ class _BuyPageState extends State<BuyPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Text("购买"),
+      body: Center(
+        child: Text("购买"),
+      ),
     );
   }
 }

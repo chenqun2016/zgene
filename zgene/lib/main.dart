@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'navigator/tab_navigator.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SpUtils();
+  await SpUtils().initStorage();
   runApp(MyApp());
 }
 

@@ -8,7 +8,7 @@ import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/util/sp_utils.dart';
 
-
+//基础webview
 class BaseWebView extends StatefulWidget {
   String url;
   String? title;

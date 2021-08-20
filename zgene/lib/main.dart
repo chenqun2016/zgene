@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:zgene/util/sp_utils.dart';
 import 'navigator/tab_navigator.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SpUtils();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override

@@ -103,7 +103,7 @@ class HttpUtils {
   static void requestHttp(String url,
       {parameters,
         method,
-        Function(Object? t)? onSuccess,
+        Function(dynamic t)? onSuccess,
         Function(int code, String error)? onError}) async {
     parameters = parameters ?? {"": ""};
     method = method ?? 'GET';

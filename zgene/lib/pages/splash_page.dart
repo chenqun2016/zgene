@@ -17,7 +17,7 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> {
   bool isFirst = true;
   var container = TabNavigator();
-  bool showAd = true;
+  bool showSplash = true;
   bool showSkip = false;
 
   CountDownWidget? _countDownWidget;
@@ -29,7 +29,7 @@ class _SplashPageState extends State<SplashPage> {
       onCountDownFinishCallBack:(bool value) {
         if (value) {
           setState(() {
-            showAd = false;
+            showSplash = false;
           });
         }
       },
@@ -61,7 +61,7 @@ class _SplashPageState extends State<SplashPage> {
       children: <Widget>[
         Offstage(
           child: container,
-          offstage: showAd,
+          offstage: showSplash,
         ),
         Offstage(
           child: Container(
@@ -140,7 +140,7 @@ class _SplashPageState extends State<SplashPage> {
             width: ScreenUtils.screenW(context),
             height: ScreenUtils.screenH(context),
           ),
-          offstage: !showAd,
+          offstage: !showSplash,
         )
       ],
     );

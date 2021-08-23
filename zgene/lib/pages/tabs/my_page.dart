@@ -8,7 +8,7 @@ import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/event/event_bus.dart';
-import 'package:zgene/event/event_constant.dart';
+
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/userInfo_model.dart';
 import 'package:zgene/pages/my/my_about_divms.dart';
@@ -49,7 +49,7 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
     super.initState();
     // setData();
     getHttp();
-    bus.on(EventConstant.GetUserInfo,
+    bus.on(EventBus.GetUserInfo,
             (object) {
           if (object != null) {
             setData();
@@ -66,7 +66,7 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
   void dispose() {
     super.dispose();
     print("注销了");
-    bus.off(EventConstant.GetUserInfo);
+    bus.off(EventBus.GetUserInfo);
   }
 
   setData() {

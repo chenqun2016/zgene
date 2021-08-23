@@ -8,7 +8,7 @@ import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/event/event_bus.dart';
-import 'package:zgene/event/event_constant.dart';
+
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/util/common_utils.dart';
@@ -245,7 +245,7 @@ class _myAboutDivmsState extends State<myAboutDivms> {
         EasyLoading.showSuccess('注销成功');
 
         HttpUtils.clear();
-        bus.emit(EventConstant.GetUserInfo, 1);
+        bus.emit(EventBus.GetUserInfo, 1);
 
         Navigator.popUntil(context, ModalRoute.withName('/'));
       },

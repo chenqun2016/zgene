@@ -10,7 +10,7 @@ import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/event/event_bus.dart';
-import 'package:zgene/event/event_constant.dart';
+
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/util/sp_utils.dart';
@@ -306,7 +306,7 @@ class _setPasswordPageState extends State<setPasswordPage> {
         spUtils.setStorage(SpConstant.Uid, data["uid"]);
 
         HttpUtils.clear();
-        bus.emit(EventConstant.GetUserInfo, null);
+        bus.emit(EventBus.GetUserInfo, null);
         Navigator.popUntil(context, ModalRoute.withName('/'));
       },
       onError: (code, error) {

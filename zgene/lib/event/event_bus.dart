@@ -2,6 +2,10 @@
 typedef void EventCallback(arg);
 
 class EventBus {
+  //更新用户信息
+  static const String GetUserInfo = 'GetUserInfo';
+
+
   //私有构造函数
   EventBus._internal();
 

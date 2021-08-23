@@ -2,7 +2,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-
+///倒计时
 class CountDownWidget extends StatefulWidget {
   var isSkip = false;
   final onCountDownFinishCallBack;

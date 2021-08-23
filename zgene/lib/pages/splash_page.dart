@@ -8,7 +8,7 @@ import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/widget/count_down_widget.dart';
 
-//app启动页
+///app启动页
 class SplashPage extends StatefulWidget {
   @override
   _SplashPageState createState() => _SplashPageState();

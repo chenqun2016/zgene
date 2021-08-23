@@ -1,6 +1,7 @@
 //订阅者回调签名
 typedef void EventCallback(arg);
 
+////事件总线
 class EventBus {
   //更新用户信息
   static const String GetUserInfo = 'GetUserInfo';

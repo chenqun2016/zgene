@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+///首页购买页面
 class BuyPage extends StatefulWidget {
   @override
   _BuyPageState createState() => _BuyPageState();

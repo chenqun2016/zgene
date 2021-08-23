@@ -8,10 +8,10 @@
  * http://coding.imooc.com/learn/qa/321.html
  */
 import 'package:flutter/material.dart';
-import 'package:zgene/pages/buy_page.dart';
-import 'package:zgene/pages/home_page.dart';
-import 'package:zgene/pages/my_page.dart';
-import 'package:zgene/pages/report_page.dart';
+import 'package:zgene/pages/tabs/buy_page.dart';
+import 'package:zgene/pages/tabs/home_page.dart';
+import 'package:zgene/pages/tabs/my_page.dart';
+import 'package:zgene/pages/tabs/report_page.dart';
 
 class TabNavigator extends StatefulWidget {
   @override
@@ -71,7 +71,7 @@ class _TabNavigatorState extends State<TabNavigator> {
         // title: Text(
         //   title,
         //   style: TextStyle(
-        //       color: _currentIndex != index ? _defaultColor : _activeColor),
+        //       color: _currentIndex != index  _defaultColor : _activeColor),
         // )
     );
   }

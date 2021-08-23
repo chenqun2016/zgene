@@ -11,9 +11,9 @@ import 'package:zgene/util/sp_utils.dart';
 //基础webview
 class BaseWebView extends StatefulWidget {
   String url;
-  String? title;
+  String title;
 
-  BaseWebView({Key? key, required this.url, this.title}) : super(key: key);
+  BaseWebView({Key key,  this.url, this.title}) : super(key: key);
 
   @override
   _BaseWebViewState createState() => _BaseWebViewState();
@@ -75,8 +75,8 @@ class _BaseWebViewState extends State<BaseWebView> {
             ),
             body: Column(
               children: <Widget>[
-                this._flag
-                    ? _getMoreWidget()
+                this._flag?
+                     _getMoreWidget()
                     : Container(
                         height: 0,
                       ),

@@ -29,7 +29,7 @@ class ScreenUtils {
   double _statusBarHeight = 0.0;
   double _bottomBarHeight = 0.0;
   double _appBarHeight = 0.0;
-  MediaQueryData? _mediaQueryData;
+  MediaQueryData _mediaQueryData;
 
   static final ScreenUtils _singleton = ScreenUtils();
 
@@ -75,7 +75,7 @@ class ScreenUtils {
   double get bottomBarHeight => _bottomBarHeight;
 
   /// media Query Data
-  MediaQueryData? get mediaQueryData => _mediaQueryData;
+  MediaQueryData get mediaQueryData => _mediaQueryData;
 
   /// screen width
   /// 当前屏幕 宽
@@ -167,8 +167,8 @@ class ScreenUtils {
   /// 返回根据屏幕宽适配后尺寸（单位 dp or pt）
   /// sizePx unit px
   double getWidthPx(double sizePx) {
-    return _screenWidth == 0.0
-        ? (sizePx / _designD)
+    return _screenWidth == 0.0?
+         (sizePx / _designD)
         : (sizePx * _screenWidth / (_designW * _designD));
   }
 
@@ -176,8 +176,8 @@ class ScreenUtils {
   /// 返回根据屏幕高适配后尺寸（单位 dp or pt）
   /// sizePx unit px
   double getHeightPx(double sizePx) {
-    return _screenHeight == 0.0
-        ? (sizePx / _designD)
+    return _screenHeight == 0.0?
+         (sizePx / _designD)
         : (sizePx * _screenHeight / (_designH * _designD));
   }
 

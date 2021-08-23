@@ -1,13 +1,13 @@
 class SettingModel {
-  String? name;
-  String? label;
-  String? description;
-  int? groupId;
-  String? elementType;
-  String? options;
-  String? type;
-  String? value;
-  int? sortRank;
+  String name;
+  String label;
+  String description;
+  int groupId;
+  String elementType;
+  String options;
+  String type;
+  String value;
+  int sortRank;
 
   SettingModel(
       {this.name,

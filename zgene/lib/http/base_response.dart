@@ -1,7 +1,7 @@
 ///返回数据统一封装的
 class BaseResponse {
-  int? code;
-  String? msg;
+  int code;
+  String msg;
   dynamic result;
   BaseResponse({this.code, this.msg, this.result});
 

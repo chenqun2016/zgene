@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
+import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/widget/base_web.dart';
 import 'package:zgene/widget/privacy_view.dart';
 
@@ -84,7 +85,7 @@ class UiUitls {
   ///异常界面
   static getErrorPage({type, text, onClick}) {
     //1.暂无数据 2.错误 3.没有网络
-    late String imageUrl, title;
+     String imageUrl, title;
     switch (type) {
       case 1: //暂无数据
         imageUrl = "assets/images/img_no_data.png";
@@ -189,22 +190,16 @@ class UiUitls {
                               keyStyle: TextStyle(color: ColorConstant.TextBlueColor),
                               onTapCallback: (String key) {
                                 if (key == '《用户协议》') {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => BaseWebView(
-                                            url: ApiConstant.agreements,
-                                            title: "用户协议",
-                                          )));
+                                  NavigatorUtil.push(context, BaseWebView(
+                                    url: ApiConstant.agreements,
+                                    title: "用户协议",
+                                  ));
 
                                 } else if (key == '《隐私政策》') {
-                                Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                builder: (context) => BaseWebView(
-                                url: ApiConstant.privacys,
-                                title: "隐私政策",
-                                )));
+                                  NavigatorUtil.push(context, BaseWebView(
+                                    url: ApiConstant.privacys,
+                                    title: "隐私政策",
+                                  ));
                                 }
                               },
                             ),

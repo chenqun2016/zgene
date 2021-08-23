@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: SplashPage(),
+      builder: EasyLoading.init(),
     ));
   }
 }
@@ -83,7 +85,7 @@ Future<void> getSetting() async {
           }
           if (item.name == SpConstant.SvcMsgStatus) {
             spUtils.setStorage(
-                SpConstant.SvcMsgStatus, item.value!.toLowerCase());
+                SpConstant.SvcMsgStatus, item.value.toLowerCase());
           }
         }
       } catch (e) {
@@ -94,7 +96,7 @@ Future<void> getSetting() async {
     onError: (code, error) {
       setHttpTime();
       setConfiguration();
-      // EasyLoading.showError(error ?? "");
+      // EasyLoading.showError(error  "");
     },
   );
 }

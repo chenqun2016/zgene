@@ -9,7 +9,13 @@ import 'package:zgene/util/sp_utils.dart';
 ///公共工具类
 class CommonUtils{
 
-
+  ///拼接图片和视频路径
+  static String splicingUrl(String url){
+    if(url.isEmpty){
+      return "";
+    }
+    return CommonConstant.BASE_API+url;
+  }
 
   ///判断网络是否可用
   ///0 - none | 1 - mobile | 2 - WIFI

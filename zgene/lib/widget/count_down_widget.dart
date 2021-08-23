@@ -7,7 +7,7 @@ class CountDownWidget extends StatefulWidget {
   var isSkip = false;
   final onCountDownFinishCallBack;
 
-  CountDownWidget({Key? key, @required this.onCountDownFinishCallBack})
+  CountDownWidget({Key key, @required this.onCountDownFinishCallBack})
       : super(key: key);
 
   @override
@@ -17,7 +17,7 @@ class CountDownWidget extends StatefulWidget {
 
 class _CountDownWidgetState extends State<CountDownWidget> {
   var _seconds = 6;
-  Timer? _timer;
+  Timer _timer;
 
   @override
   void initState() {
@@ -53,6 +53,6 @@ class _CountDownWidgetState extends State<CountDownWidget> {
 
   /// 取消倒计时的计时器。
   void _cancelTimer() {
-    _timer?.cancel();
+    _timer.cancel();
   }
 }

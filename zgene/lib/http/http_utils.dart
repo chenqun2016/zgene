@@ -2,9 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:device_info/device_info.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:package_info/package_info.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
+import 'package:zgene/util/login_base.dart';
 import 'package:zgene/util/sp_utils.dart';
 
 import 'base_response.dart';
@@ -17,7 +19,7 @@ class HttpUtils {
   //需要登录错误码
   static const int _needLoginCode = 20201;
 
-  static  Dio? _dio;
+  static  Dio _dio;
 
   /// http request methods
   static const String GET = 'get';
@@ -30,8 +32,8 @@ class HttpUtils {
   static Future<Dio> createInstance() async {
     if (_dio == null) {
       var spUtils = SpUtils();
-      String? model, vendor, udid, authorization, version;
-      int? os, uid;
+      String model, vendor, udid, authorization, version;
+      int os, uid;
       //不是是第一次打开
       if (!spUtils.getStorageDefault(SpConstant.SpIsFirst, true)) {
         //获取设备信息
@@ -87,12 +89,12 @@ class HttpUtils {
 
       _dio = new Dio(options);
     }
-    return _dio!;
+    return _dio;
   }
 
   /// 清空 dio 对象
   static clear() {
-    _dio!.close(force: true);
+    _dio = null;
   }
   /// request Get、Post 请/求
   //url 请求链接
@@ -103,8 +105,8 @@ class HttpUtils {
   static void requestHttp(String url,
       {parameters,
         method,
-        Function(dynamic t)? onSuccess,
-        Function(int code, String error)? onError}) async {
+        Function(dynamic t) onSuccess,
+        Function(int code, String error) onError}) async {
     parameters = parameters ?? {"": ""};
     method = method ?? 'GET';
     if (method == HttpUtils.GET) {
@@ -144,8 +146,8 @@ class HttpUtils {
   static void getHttp(
     String url, {
     parameters,
-        Function(dynamic)? onSuccess,
-        Function(int code, String error)? onError,
+        Function(dynamic) onSuccess,
+        Function(int code, String error) onError,
   }) async {
     ///定义请求参数
 
@@ -167,20 +169,20 @@ class HttpUtils {
       var responseString = json.decode(response.toString());
       var responseResult = BaseResponse.fromJson(responseString);
       print(responseString);
-      int? code = responseResult.code;
+      int code = responseResult.code;
       print(responseResult.code);
       switch (code) {
         case _needLoginCode:
-          // EasyLoading.dismiss();
+          EasyLoading.dismiss();
           if (onError != null) {
             onError(code??0, "请登录");
           }
-          // BaseLogin.login();
+          BaseLogin.login();
           return;
         default:
           break;
       }
-      String? msg = responseResult.msg;
+      String msg = responseResult.msg;
       dynamic result = responseResult.result;
       if (code == 0) {
         if (onSuccess != null) {
@@ -204,8 +206,8 @@ class HttpUtils {
   static void postHttp<T>(
     String url, {
     parameters,
-        required Function(T) onSuccess,
-        required Function(int code, String error) onError,
+         Function(T) onSuccess,
+         Function(int code, String error) onError,
   }) async {
     ///定义请求参数
     parameters = parameters ?? {};
@@ -222,15 +224,15 @@ class HttpUtils {
       Response response = await dio.post(url, data: parameters);
       var responseString = json.decode(response.toString());
       var responseResult = BaseResponse.fromJson(responseString);
-      int? code = responseResult.code;
-      String? msg = responseResult.msg;
+      int code = responseResult.code;
+      String msg = responseResult.msg;
       dynamic result = responseResult.result;
       print(responseResult.code);
       switch (code) {
         case _needLoginCode:
-          // EasyLoading.dismiss();
+          EasyLoading.dismiss();
           onError(code?? 0, "请登录");
-          // BaseLogin.login();
+          BaseLogin.login();
           return;
         default:
           break;

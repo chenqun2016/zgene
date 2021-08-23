@@ -20,7 +20,7 @@ class _SplashPageState extends State<SplashPage> {
   bool showSplash = true;
   bool showSkip = false;
 
-  CountDownWidget? _countDownWidget;
+  CountDownWidget _countDownWidget;
   @override
   void initState() {
     super.initState();
@@ -37,7 +37,7 @@ class _SplashPageState extends State<SplashPage> {
     isFirst = SpUtils().getStorageDefault(SpConstant.SpIsFirst, true);
     //第一次启动app
     if (isFirst) {
-      WidgetsBinding.instance!.addPostFrameCallback((callback) {
+      WidgetsBinding.instance.addPostFrameCallback((callback) {
         ///显示协议弹窗
         UiUitls.showAgreement(context, onAgree: () {
           SpUtils().setStorage(SpConstant.SpIsFirst, false);
@@ -107,7 +107,7 @@ class _SplashPageState extends State<SplashPage> {
                                 const BorderRadius.all(Radius.circular(10.0))),
                           ),
                           onTap: (){
-                            _countDownWidget?.isSkip = true;
+                            _countDownWidget.isSkip = true;
                           },),
                         ):Text(""),
                         Padding(

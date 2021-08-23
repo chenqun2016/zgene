@@ -10,7 +10,7 @@ class SpUtils {
   factory SpUtils() => _instance;
 
   /// SharedPreferences对象
-  static SharedPreferences? _storage;
+  static SharedPreferences _storage;
 
   /// 命名构造函数 用于初始化SharedPreferences实例对象
   SpUtils._init() {
@@ -38,16 +38,16 @@ class SpUtils {
     // 根据value不同的类型 用不同的方法进行存储
     switch (type) {
       case 'String':
-        _storage!.setString(key, value);
+        _storage.setString(key, value);
         break;
       case 'int':
-        _storage!.setInt(key, value);
+        _storage.setInt(key, value);
         break;
       case 'double':
-        _storage!.setDouble(key, value);
+        _storage.setDouble(key, value);
         break;
       case 'bool':
-        _storage!.setBool(key, value);
+        _storage.setBool(key, value);
         break;
     }
   }
@@ -55,7 +55,7 @@ class SpUtils {
   /// 获取存储 注意：返回的是一个Future对象 要么用await接收 要么在.then中接收
   dynamic getStorage(String key) {
     // 获取key对应的value
-    dynamic value = _storage!.get(key);
+    dynamic value = _storage.get(key);
     // 判断value是不是一个json的字符串 是 则解码
     if (_isJson(value)) {
       return JsonDecoder().convert(value);
@@ -68,7 +68,7 @@ class SpUtils {
   /// 获取存储 defaultValue 需要的默认值
   dynamic getStorageDefault(String key, dynamic defaultValue) {
     // 获取key对应的value
-    dynamic value = _storage!.get(key);
+    dynamic value = _storage.get(key);
     if (value != null) {
       // 判断value是不是一个json的字符串 是 则解码
       if (_isJson(value)) {
@@ -84,13 +84,13 @@ class SpUtils {
 
   /// 是否包含某个key
   bool hasKey(String key) {
-    return _storage!.containsKey(key);
+    return _storage.containsKey(key);
   }
 
   /// 删除key指向的存储 如果key存在则删除并返回true，否则返回false
   bool removeStorage(String key) {
     if (hasKey(key)) {
-      _storage!.remove(key);
+      _storage.remove(key);
       return true;
     } else {
       return false;
@@ -100,13 +100,13 @@ class SpUtils {
 
   /// 清空存储 并总是返回true
   bool clear() {
-    _storage!.clear();
+    _storage.clear();
     return true;
   }
 
   /// 获取所有的key 类型为Set<String>
   Set<String> getKeys() {
-    return _storage!.getKeys();
+    return _storage.getKeys();
   }
 
   // 判断是否是JSON字符串

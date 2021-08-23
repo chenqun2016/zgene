@@ -7,14 +7,14 @@ typedef OnTapCallback = void Function(String key);
 class PrivacyView extends StatefulWidget {
   final String data;
   final List<String> keys;
-  final TextStyle? style;
-  final TextStyle? keyStyle;
-  final OnTapCallback? onTapCallback;
+  final TextStyle style;
+  final TextStyle keyStyle;
+  final OnTapCallback onTapCallback;
 
   const PrivacyView({
-    Key? key,
-    required this.data,
-    required this.keys,
+    Key key,
+     this.data,
+     this.keys,
     this.style,
     this.keyStyle,
     this.onTapCallback,
@@ -47,7 +47,7 @@ class _PrivacyViewState extends State<PrivacyView> {
                       TextStyle(color: Theme.of(context).primaryColor),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
-                      widget.onTapCallback?.call(e);
+                      widget.onTapCallback.call(e);
                     },
                 );
               } else {
@@ -60,10 +60,10 @@ class _PrivacyViewState extends State<PrivacyView> {
 
   void _split() {
     int startIndex = 0;
-    Map<String, dynamic>? _index;
+    Map<String, dynamic> _index;
     int i=0;
     while ((_index = _nextIndex(startIndex)) != null) {
-      i = _index!['index'];
+      i = _index['index'];
       String sub = widget.data.substring(startIndex, i);
       if (sub.isNotEmpty) {
         _list.add(sub);
@@ -74,9 +74,9 @@ class _PrivacyViewState extends State<PrivacyView> {
     _list.add(widget.data.substring(_list.toString().length-8,widget.data.length));
   }
 
-  Map<String, dynamic>? _nextIndex(int startIndex) {
+  Map<String, dynamic> _nextIndex(int startIndex) {
     int currentIndex = widget.data.length;
-    String? key;
+    String key;
     widget.keys.forEach((element) {
       int index = widget.data.indexOf(element, startIndex);
       if (index != -1 && index < currentIndex) {

@@ -32,4 +32,6 @@ class SpConstant {
   static const String adAppId = "app_id";
   //设备唯一id
   static const String AppUdid = "AppUdid";
+
+  static const String AppName = "Z基因";
 }

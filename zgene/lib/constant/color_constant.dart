@@ -12,8 +12,12 @@ class ColorConstant {
   static const Color TextMainColor = Color(0xFF007AF7);
   //文字标准灰
   static const Color TextMainGray = Color(0xFFA0A0A0);
+  //文字标准黑
+  static const Color TextMainBlack = Color(0xFF191C32);
 
-
+  static const Color Text_8E9AB = Color(0xFF8E9AAB);
+  //分割线
+  static const Color Divider = Color(0xFFE5E7F3);
 
   static const Color TextSecondColor = Color(0xFFA0A0A0);
   static const Color TextThreeColor = Color(0xFF6D6D6D);

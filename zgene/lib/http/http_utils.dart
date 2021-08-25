@@ -6,7 +6,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:package_info/package_info.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
-import 'package:zgene/util/login_base.dart';
 import 'package:zgene/util/sp_utils.dart';
 
 import 'base_response.dart';
@@ -177,7 +176,7 @@ class HttpUtils {
           if (onError != null) {
             onError(code??0, "请登录");
           }
-          BaseLogin.login();
+          // BaseLogin.login();
           return;
         default:
           break;
@@ -232,7 +231,7 @@ class HttpUtils {
         case _needLoginCode:
           EasyLoading.dismiss();
           onError(code?? 0, "请登录");
-          BaseLogin.login();
+          // BaseLogin.login();
           return;
         default:
           break;

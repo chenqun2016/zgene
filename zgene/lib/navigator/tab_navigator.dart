@@ -8,6 +8,7 @@
  * http://coding.imooc.com/learn/qa/321.html
  */
 import 'package:flutter/material.dart';
+import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/pages/tabs/buy_page.dart';
 import 'package:zgene/pages/tabs/home_page.dart';
 import 'package:zgene/pages/tabs/my_page.dart';
@@ -19,8 +20,8 @@ class TabNavigator extends StatefulWidget {
 }
 
 class _TabNavigatorState extends State<TabNavigator> {
-  final _defaultColor = Colors.grey;
-  final _activeColor = Colors.blue;
+  final _defaultColor = ColorConstant.TextMainGray;
+  final _activeColor = ColorConstant.TextMainColor;
   int _currentIndex = 0;
   final PageController _controller = PageController(
     initialPage: 0,
@@ -64,32 +65,26 @@ class _TabNavigatorState extends State<TabNavigator> {
               },
               type: BottomNavigationBarType.fixed,
               items: [
-                _bottomItem('首页', Icons.home, 0),
-                _bottomItem('购买', Icons.report, 1),
-                _bottomItem('报告', Icons.reorder, 2),
-                _bottomItem('我的', Icons.account_circle, 3),
+                _bottomItem('首页', Image.asset("assets/images/tabs/tab_home_n.png",height: 26,width: 26),Image.asset("assets/images/tabs/tab_home_y.png",height: 26,width: 26), 0),
+                _bottomItem('购买', Image.asset("assets/images/tabs/tab_buy_n.png",height: 26,width: 26),Image.asset("assets/images/tabs/tab_buy_y.png",height: 26,width: 26), 1),
+                _bottomItem('报告', Image.asset("assets/images/tabs/tab_report_n.png",height: 26,width: 26),Image.asset("assets/images/tabs/tab_report_y.png",height: 26,width: 26), 2),
+                _bottomItem('我的', Image.asset("assets/images/tabs/tab_mine_n.png",height: 26,width: 26),Image.asset("assets/images/tabs/tab_mine_y.png",height: 26,width: 26), 3),
               ]),
         ),
       ),
     );
   }
 
-  _bottomItem(String title, IconData icon, int index) {
+  _bottomItem(String title, Widget icon,Widget iconSelected, int index) {
     return BottomNavigationBarItem(
-      icon: Icon(
-        icon,
-        color: _defaultColor,
-      ),
-      activeIcon: Icon(
-        icon,
-        color: _activeColor,
-      ),
-      label: title,
-      // title: Text(
-      //   title,
-      //   style: TextStyle(
-      //       color: _currentIndex != index  _defaultColor : _activeColor),
-      // )
+      icon: icon,
+      activeIcon:iconSelected,
+      // label: title,
+      title: Text(
+        title,
+        style: TextStyle(
+            color: _currentIndex != index ? _defaultColor : _activeColor),
+      )
     );
   }
 }

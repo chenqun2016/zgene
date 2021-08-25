@@ -8,21 +8,26 @@ import 'package:flutter/material.dart';
 ///
 ///
 class ColorConstant {
-  static const Color TextMainColor = Color(0xFF222222);
+  //文字标准蓝
+  static const Color TextMainColor = Color(0xFF007AF7);
+  //文字标准灰
+  static const Color TextMainGray = Color(0xFFA0A0A0);
+
+
+
   static const Color TextSecondColor = Color(0xFFA0A0A0);
   static const Color TextThreeColor = Color(0xFF6D6D6D);
   static const Color TextFourColor = Color(0xFF000000);
   static const Color WhiteColor = Color(0xFFFFFFFF);
   static const Color LineMainColor = Color(0xFFF1F1F1);
   static const Color BgColor = Color(0xFFF5F5F5);
-  static const Color TextBlueColor = Color(0xFF2998FF);
-  static const Color TextBlueTwoColor = Color(0xFFEBF6FF);
+
+
   //透明度50%白色
   static const Color WhiteColor7F = Color(0x7FFFFFFF);
   //标准黑
   static const Color MainBlack = Color(0xFF2E2E33);
-  //文字标准灰
-  static const Color TextMainGray = Color(0xFFA0A0A0);
+
   //箭头标准灰色
   static const Color ArrowMainGray = Color(0xFFDBDBDB);
   //阴影黑

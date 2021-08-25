@@ -187,7 +187,7 @@ class UiUitls {
                             child: PrivacyView(
                               data: CommonConstant.Privacy_Text,
                               keys: ['《用户协议》', '《隐私政策》'],
-                              keyStyle: TextStyle(color: ColorConstant.TextBlueColor),
+                              keyStyle: TextStyle(color: ColorConstant.TextMainColor),
                               onTapCallback: (String key) {
                                 if (key == '《用户协议》') {
                                   NavigatorUtil.push(context, BaseWebView(

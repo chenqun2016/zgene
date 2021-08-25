@@ -33,46 +33,63 @@ class _TabNavigatorState extends State<TabNavigator> {
         controller: _controller,
         children: <Widget>[
           HomePage(),
-          ReportPage(),
           BuyPage(),
+          ReportPage(),
           MyPage(),
         ],
         physics: NeverScrollableScrollPhysics(),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _currentIndex,
-          onTap: (index) {
-            _controller.jumpToPage(index);
-            setState(() {
-              _currentIndex = index;
-            });
-          },
-          type: BottomNavigationBarType.fixed,
-          items: [
-            _bottomItem('首页', Icons.home, 0),
-            _bottomItem('报告', Icons.report, 1),
-            _bottomItem('购买', Icons.reorder, 2),
-            _bottomItem('我的', Icons.account_circle, 3),
-          ]),
+      bottomNavigationBar: PhysicalModel(
+        shape: BoxShape.rectangle,
+        clipBehavior: Clip.antiAlias,
+        color: Colors.white,
+        shadowColor: Colors.black,
+        elevation: 20,
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+        child: Container(
+          height: 66,
+          child: BottomNavigationBar(
+              elevation: 0,
+              backgroundColor: Colors.white,
+              unselectedFontSize: 12,
+              selectedFontSize: 14,
+              iconSize: 26,
+              currentIndex: _currentIndex,
+              onTap: (index) {
+                _controller.jumpToPage(index);
+                setState(() {
+                  _currentIndex = index;
+                });
+              },
+              type: BottomNavigationBarType.fixed,
+              items: [
+                _bottomItem('首页', Icons.home, 0),
+                _bottomItem('购买', Icons.report, 1),
+                _bottomItem('报告', Icons.reorder, 2),
+                _bottomItem('我的', Icons.account_circle, 3),
+              ]),
+        ),
+      ),
     );
   }
 
   _bottomItem(String title, IconData icon, int index) {
     return BottomNavigationBarItem(
-        icon: Icon(
-          icon,
-          color: _defaultColor,
-        ),
-        activeIcon: Icon(
-          icon,
-          color: _activeColor,
-        ),
-        label: title,
-        // title: Text(
-        //   title,
-        //   style: TextStyle(
-        //       color: _currentIndex != index  _defaultColor : _activeColor),
-        // )
+      icon: Icon(
+        icon,
+        color: _defaultColor,
+      ),
+      activeIcon: Icon(
+        icon,
+        color: _activeColor,
+      ),
+      label: title,
+      // title: Text(
+      //   title,
+      //   style: TextStyle(
+      //       color: _currentIndex != index  _defaultColor : _activeColor),
+      // )
     );
   }
 }

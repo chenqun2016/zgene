@@ -38,7 +38,6 @@ dependencies:
   flutter_native_splash: ^1.2.1
   connectivity: ^3.0.6
   flutter_easyloading: ^3.0.0
-  flutter_easyrefresh: ^2.2.1
   launch_review: ^3.0.1
   image_crop: ^0.4.0
   image_picker: ^0.8.3+2
@@ -64,6 +63,7 @@ flutter:
      - assets/images/
      - assets/images/home/
      - assets/images/mine/
+     - assets/images/tabs/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

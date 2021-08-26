@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xfff2f2f2),
+      backgroundColor: Colors.transparent,
       body: Stack(
         children: <Widget>[
           RefreshIndicator(
@@ -99,7 +99,7 @@ class _HomePageState extends State<HomePage> {
             //   bannerList[index],
             //   fit: BoxFit.fill,
             // ),
-            child: Image.asset("assets/images/banner.png"),
+            child: Image.asset("assets/images/banner.png",height: 168,fit: BoxFit.fill,),
           );
         },
         pagination: SwiperPagination(),

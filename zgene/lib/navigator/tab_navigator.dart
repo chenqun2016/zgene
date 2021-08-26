@@ -19,9 +19,11 @@ class _TabNavigatorState extends State<TabNavigator> {
     initialPage: 0,
   );
 
+  /// extendBody = true 凹嵌透明，需要处理底部 边距
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       backgroundColor: Colors.transparent,
       body: PageView(
         controller: _controller,

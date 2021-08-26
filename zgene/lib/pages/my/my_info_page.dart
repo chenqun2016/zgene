@@ -74,8 +74,8 @@ class _MyInfoPageState extends State<MyInfoPage>
             ),
             Positioned(
                 bottom: 40,
-                left: 16,
-                right: 16,
+                left: 6,
+                right: 6,
                 height: 55,
                 child: RaisedButton(
                   color: ColorConstant.TextMainColor,

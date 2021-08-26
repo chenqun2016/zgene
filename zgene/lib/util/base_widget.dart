@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/color_constant.dart';
 
@@ -22,9 +21,9 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
   double appBarHeight = 0.0;
 // 页面标题
   String pageWidgetTitle = '';
-
+// 页面背景图片
   String backImgPath = '';
-
+// 页面背景颜色
   Color backColor = ColorConstant.BackMainColor;
 
   // assets/login/icon_backArrow.png
@@ -110,7 +109,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
 
   /// 顶部返回和实体返回按键的响应事件
   Future myBackClick() {
-    return Future.value(true);
+    return null;
   }
 
   /// 配置页面头部内容
@@ -156,7 +155,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
         designSize: Size(375, 812),
         orientation: Orientation.portrait);
     return Scaffold(
-      // backgroundColor: backColor,
+      backgroundColor: backColor,
       appBar: showBaseHead == true ? _viewAppBar() : null,
       body: Container(
           decoration: backImgPath != ''

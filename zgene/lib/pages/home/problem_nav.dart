@@ -19,8 +19,8 @@ class ProblemNav extends StatelessWidget {
                 fontWeight: FontWeight.bold),
           ),
           Container(
-            margin: EdgeInsets.only(top: 16,bottom: 40),
-            padding: EdgeInsets.only(top: 10,bottom: 10),
+            margin: EdgeInsets.only(top: 16, bottom: 40),
+            padding: EdgeInsets.only(top: 10, bottom: 10),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.all(
@@ -39,7 +39,10 @@ class ProblemNav extends StatelessWidget {
     contents.forEach((element) {
       if (contents.indexOf(element) != 0) {
         items.add(Padding(
-          padding: EdgeInsets.only(left: 10, right: 10,),
+          padding: EdgeInsets.only(
+            left: 10,
+            right: 10,
+          ),
           child: Divider(),
         ));
       }
@@ -53,7 +56,7 @@ class ProblemNav extends StatelessWidget {
     return GestureDetector(
       onTap: () {},
       child: Container(
-        padding: EdgeInsets.only(left: 10,top: 10, right: 10,bottom: 10),
+        padding: EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 10),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [

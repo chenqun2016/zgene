@@ -8,7 +8,9 @@ import 'package:flutter/material.dart';
 ///
 ///
 class ColorConstant {
-  //文字标准蓝
+  //北京标准透明
+  static const Color BackMainColor = Color(0x00F3F5F6);
+
   static const Color TextMainColor = Color(0xFF007AF7);
   //文字标准灰
   static const Color TextMainGray = Color(0xFFA0A0A0);
@@ -25,7 +27,6 @@ class ColorConstant {
   static const Color WhiteColor = Color(0xFFFFFFFF);
   static const Color LineMainColor = Color(0xFFF1F1F1);
   static const Color BgColor = Color(0xFFF5F5F5);
-
 
   //透明度50%白色
   static const Color WhiteColor7F = Color(0x7FFFFFFF);

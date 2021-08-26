@@ -32,6 +32,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return RestartWidget(
         child: MaterialApp(
+      title: CommonConstant.AppName,
       navigatorKey: Global.navigatorKey,
       theme: ThemeData(
         primarySwatch: Colors.blue,

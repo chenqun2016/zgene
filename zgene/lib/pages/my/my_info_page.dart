@@ -17,19 +17,19 @@ class _MyInfoPageState extends State<MyInfoPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/images/mine/img_bg_my.png"),
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: Column(
+      body: Container(
+        width: double.infinity,
+        padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/mine/img_bg_my.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
@@ -72,29 +72,29 @@ class _MyInfoPageState extends State<MyInfoPage>
                 _editorMyInfo(),
               ],
             ),
-          ),
-          Positioned(
-              bottom: 40,
-              left: 16,
-              right: 16,
-              height: 55,
-              child: RaisedButton(
-                color: ColorConstant.TextMainColor,
-                child: Text(
-                  "保存",
-                  style: TextStyle(
-                    color: ColorConstant.WhiteColor,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
+            Positioned(
+                bottom: 40,
+                left: 16,
+                right: 16,
+                height: 55,
+                child: RaisedButton(
+                  color: ColorConstant.TextMainColor,
+                  child: Text(
+                    "保存",
+                    style: TextStyle(
+                      color: ColorConstant.WhiteColor,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
-                ),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(40.0)),
-                onPressed: () {
-                  _onTapEvent(5);
-                },
-              )),
-        ],
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(40.0)),
+                  onPressed: () {
+                    _onTapEvent(5);
+                  },
+                )),
+          ],
+        ),
       ),
     );
   }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/navigator/navigator_util.dart';
+import 'package:zgene/pages/home/bind_collector_page.dart';
 
 class LocalNav extends StatelessWidget {
   List<String> localNavList = ["绑定采集器", "如何检测", "基因报告", "阅读指南"];
@@ -30,7 +32,7 @@ class LocalNav extends StatelessWidget {
     List<Widget> items = [];
 
     localNavList.forEach((model) {
-      items.add(_item(context, model,localNavIcon[localNavList.indexOf(model)]));
+      items.add(_item(context, model, localNavList.indexOf(model)));
     });
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -38,19 +40,23 @@ class LocalNav extends StatelessWidget {
     );
   }
 
-  Widget _item(BuildContext context, String title,String icon) {
+  Widget _item(BuildContext context, String title, int index) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        if (0 == index) {
+          NavigatorUtil.push(context, BindCollectorPage());
+        }
+      },
       child: Column(
         children: <Widget>[
           Image.asset(
-            icon,
+            localNavIcon[index],
             width: 82,
             height: 82,
           ),
           Text(
             title,
-            style: TextStyle(fontSize: 13,color: ColorConstant.TextMainBlack),
+            style: TextStyle(fontSize: 13, color: ColorConstant.TextMainBlack),
           )
         ],
       ),

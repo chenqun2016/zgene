@@ -4,6 +4,7 @@ import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/pages/home/explore_nav.dart';
 import 'package:zgene/pages/home/local_nav.dart';
 import 'package:zgene/pages/home/problem_nav.dart';
+import 'package:zgene/pages/home/video_nav.dart';
 import 'package:zgene/util/ui_uitls.dart';
 
 const APPBAR_SCROLL_OFFSET = 100;
@@ -14,7 +15,7 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
   bool _loading = true;
   double appBarAlpha = 0;
 
@@ -64,6 +65,7 @@ class _HomePageState extends State<HomePage> {
           _banner,
           LocalNav(),
           ExploreNav(),
+          VideoNav(),
           ProblemNav(),
         ],
       ),
@@ -152,4 +154,7 @@ class _HomePageState extends State<HomePage> {
     });
     print(appBarAlpha);
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

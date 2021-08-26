@@ -13,7 +13,7 @@ class BaseWebView extends StatefulWidget {
   String url;
   String title;
 
-  BaseWebView({Key key,  this.url, this.title}) : super(key: key);
+  BaseWebView({Key key, this.url, this.title}) : super(key: key);
 
   @override
   _BaseWebViewState createState() => _BaseWebViewState();
@@ -22,9 +22,11 @@ class BaseWebView extends StatefulWidget {
 class _BaseWebViewState extends State<BaseWebView> {
   // 是否显示加载动画
   bool _flag = true;
+
   // final Map arguments;
 
   String _url = "";
+
   @override
   void initState() {
     super.initState();
@@ -64,7 +66,7 @@ class _BaseWebViewState extends State<BaseWebView> {
               ),
               elevation: 0,
               title: Text(
-                widget.title??"",
+                widget.title ?? "",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 16,
@@ -75,8 +77,8 @@ class _BaseWebViewState extends State<BaseWebView> {
             ),
             body: Column(
               children: <Widget>[
-                this._flag?
-                     _getMoreWidget()
+                this._flag
+                    ? _getMoreWidget()
                     : Container(
                         height: 0,
                       ),
@@ -91,16 +93,21 @@ class _BaseWebViewState extends State<BaseWebView> {
                         headers: {"Referer ": CommonConstant.BASE_API}),
 
                     onWebViewCreated: (controller) {
-                      controller.addJavaScriptHandler(
-                          handlerName: "handlerGetCode",
-                          callback: (args) {
-                            print(args);
-                            return {
-                              'os': Platform.isAndroid ? 'Android' : 'iOS',
-                              'token': SpUtils()
-                                  .getStorageDefault(SpConstant.Token, "")
-                            };
-                          });
+                      try{
+                        controller.addJavaScriptHandler(
+                            handlerName: "handlerGetCode",
+                            callback: (args) {
+                              print(args);
+                              return {
+                                'os': Platform.isAndroid ? 'Android' : 'iOS',
+                                'token': SpUtils()
+                                    .getStorageDefault(SpConstant.Token, "")
+                              };
+                            });
+                      }catch(e){
+                        print(e);
+                      }
+
                       controller.loadUrl(
                           urlRequest: URLRequest(
                               url: Uri.parse(_url),

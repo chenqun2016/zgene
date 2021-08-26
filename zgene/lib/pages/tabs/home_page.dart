@@ -4,6 +4,7 @@ import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/pages/home/explore_nav.dart';
 import 'package:zgene/pages/home/local_nav.dart';
 import 'package:zgene/pages/home/problem_nav.dart';
+import 'package:zgene/util/ui_uitls.dart';
 
 const APPBAR_SCROLL_OFFSET = 100;
 
@@ -23,6 +24,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    UiUitls.setBlackTextStatus();
     bannerList.add("");
     bannerList.add("");
     bannerList.add("");
@@ -70,7 +72,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget get _title {
     return Container(
-      margin: EdgeInsets.only(top: 50, bottom: 13),
+      margin: EdgeInsets.only(top: 20, bottom: 13),
       child: Text(
         "Z基因",
         style: TextStyle(
@@ -106,19 +108,20 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget get _appBar {
-    return Container(
-      padding: EdgeInsets.only(top: 30),
-      height: 70,
-      decoration: BoxDecoration(
-        color: Color.fromARGB((appBarAlpha * 255).toInt(), 255, 255, 255),
-      ),
-      alignment: Alignment.topCenter,
-      child: Text(
-        "Z基因",
-        style: TextStyle(
-            fontSize: 18,
-            color: ColorConstant.TextMainBlack,
-            fontWeight: FontWeight.bold),
+    return Opacity(
+      opacity: appBarAlpha,
+      child: Container(
+        padding: EdgeInsets.only(top: 30),
+        height: 70,
+        color: Colors.white,
+        alignment: Alignment.center,
+        child: Text(
+          "Z基因",
+          style: TextStyle(
+              fontSize: 18,
+              color: ColorConstant.TextMainBlack,
+              fontWeight: FontWeight.bold),
+        ),
       ),
     );
   }

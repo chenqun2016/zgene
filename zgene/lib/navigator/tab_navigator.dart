@@ -22,6 +22,7 @@ class _TabNavigatorState extends State<TabNavigator> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: PageView(
         controller: _controller,
         children: <Widget>[
@@ -41,10 +42,11 @@ class _TabNavigatorState extends State<TabNavigator> {
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20), topRight: Radius.circular(20)),
         child: Container(
+          color: Colors.transparent,
           height: 66,
           child: BottomNavigationBar(
               elevation: 0,
-              backgroundColor: Colors.white,
+              backgroundColor: Colors.transparent,
               unselectedFontSize: 12,
               selectedFontSize: 14,
               iconSize: 26,

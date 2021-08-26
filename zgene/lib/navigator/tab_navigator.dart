@@ -19,9 +19,12 @@ class _TabNavigatorState extends State<TabNavigator> {
     initialPage: 0,
   );
 
+  /// extendBody = true 凹嵌透明，需要处理底部 边距
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
+      backgroundColor: Colors.transparent,
       body: PageView(
         controller: _controller,
         children: <Widget>[
@@ -41,10 +44,11 @@ class _TabNavigatorState extends State<TabNavigator> {
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20), topRight: Radius.circular(20)),
         child: Container(
+          color: Colors.transparent,
           height: 66,
           child: BottomNavigationBar(
               elevation: 0,
-              backgroundColor: Colors.white,
+              backgroundColor: Colors.transparent,
               unselectedFontSize: 12,
               selectedFontSize: 14,
               iconSize: 26,

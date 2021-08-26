@@ -18,11 +18,13 @@ class ColorConstant {
   static const Color TextMainBlack = Color(0xFF191C32);
 
   static const Color Text_8E9AB = Color(0xFF8E9AAB);
+  static const Color Text_776359 = Color(0xFF776359);
+  static const Color Text_64747F = Color(0xFF64747F);
   //分割线
   static const Color Divider = Color(0xFFE5E7F3);
 
-  static const Color TextSecondColor = Color(0xFFA0A0A0);
-  static const Color TextThreeColor = Color(0xFF6D6D6D);
+  static const Color TextSecondColor = Color(0xFF112950);
+  static const Color TextThreeColor = Color(0xFF5E6F88);
   static const Color TextFourColor = Color(0xFF000000);
   static const Color WhiteColor = Color(0xFFFFFFFF);
   static const Color LineMainColor = Color(0xFFF1F1F1);

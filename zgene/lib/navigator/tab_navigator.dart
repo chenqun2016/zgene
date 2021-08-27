@@ -1,3 +1,4 @@
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/color_constant.dart';
@@ -43,44 +44,69 @@ class _TabNavigatorState extends State<TabNavigator> {
         elevation: 20,
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-        child: Container(
-          color: Colors.transparent,
-          height: 66,
-          child: BottomNavigationBar(
-              elevation: 0,
-              backgroundColor: Colors.transparent,
-              unselectedFontSize: 12,
-              selectedFontSize: 14,
-              iconSize: 26,
-              currentIndex: _currentIndex,
-              onTap: (index) {
-                _controller.jumpToPage(index);
-                setState(() {
-                  _currentIndex = index;
-                });
-              },
-              type: BottomNavigationBarType.fixed,
-              items: [
-                _bottomItem('首页', Image.asset("assets/images/tabs/tab_home_n.png",height: 26,width: 26),Image.asset("assets/images/tabs/tab_home_y.png",height: 26,width: 26), 0),
-                _bottomItem('购买', Image.asset("assets/images/tabs/tab_buy_n.png",height: 26,width: 26),Image.asset("assets/images/tabs/tab_buy_y.png",height: 26,width: 26), 1),
-                _bottomItem('报告', Image.asset("assets/images/tabs/tab_report_n.png",height: 26,width: 26),Image.asset("assets/images/tabs/tab_report_y.png",height: 26,width: 26), 2),
-                _bottomItem('我的', Image.asset("assets/images/tabs/tab_mine_n.png",height: 26,width: 26),Image.asset("assets/images/tabs/tab_mine_y.png",height: 26,width: 26), 3),
-              ]),
+        child: SafeArea(
+          child: Container(
+            color: Colors.transparent,
+            height: 66,
+            child: BottomNavigationBar(
+                elevation: 0,
+                backgroundColor: Colors.transparent,
+                unselectedFontSize: 12,
+                selectedFontSize: 14,
+                iconSize: 26,
+                currentIndex: _currentIndex,
+                onTap: (index) {
+                  _controller.jumpToPage(index);
+                  setState(() {
+                    _currentIndex = index;
+                  });
+                },
+                type: BottomNavigationBarType.fixed,
+                items: [
+                  _bottomItem(
+                      '首页',
+                      Image.asset("assets/images/tabs/tab_home_n.png",
+                          height: 26, width: 26),
+                      Image.asset("assets/images/tabs/tab_home_y.png",
+                          height: 26, width: 26),
+                      0),
+                  _bottomItem(
+                      '购买',
+                      Image.asset("assets/images/tabs/tab_buy_n.png",
+                          height: 26, width: 26),
+                      Image.asset("assets/images/tabs/tab_buy_y.png",
+                          height: 26, width: 26),
+                      1),
+                  _bottomItem(
+                      '报告',
+                      Image.asset("assets/images/tabs/tab_report_n.png",
+                          height: 26, width: 26),
+                      Image.asset("assets/images/tabs/tab_report_y.png",
+                          height: 26, width: 26),
+                      2),
+                  _bottomItem(
+                      '我的',
+                      Image.asset("assets/images/tabs/tab_mine_n.png",
+                          height: 26, width: 26),
+                      Image.asset("assets/images/tabs/tab_mine_y.png",
+                          height: 26, width: 26),
+                      3),
+                ]),
+          ),
         ),
       ),
     );
   }
 
-  _bottomItem(String title, Widget icon,Widget iconSelected, int index) {
+  _bottomItem(String title, Widget icon, Widget iconSelected, int index) {
     return BottomNavigationBarItem(
-      icon: icon,
-      activeIcon:iconSelected,
-      // label: title,
-      title: Text(
-        title,
-        style: TextStyle(
-            color: _currentIndex != index ? _defaultColor : _activeColor),
-      )
-    );
+        icon: icon,
+        activeIcon: iconSelected,
+        // label: title,
+        title: Text(
+          title,
+          style: TextStyle(
+              color: _currentIndex != index ? _defaultColor : _activeColor),
+        ));
   }
 }

@@ -131,7 +131,7 @@ class _BindStep1State extends State<BindStep1> {
         ),
         Container(
           alignment: Alignment.centerLeft,
-          padding: EdgeInsets.only(top: 20, bottom: 40),
+          padding: EdgeInsets.only(top: 20),
           child: Text.rich(TextSpan(children: [
             TextSpan(
               text: "如果绑定失败，请点击",

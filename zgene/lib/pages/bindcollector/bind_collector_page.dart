@@ -15,6 +15,10 @@ class BindCollectorPage extends BaseWidget {
 }
 
 class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
+  var steps = [0, 1, 2];
+  int _position = 0;
+  bool canNextClick = false;
+
   @override
   void pageWidgetInitState() {
     super.pageWidgetInitState();
@@ -31,12 +35,46 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
         children: [
           _titlebar(),
           _stepper(),
-          // BindStep1(),
-          // BindStep2(),
-          // BindStep3(),
+          Container(
+            margin: EdgeInsets.only(top: 30),
+            child: MaterialButton(
+              height: 55,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(27)),
+              minWidth: double.infinity,
+              disabledColor: Colors.white,
+              color: ColorConstant.TextMainColor,
+              onPressed: canNextClick
+                  ? () {
+                      if (_position < steps.length - 1) {
+                        setState(() {
+                          _position++;
+                        });
+                      } else {
+                        //绑定成功
+
+                      }
+                    }
+                  : null,
+              child: Text(_getBottomText(_position),
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                    color: canNextClick ? Colors.white : ColorConstant.Divider,
+                  )),
+            ),
+          ),
         ],
       ),
     );
+  }
+
+  _getBottomText(position) {
+    if (position == steps.length - 1) {
+      return "开始采样";
+    } else {
+      return "下一步";
+    }
   }
 
   _titlebar() {
@@ -122,9 +160,6 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
     );
   }
 
-  var steps = [0, 1, 2];
-  int _position = 0;
-
   _getState(index) {
     if (_position == index) return EStepState.editing;
     if (_position > index) return EStepState.complete;
@@ -132,13 +167,13 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
   }
 
   _getContent(int s) {
-    if(0 == s){
+    if (0 == s) {
       return BindStep1();
     }
-    if(1 == s){
+    if (1 == s) {
       return BindStep2();
     }
-    if(2 == s){
+    if (2 == s) {
       return BindStep3();
     }
   }

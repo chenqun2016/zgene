@@ -168,7 +168,7 @@ class _BindStep2State extends State<BindStep2> {
         ),
         Container(
           alignment: Alignment.centerLeft,
-          padding: EdgeInsets.only(top: 20, bottom: 40),
+          padding: EdgeInsets.only(top: 20),
           child: RichText(
               text: TextSpan(
                   text: "注:关于用户隐私安全保护请详细解读",

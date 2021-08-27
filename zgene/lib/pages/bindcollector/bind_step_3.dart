@@ -14,11 +14,9 @@ class BindStep3 extends StatefulWidget {
 }
 
 class _BindStep3State extends State<BindStep3> {
-
   @override
   void initState() {
     super.initState();
-
   }
 
   @override

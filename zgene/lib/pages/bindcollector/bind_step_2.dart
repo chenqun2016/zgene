@@ -36,7 +36,7 @@ class _BindStep2State extends State<BindStep2> {
     return Column(
       children: [
         Container(
-          margin: EdgeInsets.only(top: 20),
+          margin: EdgeInsets.only(top: 0),
           // padding: EdgeInsets.fromLTRB(15, 20, 15, 20),
           decoration: BoxDecoration(
             color: Colors.white,

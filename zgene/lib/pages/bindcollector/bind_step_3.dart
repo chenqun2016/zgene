@@ -29,7 +29,7 @@ class _BindStep3State extends State<BindStep3> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 20),
+      margin: EdgeInsets.only(top: 0),
       child: Stack(
         children: [
           Container(

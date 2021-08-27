@@ -22,6 +22,7 @@ class ColorConstant {
   static const Color Text_64747F = Color(0xFF64747F);
   static const Color Text_5E6F88 = Color(0xFF5E6F88);
   static const Color Text_9395A4 = Color(0xFF9395A4);
+  static const Color Text_B2BAC6 = Color(0xFFB2BAC6);
   //分割线
   static const Color Divider = Color(0xFFCED0DE);
 

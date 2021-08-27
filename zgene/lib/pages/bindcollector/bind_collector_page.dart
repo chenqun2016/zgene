@@ -28,13 +28,12 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
       width: double.infinity,
       padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _titlebar(),
-          // _stepper(),
+          _stepper(),
           // BindStep1(),
           // BindStep2(),
-          BindStep3(),
+          // BindStep3(),
         ],
       ),
     );
@@ -83,7 +82,8 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
   }
 
   _stepper() {
-    return CustomStepper(
+    return EStepper(
+      stepperWidth: 240,
       currentStep: _position,
       onStepTapped: (index) {
         setState(() {
@@ -104,14 +104,13 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
           });
         }
       },
-      type: CustomStepperType.horizontal,
+      type: EStepperType.horizontal,
       steps: steps.map(
         (s) {
-          bool isActive = steps.indexOf(s) == _position;
-          return CustomStep(
-            state: _getState(steps.indexOf(s)),
-            title: Text(""),
-            content: Container(child: Text("你好啊你好啊你好啊你好啊"),),
+          bool isActive = s == _position;
+          return EStep(
+            state: _getState(s),
+            content: _getContent(s),
             isActive: isActive,
           );
         },
@@ -123,12 +122,24 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
     );
   }
 
-  var steps = ['', '', ''];
+  var steps = [0, 1, 2];
   int _position = 0;
 
   _getState(index) {
-    if (_position == index) return StepState.editing;
-    if (_position > index) return StepState.complete;
-    return StepState.indexed;
+    if (_position == index) return EStepState.editing;
+    if (_position > index) return EStepState.complete;
+    return EStepState.indexed;
+  }
+
+  _getContent(int s) {
+    if(0 == s){
+      return BindStep1();
+    }
+    if(1 == s){
+      return BindStep2();
+    }
+    if(2 == s){
+      return BindStep3();
+    }
   }
 }

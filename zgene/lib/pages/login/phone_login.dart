@@ -19,7 +19,7 @@ class _PhoneLoginPageState extends BaseWidgetState<PhoneLoginPage> {
   }
 
   @override
-  Widget viewPageBody() {
+  Widget viewPageBody(BuildContext context) {
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

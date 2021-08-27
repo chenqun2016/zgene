@@ -27,7 +27,7 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
   }
 
   @override
-  Widget viewPageBody() {
+  Widget viewPageBody(BuildContext context) {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.fromLTRB(16, 0, 16, 0),

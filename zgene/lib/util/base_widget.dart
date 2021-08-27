@@ -10,9 +10,10 @@ abstract class BaseWidget extends StatefulWidget {
 
 abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
     with AutomaticKeepAliveClientMixin {
-// class BaseWidgetState extends State with AutomaticKeepAliveClientMixin {
   @override
-  bool get wantKeepAlive => true;
+  bool get wantKeepAlive => setWantKeepAlive;
+  //页面是否保存
+  bool setWantKeepAlive = false;
 // 系统自带appbar 的显示与否
   bool showBaseHead = false;
 // 自定义appbar 的显示与否
@@ -26,9 +27,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
 // 页面背景颜色
   Color backColor = ColorConstant.BackMainColor;
 
-  // assets/login/icon_backArrow.png
-
-  // String showBackImg = '';
+  BuildContext selfContext = null;
 
   @override
   void initState() {
@@ -59,10 +58,10 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
                     textAlign: TextAlign.center,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 18.sp,
                       fontStyle: FontStyle.normal,
                       fontWeight: FontWeight.w500,
-                      color: ColorConstant.MainBlack,
+                      color: ColorConstant.TextMainBlack,
                     ),
                   ),
                 ),
@@ -75,7 +74,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
 
   /// 页面视图的主体部分
   Widget viewPageBody() {
-    return null;
+    return Container();
   }
 
   Widget headerRightBtn() {
@@ -109,7 +108,8 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
 
   /// 顶部返回和实体返回按键的响应事件
   Future myBackClick() {
-    return null;
+    Navigator.pop(selfContext);
+    return Future.value(true);
   }
 
   /// 配置页面头部内容
@@ -148,6 +148,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    selfContext = context;
     ScreenUtil.init(
         BoxConstraints(
             maxWidth: MediaQuery.of(context).size.width,

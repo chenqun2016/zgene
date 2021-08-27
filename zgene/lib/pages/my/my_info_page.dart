@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/navigator/navigator_util.dart';
+import 'package:zgene/pages/my/my_editor_name.dart';
 import 'package:zgene/util/ui_uitls.dart';
 
 ///我的资料
@@ -244,24 +245,23 @@ class _MyInfoPageState extends State<MyInfoPage>
                     "性别",
                     style: TextStyle(fontSize: 15, color: Color(0xFF112950)),
                   )),
-              // Positioned(
-              //   right: 22,
-              //   top: 12,
-              //   child: Row(
-              //     children: [
-              //       RadioListTile(
-              //           title: Text("第三个单选按钮"),
-              //           value: 3,
-              //           groupValue: radioValue,
-              //           onChanged: (value){
-              //             setState(() {
-              //               radioValue = value;
-              //             });
-              //           }
-              //       )
-              //     ],
-              //   ),
-              // ),
+              Positioned(
+                right: 22,
+                top: 8,
+                child: Row(
+                  children: [
+                    Text("男"),
+                    Radio(
+                      value: 1,
+                      groupValue: 1,
+                      visualDensity: VisualDensity(horizontal: -4, vertical: -4),
+                      onChanged: (value) {
+
+                      },
+                    ),
+                  ],
+                ),
+              ),
               Positioned(
                 right: 0,
                 top: 15,
@@ -326,7 +326,7 @@ class _MyInfoPageState extends State<MyInfoPage>
         UiUitls.showToast("头像");
         break;
       case 3: //用户名称
-        UiUitls.showToast("用户名称");
+        NavigatorUtil.push(context, MyEditorPage());
         break;
       case 4: //简介
         UiUitls.showToast("简介");

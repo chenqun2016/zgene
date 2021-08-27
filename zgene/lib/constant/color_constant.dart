@@ -8,9 +8,16 @@ import 'package:flutter/material.dart';
 ///
 ///
 class ColorConstant {
-  //北京标准透明
-  static const Color BackMainColor = Color(0x00F3F5F6);
-
+  //背景标准透明
+  static const Color BackMainColor = Color(0xFFF3F5F6);
+//主要蓝色
+  static const Color MainBlueColor = Color(0xFF007AF7);
+  //微信绿
+  static const Color WxGreenColor = Color(0xFF25D3B2);
+  //苹果黑
+  static const Color AppleBlackColor = Color(0xFF000000);
+  //提示灰
+  static const Color PromptGrayColor = Color(0xFF9DA7B6);
   static const Color TextMainColor = Color(0xFF007AF7);
   //文字标准灰
   static const Color TextMainGray = Color(0xFFA0A0A0);

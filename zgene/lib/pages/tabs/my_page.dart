@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/navigator/navigator_util.dart';
+import 'package:zgene/pages/login/main_login.dart';
 import 'package:zgene/pages/my/my_info_page.dart';
+import 'package:zgene/pages/my/my_message_list.dart';
 import 'package:zgene/util/ui_uitls.dart';
 
 ///我的
@@ -427,13 +429,13 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
   _onTapEvent(index){
     switch(index){
       case 1://消息
-        UiUitls.showToast("消息");
+        NavigatorUtil.push(context, MyMessagePage());
         break;
       case 2://个人信息
         NavigatorUtil.push(context, MyInfoPage());
         break;
       case 3://我的订单
-        UiUitls.showToast("我的订单");
+        NavigatorUtil.push(context, MainLoginPage());
         break;
       case 4://绑定采集器
         UiUitls.showToast("绑定采集器");

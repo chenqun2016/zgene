@@ -9,10 +9,7 @@ class MyMessagePage extends StatefulWidget {
   _MyMessagePageState createState() => _MyMessagePageState();
 }
 
-class _MyMessagePageState extends State<MyMessagePage>
-    with AutomaticKeepAliveClientMixin {
-  @override
-  bool get wantKeepAlive => true;
+class _MyMessagePageState extends State<MyMessagePage>{
 
   @override
   Widget build(BuildContext context) {
@@ -26,121 +23,124 @@ class _MyMessagePageState extends State<MyMessagePage>
             fit: BoxFit.cover,
           ),
         ),
-        child:emptyView,),
+        child: emptyView,
+      ),
     );
   }
 
   ///空列表
-  Widget get emptyView{
-   return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+  Widget get emptyView {
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Container(
+        height: 40,
+        margin: EdgeInsets.only(top: 48),
+        width: double.infinity,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Positioned(
+              width: 40,
+              left: 0,
+              child: GestureDetector(
+                onTap: () {
+                  _onTapEvent(1);
+                },
+                behavior: HitTestBehavior.opaque,
+                child: Image(
+                  image: AssetImage("assets/images/mine/icon_back.png"),
+                  height: 40,
+                  width: 40,
+                ),
+              ),
+            ),
+            Container(
+              child: Text(
+                "消息中心",
+                style: TextStyle(
+                  color: ColorConstant.TextMainBlack,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 18,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            height: 40,
-            margin: EdgeInsets.only(top: 48),
-            width: double.infinity,
-            child: Stack(
-              alignment: Alignment.center,
+            margin: EdgeInsets.only(right: 46),
+            child: Column(
               children: [
-                Positioned(
-                  width: 40,
-                  left: 0,
-                  child: GestureDetector(
-                    onTap: () {
-                      _onTapEvent(1);
-                    },
-                    behavior: HitTestBehavior.opaque,
-                    child: Image(
-                      image: AssetImage("assets/images/mine/icon_back.png"),
-                      height: 40,
-                      width: 40,
-                    ),
-                  ),
+                Image(
+                  image: AssetImage("assets/images/mine/icon_message_news.png"),
+                  height: 82,
+                  width: 82,
                 ),
-                Container(
-                  child: Text(
-                    "消息中心",
-                    style: TextStyle(
-                      color: ColorConstant.TextMainBlack,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 18,
-                    ),
-                  ),
+                Text(
+                  "公告",
+                  style: TextStyle(
+                      fontSize: 13, color: ColorConstant.TextMainBlack),
                 ),
               ],
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          Column(
             children: [
-              Container(
-                margin: EdgeInsets.only(right: 46),
-                child: Column(
-                  children: [
-                    Image(
-                      image: AssetImage("assets/images/mine/icon_message_news.png"),
-                      height: 82,
-                      width: 82,
-                    ),
-                    Text(
-                      "公告",
-                      style: TextStyle(
-                          fontSize: 13, color: ColorConstant.TextMainBlack),
-                    ),
-                  ],
-                ),
+              Image(
+                image: AssetImage("assets/images/mine/icon_message_notice.png"),
+                height: 82,
+                width: 82,
               ),
-              Column(
-                children: [
-                  Image(
-                    image: AssetImage("assets/images/mine/icon_message_notice.png"),
-                    height: 82,
-                    width: 82,
-                  ),
-                  Text(
-                    "通知",
-                    style: TextStyle(
-                        fontSize: 13, color: ColorConstant.TextMainBlack),
-                  ),
-                ],
+              Text(
+                "通知",
+                style:
+                    TextStyle(fontSize: 13, color: ColorConstant.TextMainBlack),
               ),
             ],
           ),
-          0==1?_listView: Container(
-            width: double.infinity,
-            alignment: Alignment.centerLeft,
-            height: MediaQuery.of(context).size.height-213,
-            margin: EdgeInsets.only(top:25),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-                bottomLeft: Radius.circular(0),
-                bottomRight: Radius.circular(0),
-              ),
-            ),
-            child:Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Image(
-                  image: AssetImage("assets/images/img_no_data.png"),
-                  height: 166,
-                  width: 140,
-                ),
-                Text(
-                  "暂无消息~",
-                  style: TextStyle(
-                    color: ColorConstant.Text_8E9AB,
-                    fontSize: 18,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
+        ],
+      ),
+      0 == 0 ? _listView : _noData,
+    ]);
+  }
+
+  ///暂无数据
+  Widget get _noData {
+    return Container(
+      width: double.infinity,
+      alignment: Alignment.centerLeft,
+      height: MediaQuery.of(context).size.height - 213,
+      margin: EdgeInsets.only(top: 25),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+          bottomLeft: Radius.circular(0),
+          bottomRight: Radius.circular(0),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Image(
+            image: AssetImage("assets/images/img_no_data.png"),
+            height: 166,
+            width: 140,
           ),
-        ]
+          Text(
+            "暂无消息~",
+            style: TextStyle(
+              color: ColorConstant.Text_8E9AB,
+              fontSize: 18,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
     );
   }
 
@@ -148,17 +148,17 @@ class _MyMessagePageState extends State<MyMessagePage>
   Widget get _listView {
     return Container(
       margin: EdgeInsets.only(top: 30),
-      color: ColorConstant.WhiteColor,
-      child: ListView.separated(
-        itemCount:3,
+      child: ListView.builder(
+        itemCount: 3,
         shrinkWrap: true,
         padding: EdgeInsets.all(0),
         physics: ScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
-          return   Container(
+          return Container(
             width: double.infinity,
             alignment: Alignment.centerLeft,
-            margin: EdgeInsets.only(top:25),
+            margin: EdgeInsets.only(bottom: 10),
+            padding: EdgeInsets.fromLTRB(15, 18, 15, 18),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.all(
@@ -167,26 +167,56 @@ class _MyMessagePageState extends State<MyMessagePage>
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
+              mainAxisSize: MainAxisSize.max,
               children: [
-
+                Container(
+                  margin: EdgeInsets.only(bottom: 15),
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        child: Text("我是标题",
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: ColorConstant.TextMainBlack,
+                              fontWeight: FontWeight.w500,
+                            )),
+                      ),
+                      Positioned(
+                        right: 0,
+                        top: 3,
+                        child: Text(
+                          "2021.3.18",
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: Color(0xFF5E6F88),
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Divider(
+                  height: 1.0,
+                  indent: 0,
+                  endIndent: 0,
+                  color: ColorConstant.LineMainColor,
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 15),
+                  child: Text("我就是内容内容我就是内容内容我就是内容内容我就是内容内容我就是内容内容",
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Color(0xFF5E6F88),
+                      )),
+                ),
               ],
             ),
-          );
-        },
-        //分割器构造器
-        separatorBuilder: (BuildContext context, int index) {
-          return Divider(
-            height: 1.0,
-            indent: 15,
-            endIndent: 15,
-            color: ColorConstant.LineMainColor,
           );
         },
       ),
     );
   }
-
 
   ///点击事件
   _onTapEvent(index) {

@@ -26,8 +26,12 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
   String backImgPath = '';
 // 页面背景颜色
   Color backColor = ColorConstant.BackMainColor;
-
-  BuildContext selfContext = null;
+  // 页面背景颜色
+  String customRightBtnText = '';
+  // 页面背景颜色
+  String customRightBtnImg = '';
+// // 自定义顶部右侧btn类型，0为不显示，1为textbutton，2为iconbutton，3为自定义
+  // BuildContext selfContext = null;
 
   @override
   void initState() {
@@ -78,10 +82,6 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
     return Container();
   }
 
-  Widget headerRightBtn() {
-    return Container();
-  }
-
   /// 配置页面底部bottomNavigationBar
   Widget viewBottomNavigationBar() {
     return null;
@@ -109,11 +109,55 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
 
   /// 顶部返回和实体返回按键的响应事件
   Future myBackClick() {
-    Navigator.pop(selfContext);
+    Navigator.pop(context);
     return Future.value(true);
   }
 
-  /// 配置页面头部内容
+  /// 自定义顶部栏右侧button
+  Widget headerRightBtn() {
+    if (customRightBtnText != "") {
+      return Container(
+          height: 40.w,
+          child: Center(
+            child: InkWell(
+              onTap: () {
+                rightBtnTap(context);
+              },
+              child: Text(
+                customRightBtnText,
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.w400,
+                  color: ColorConstant.TextMainBlack,
+                ),
+              ),
+            ),
+          ));
+    } else if (customRightBtnImg != "") {
+      return Container(
+        child: IconButton(
+            onPressed: () {
+              rightBtnTap(context);
+            },
+            icon: Image(
+              image: AssetImage(customRightBtnImg),
+              height: 40.w,
+              width: 40.w,
+              fit: BoxFit.fill,
+            )),
+      );
+    } else {
+      return Container();
+    }
+  }
+
+  /// 顶部返回和实体返回按键的响应事件
+  Future rightBtnTap(BuildContext context) {}
+
+  /// 配置页面头部返回
   Widget customHeaderBack() {
     return IconButton(
         onPressed: () {
@@ -121,8 +165,8 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
         },
         icon: Image(
           image: AssetImage("assets/images/icon_base_backArrow.png"),
-          height: 40,
-          width: 40,
+          height: 40.w,
+          width: 40.w,
           fit: BoxFit.fill,
         ));
   }
@@ -149,7 +193,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    selfContext = context;
+    // selfContext = context;
     ScreenUtil.init(
         BoxConstraints(
             maxWidth: MediaQuery.of(context).size.width,

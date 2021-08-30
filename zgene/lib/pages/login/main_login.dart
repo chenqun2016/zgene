@@ -21,8 +21,6 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
     super.pageWidgetInitState();
     showHead = true;
     backImgPath = "assets/images/login/icon_mainLogin_backImg.png";
-    pageWidgetTitle = "123123123123";
-    customRightBtnText = "123121213";
   }
 
   var isAgreePrivacy = false;

@@ -14,6 +14,8 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
   bool get wantKeepAlive => setWantKeepAlive;
   //页面是否保存
   bool setWantKeepAlive = false;
+  //页面是否保存
+  bool isPageList = false;
 // 系统自带appbar 的显示与否
   bool showBaseHead = false;
 // 自定义appbar 的显示与否
@@ -171,6 +173,30 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
         ));
   }
 
+  /// 配置页面头部返回
+  Widget customBodyView() {
+    if (!isPageList) {
+      return CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              padding: EdgeInsets.all(0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [viewCustomHeadBody(), viewPageBody(context)],
+              ),
+            ),
+          )
+        ],
+      );
+    } else {
+      return Column(
+        children: [viewCustomHeadBody(), viewPageBody(context)],
+      );
+    }
+  }
+
 // AppBar 的widget
   Widget _viewAppBar() {
     final _appbar = AppBar(
@@ -205,11 +231,11 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
       resizeToAvoidBottomInset: false,
       appBar: showBaseHead == true ? _viewAppBar() : null,
       body: GestureDetector(
-        onTap: () {
-          print("点击屏幕");
-          FocusScope.of(context).requestFocus(FocusNode());
-        },
-        child: Container(
+          onTap: () {
+            print("点击屏幕");
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          child: Container(
             decoration: backImgPath != ''
                 ? BoxDecoration(
                     image: DecorationImage(
@@ -218,21 +244,8 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
                     ),
                   )
                 : null,
-            child: CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(
-                  child: SingleChildScrollView(
-                    physics: BouncingScrollPhysics(),
-                    padding: EdgeInsets.all(0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [viewCustomHeadBody(), viewPageBody(context)],
-                    ),
-                  ),
-                )
-              ],
-            )),
-      ),
+            child: customBodyView(),
+          )),
       bottomNavigationBar: viewBottomNavigationBar(),
     );
   }

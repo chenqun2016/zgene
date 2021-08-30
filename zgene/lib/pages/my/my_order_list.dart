@@ -14,7 +14,6 @@ class MyOrderListPage extends BaseWidget {
 }
 
 class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
-
   EasyRefreshController _controller;
   List list = [];
   List tempList = [];
@@ -26,9 +25,8 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
     _controller = EasyRefreshController();
     pageWidgetTitle = "我的订单";
     backImgPath = "assets/images/mine/img_bg_my.png";
-    customRightBtnText="采集引导";
-    isPageList=true;
-
+    customRightBtnText = "采集引导";
+    isListPage = true;
   }
 
   @override
@@ -73,22 +71,20 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
     return Container(
       margin: EdgeInsets.all(0),
       color: ColorConstant.WhiteColor,
-      child:ListView.builder(
-        itemCount:3,
+      child: ListView.builder(
+        itemCount: 3,
         shrinkWrap: true,
         padding: EdgeInsets.all(0),
         physics: ScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
-            return Container(
-              height: 100,
-                child: Text("sssssssss"));
+          return Container(height: 100, child: Text("sssssssss"));
         },
       ),
     );
   }
 
   @override
-  rightBtnTap(BuildContext context){
+  rightBtnTap(BuildContext context) {
     UiUitls.showToast("dddddd");
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/util/screen_utils.dart';
 
 abstract class BaseWidget extends StatefulWidget {
   @override
@@ -14,8 +15,8 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
   bool get wantKeepAlive => setWantKeepAlive;
   //页面是否保存
   bool setWantKeepAlive = false;
-  //页面是否保存
-  bool isPageList = false;
+  //页面是否纯list
+  bool isListPage = false;
 // 系统自带appbar 的显示与否
   bool showBaseHead = false;
 // 自定义appbar 的显示与否
@@ -50,27 +51,38 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
   Widget viewCustomHeadBody() {
     return showHead
         ? Container(
-            height: 97,
+            height: 55.h + MediaQuery.of(context).padding.top,
             child: Stack(
               children: [
-                Positioned(left: 16.w, top: 42.h, child: customHeaderBack()),
+                Positioned(
+                    top: MediaQuery.of(context).padding.top,
+                    left: 16.w,
+                    child: Container(height: 55.h, child: customHeaderBack())),
                 Positioned(
                   left: 80.w,
                   right: 80.w,
-                  top: 56.h,
-                  child: Text(
-                    pageWidgetTitle,
-                    textAlign: TextAlign.center,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      fontStyle: FontStyle.normal,
-                      fontWeight: FontWeight.w500,
-                      color: ColorConstant.TextMainBlack,
+                  top: MediaQuery.of(context).padding.top,
+                  child: Container(
+                    height: 55.h,
+                    child: Center(
+                      child: Text(
+                        pageWidgetTitle,
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w500,
+                          color: ColorConstant.TextMainBlack,
+                        ),
+                      ),
                     ),
                   ),
                 ),
-                Positioned(right: 16.w, top: 58.h, child: headerRightBtn())
+                Positioned(
+                    top: MediaQuery.of(context).padding.top,
+                    right: 16.w,
+                    child: Container(height: 55.h, child: headerRightBtn()))
               ],
             ),
           )
@@ -116,8 +128,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
   /// 自定义顶部栏右侧button
   Widget headerRightBtn() {
     if (customRightBtnText != "") {
-      return Container(
-          child: Center(
+      return Center(
         child: InkWell(
           onTap: () {
             rightBtnTap(context);
@@ -134,23 +145,18 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
             ),
           ),
         ),
-      ));
-    } else if (customRightBtnImg != "") {
-      return Container(
-        decoration: new BoxDecoration(
-          color: Colors.grey,
-        ),
-        child: IconButton(
-            onPressed: () {
-              rightBtnTap(context);
-            },
-            icon: Image(
-              image: AssetImage(customRightBtnImg),
-              height: 40.w,
-              width: 40.w,
-              fit: BoxFit.fill,
-            )),
       );
+    } else if (customRightBtnImg != "") {
+      return IconButton(
+          onPressed: () {
+            rightBtnTap(context);
+          },
+          icon: Image(
+            image: AssetImage(customRightBtnImg),
+            height: 40.w,
+            width: 40.w,
+            fit: BoxFit.fill,
+          ));
     } else {
       return Container();
     }
@@ -167,34 +173,10 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
         },
         icon: Image(
           image: AssetImage("assets/images/icon_base_backArrow.png"),
-          height: 40.w,
-          width: 40.w,
+          // height: 40.w,
+          // width: 40.w,
           fit: BoxFit.fill,
         ));
-  }
-
-  /// 配置页面头部返回
-  Widget customBodyView() {
-    if (!isPageList) {
-      return CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              padding: EdgeInsets.all(0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [viewCustomHeadBody(), viewPageBody(context)],
-              ),
-            ),
-          )
-        ],
-      );
-    } else {
-      return Column(
-        children: [viewCustomHeadBody(), viewPageBody(context)],
-      );
-    }
   }
 
 // AppBar 的widget
@@ -214,6 +196,45 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
       child: _appbar,
       preferredSize: Size.fromHeight(appBarHeight),
     );
+  }
+
+  /// 配置页面头部返回
+  Widget customBodyView() {
+    if (!isListPage) {
+      return CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              padding: EdgeInsets.all(0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  viewCustomHeadBody(),
+                  Container(
+                      height: MediaQuery.of(context).size.height -
+                          55.h -
+                          MediaQuery.of(context).padding.top,
+                      child: viewPageBody(context))
+                ],
+              ),
+            ),
+          )
+        ],
+      );
+    } else {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          viewCustomHeadBody(),
+          Container(
+              height: MediaQuery.of(context).size.height -
+                  55.h -
+                  MediaQuery.of(context).padding.top,
+              child: viewPageBody(context))
+        ],
+      );
+    }
   }
 
   @override

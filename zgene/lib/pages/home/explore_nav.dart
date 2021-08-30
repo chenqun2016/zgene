@@ -13,12 +13,15 @@ class ExploreNav extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "开启探索之旅",
-            style: TextStyle(
-                fontSize: 18,
-                color: ColorConstant.TextMainBlack,
-                fontWeight: FontWeight.bold),
+          Padding(
+            padding: EdgeInsets.only(left: 15),
+            child: Text(
+              "开启探索之旅",
+              style: TextStyle(
+                  fontSize: 18,
+                  color: ColorConstant.TextMainBlack,
+                  fontWeight: FontWeight.bold),
+            ),
           ),
           SizedBox(
             height: 200,
@@ -36,7 +39,7 @@ class ExploreNav extends StatelessWidget {
 
   Widget _item(position) {
     return Container(
-        margin: EdgeInsets.only(right: 16, top: 10),
+        margin: EdgeInsets.only(left: 16, top: 10),
         width: 136,
         child: Stack(
           alignment: Alignment.topCenter,

@@ -80,7 +80,8 @@ class EStep {
     this.content,
     this.state = EStepState.indexed,
     this.isActive = false,
-  }) : assert(state != null);
+  })  : assert(content != null),
+        assert(state != null);
 
   ///assert(title != null),
 
@@ -179,13 +180,20 @@ class EStepper extends StatefulWidget {
       this.onStepCancel,
       this.controlsBuilder,
       this.stepperWidth,
-      this.isVerticalAnimatedCrossFade = true})
+      this.isVerticalAnimatedCrossFade = true,
+      this.showEditingIcon = true,
+      this.showcompleteIcon = true})
       : assert(steps != null),
         assert(type != null),
         assert(currentStep != null),
         assert(0 <= currentStep && currentStep < steps.length),
         super(key: key);
 
+  final bool showEditingIcon;
+
+  final bool showcompleteIcon;
+
+  ///垂直模式下，内容是否增加动效
   final bool isVerticalAnimatedCrossFade;
 
   ///EStepperType.horizontal模式下 顶部step的总宽
@@ -349,17 +357,38 @@ class _StepperState extends State<EStepper> with TickerProviderStateMixin {
           style: _kStepStyle,
         );
       case EStepState.editing:
-        return Icon(
-          Icons.edit,
-          color: isDarkActive ? _kCircleActiveDark : _kCircleActiveLight,
-          size: 18.0,
+        if (widget.showEditingIcon) {
+          return Icon(
+            Icons.edit,
+            color: isDarkActive ? _kCircleActiveDark : _kCircleActiveLight,
+            size: 18.0,
+          );
+        }
+        if (widget.showcompleteIcon) {
+          return Icon(
+            Icons.check,
+            color: isDarkActive ? _kCircleActiveDark : _kCircleActiveLight,
+            size: 18.0,
+          );
+        }
+        return Text(
+          '${index + 1}',
+          style: _kStepStyle.copyWith(color: Colors.white),
         );
+
       case EStepState.complete:
-        return Icon(
-          Icons.check,
-          color: isDarkActive ? _kCircleActiveDark : _kCircleActiveLight,
-          size: 18.0,
+        if (widget.showcompleteIcon) {
+          return Icon(
+            Icons.check,
+            color: isDarkActive ? _kCircleActiveDark : _kCircleActiveLight,
+            size: 18.0,
+          );
+        }
+        return Text(
+          '${index + 1}',
+          style: _kStepStyle.copyWith(color: Colors.white),
         );
+
       case EStepState.error:
         return const Text('!',
             style: TextStyle(
@@ -639,22 +668,21 @@ class _StepperState extends State<EStepper> with TickerProviderStateMixin {
             ),
           ),
         ),
-        if (null != widget.steps[widget.currentStep].content)
-          widget.isVerticalAnimatedCrossFade
-              ? AnimatedCrossFade(
-                  firstChild: Container(height: 0.0),
-                  secondChild: _buildVerticalBodyContent(index),
-                  firstCurve:
-                      const Interval(0.0, 0.6, curve: Curves.fastOutSlowIn),
-                  secondCurve:
-                      const Interval(0.4, 1.0, curve: Curves.fastOutSlowIn),
-                  sizeCurve: Curves.fastOutSlowIn,
-                  crossFadeState: _isCurrent(index)
-                      ? CrossFadeState.showSecond
-                      : CrossFadeState.showFirst,
-                  duration: kThemeAnimationDuration,
-                )
-              : _buildVerticalBodyContent(index),
+        widget.isVerticalAnimatedCrossFade
+            ? AnimatedCrossFade(
+                firstChild: Container(height: 0.0),
+                secondChild: _buildVerticalBodyContent(index),
+                firstCurve:
+                    const Interval(0.0, 0.6, curve: Curves.fastOutSlowIn),
+                secondCurve:
+                    const Interval(0.4, 1.0, curve: Curves.fastOutSlowIn),
+                sizeCurve: Curves.fastOutSlowIn,
+                crossFadeState: _isCurrent(index)
+                    ? CrossFadeState.showSecond
+                    : CrossFadeState.showFirst,
+                duration: kThemeAnimationDuration,
+              )
+            : _buildVerticalBodyContent(index),
       ],
     );
   }
@@ -664,7 +692,7 @@ class _StepperState extends State<EStepper> with TickerProviderStateMixin {
       margin: const EdgeInsetsDirectional.only(
         start: 60.0,
         end: 24.0,
-        bottom: 24.0,
+        bottom: 4.0,
       ),
       child: Column(
         children: <Widget>[
@@ -763,18 +791,17 @@ class _StepperState extends State<EStepper> with TickerProviderStateMixin {
             children: children,
           ),
         ),
-        if (null != widget.steps[widget.currentStep].content)
-          Column(
-            children: <Widget>[
-              AnimatedSize(
-                curve: Curves.fastOutSlowIn,
-                duration: kThemeAnimationDuration,
-                vsync: this,
-                child: widget.steps[widget.currentStep].content,
-              ),
-              _buildVerticalControls(),
-            ],
-          ),
+        Column(
+          children: <Widget>[
+            AnimatedSize(
+              curve: Curves.fastOutSlowIn,
+              duration: kThemeAnimationDuration,
+              vsync: this,
+              child: widget.steps[widget.currentStep].content,
+            ),
+            _buildVerticalControls(),
+          ],
+        ),
       ],
     );
   }

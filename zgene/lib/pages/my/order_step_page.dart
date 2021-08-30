@@ -15,17 +15,18 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
   @override
   void pageWidgetInitState() {
     showHead = false;
+    isListPage = true;
     backImgPath = "assets/images/mine/img_bg_my.png";
     steps = [
       OrderStepModel("待发货", 1),
-      OrderStepModel("已发货", 1),
-      OrderStepModel("待签收", 2),
-      OrderStepModel("已签收", 0),
-      OrderStepModel("采集器绑定成功", 0),
-      OrderStepModel("待发货", 0),
-      OrderStepModel("待发货", 0),
-      OrderStepModel("待发货", 0),
-      OrderStepModel("待发货1", 0),
+      OrderStepModel("已发货", 2),
+      OrderStepModel("待签收", 3),
+      OrderStepModel("已签收", 4),
+      OrderStepModel("采集器绑定成功", 5),
+      OrderStepModel("待发货", 6),
+      OrderStepModel("待发货", 7),
+      OrderStepModel("待发货", 8),
+      OrderStepModel("待发货1", 9),
       OrderStepModel("待发货1", 0)
     ];
     super.pageWidgetInitState();
@@ -33,7 +34,7 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
 
   @override
   Widget viewPageBody(BuildContext context) {
-    return Column(
+    return ListView(
       children: [
         _titlebar(),
         _orderDetail(),
@@ -89,7 +90,7 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
       onTap: () {},
       child: Container(
         width: double.infinity,
-        margin: EdgeInsets.fromLTRB(15, 20, 15, 0),
+        margin: EdgeInsets.fromLTRB(15, 20, 15, 15),
         padding: EdgeInsets.fromLTRB(4, 8, 15, 8),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -147,6 +148,8 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
   _orderStepper() {
     return EStepper(
       physics: BouncingScrollPhysics(),
+      showcompleteIcon: false,
+      showEditingIcon: false,
       isVerticalAnimatedCrossFade: false,
       stepperWidth: 240,
       currentStep: _position,
@@ -172,12 +175,12 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
       type: EStepperType.vertical,
       steps: steps.map(
         (s) {
-          // bool isActive = s == _position;
+          bool isActive = steps.indexOf(s) == _position;
           return EStep(
             title: _getTitleContent(s),
             state: _getState(s),
             content: Text(""),
-            isActive: false,
+            isActive: isActive,
           );
         },
       ).toList(),
@@ -221,27 +224,29 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
             fontSize: 16,
           ),
         )),
-        MaterialButton(
-          height: 39,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(27)),
-          disabledColor: Colors.white,
-          color: ColorConstant.TextMainColor,
-          onPressed: _isAchieve(model) ? () {} : null,
-          child: Text(model.name,
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: _isAchieve(model)
-                    ? Colors.white
-                    : ColorConstant.Text_B2BAC6,
-              )),
-        )
+        getRightButton(model),
       ]),
     );
   }
 
   _isAchieve(model) {
-    return model.type > 0;
+    return steps.indexOf(model) <= _position;
+  }
+
+  getRightButton(model) {
+    return MaterialButton(
+      height: 39,
+      elevation: 0,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(27)),
+      disabledColor: Colors.white,
+      color: ColorConstant.TextMainColor,
+      onPressed: _isAchieve(model) ? () {} : null,
+      child: Text(model.name,
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            color: _isAchieve(model) ? Colors.white : ColorConstant.Text_B2BAC6,
+          )),
+    );
   }
 }

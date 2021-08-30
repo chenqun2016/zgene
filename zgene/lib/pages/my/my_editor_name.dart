@@ -8,10 +8,7 @@ class MyEditorPage extends StatefulWidget {
   _MyEditorPageState createState() => _MyEditorPageState();
 }
 
-class _MyEditorPageState extends State<MyEditorPage>
-    with AutomaticKeepAliveClientMixin {
-  @override
-  bool get wantKeepAlive => true;
+class _MyEditorPageState extends State<MyEditorPage> {
 
   @override
   Widget build(BuildContext context) {

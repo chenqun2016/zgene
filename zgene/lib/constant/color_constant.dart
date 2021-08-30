@@ -41,7 +41,7 @@ class ColorConstant {
   static const Color TextThreeColor = Color(0xFF5E6F88);
   static const Color TextFourColor = Color(0xFF000000);
   static const Color WhiteColor = Color(0xFFFFFFFF);
-  static const Color LineMainColor = Color(0xFFF1F1F1);
+  static const Color LineMainColor = Color(0xFFB2BAC6);
   static const Color BgColor = Color(0xFFF5F5F5);
 
   //透明度50%白色

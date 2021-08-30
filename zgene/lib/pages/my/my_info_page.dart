@@ -10,14 +10,12 @@ class MyInfoPage extends StatefulWidget {
   _MyInfoPageState createState() => _MyInfoPageState();
 }
 
-class _MyInfoPageState extends State<MyInfoPage>
-    with AutomaticKeepAliveClientMixin {
-  @override
-  bool get wantKeepAlive => true;
+class _MyInfoPageState extends State<MyInfoPage> {
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         width: double.infinity,
         padding: EdgeInsets.fromLTRB(16, 0, 16, 0),

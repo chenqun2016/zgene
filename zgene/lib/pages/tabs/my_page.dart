@@ -4,6 +4,7 @@ import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/login/main_login.dart';
 import 'package:zgene/pages/my/my_info_page.dart';
 import 'package:zgene/pages/my/my_message_list.dart';
+import 'package:zgene/pages/my/my_set.dart';
 import 'package:zgene/util/ui_uitls.dart';
 
 ///我的
@@ -33,17 +34,38 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               GestureDetector(
-                onTap: (){
+                onTap: () {
                   _onTapEvent(1);
                 },
                 behavior: HitTestBehavior.opaque,
                 child: Container(
                   margin: EdgeInsets.fromLTRB(0, 45, 0, 0),
-                  child: Image(
-                    image: AssetImage("assets/images/mine/icon_my_message.png"),
-                    height: 42,
-                    width: 42,
-                  ),
+                  child: Stack(children: [
+                    Image(
+                      image: AssetImage(
+                          "assets/images/mine/icon_my_message.png"),
+                      height: 42,
+                      width: 42,
+                    ),
+                    Positioned(
+                        right: 6,
+                        top: 6,
+                        child: Container(
+                          width: 16,
+                          height: 16,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: Color(0XFFF72937),
+                              borderRadius: BorderRadius.circular(15)),
+                          child: Text(
+                            "44",
+                            style: TextStyle(
+                              fontSize: 11,
+                              color: ColorConstant.WhiteColor,
+                            ),
+                          ),
+                        )),
+                  ]),
                   alignment: Alignment.topRight,
                 ),
               ),
@@ -72,7 +94,7 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
   ///个人信息
   _getMyInfo() {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         _onTapEvent(2);
       },
       behavior: HitTestBehavior.opaque,
@@ -144,7 +166,7 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
         children: [
           Positioned(
             child: GestureDetector(
-              onTap: (){
+              onTap: () {
                 _onTapEvent(3);
               },
               behavior: HitTestBehavior.opaque,
@@ -152,7 +174,8 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Image(
-                    image: AssetImage("assets/images/mine/icon_wodedingdan.png"),
+                    image:
+                        AssetImage("assets/images/mine/icon_wodedingdan.png"),
                     height: 82,
                     width: 82,
                   ),
@@ -169,7 +192,7 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
             left: 0,
             right: 0,
             child: GestureDetector(
-              onTap: (){
+              onTap: () {
                 _onTapEvent(4);
               },
               behavior: HitTestBehavior.opaque,
@@ -193,7 +216,7 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
           Positioned(
             right: 0,
             child: GestureDetector(
-              onTap: (){
+              onTap: () {
                 _onTapEvent(5);
               },
               behavior: HitTestBehavior.opaque,
@@ -201,7 +224,8 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Image(
-                    image: AssetImage("assets/images/mine/icon_yueduzhinan.png"),
+                    image:
+                        AssetImage("assets/images/mine/icon_yueduzhinan.png"),
                     height: 82,
                     width: 82,
                   ),
@@ -234,7 +258,7 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
       child: Column(
         children: [
           GestureDetector(
-            onTap: (){
+            onTap: () {
               _onTapEvent(6);
             },
             behavior: HitTestBehavior.opaque,
@@ -246,12 +270,11 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
                     alignment: Alignment.centerLeft,
                     child: Text(
                       "产品购买",
-                      style: TextStyle(
-                          fontSize: 15, color:Color(0xFF112950)),
+                      style: TextStyle(fontSize: 15, color: Color(0xFF112950)),
                     )),
                 Positioned(
                   right: 0,
-                  top:15,
+                  top: 15,
                   child: Image(
                     image: AssetImage("assets/images/mine/icon_my_right.png"),
                     height: 16,
@@ -262,7 +285,7 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
             ),
           ),
           GestureDetector(
-            onTap: (){
+            onTap: () {
               _onTapEvent(7);
             },
             behavior: HitTestBehavior.opaque,
@@ -274,12 +297,11 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
                     alignment: Alignment.centerLeft,
                     child: Text(
                       "我的报告",
-                      style: TextStyle(
-                          fontSize: 15, color:Color(0xFF112950)),
+                      style: TextStyle(fontSize: 15, color: Color(0xFF112950)),
                     )),
                 Positioned(
                   right: 0,
-                  top:15,
+                  top: 15,
                   child: Image(
                     image: AssetImage("assets/images/mine/icon_my_right.png"),
                     height: 16,
@@ -309,7 +331,7 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
       child: Column(
         children: [
           GestureDetector(
-            onTap: (){
+            onTap: () {
               _onTapEvent(8);
             },
             behavior: HitTestBehavior.opaque,
@@ -321,12 +343,11 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
                     alignment: Alignment.centerLeft,
                     child: Text(
                       "设置",
-                      style: TextStyle(
-                          fontSize: 15, color:Color(0xFF112950)),
+                      style: TextStyle(fontSize: 15, color: Color(0xFF112950)),
                     )),
                 Positioned(
                   right: 0,
-                  top:15,
+                  top: 15,
                   child: Image(
                     image: AssetImage("assets/images/mine/icon_my_right.png"),
                     height: 16,
@@ -337,7 +358,7 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
             ),
           ),
           GestureDetector(
-            onTap: (){
+            onTap: () {
               _onTapEvent(9);
             },
             behavior: HitTestBehavior.opaque,
@@ -349,12 +370,11 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
                     alignment: Alignment.centerLeft,
                     child: Text(
                       "联系客服",
-                      style: TextStyle(
-                          fontSize: 15, color:Color(0xFF112950)),
+                      style: TextStyle(fontSize: 15, color: Color(0xFF112950)),
                     )),
                 Positioned(
                   right: 0,
-                  top:15,
+                  top: 15,
                   child: Image(
                     image: AssetImage("assets/images/mine/icon_my_right.png"),
                     height: 16,
@@ -365,7 +385,7 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
             ),
           ),
           GestureDetector(
-            onTap: (){
+            onTap: () {
               _onTapEvent(10);
             },
             behavior: HitTestBehavior.opaque,
@@ -377,12 +397,11 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
                     alignment: Alignment.centerLeft,
                     child: Text(
                       "常见问题",
-                      style: TextStyle(
-                          fontSize: 15, color:Color(0xFF112950)),
+                      style: TextStyle(fontSize: 15, color: Color(0xFF112950)),
                     )),
                 Positioned(
                   right: 0,
-                  top:15,
+                  top: 15,
                   child: Image(
                     image: AssetImage("assets/images/mine/icon_my_right.png"),
                     height: 16,
@@ -393,7 +412,7 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
             ),
           ),
           GestureDetector(
-            onTap: (){
+            onTap: () {
               _onTapEvent(11);
             },
             behavior: HitTestBehavior.opaque,
@@ -405,12 +424,11 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
                     alignment: Alignment.centerLeft,
                     child: Text(
                       "关于Z基因",
-                      style: TextStyle(
-                          fontSize: 15, color:Color(0xFF112950)),
+                      style: TextStyle(fontSize: 15, color: Color(0xFF112950)),
                     )),
                 Positioned(
                   right: 0,
-                  top:15,
+                  top: 15,
                   child: Image(
                     image: AssetImage("assets/images/mine/icon_my_right.png"),
                     height: 16,
@@ -426,39 +444,39 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
   }
 
   ///点击事件
-  _onTapEvent(index){
-    switch(index){
-      case 1://消息
+  _onTapEvent(index) {
+    switch (index) {
+      case 1: //消息
         NavigatorUtil.push(context, MyMessagePage());
         break;
-      case 2://个人信息
+      case 2: //个人信息
         NavigatorUtil.push(context, MyInfoPage());
         break;
-      case 3://我的订单
+      case 3: //我的订单
         NavigatorUtil.push(context, MainLoginPage());
         break;
-      case 4://绑定采集器
+      case 4: //绑定采集器
         UiUitls.showToast("绑定采集器");
         break;
-      case 5://回寄采集器
+      case 5: //回寄采集器
         UiUitls.showToast("回寄采集器");
         break;
-      case 6://产品购买
+      case 6: //产品购买
         UiUitls.showToast("产品购买");
         break;
-      case 7://我的报告
+      case 7: //我的报告
         UiUitls.showToast("我的报告");
         break;
-      case 8://设置
-        UiUitls.showToast("设置");
+      case 8: //设置
+        NavigatorUtil.push(context, MySetPage());
         break;
-      case 9://联系客服
+      case 9: //联系客服
         UiUitls.showToast("联系客服");
         break;
-      case 10://常见问题
+      case 10: //常见问题
         UiUitls.showToast("常见问题");
         break;
-      case 11://关于Z基因
+      case 11: //关于Z基因
         UiUitls.showToast("关于Z基因");
         break;
     }

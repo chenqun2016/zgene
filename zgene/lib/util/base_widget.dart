@@ -209,14 +209,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
               padding: EdgeInsets.all(0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  viewCustomHeadBody(),
-                  Container(
-                      height: MediaQuery.of(context).size.height -
-                          55.h -
-                          MediaQuery.of(context).padding.top,
-                      child: viewPageBody(context))
-                ],
+                children: [viewCustomHeadBody(), viewPageBody(context)],
               ),
             ),
           )

@@ -49,10 +49,10 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
         // // 获取数据
         // getHttp();
         // await Future.delayed(Duration(seconds: 1), () {
-          // 重置刷新状态 【没错，这里用的是resetLoadState】
-          if (_controller != null) {
-            _controller.resetLoadState();
-          }
+        // 重置刷新状态 【没错，这里用的是resetLoadState】
+        if (_controller != null) {
+          _controller.resetLoadState();
+        }
         // });
       },
       // 上拉加载事件回调
@@ -60,9 +60,9 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
         // await Future.delayed(Duration(seconds: 1), () {
         //   // 获取数据
         //   getHttp();
-          // 结束加载
-          _controller.finishLoad();
-          // _controller.finishLoad(noMore:true);
+        // 结束加载
+        _controller.finishLoad();
+        // _controller.finishLoad(noMore:true);
         // });
       },
     );
@@ -74,7 +74,7 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
       margin: EdgeInsets.all(0),
       width: double.infinity,
       child: ListView.builder(
-        itemCount: 3,
+        itemCount: 6,
         shrinkWrap: true,
         padding: EdgeInsets.all(0),
         physics: ScrollPhysics(),
@@ -166,7 +166,7 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
                         Stack(
                           children: [
                             Container(
-                              width: MediaQuery.of(context).size.width-136,
+                              width: MediaQuery.of(context).size.width - 136,
                               padding: EdgeInsets.only(left: 10),
                               child: Text(
                                 "Z基因-精装版-家庭套装",

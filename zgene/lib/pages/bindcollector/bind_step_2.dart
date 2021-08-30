@@ -6,7 +6,8 @@ import 'package:zgene/util/ui_uitls.dart';
 
 class BindStep2 extends StatefulWidget {
   var onChangeNextButtomState;
-  BindStep2(Function(bool canNext) onChangeNextButtomState){
+
+  BindStep2(Function(bool canNext) onChangeNextButtomState) {
     this.onChangeNextButtomState = onChangeNextButtomState;
   }
 
@@ -20,6 +21,11 @@ class _BindStep2State extends State<BindStep2> {
   bool _checkbox1Selected = true;
   var sex = ['男', '女'];
   var currentSex;
+
+  var birthText = "请选择您的生日";
+
+  bool hasName;
+  bool hasBirth;
 
   @override
   void initState() {
@@ -77,8 +83,9 @@ class _BindStep2State extends State<BindStep2> {
                         fontWeight: FontWeight.w500,
                         color: ColorConstant.TextMainBlack,
                       ),
-                      onSubmitted: (value) {
-                        // _onTapEvent(2);
+                      onChanged: (str) {
+                        hasName = str.isNotEmpty;
+                        widget.onChangeNextButtomState(hasName && hasBirth);
                       },
                       // autocorrect: true,
                       // autofocus: true,
@@ -144,7 +151,14 @@ class _BindStep2State extends State<BindStep2> {
                 color: ColorConstant.Divider,
               ),
               GestureDetector(
-                onTap: () {},
+                onTap:  () async{
+                  DateTime text = await _showDatePicker(context);
+                  setState(() {
+                    birthText = text.toString();
+                  });
+                  hasBirth = true;
+                  widget.onChangeNextButtomState(hasName && hasBirth);
+                },
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(15, 20, 15, 20),
                   child: Row(
@@ -152,7 +166,7 @@ class _BindStep2State extends State<BindStep2> {
                     children: [
                       Expanded(child: _leftText("生日")),
                       Text(
-                        "请选择您的生日",
+                        birthText,
                         style: TextStyle(
                           fontSize: 15,
                           color: ColorConstant.Text_9395A4,
@@ -208,5 +222,17 @@ class _BindStep2State extends State<BindStep2> {
 
   _onTextTap() {
     UiUitls.showToast("联系客服");
+  }
+
+   _showDatePicker(context) async {
+    var first = DateTime(1900);
+    var date = DateTime.now();
+    date.add(Duration());
+    return await showDatePicker(
+      context: context,
+      initialDate: date,
+      firstDate: first,
+      lastDate: date,
+    );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
@@ -39,6 +40,16 @@ class MyApp extends StatelessWidget {
       ),
       home: SplashPage(),
       builder: EasyLoading.init(),
+      localizationsDelegates: [
+        // 本地化的代理类
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en', 'US'), // 美国英语
+        const Locale('zh', 'CN'), // 中文简体
+        //其它Locales
+      ],
     ));
   }
 }

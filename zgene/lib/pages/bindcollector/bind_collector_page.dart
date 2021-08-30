@@ -49,7 +49,9 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
                       if (_position < steps.length - 1) {
                         setState(() {
                           _position++;
-                          canNextClick = false;
+                          if(_position != steps.length - 1){
+                            canNextClick = false;
+                          }
                         });
                       } else {
                         //绑定成功

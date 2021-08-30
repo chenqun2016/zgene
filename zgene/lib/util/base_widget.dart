@@ -26,12 +26,10 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
   String backImgPath = '';
 // 页面背景颜色
   Color backColor = ColorConstant.BackMainColor;
-  // 页面背景颜色
+  // 自定义顶部栏右上角文字按钮 传值为显示textButton
   String customRightBtnText = '';
-  // 页面背景颜色
+  // 自定义顶部栏右上角图标按钮 传值为显示iconButton
   String customRightBtnImg = '';
-// // 自定义顶部右侧btn类型，0为不显示，1为textbutton，2为iconbutton，3为自定义
-  // BuildContext selfContext = null;
 
   @override
   void initState() {

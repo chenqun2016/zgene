@@ -49,6 +49,7 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
                       if (_position < steps.length - 1) {
                         setState(() {
                           _position++;
+                          canNextClick = false;
                         });
                       } else {
                         //绑定成功
@@ -168,13 +169,19 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
 
   _getContent(int s) {
     if (0 == s) {
-      return BindStep1();
+      return BindStep1(_onChangeNextButtomState);
     }
     if (1 == s) {
-      return BindStep2();
+      return BindStep2(_onChangeNextButtomState);
     }
     if (2 == s) {
       return BindStep3();
     }
+  }
+
+  _onChangeNextButtomState(bool canNext){
+    setState(() {
+      canNextClick = canNext;
+    });
   }
 }

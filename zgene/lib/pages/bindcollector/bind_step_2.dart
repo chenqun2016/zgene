@@ -5,6 +5,11 @@ import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/util/ui_uitls.dart';
 
 class BindStep2 extends StatefulWidget {
+  var onChangeNextButtomState;
+  BindStep2(Function(bool canNext) onChangeNextButtomState){
+    this.onChangeNextButtomState = onChangeNextButtomState;
+  }
+
   @override
   State<StatefulWidget> createState() {
     return _BindStep2State();

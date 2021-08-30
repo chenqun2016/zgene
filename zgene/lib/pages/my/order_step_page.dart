@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/models/order_step_model.dart';
+import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/util/base_widget.dart';
+import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/widget/my_stepper.dart';
 
 class OrderStepPage extends BaseWidget {
@@ -38,7 +40,7 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
       children: [
         _titlebar(),
         _orderDetail(),
-        _orderStepper(),
+        _orderStepper(context),
       ],
     );
   }
@@ -145,7 +147,7 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
   List steps;
   int _position = 0;
 
-  _orderStepper() {
+  _orderStepper(context) {
     return EStepper(
       physics: BouncingScrollPhysics(),
       showcompleteIcon: false,
@@ -177,7 +179,7 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
         (s) {
           bool isActive = steps.indexOf(s) == _position;
           return EStep(
-            title: _getTitleContent(s),
+            title: _getTitleContent(s, context),
             state: _getState(s),
             content: Text(""),
             isActive: isActive,
@@ -197,7 +199,7 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
     return EStepState.indexed;
   }
 
-  _getTitleContent(model) {
+  _getTitleContent(model, context) {
     return Container(
       alignment: Alignment.centerLeft,
       height: 64,
@@ -224,7 +226,7 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
             fontSize: 16,
           ),
         )),
-        getRightButton(model),
+        getRightButton(model, context),
       ]),
     );
   }
@@ -233,14 +235,21 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
     return steps.indexOf(model) <= _position;
   }
 
-  getRightButton(model) {
+  getRightButton(model, context) {
     return MaterialButton(
       height: 39,
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(27)),
       disabledColor: Colors.white,
       color: ColorConstant.TextMainColor,
-      onPressed: _isAchieve(model) ? () {} : null,
+      onPressed: _isAchieve(model)
+          ? () async {
+              bool qianshou = await _showMyDialog(context);
+              if (qianshou) {
+                UiUitls.showToast("签收");
+              }
+            }
+          : null,
       child: Text(model.name,
           style: TextStyle(
             fontSize: 14,
@@ -248,5 +257,94 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
             color: _isAchieve(model) ? Colors.white : ColorConstant.Text_B2BAC6,
           )),
     );
+  }
+
+  _showMyDialog(context) async {
+    return await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            backgroundColor: Colors.transparent,
+            child: SafeArea(
+              child: Stack(
+                alignment: Alignment.topCenter,
+                children: [
+                  Container(
+                      height: 250,
+                      margin: EdgeInsets.only(top: 20),
+                      padding: EdgeInsets.only(top: 90),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(20),
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            "确认签收？",
+                            style: TextStyle(
+                              color: ColorConstant.TextMainBlack,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(0, 40, 0, 0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                MaterialButton(
+                                  minWidth: 120,
+                                  height: 50,
+                                  elevation: 0,
+                                  shape: RoundedRectangleBorder(
+                                      side: BorderSide(
+                                          color: ColorConstant.TextMainColor),
+                                      borderRadius: BorderRadius.circular(25)),
+                                  color: ColorConstant.WhiteColor,
+                                  onPressed: () {
+                                    Navigator.of(context).pop(false);
+                                  },
+                                  child: Text("取消",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: ColorConstant.TextMainColor,
+                                      )),
+                                ),
+                                MaterialButton(
+                                  minWidth: 120,
+                                  height: 50,
+                                  elevation: 0,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(25)),
+                                  color: ColorConstant.TextMainColor,
+                                  onPressed: () {
+                                    Navigator.of(context).pop(true);
+                                  },
+                                  child: Text("确认",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      )),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      )),
+                  Image.asset(
+                    "assets/images/mine/img_chenggong.png",
+                    height: 110,
+                    width: 110,
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 }

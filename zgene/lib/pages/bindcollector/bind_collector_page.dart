@@ -113,7 +113,7 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
                 "采集引导",
                 style: TextStyle(
                   color: ColorConstant.TextMainBlack,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w500,
                   fontSize: 14,
                 ),
               ))

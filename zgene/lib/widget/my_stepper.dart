@@ -80,8 +80,7 @@ class EStep {
     this.content,
     this.state = EStepState.indexed,
     this.isActive = false,
-  })  : assert(content != null),
-        assert(state != null);
+  }) : assert(state != null);
 
   ///assert(title != null),
 
@@ -169,22 +168,25 @@ class EStepper extends StatefulWidget {
   /// new one.
   ///
   /// The [steps], [type], and [currentStep] arguments must not be null.
-  const EStepper({
-    Key key,
-    this.steps,
-    this.physics,
-    this.type = EStepperType.vertical,
-    this.currentStep = 0,
-    this.onStepTapped,
-    this.onStepContinue,
-    this.onStepCancel,
-    this.controlsBuilder,
-    this.stepperWidth,
-  })  : assert(steps != null),
+  const EStepper(
+      {Key key,
+      this.steps,
+      this.physics,
+      this.type = EStepperType.vertical,
+      this.currentStep = 0,
+      this.onStepTapped,
+      this.onStepContinue,
+      this.onStepCancel,
+      this.controlsBuilder,
+      this.stepperWidth,
+      this.isVerticalAnimatedCrossFade = true})
+      : assert(steps != null),
         assert(type != null),
         assert(currentStep != null),
         assert(0 <= currentStep && currentStep < steps.length),
         super(key: key);
+
+  final bool isVerticalAnimatedCrossFade;
 
   ///EStepperType.horizontal模式下 顶部step的总宽
   final double stepperWidth;
@@ -323,11 +325,11 @@ class _StepperState extends State<EStepper> with TickerProviderStateMixin {
     return Theme.of(context).brightness == Brightness.dark;
   }
 
-  Widget _buildLine(bool visible) {
+  Widget _buildLine(bool visible, int index) {
     return Container(
       width: visible ? 1.0 : 0.0,
-      height: 16.0,
-      color: Colors.grey.shade400,
+      height: 18.0,
+      color: _getLineColor(index),
     );
   }
 
@@ -385,7 +387,7 @@ class _StepperState extends State<EStepper> with TickerProviderStateMixin {
 
   Widget _buildCircle(int index, bool oldState) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      margin: const EdgeInsets.symmetric(vertical: 4.0),
       width: _kStepSize,
       height: _kStepSize,
       child: AnimatedContainer(
@@ -601,9 +603,9 @@ class _StepperState extends State<EStepper> with TickerProviderStateMixin {
             children: <Widget>[
               // Line parts are always added in order for the ink splash to
               // flood the tips of the connector lines.
-              _buildLine(!_isFirst(index)),
+              _buildLine(!_isFirst(index), index),
               _buildIcon(index),
-              _buildLine(!_isLast(index)),
+              _buildLine(!_isLast(index), index + 1),
             ],
           ),
           if (widget.steps[index].title != null)
@@ -631,36 +633,45 @@ class _StepperState extends State<EStepper> with TickerProviderStateMixin {
               child: SizedBox(
                 width: _isLast(index) ? 0.0 : 1.0,
                 child: Container(
-                  color: Colors.grey.shade400,
+                  color: _getLineColor(index + 1),
                 ),
               ),
             ),
           ),
         ),
-        AnimatedCrossFade(
-          firstChild: Container(height: 0.0),
-          secondChild: Container(
-            margin: const EdgeInsetsDirectional.only(
-              start: 60.0,
-              end: 24.0,
-              bottom: 24.0,
-            ),
-            child: Column(
-              children: <Widget>[
-                widget.steps[index].content,
-                _buildVerticalControls(),
-              ],
-            ),
-          ),
-          firstCurve: const Interval(0.0, 0.6, curve: Curves.fastOutSlowIn),
-          secondCurve: const Interval(0.4, 1.0, curve: Curves.fastOutSlowIn),
-          sizeCurve: Curves.fastOutSlowIn,
-          crossFadeState: _isCurrent(index)
-              ? CrossFadeState.showSecond
-              : CrossFadeState.showFirst,
-          duration: kThemeAnimationDuration,
-        ),
+        if (null != widget.steps[widget.currentStep].content)
+          widget.isVerticalAnimatedCrossFade
+              ? AnimatedCrossFade(
+                  firstChild: Container(height: 0.0),
+                  secondChild: _buildVerticalBodyContent(index),
+                  firstCurve:
+                      const Interval(0.0, 0.6, curve: Curves.fastOutSlowIn),
+                  secondCurve:
+                      const Interval(0.4, 1.0, curve: Curves.fastOutSlowIn),
+                  sizeCurve: Curves.fastOutSlowIn,
+                  crossFadeState: _isCurrent(index)
+                      ? CrossFadeState.showSecond
+                      : CrossFadeState.showFirst,
+                  duration: kThemeAnimationDuration,
+                )
+              : _buildVerticalBodyContent(index),
       ],
+    );
+  }
+
+  Widget _buildVerticalBodyContent(int index) {
+    return Container(
+      margin: const EdgeInsetsDirectional.only(
+        start: 60.0,
+        end: 24.0,
+        bottom: 24.0,
+      ),
+      child: Column(
+        children: <Widget>[
+          widget.steps[index].content,
+          _buildVerticalControls(),
+        ],
+      ),
     );
   }
 
@@ -697,6 +708,15 @@ class _StepperState extends State<EStepper> with TickerProviderStateMixin {
     );
   }
 
+  _getLineColor(int index) {
+    if (index >= widget.steps.length || index < 0) {
+      return Colors.white;
+    }
+    return widget.steps[index].state == EStepState.indexed
+        ? Colors.white
+        : ColorConstant.TextMainColor;
+  }
+
   Widget _buildHorizontal() {
     final List<Widget> children = <Widget>[
       for (int i = 0; i < widget.steps.length; i += 1) ...<Widget>[
@@ -705,9 +725,7 @@ class _StepperState extends State<EStepper> with TickerProviderStateMixin {
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 1.0),
               height: 1.0,
-              color: widget.steps[i].state == EStepState.indexed
-                  ? Colors.white
-                  : ColorConstant.TextMainColor,
+              color: _getLineColor(i),
             ),
           ),
         InkResponse(
@@ -745,17 +763,18 @@ class _StepperState extends State<EStepper> with TickerProviderStateMixin {
             children: children,
           ),
         ),
-        Column(
-          children: <Widget>[
-            AnimatedSize(
-              curve: Curves.fastOutSlowIn,
-              duration: kThemeAnimationDuration,
-              vsync: this,
-              child: widget.steps[widget.currentStep].content,
-            ),
-            _buildVerticalControls(),
-          ],
-        ),
+        if (null != widget.steps[widget.currentStep].content)
+          Column(
+            children: <Widget>[
+              AnimatedSize(
+                curve: Curves.fastOutSlowIn,
+                duration: kThemeAnimationDuration,
+                vsync: this,
+                child: widget.steps[widget.currentStep].content,
+              ),
+              _buildVerticalControls(),
+            ],
+          ),
       ],
     );
   }

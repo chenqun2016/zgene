@@ -160,7 +160,7 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
                           }),
                     ),
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Stack(
@@ -188,16 +188,31 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
                             ),
                           ],
                         ),
+                        Container(
+                          margin: EdgeInsets.only(top: 5),
+                          child: Text(
+                            "X1",
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Color(0xFF8E9AAB),
+                            ),
+                            textAlign: TextAlign.right,
+                          ),
+                        ),
                       ],
                     ),
+
                   ],
                   mainAxisAlignment: MainAxisAlignment.start,
                 ),
-                Divider(
-                  height: 1.0,
-                  indent: 0,
-                  endIndent: 0,
-                  color: ColorConstant.LineMainColor,
+                Container(
+                  margin: EdgeInsets.fromLTRB(0, 14, 0, 17),
+                  child: Divider(
+                    height: 1.0,
+                    indent: 0,
+                    endIndent: 0,
+                    color: ColorConstant.LineMainColor,
+                  ),
                 ),
                 Stack(
                   children: [
@@ -210,6 +225,7 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
                       ),
                       width: double.infinity,
                     ),
+
                     Positioned(
                         right: 0,
                         child: Text(

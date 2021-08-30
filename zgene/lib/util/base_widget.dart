@@ -51,11 +51,11 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
             height: 97,
             child: Stack(
               children: [
-                Positioned(left: 16, top: 42, child: customHeaderBack()),
+                Positioned(left: 16.w, top: 42.h, child: customHeaderBack()),
                 Positioned(
-                  left: 80,
-                  right: 80,
-                  top: 56,
+                  left: 80.w,
+                  right: 80.w,
+                  top: 56.h,
                   child: Text(
                     pageWidgetTitle,
                     textAlign: TextAlign.center,
@@ -68,7 +68,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
                     ),
                   ),
                 ),
-                Positioned(right: 16, top: 42, child: headerRightBtn())
+                Positioned(right: 16.w, top: 58.h, child: headerRightBtn())
               ],
             ),
           )
@@ -115,27 +115,29 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
   Widget headerRightBtn() {
     if (customRightBtnText != "") {
       return Container(
-          height: 40.w,
           child: Center(
-            child: InkWell(
-              onTap: () {
-                rightBtnTap(context);
-              },
-              child: Text(
-                customRightBtnText,
-                textAlign: TextAlign.center,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontStyle: FontStyle.normal,
-                  fontWeight: FontWeight.w400,
-                  color: ColorConstant.TextMainBlack,
-                ),
-              ),
+        child: InkWell(
+          onTap: () {
+            rightBtnTap(context);
+          },
+          child: Text(
+            customRightBtnText,
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontSize: 14.sp,
+              fontStyle: FontStyle.normal,
+              fontWeight: FontWeight.w400,
+              color: ColorConstant.TextMainBlack,
             ),
-          ));
+          ),
+        ),
+      ));
     } else if (customRightBtnImg != "") {
       return Container(
+        decoration: new BoxDecoration(
+          color: Colors.grey,
+        ),
         child: IconButton(
             onPressed: () {
               rightBtnTap(context);

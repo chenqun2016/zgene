@@ -51,11 +51,11 @@ class _VideoPageState extends State<VideoPage> {
       autoPlay: true,
       looping: true,
       showOptions: false,
-      customControls: MaterialControls()
-      // customControls: CupertinoControls(
-      //   backgroundColor: Colors.black,
-      //   iconColor: Colors.white,
-      // ),
+      // customControls: MaterialControls()
+      customControls: CupertinoControls(
+        backgroundColor: Colors.black,
+        iconColor: Colors.white,
+      ),
     );
   }
 

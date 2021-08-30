@@ -74,7 +74,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
   }
 
   /// 页面视图的主体部分
-  Widget viewPageBody() {
+  Widget viewPageBody(BuildContext context) {
     return Container();
   }
 
@@ -182,7 +182,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
                     padding: EdgeInsets.all(0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [viewCustomHeadBody(), viewPageBody()],
+                      children: [viewCustomHeadBody(), viewPageBody(context)],
                     ),
                   ),
                 )

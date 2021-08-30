@@ -28,7 +28,7 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
 
 //
   @override
-  Widget viewPageBody() {
+  Widget viewPageBody(BuildContext context) {
     // 当前widget的具体内容
     return Container(
         child: Center(

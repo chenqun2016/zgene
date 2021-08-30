@@ -113,7 +113,7 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
                 "采集引导",
                 style: TextStyle(
                   color: ColorConstant.TextMainBlack,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w500,
                   fontSize: 14,
                 ),
               ))
@@ -125,6 +125,7 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
   _stepper() {
     return EStepper(
       stepperWidth: 240,
+      showEditingIcon: false,
       currentStep: _position,
       onStepTapped: (index) {
         setState(() {

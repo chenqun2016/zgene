@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/bindcollector/bind_collector_page.dart';
+import 'package:zgene/pages/my/order_step_page.dart';
 
 class LocalNav extends StatelessWidget {
   List<String> localNavList = ["绑定采集器", "如何检测", "基因报告", "阅读指南"];
@@ -45,6 +46,9 @@ class LocalNav extends StatelessWidget {
       onTap: () {
         if (0 == index) {
           NavigatorUtil.push(context, BindCollectorPage());
+        }
+        if (1 == index) {
+          NavigatorUtil.push(context, OrderStepPage());
         }
       },
       child: Column(

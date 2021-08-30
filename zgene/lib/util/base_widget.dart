@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/util/screen_utils.dart';
 
 abstract class BaseWidget extends StatefulWidget {
   @override
@@ -14,6 +15,8 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
   bool get wantKeepAlive => setWantKeepAlive;
   //页面是否保存
   bool setWantKeepAlive = false;
+  //页面是否纯list
+  bool isListPage = false;
 // 系统自带appbar 的显示与否
   bool showBaseHead = false;
 // 自定义appbar 的显示与否
@@ -26,8 +29,10 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
   String backImgPath = '';
 // 页面背景颜色
   Color backColor = ColorConstant.BackMainColor;
-
-  BuildContext selfContext = null;
+  // 自定义顶部栏右上角文字按钮 传值为显示textButton
+  String customRightBtnText = '';
+  // 自定义顶部栏右上角图标按钮 传值为显示iconButton
+  String customRightBtnImg = '';
 
   @override
   void initState() {
@@ -46,27 +51,38 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
   Widget viewCustomHeadBody() {
     return showHead
         ? Container(
-            height: 97,
+            height: 55.h + MediaQuery.of(context).padding.top,
             child: Stack(
               children: [
-                Positioned(left: 16, top: 42, child: customHeaderBack()),
                 Positioned(
-                  left: 80,
-                  right: 80,
-                  top: 56,
-                  child: Text(
-                    pageWidgetTitle,
-                    textAlign: TextAlign.center,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      fontStyle: FontStyle.normal,
-                      fontWeight: FontWeight.w500,
-                      color: ColorConstant.TextMainBlack,
+                    top: MediaQuery.of(context).padding.top,
+                    left: 16.w,
+                    child: Container(height: 55.h, child: customHeaderBack())),
+                Positioned(
+                  left: 80.w,
+                  right: 80.w,
+                  top: MediaQuery.of(context).padding.top,
+                  child: Container(
+                    height: 55.h,
+                    child: Center(
+                      child: Text(
+                        pageWidgetTitle,
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w500,
+                          color: ColorConstant.TextMainBlack,
+                        ),
+                      ),
                     ),
                   ),
                 ),
-                Positioned(right: 16, top: 42, child: headerRightBtn())
+                Positioned(
+                    top: MediaQuery.of(context).padding.top,
+                    right: 16.w,
+                    child: Container(height: 55.h, child: headerRightBtn()))
               ],
             ),
           )
@@ -75,10 +91,6 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
 
   /// 页面视图的主体部分
   Widget viewPageBody(BuildContext context) {
-    return Container();
-  }
-
-  Widget headerRightBtn() {
     return Container();
   }
 
@@ -109,11 +121,51 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
 
   /// 顶部返回和实体返回按键的响应事件
   Future myBackClick() {
-    Navigator.pop(selfContext);
+    Navigator.pop(context);
     return Future.value(true);
   }
 
-  /// 配置页面头部内容
+  /// 自定义顶部栏右侧button
+  Widget headerRightBtn() {
+    if (customRightBtnText != "") {
+      return Center(
+        child: InkWell(
+          onTap: () {
+            rightBtnTap(context);
+          },
+          child: Text(
+            customRightBtnText,
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontSize: 14.sp,
+              fontStyle: FontStyle.normal,
+              fontWeight: FontWeight.w400,
+              color: ColorConstant.TextMainBlack,
+            ),
+          ),
+        ),
+      );
+    } else if (customRightBtnImg != "") {
+      return IconButton(
+          onPressed: () {
+            rightBtnTap(context);
+          },
+          icon: Image(
+            image: AssetImage(customRightBtnImg),
+            height: 40.w,
+            width: 40.w,
+            fit: BoxFit.fill,
+          ));
+    } else {
+      return Container();
+    }
+  }
+
+  /// 顶部返回和实体返回按键的响应事件
+  Future rightBtnTap(BuildContext context) {}
+
+  /// 配置页面头部返回
   Widget customHeaderBack() {
     return IconButton(
         onPressed: () {
@@ -121,8 +173,8 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
         },
         icon: Image(
           image: AssetImage("assets/images/icon_base_backArrow.png"),
-          height: 40,
-          width: 40,
+          // height: 40.w,
+          // width: 40.w,
           fit: BoxFit.fill,
         ));
   }
@@ -146,10 +198,49 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
     );
   }
 
+  /// 配置页面头部返回
+  Widget customBodyView() {
+    if (!isListPage) {
+      return CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              padding: EdgeInsets.all(0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  viewCustomHeadBody(),
+                  Container(
+                      height: MediaQuery.of(context).size.height -
+                          55.h -
+                          MediaQuery.of(context).padding.top,
+                      child: viewPageBody(context))
+                ],
+              ),
+            ),
+          )
+        ],
+      );
+    } else {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          viewCustomHeadBody(),
+          Container(
+              height: MediaQuery.of(context).size.height -
+                  55.h -
+                  MediaQuery.of(context).padding.top,
+              child: viewPageBody(context))
+        ],
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    selfContext = context;
+    // selfContext = context;
     ScreenUtil.init(
         BoxConstraints(
             maxWidth: MediaQuery.of(context).size.width,
@@ -161,11 +252,11 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
       resizeToAvoidBottomInset: false,
       appBar: showBaseHead == true ? _viewAppBar() : null,
       body: GestureDetector(
-        onTap: () {
-          print("点击屏幕");
-          FocusScope.of(context).requestFocus(FocusNode());
-        },
-        child: Container(
+          onTap: () {
+            print("点击屏幕");
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          child: Container(
             decoration: backImgPath != ''
                 ? BoxDecoration(
                     image: DecorationImage(
@@ -174,21 +265,8 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
                     ),
                   )
                 : null,
-            child: CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(
-                  child: SingleChildScrollView(
-                    physics: BouncingScrollPhysics(),
-                    padding: EdgeInsets.all(0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [viewCustomHeadBody(), viewPageBody(context)],
-                    ),
-                  ),
-                )
-              ],
-            )),
-      ),
+            child: customBodyView(),
+          )),
       bottomNavigationBar: viewBottomNavigationBar(),
     );
   }

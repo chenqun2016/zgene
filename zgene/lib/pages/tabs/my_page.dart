@@ -4,6 +4,7 @@ import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/login/main_login.dart';
 import 'package:zgene/pages/my/my_info_page.dart';
 import 'package:zgene/pages/my/my_message_list.dart';
+import 'package:zgene/pages/my/my_order_list.dart';
 import 'package:zgene/pages/my/my_set.dart';
 import 'package:zgene/util/ui_uitls.dart';
 
@@ -165,30 +166,6 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
       child: Stack(
         children: [
           Positioned(
-            child: GestureDetector(
-              onTap: () {
-                _onTapEvent(3);
-              },
-              behavior: HitTestBehavior.opaque,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Image(
-                    image:
-                        AssetImage("assets/images/mine/icon_wodedingdan.png"),
-                    height: 82,
-                    width: 82,
-                  ),
-                  Text(
-                    "我的订单",
-                    style: TextStyle(
-                        fontSize: 13, color: ColorConstant.TextThreeColor),
-                  )
-                ],
-              ),
-            ),
-          ),
-          Positioned(
             left: 0,
             right: 0,
             child: GestureDetector(
@@ -206,6 +183,30 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
                   ),
                   Text(
                     "绑定采集器",
+                    style: TextStyle(
+                        fontSize: 13, color: ColorConstant.TextThreeColor),
+                  )
+                ],
+              ),
+            ),
+          ),
+          Positioned(
+            child: GestureDetector(
+              onTap: () {
+                _onTapEvent(3);
+              },
+              behavior: HitTestBehavior.opaque,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Image(
+                    image:
+                        AssetImage("assets/images/mine/icon_wodedingdan.png"),
+                    height: 82,
+                    width: 82,
+                  ),
+                  Text(
+                    "我的订单",
                     style: TextStyle(
                         fontSize: 13, color: ColorConstant.TextThreeColor),
                   )
@@ -453,7 +454,7 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
         NavigatorUtil.push(context, MyInfoPage());
         break;
       case 3: //我的订单
-        NavigatorUtil.push(context, MainLoginPage());
+        NavigatorUtil.push(context, MyOrderListPage());
         break;
       case 4: //绑定采集器
         UiUitls.showToast("绑定采集器");

@@ -20,7 +20,6 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
   void pageWidgetInitState() {
     super.pageWidgetInitState();
     showHead = true;
-    // setWantKeepAlive = true;
     backImgPath = "assets/images/login/icon_mainLogin_backImg.png";
   }
 

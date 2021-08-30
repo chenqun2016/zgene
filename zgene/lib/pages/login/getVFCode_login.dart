@@ -27,6 +27,9 @@ class _GetVFCodeLoginPageState extends BaseWidgetState<GetVFCodeLoginPage> {
   bool canLogin = false;
   String _verifyStr = ' 60s ';
   bool _isAvailableGetVCode = true; //是否可以获取验证码，默认为`false`
+  bool isTextFildSelect = false;
+
+  FocusNode _focusNode = FocusNode();
 
   /// 倒计时的计时器。
   Timer _timer;
@@ -41,6 +44,14 @@ class _GetVFCodeLoginPageState extends BaseWidgetState<GetVFCodeLoginPage> {
     super.initState();
     _seconds = countdown;
     _startTimer();
+    _focusNode.addListener(() {
+      if (!_focusNode.hasFocus) {
+        isTextFildSelect = false;
+      } else {
+        isTextFildSelect = true;
+      }
+      setState(() {});
+    });
   }
 
   @override
@@ -79,9 +90,23 @@ class _GetVFCodeLoginPageState extends BaseWidgetState<GetVFCodeLoginPage> {
           ),
           Stack(children: [
             Container(
+              decoration: BoxDecoration(
+                  // color: Colors.white,
+                  borderRadius: BorderRadius.circular(28.h),
+                  boxShadow: [
+                    BoxShadow(
+                        color: isTextFildSelect
+                            ? ColorConstant.TextFildShadowColor
+                            : ColorConstant.TextFildShadow00Color,
+                        offset: Offset(0.0, 20.0), //阴影xy轴偏移量
+                        blurRadius: 40.0, //阴影模糊程度
+                        spreadRadius: 0 //阴影扩散程度
+                        )
+                  ]),
               margin: EdgeInsets.only(top: 50.h, left: 24.w, right: 24.w),
               height: 56.h,
               child: TextField(
+                  focusNode: _focusNode,
                   onChanged: (value) {
                     if (value.length >= 6) {
                       canLogin = true;
@@ -170,8 +195,10 @@ class _GetVFCodeLoginPageState extends BaseWidgetState<GetVFCodeLoginPage> {
           Container(
               margin: EdgeInsets.only(top: 113.h, left: 24.w, right: 24.w),
               height: 55.h,
-              child: ElevatedButton(
+              child: OutlinedButton(
                   style: ButtonStyle(
+                      side: MaterialStateProperty.all(BorderSide(
+                          width: 0, color: ColorConstant.WhiteColor)),
                       backgroundColor: MaterialStateProperty.all(canLogin
                           ? ColorConstant.MainBlueColor
                           : ColorConstant.WhiteColor),

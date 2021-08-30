@@ -22,6 +22,31 @@ class _PhoneLoginPageState extends BaseWidgetState<PhoneLoginPage> {
     backImgPath = "assets/images/login/icon_phoneLogin_back.png";
   }
 
+  bool isTextFildSelect = false;
+
+  FocusNode _focusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _focusNode.addListener(() {
+      if (!_focusNode.hasFocus) {
+        isTextFildSelect = false;
+      } else {
+        isTextFildSelect = true;
+      }
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    _focusNode.unfocus();
+
+    super.dispose();
+  }
+
   bool canGetCode = false;
 
   @override
@@ -59,9 +84,23 @@ class _PhoneLoginPageState extends BaseWidgetState<PhoneLoginPage> {
             ),
           ),
           Container(
+            decoration: BoxDecoration(
+                // color: Colors.white,
+                borderRadius: BorderRadius.circular(28.h),
+                boxShadow: [
+                  BoxShadow(
+                      color: isTextFildSelect
+                          ? ColorConstant.TextFildShadowColor
+                          : ColorConstant.TextFildShadow00Color,
+                      offset: Offset(0.0, 20.0), //阴影xy轴偏移量
+                      blurRadius: 40.0, //阴影模糊程度
+                      spreadRadius: 0 //阴影扩散程度
+                      )
+                ]),
             margin: EdgeInsets.only(top: 32.h, left: 24.w, right: 24.w),
             height: 56.h,
             child: TextField(
+                focusNode: _focusNode,
                 onChanged: (value) {
                   if (value.length >= 13) {
                     canGetCode = true;
@@ -118,13 +157,18 @@ class _PhoneLoginPageState extends BaseWidgetState<PhoneLoginPage> {
           Container(
               margin: EdgeInsets.only(top: 113.h, left: 24.w, right: 24.w),
               height: 55.h,
-              child: ElevatedButton(
+              child: OutlinedButton(
                   style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(canGetCode
-                          ? ColorConstant.MainBlueColor
-                          : ColorConstant.WhiteColor),
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(40.h)))),
+                    side: MaterialStateProperty.all(
+                        BorderSide(width: 0, color: ColorConstant.WhiteColor)),
+                    backgroundColor: MaterialStateProperty.all(canGetCode
+                        ? ColorConstant.MainBlueColor
+                        : ColorConstant.WhiteColor),
+                    shape: MaterialStateProperty.all(
+                      RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(40.h)),
+                    ),
+                  ),
                   onPressed: () {
                     selectGetVFCodeLogin();
                   },

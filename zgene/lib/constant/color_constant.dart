@@ -12,6 +12,10 @@ class ColorConstant {
   static const Color BackMainColor = Color(0xFFF3F5F6);
   //背景标准透明
   static const Color TextFildBlackColor = Color(0xFF26273C);
+  //背景标准透明
+  static const Color TextFildShadowColor = Color(0x19373E7D);
+  //背景标准透明
+  static const Color TextFildShadow00Color = Color(0x00373E7D);
 //主要蓝色
   static const Color MainBlueColor = Color(0xFF007AF7);
   //微信绿

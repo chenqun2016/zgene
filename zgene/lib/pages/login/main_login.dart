@@ -60,8 +60,10 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
               margin: EdgeInsets.only(top: 73.h),
               width: 312.w,
               height: 54.h,
-              child: ElevatedButton(
+              child: OutlinedButton(
                   style: ButtonStyle(
+                      side: MaterialStateProperty.all(BorderSide(
+                          width: 0, color: ColorConstant.WhiteColor)),
                       backgroundColor: MaterialStateProperty.all(
                           ColorConstant.MainBlueColor),
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(
@@ -102,8 +104,10 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
               margin: EdgeInsets.only(top: 16.h),
               width: 312.w,
               height: 54.h,
-              child: ElevatedButton(
+              child: OutlinedButton(
                   style: ButtonStyle(
+                      side: MaterialStateProperty.all(BorderSide(
+                          width: 0, color: ColorConstant.WhiteColor)),
                       backgroundColor:
                           MaterialStateProperty.all(ColorConstant.WxGreenColor),
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(
@@ -144,8 +148,10 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
               margin: EdgeInsets.only(top: 16.h),
               width: 312.w,
               height: 54.h,
-              child: ElevatedButton(
+              child: OutlinedButton(
                   style: ButtonStyle(
+                      side: MaterialStateProperty.all(BorderSide(
+                          width: 0, color: ColorConstant.WhiteColor)),
                       backgroundColor: MaterialStateProperty.all(
                           ColorConstant.AppleBlackColor),
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(

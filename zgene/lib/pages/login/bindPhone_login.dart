@@ -38,10 +38,32 @@ class _BindPhoneLoginPageState extends BaseWidgetState<BindPhoneLoginPage> {
   /// 倒计时的秒数，默认60秒。
   final int countdown = 60;
 
+  bool isPhoneSelect = false;
+  bool isCodeSelect = false;
+
+  FocusNode _phonefocusNode = FocusNode();
+  FocusNode _codefocusNode = FocusNode();
+
   void initState() {
     super.initState();
     _seconds = countdown;
     // _startTimer();
+    _phonefocusNode.addListener(() {
+      if (!_phonefocusNode.hasFocus) {
+        isPhoneSelect = false;
+      } else {
+        isPhoneSelect = true;
+      }
+      setState(() {});
+    });
+    _codefocusNode.addListener(() {
+      if (!_codefocusNode.hasFocus) {
+        isCodeSelect = false;
+      } else {
+        isCodeSelect = true;
+      }
+      setState(() {});
+    });
   }
 
   @override
@@ -79,9 +101,23 @@ class _BindPhoneLoginPageState extends BaseWidgetState<BindPhoneLoginPage> {
             ),
           ),
           Container(
+            decoration: BoxDecoration(
+                // color: Colors.white,
+                borderRadius: BorderRadius.circular(28.h),
+                boxShadow: [
+                  BoxShadow(
+                      color: isPhoneSelect
+                          ? ColorConstant.TextFildShadowColor
+                          : ColorConstant.TextFildShadow00Color,
+                      offset: Offset(0.0, 20.0), //阴影xy轴偏移量
+                      blurRadius: 40.0, //阴影模糊程度
+                      spreadRadius: 0 //阴影扩散程度
+                      )
+                ]),
             margin: EdgeInsets.only(top: 32.h, left: 24.w, right: 24.w),
             height: 56.h,
             child: TextField(
+                focusNode: _phonefocusNode,
                 onChanged: (value) {
                   if (value.length >= 13) {
                     isPhoneSuccess = true;
@@ -146,9 +182,23 @@ class _BindPhoneLoginPageState extends BaseWidgetState<BindPhoneLoginPage> {
           ),
           Stack(children: [
             Container(
+              decoration: BoxDecoration(
+                  // color: Colors.white,
+                  borderRadius: BorderRadius.circular(28.h),
+                  boxShadow: [
+                    BoxShadow(
+                        color: isCodeSelect
+                            ? ColorConstant.TextFildShadowColor
+                            : ColorConstant.TextFildShadow00Color,
+                        offset: Offset(0.0, 20.0), //阴影xy轴偏移量
+                        blurRadius: 40.0, //阴影模糊程度
+                        spreadRadius: 0 //阴影扩散程度
+                        )
+                  ]),
               margin: EdgeInsets.only(top: 6.h, left: 24.w, right: 24.w),
               height: 56.h,
               child: TextField(
+                  focusNode: _codefocusNode,
                   onChanged: (value) {
                     if (value.length >= 6) {
                       isVFCodeSuccess = true;
@@ -246,8 +296,10 @@ class _BindPhoneLoginPageState extends BaseWidgetState<BindPhoneLoginPage> {
           Container(
               margin: EdgeInsets.only(top: 154.h, left: 24.w, right: 24.w),
               height: 55.h,
-              child: ElevatedButton(
+              child: OutlinedButton(
                   style: ButtonStyle(
+                      side: MaterialStateProperty.all(BorderSide(
+                          width: 0, color: ColorConstant.WhiteColor)),
                       backgroundColor: MaterialStateProperty.all(
                           (isPhoneSuccess && isVFCodeSuccess)
                               ? ColorConstant.MainBlueColor

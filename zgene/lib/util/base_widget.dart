@@ -162,7 +162,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
     }
   }
 
-  /// 顶部返回和实体返回按键的响应事件
+  /// 顶部右侧自定义按键的响应事件
   Future rightBtnTap(BuildContext context) {}
 
   /// 配置页面头部返回

@@ -38,6 +38,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
   @override
   void dispose() {
     super.dispose();
+    // FocusScope.of(context).requestFocus(FocusNode());
   }
 
   void pageWidgetInitState() {}
@@ -157,30 +158,37 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
         orientation: Orientation.portrait);
     return Scaffold(
       backgroundColor: backColor,
+      resizeToAvoidBottomInset: false,
       appBar: showBaseHead == true ? _viewAppBar() : null,
-      body: Container(
-          decoration: backImgPath != ''
-              ? BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(backImgPath),
-                    fit: BoxFit.fill,
+      body: GestureDetector(
+        onTap: () {
+          print("点击屏幕");
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        child: Container(
+            decoration: backImgPath != ''
+                ? BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage(backImgPath),
+                      fit: BoxFit.fill,
+                    ),
+                  )
+                : null,
+            child: CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(
+                  child: SingleChildScrollView(
+                    physics: BouncingScrollPhysics(),
+                    padding: EdgeInsets.all(0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [viewCustomHeadBody(), viewPageBody()],
+                    ),
                   ),
                 )
-              : null,
-          child: CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(
-                child: SingleChildScrollView(
-                  physics: BouncingScrollPhysics(),
-                  padding: EdgeInsets.all(0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [viewCustomHeadBody(), viewPageBody()],
-                  ),
-                ),
-              )
-            ],
-          )),
+              ],
+            )),
+      ),
       bottomNavigationBar: viewBottomNavigationBar(),
     );
   }

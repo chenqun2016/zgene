@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/util/base_widget.dart';
+import 'package:zgene/util/phonetextFild_input.dart';
+
+import 'getVFCode_login.dart';
 
 class PhoneLoginPage extends BaseWidget {
   @override
@@ -17,6 +21,8 @@ class _PhoneLoginPageState extends BaseWidgetState<PhoneLoginPage> {
     showHead = true;
     backImgPath = "assets/images/login/icon_phoneLogin_back.png";
   }
+
+  bool canGetCode = false;
 
   @override
   Widget viewPageBody() {
@@ -56,6 +62,24 @@ class _PhoneLoginPageState extends BaseWidgetState<PhoneLoginPage> {
             margin: EdgeInsets.only(top: 32.h, left: 24.w, right: 24.w),
             height: 56.h,
             child: TextField(
+                onChanged: (value) {
+                  if (value.length >= 13) {
+                    canGetCode = true;
+                  } else {
+                    canGetCode = false;
+                  }
+                  setState(() {});
+                },
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                inputFormatters: [
+                  FilteringTextInputFormatter(RegExp("[0-9]"), allow: true),
+                  InputFormat()
+                ],
+                style: TextStyle(
+                    fontSize: 16.sp,
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.w600,
+                    color: ColorConstant.TextFildBlackColor), //输入文本的样式
                 decoration: InputDecoration(
                     fillColor: ColorConstant.WhiteColor,
                     filled: true,
@@ -90,9 +114,49 @@ class _PhoneLoginPageState extends BaseWidgetState<PhoneLoginPage> {
                       maxWidth: 51.w,
                       maxHeight: 51.w,
                     ))),
-          )
+          ),
+          Container(
+              margin: EdgeInsets.only(top: 113.h, left: 24.w, right: 24.w),
+              height: 55.h,
+              child: ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(canGetCode
+                          ? ColorConstant.MainBlueColor
+                          : ColorConstant.WhiteColor),
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(40.h)))),
+                  onPressed: () {
+                    selectGetVFCodeLogin();
+                  },
+                  child: Container(
+                    child: Center(
+                      child: Container(
+                        child: Text(
+                          "获取验证码",
+                          textAlign: TextAlign.center,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 18.sp,
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.w600,
+                            color: canGetCode
+                                ? ColorConstant.WhiteColor
+                                : ColorConstant.Text_8E9AB,
+                          ),
+                        ),
+                      ),
+                    ),
+                  )))
         ],
       ),
     );
+  }
+
+  void selectGetVFCodeLogin() {
+    if (!canGetCode) {
+      return;
+    }
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => GetVFCodeLoginPage()));
   }
 }

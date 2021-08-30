@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 class ColorConstant {
   //背景标准透明
   static const Color BackMainColor = Color(0xFFF3F5F6);
+  //背景标准透明
+  static const Color TextFildBlackColor = Color(0xFF26273C);
 //主要蓝色
   static const Color MainBlueColor = Color(0xFF007AF7);
   //微信绿
@@ -21,6 +23,8 @@ class ColorConstant {
   static const Color TextMainColor = Color(0xFF007AF7);
   //文字标准灰
   static const Color TextMainGray = Color(0xFFA0A0A0);
+  //文字标准灰
+  static const Color Text_9395A4Gray = Color(0xFF9395A4);
   //文字标准黑
   static const Color TextMainBlack = Color(0xFF191C32);
 

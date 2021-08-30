@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/pages/login/bindPhone_login.dart';
 import 'package:zgene/pages/login/phone_login.dart';
 import 'package:zgene/util/base_widget.dart';
 
@@ -108,7 +109,9 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
                           MaterialStateProperty.all(ColorConstant.WxGreenColor),
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(28.h)))),
-                  onPressed: () {},
+                  onPressed: () {
+                    toBindingPhone();
+                  },
                   child: Container(
                     child: Row(
                       children: [
@@ -148,7 +151,9 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
                           ColorConstant.AppleBlackColor),
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(28.h)))),
-                  onPressed: () {},
+                  onPressed: () {
+                    toBindingPhone();
+                  },
                   child: Container(
                     child: Row(
                       children: [
@@ -282,5 +287,13 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
     }
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => PhoneLoginPage()));
+  }
+
+  void toBindingPhone() {
+    if (!isAgreePrivacy) {
+      return;
+    }
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => BindPhoneLoginPage()));
   }
 }

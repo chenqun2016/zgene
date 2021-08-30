@@ -12,7 +12,7 @@ class VideoNav extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          margin: EdgeInsets.only(top: 24),
+          margin: EdgeInsets.only(top: 24, left: 15),
           child: Text(
             "解锁独一无二的你",
             style: TextStyle(
@@ -25,7 +25,7 @@ class VideoNav extends StatelessWidget {
           //撑满父布局的宽度
           widthFactor: 1,
           child: Container(
-            margin: EdgeInsets.only(top: 15),
+            margin: EdgeInsets.only(top: 15, left: 15, right: 15),
             child: GestureDetector(
               onTap: () {
                 NavigatorUtil.push(context, VideoPage());
@@ -43,15 +43,18 @@ class VideoNav extends StatelessWidget {
             ),
           ),
         ),
-        Row(
-          children: [
-            Expanded(
-              child: _item(context, 0),
-            ),
-            Expanded(
-              child: _item(context, 1),
-            )
-          ],
+        Padding(
+          padding: EdgeInsets.only(left: 15, right: 15),
+          child: Row(
+            children: [
+              Expanded(
+                child: _item(context, 0),
+              ),
+              Expanded(
+                child: _item(context, 1),
+              )
+            ],
+          ),
         )
       ],
     );

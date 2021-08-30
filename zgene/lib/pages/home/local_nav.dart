@@ -15,8 +15,8 @@ class LocalNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 16),
-      padding: EdgeInsets.fromLTRB(10, 0, 10, 16),
+      margin: EdgeInsets.only(top: 16,left: 15,right: 15),
+      padding: EdgeInsets.fromLTRB(0, 0, 0, 16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.all(
@@ -35,7 +35,7 @@ class LocalNav extends StatelessWidget {
       items.add(_item(context, model, localNavList.indexOf(model)));
     });
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: items,
     );
   }
@@ -51,8 +51,8 @@ class LocalNav extends StatelessWidget {
         children: <Widget>[
           Image.asset(
             localNavIcon[index],
-            width: 82,
-            height: 82,
+            width: 80,
+            height: 80,
           ),
           Text(
             title,

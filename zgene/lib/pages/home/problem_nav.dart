@@ -7,7 +7,7 @@ class ProblemNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 24),
+      margin: EdgeInsets.only(top: 24,left: 15,right: 15),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

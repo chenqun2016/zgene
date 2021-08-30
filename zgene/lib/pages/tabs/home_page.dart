@@ -1,4 +1,5 @@
 import 'package:card_swiper/card_swiper.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/pages/home/explore_nav.dart';
@@ -57,24 +58,21 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
   }
 
   Widget get _listView {
-    return Padding(
-      padding: EdgeInsets.only(left: 16, right: 16),
-      child: ListView(
-        children: [
-          _title,
-          _banner,
-          LocalNav(),
-          ExploreNav(),
-          VideoNav(),
-          ProblemNav(),
-        ],
-      ),
+    return ListView(
+      children: [
+        _title,
+        _banner,
+        LocalNav(),
+        ExploreNav(),
+        VideoNav(),
+        ProblemNav(),
+      ],
     );
   }
 
   Widget get _title {
     return Container(
-      margin: EdgeInsets.only(top: 20, bottom: 13),
+      margin: EdgeInsets.only(left:15,top: 20, bottom: 13),
       child: Text(
         "Z基因",
         style: TextStyle(
@@ -87,6 +85,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
 
   Widget get _banner {
     return Container(
+      padding: EdgeInsets.only(left: 15,right: 15),
       height: 168,
       child: Swiper(
         itemCount: bannerList.length,

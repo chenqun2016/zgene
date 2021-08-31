@@ -336,9 +336,16 @@ class _StepperState extends State<EStepper> with TickerProviderStateMixin {
   Widget _buildLine(bool visible, int index) {
     return Container(
       width: visible ? 1.0 : 0.0,
-      height: 18.0,
+      height: 20.0,
       color: _getLineColor(index),
     );
+    // return Expanded(
+    //   flex: 1,
+    //   child: Container(
+    //     width: visible ? 1.0 : 0.0,
+    //     color: _getLineColor(index),
+    //   ),
+    // );
   }
 
   Widget _buildCircleChild(int index, bool oldState) {
@@ -626,25 +633,27 @@ class _StepperState extends State<EStepper> with TickerProviderStateMixin {
   Widget _buildVerticalHeader(int index) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 24.0),
-      child: Row(
-        children: <Widget>[
-          Column(
-            children: <Widget>[
-              // Line parts are always added in order for the ink splash to
-              // flood the tips of the connector lines.
-              _buildLine(!_isFirst(index), index),
-              _buildIcon(index),
-              _buildLine(!_isLast(index), index + 1),
-            ],
-          ),
-          if (widget.steps[index].title != null)
-            Expanded(
-              child: Container(
-                margin: const EdgeInsetsDirectional.only(start: 12.0),
-                child: _buildHeaderText(index),
-              ),
+      child: IntrinsicHeight(
+        child: Row(
+          children: <Widget>[
+            Column(
+              children: <Widget>[
+                // Line parts are always added in order for the ink splash to
+                // flood the tips of the connector lines.
+                _buildLine(!_isFirst(index), index),
+                _buildIcon(index),
+                Expanded(child: _buildLine(!_isLast(index), index + 1)),
+              ],
             ),
-        ],
+            if (widget.steps[index].title != null)
+              Expanded(
+                child: Container(
+                  margin: const EdgeInsetsDirectional.only(start: 12.0),
+                  child: _buildHeaderText(index),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }

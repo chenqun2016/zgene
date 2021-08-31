@@ -202,8 +202,7 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
   _getTitleContent(model, context) {
     return Container(
       alignment: Alignment.centerLeft,
-      height: 64,
-      padding: EdgeInsets.only(left: 15, right: 15),
+      padding: EdgeInsets.only(left: 15, top: 10, right: 15, bottom: 10),
       decoration: BoxDecoration(
         color: Colors.white70,
         border: Border.all(
@@ -214,20 +213,46 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
           Radius.circular(12),
         ),
       ),
-      child: Row(children: [
-        Expanded(
-            child: Text(
-          model.name,
-          style: TextStyle(
-            color: _isAchieve(model)
-                ? ColorConstant.TextMainBlack
-                : ColorConstant.Text_B2BAC6,
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
-          ),
-        )),
-        getRightButton(model, context),
-      ]),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Row(children: [
+            Expanded(
+                child: Text(
+              model.name,
+              style: TextStyle(
+                color: _isAchieve(model)
+                    ? ColorConstant.TextMainBlack
+                    : ColorConstant.Text_B2BAC6,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+            )),
+            getRightButton(model, context),
+          ]),
+          //TODO 条件更换
+          if (steps.indexOf(model) == 1)
+            Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.only(top: 10),
+              padding: EdgeInsets.fromLTRB(0, 7, 0, 7),
+              decoration: BoxDecoration(
+                color: ColorConstant.Text_5FC88F_10per,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(4),
+                ),
+              ),
+              child: Text(
+                "您的样本正在检测中，基因报告约在15天完成",
+                style: TextStyle(
+                  color: ColorConstant.Text_5FC88F,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 13,
+                ),
+              ),
+            ),
+        ],
+      ),
     );
   }
 

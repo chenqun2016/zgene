@@ -295,7 +295,7 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
                 alignment: Alignment.topCenter,
                 children: [
                   Container(
-                      height: 250,
+                      height: 230,
                       margin: EdgeInsets.only(top: 20),
                       padding: EdgeInsets.only(top: 90),
                       decoration: BoxDecoration(
@@ -316,7 +316,7 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.fromLTRB(0, 40, 0, 0),
+                            padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [

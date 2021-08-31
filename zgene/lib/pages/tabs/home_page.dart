@@ -66,7 +66,9 @@ class _HomePageState extends BaseWidgetState<HomePage> {
 
   Widget get _listView {
     return ListView(
-      padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+      shrinkWrap: true,
+      physics: BouncingScrollPhysics(),
+      padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top,bottom: 40),
       children: [
         _title,
         _banner,

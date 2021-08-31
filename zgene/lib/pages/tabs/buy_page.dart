@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/navigator/navigator_util.dart';
+import 'package:zgene/pages/my/ordering_page.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/util/ui_uitls.dart';
@@ -136,7 +138,7 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
                     borderRadius: BorderRadius.circular(25)),
                 color: ColorConstant.TextMainColor,
                 onPressed: () {
-                  UiUitls.showToast("立即购买");
+                  NavigatorUtil.push(context, OrderingPage());
                 },
                 child: Text("立即购买",
                     style: TextStyle(
@@ -238,7 +240,7 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
                             borderRadius: BorderRadius.circular(25)),
                         color: ColorConstant.TextMainColor,
                         onPressed: () {
-                          UiUitls.showToast("立即购买");
+                          NavigatorUtil.push(context, OrderingPage());
                         },
                         child: Text("立即购买",
                             style: TextStyle(

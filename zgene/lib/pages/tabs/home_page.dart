@@ -8,6 +8,7 @@ import 'package:zgene/pages/home/problem_nav.dart';
 import 'package:zgene/pages/home/video_nav.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/ui_uitls.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 const APPBAR_SCROLL_OFFSET = 100;
 
@@ -37,7 +38,7 @@ class _HomePageState extends BaseWidgetState<HomePage> {
     showHead = false;
     isListPage = true;
     setWantKeepAlive = true;
-    backImgPath = "assets/images/mine/img_bg_my.png";
+    backImgPath = "assets/images/home/bg_home.png";
     super.pageWidgetInitState();
   }
 
@@ -65,6 +66,7 @@ class _HomePageState extends BaseWidgetState<HomePage> {
 
   Widget get _listView {
     return ListView(
+      padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
       children: [
         _title,
         _banner,
@@ -99,7 +101,7 @@ class _HomePageState extends BaseWidgetState<HomePage> {
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
             onTap: () {
-              String model = bannerList[index];
+              // String model = bannerList[index];
               // NavigatorUtil.push();
             },
             // child: Image.network(
@@ -122,16 +124,32 @@ class _HomePageState extends BaseWidgetState<HomePage> {
     return Opacity(
       opacity: appBarAlpha,
       child: Container(
-        padding: EdgeInsets.only(top: 30),
-        height: 70,
         color: Colors.white,
-        alignment: Alignment.center,
-        child: Text(
-          "Z基因",
-          style: TextStyle(
-              fontSize: 18,
-              color: ColorConstant.TextMainBlack,
-              fontWeight: FontWeight.bold),
+        height: 55.h + MediaQuery.of(context).padding.top,
+        child: Stack(
+          children: [
+            Positioned(
+              left: 80.w,
+              right: 80.w,
+              top: MediaQuery.of(context).padding.top,
+              child: Container(
+                height: 55.h,
+                child: Center(
+                  child: Text(
+                    "Z基因",
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.bold,
+                      color: ColorConstant.TextMainBlack,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

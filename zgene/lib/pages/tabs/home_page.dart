@@ -1,22 +1,27 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/pages/home/explore_nav.dart';
 import 'package:zgene/pages/home/local_nav.dart';
 import 'package:zgene/pages/home/problem_nav.dart';
 import 'package:zgene/pages/home/video_nav.dart';
+import 'package:zgene/util/base_widget.dart';
+import 'package:zgene/util/refresh_config_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 
 const APPBAR_SCROLL_OFFSET = 100;
 
 ///首页
-class HomePage extends StatefulWidget {
+class HomePage extends BaseWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  BaseWidgetState<BaseWidget> getState() {
+    return _HomePageState();
+  }
 }
 
-class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
+class _HomePageState extends BaseWidgetState<HomePage> {
   bool _loading = true;
   double appBarAlpha = 0;
 
@@ -24,36 +29,39 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
   List<String> bannerList = [];
 
   @override
-  void initState() {
-    super.initState();
+  void pageWidgetInitState() {
     UiUitls.setBlackTextStatus();
     bannerList.add("");
     bannerList.add("");
     bannerList.add("");
+
+    showBaseHead = false;
+    showHead = false;
+    isListPage = true;
+    setWantKeepAlive = true;
+    backImgPath = "assets/images/mine/img_bg_my.png";
+    super.pageWidgetInitState();
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Stack(
-        children: <Widget>[
-          RefreshIndicator(
-              onRefresh: _handleRefresh,
-              child: NotificationListener(
-                onNotification: (scrollNotification) {
-                  if (scrollNotification is ScrollUpdateNotification &&
-                      scrollNotification.depth == 0) {
-                    //滚动且是列表滚动的时候
-                    _onScroll(scrollNotification.metrics.pixels);
-                  }
-                  return false;
-                },
-                child: _listView,
-              )),
-          _appBar
-        ],
-      ),
+  Widget viewPageBody(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        RefreshIndicator(
+            onRefresh: _handleRefresh,
+            child: NotificationListener(
+              onNotification: (scrollNotification) {
+                if (scrollNotification is ScrollUpdateNotification &&
+                    scrollNotification.depth == 0) {
+                  //滚动且是列表滚动的时候
+                  _onScroll(scrollNotification.metrics.pixels);
+                }
+                return false;
+              },
+              child: _listView,
+            )),
+        _appBar
+      ],
     );
   }
 
@@ -72,7 +80,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
 
   Widget get _title {
     return Container(
-      margin: EdgeInsets.only(left:15,top: 20, bottom: 13),
+      margin: EdgeInsets.only(left: 15, top: 20, bottom: 13),
       child: Text(
         "Z基因",
         style: TextStyle(
@@ -85,7 +93,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
 
   Widget get _banner {
     return Container(
-      padding: EdgeInsets.only(left: 15,right: 15),
+      padding: EdgeInsets.only(left: 15, right: 15),
       height: 168,
       child: Swiper(
         itemCount: bannerList.length,
@@ -100,7 +108,11 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
             //   bannerList[index],
             //   fit: BoxFit.fill,
             // ),
-            child: Image.asset("assets/images/banner.png",height: 168,fit: BoxFit.fill,),
+            child: Image.asset(
+              "assets/images/banner.png",
+              height: 168,
+              fit: BoxFit.fill,
+            ),
           );
         },
         pagination: SwiperPagination(),
@@ -153,7 +165,4 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
     });
     print(appBarAlpha);
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }

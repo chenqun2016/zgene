@@ -16,8 +16,8 @@ class OrderStepPage extends BaseWidget {
 class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
   @override
   void pageWidgetInitState() {
-    showHead = false;
-    isListPage = true;
+    customRightBtnText = "采集引导";
+    pageWidgetTitle = "订单流程";
     backImgPath = "assets/images/mine/img_bg_my.png";
     steps = [
       OrderStepModel("待发货", 1),
@@ -35,55 +35,17 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
   }
 
   @override
+  rightBtnTap(BuildContext context) {
+    UiUitls.showToast("采集引导");
+  }
+
+  @override
   Widget viewPageBody(BuildContext context) {
-    return ListView(
+    return Column(
       children: [
-        _titlebar(),
         _orderDetail(),
         _orderStepper(context),
       ],
-    );
-  }
-
-  _titlebar() {
-    return Container(
-      height: 40,
-      margin: EdgeInsets.only(top: 48, left: 15, right: 15),
-      width: double.infinity,
-      child: Stack(
-        alignment: Alignment.centerLeft,
-        children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: Image(
-              image: AssetImage("assets/images/mine/icon_back.png"),
-              height: 40,
-              width: 40,
-            ),
-          ),
-          Center(
-              child: Text(
-            "订单流程",
-            style: TextStyle(
-              color: ColorConstant.TextMainBlack,
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-            ),
-          )),
-          Positioned(
-              right: 0,
-              child: Text(
-                "采集引导",
-                style: TextStyle(
-                  color: ColorConstant.TextMainBlack,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14,
-                ),
-              ))
-        ],
-      ),
     );
   }
 
@@ -92,7 +54,7 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
       onTap: () {},
       child: Container(
         width: double.infinity,
-        margin: EdgeInsets.fromLTRB(15, 20, 15, 15),
+        margin: EdgeInsets.fromLTRB(15, 0, 15, 0),
         padding: EdgeInsets.fromLTRB(4, 8, 15, 8),
         decoration: BoxDecoration(
           color: Colors.white,

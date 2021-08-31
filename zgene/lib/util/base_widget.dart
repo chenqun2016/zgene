@@ -222,7 +222,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
           viewCustomHeadBody(),
           Container(
               height: MediaQuery.of(context).size.height -
-                  55.h -
+                  ((showBaseHead || showHead) ? 55.h : 0) -
                   MediaQuery.of(context).padding.top,
               child: viewPageBody(context))
         ],

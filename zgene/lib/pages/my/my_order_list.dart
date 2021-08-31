@@ -74,7 +74,7 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
       margin: EdgeInsets.all(0),
       width: double.infinity,
       child: ListView.builder(
-        itemCount: 6,
+        itemCount: 1,
         shrinkWrap: true,
         padding: EdgeInsets.all(0),
         physics: ScrollPhysics(),
@@ -201,7 +201,6 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
                         ),
                       ],
                     ),
-
                   ],
                   mainAxisAlignment: MainAxisAlignment.start,
                 ),
@@ -225,7 +224,6 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
                       ),
                       width: double.infinity,
                     ),
-
                     Positioned(
                         right: 0,
                         child: Text(

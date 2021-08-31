@@ -1,14 +1,12 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/pages/home/explore_nav.dart';
 import 'package:zgene/pages/home/local_nav.dart';
 import 'package:zgene/pages/home/problem_nav.dart';
 import 'package:zgene/pages/home/video_nav.dart';
 import 'package:zgene/util/base_widget.dart';
-import 'package:zgene/util/refresh_config_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 
 const APPBAR_SCROLL_OFFSET = 100;

@@ -48,7 +48,9 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
         return false;
       },
       child: ListView(
-        padding: EdgeInsets.only(bottom: 30),
+        shrinkWrap: true,
+        physics: BouncingScrollPhysics(),
+        padding: EdgeInsets.only(bottom: 40),
         children: [
           _title,
           _banner,

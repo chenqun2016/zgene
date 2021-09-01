@@ -587,6 +587,7 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
               onTap: () {
                 Pickers.showAddressPicker(
                   context,
+                  addAllItem: false,
                   initProvince: initProvince,
                   initCity: initCity,
                   initTown: initTown,

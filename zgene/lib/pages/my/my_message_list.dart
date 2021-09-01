@@ -10,7 +10,7 @@ class MyMessagePage extends StatefulWidget {
 }
 
 class _MyMessagePageState extends State<MyMessagePage>{
-
+  int errorCode = 1; //0.正常 1.暂无数据 2.错误 3.没有网络
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,7 +102,26 @@ class _MyMessagePageState extends State<MyMessagePage>{
           ),
         ],
       ),
-      0 == 0 ? _listView : _noData,
+      errorCode != 0
+          ? UiUitls.getErrorPage(
+          context: context,
+          type: errorCode,
+          height: MediaQuery.of(context).size.height - 215,
+          onClick: () {
+            // if (lastTime == null) {
+            //   lastTime = DateTime.now();
+            //   page = 1;
+            //   getHttp();
+            // } else {
+            //   //可以点击
+            //   if (TimeUtils.intervalClick(lastTime, 2)) {
+            //     lastTime = DateTime.now();
+            //     page = 1;
+            //     getHttp();
+            //   }
+            // }
+          })
+          : _listView,
     ]);
   }
 

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/color_constant.dart';
 
+const APPBAR_SCORLL_OFFSET = 100;
+
 abstract class BaseWidget extends StatefulWidget {
   @override
   BaseWidgetState createState() => getState();
@@ -14,8 +16,6 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
   bool get wantKeepAlive => setWantKeepAlive;
   //页面是否保存
   bool setWantKeepAlive = false;
-  //键盘弹出屏幕内容是否滚动
-  bool isresizeToAvoidBottomInset = true;
   //页面是否纯list
   bool isListPage = false;
 // 系统自带appbar 的显示与否
@@ -34,13 +34,31 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
   String customRightBtnText = '';
   // 自定义顶部栏右上角图标按钮 传值为显示iconButton
   String customRightBtnImg = '';
+  //顶部渐变
+  double appBarAlpha = 0;
+  //顶部渐变监听ScrollController
+  ScrollController listeningController;
 
-  FocusNode _focusNode;
-
+  int trans = 0;
   @override
   void initState() {
     super.initState();
     pageWidgetInitState();
+    listeningController = ScrollController();
+    listeningController.addListener(() {
+      print(listeningController.position.pixels.toInt());
+      if (listeningController.position.pixels.toInt() <= 250) {
+        if (listeningController.position.pixels.toInt() < 0) {
+          trans = 0;
+        } else {
+          trans = listeningController.position.pixels.toInt();
+        }
+        setState(() {});
+      } else {
+        trans = 255;
+        setState(() {});
+      }
+    });
   }
 
   @override
@@ -54,6 +72,9 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
   Widget viewCustomHeadBody() {
     return showHead
         ? Container(
+            decoration: BoxDecoration(
+              color: Color.fromARGB(trans, 255, 255, 255),
+            ),
             height: 55.h + MediaQuery.of(context).padding.top,
             child: Stack(
               children: [
@@ -213,6 +234,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
                   ((showBaseHead || showHead) ? 55.h : 0) -
                   MediaQuery.of(context).padding.top,
               child: CustomScrollView(
+                controller: listeningController,
                 slivers: [
                   SliverToBoxAdapter(
                     child: SingleChildScrollView(

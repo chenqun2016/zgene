@@ -54,7 +54,6 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
     showHead = true;
     isListPage = true;
     backImgPath = "assets/images/mine/img_bg_my.png";
-    isresizeToAvoidBottomInset = true;
 
     super.pageWidgetInitState();
   }
@@ -66,7 +65,7 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
         Padding(
           padding: EdgeInsets.only(bottom: 90),
           child: SingleChildScrollView(
-            // controller: _controller,
+            controller: listeningController,
             child: ListView(
               shrinkWrap: true,
               physics: BouncingScrollPhysics(),

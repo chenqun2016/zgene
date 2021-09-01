@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/bindcollector/bind_collector_page.dart';
+import 'package:zgene/pages/my/add_address_page.dart';
 import 'package:zgene/pages/my/order_step_page.dart';
 
 class LocalNav extends StatelessWidget {
@@ -49,6 +50,9 @@ class LocalNav extends StatelessWidget {
         }
         if (1 == index) {
           NavigatorUtil.push(context, OrderStepPage());
+        }
+        if (2 == index) {
+          NavigatorUtil.push(context, AddAddressPage());
         }
       },
       child: Column(

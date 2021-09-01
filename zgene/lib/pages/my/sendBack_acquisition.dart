@@ -402,15 +402,24 @@ class _SendBackAcquisitionPageState
                           color: ColorConstant.TextSecondColor),
                       //输入文本的样式
                       decoration: InputDecoration(
-                        hintText: "请选择所在地区",
+                        hintText:
+                            sendBackAddress == "" ? "请选择所在地区" : sendBackAddress,
                         //设置输入文本框的提示文字的样式
-                        hintStyle: TextStyle(
-                          color: ColorConstant.Text_5E6F88,
-                          fontSize: 15.sp,
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.w400,
-                          // textBaseline: TextBaseline.ideographic,
-                        ),
+                        hintStyle: sendBackAddress == ""
+                            ? TextStyle(
+                                color: ColorConstant.Text_5E6F88,
+                                fontSize: 15.sp,
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.w400,
+                                // textBaseline: TextBaseline.ideographic,
+                              )
+                            : TextStyle(
+                                color: ColorConstant.TextSecondColor,
+                                fontSize: 18.sp,
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.w500,
+                                // textBaseline: TextBaseline.ideographic,
+                              ),
                         fillColor: ColorConstant.TextFildBackColor,
                         filled: true,
                         contentPadding:
@@ -457,6 +466,7 @@ class _SendBackAcquisitionPageState
             height: 40.h,
             width: ScreenUtils.screenW(context) - 96.w,
             child: TextField(
+
                 // keyboardType: TextInputType.numberWithOptions(decimal: true),
                 style: TextStyle(
                     fontSize: 18.sp,
@@ -615,22 +625,22 @@ class _SendBackAcquisitionPageState
     );
   }
 
-  ///收货时间View
+  ///收货信息View
   Widget deliverTheGoodsView(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: 16.h, left: 16.w, right: 16.w),
-      height: 180.h +
-          boundingTextSize(
-                  sendBackText,
-                  TextStyle(
-                    fontSize: 14.sp,
-                    fontStyle: FontStyle.normal,
-                    fontWeight: FontWeight.w400,
-                    color: ColorConstant.TextThreeColor,
-                  ),
-                  maxWidth: ScreenUtils.screenW(context) - 178.w)
-              .height
-              .h,
+      // height: 180.h +
+      //     boundingTextSize(
+      //             sendBackText,
+      //             TextStyle(
+      //               fontSize: 14.sp,
+      //               fontStyle: FontStyle.normal,
+      //               fontWeight: FontWeight.w400,
+      //               color: ColorConstant.TextThreeColor,
+      //             ),
+      //             maxWidth: ScreenUtils.screenW(context) - 178.w)
+      //         .height
+      //         .h,
       width: ScreenUtils.screenW(context) - 32.w,
       decoration: new BoxDecoration(
         color: ColorConstant.WhiteColorB2,
@@ -655,19 +665,20 @@ class _SendBackAcquisitionPageState
             ),
           ),
           Container(
-            margin: EdgeInsets.only(top: 12.h, left: 16.w, right: 16.w),
-            height: 100.h +
-                boundingTextSize(
-                        sendBackText,
-                        TextStyle(
-                          fontSize: 14.sp,
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.w400,
-                          color: ColorConstant.TextThreeColor,
-                        ),
-                        maxWidth: ScreenUtils.screenW(context) - 178.w)
-                    .height
-                    .h,
+            margin: EdgeInsets.only(
+                top: 12.h, left: 16.w, right: 16.w, bottom: 24.h),
+            // height: 100.h +
+            //     boundingTextSize(
+            //             sendBackText,
+            //             TextStyle(
+            //               fontSize: 14.sp,
+            //               fontStyle: FontStyle.normal,
+            //               fontWeight: FontWeight.w400,
+            //               color: ColorConstant.TextThreeColor,
+            //             ),
+            //             maxWidth: ScreenUtils.screenW(context) - 178.w)
+            //         .height
+            //         .h,
             width: ScreenUtils.screenW(context) - 64.w,
             decoration: new BoxDecoration(
               color: ColorConstant.TextFildBackColor,
@@ -803,7 +814,7 @@ class _SendBackAcquisitionPageState
                   Row(
                     children: [
                       Container(
-                        margin: EdgeInsets.only(left: 16.w),
+                        margin: EdgeInsets.only(left: 16.w, bottom: 15.h),
                         height: 22.h,
                         width: 80.w,
                         child: Text(
@@ -818,7 +829,7 @@ class _SendBackAcquisitionPageState
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(right: 16.w),
+                        margin: EdgeInsets.only(right: 16.w, bottom: 15.h),
                         height: 22.h,
                         width: ScreenUtils.screenW(context) - 178.w,
                         child: Text(
@@ -898,6 +909,7 @@ class _SendBackAcquisitionPageState
   }
 
   String initProvince = '', initCity = '', initTown = '';
+  String sendBackAddress = "";
 
   void selectAddress() {
     Pickers.showAddressPicker(
@@ -911,6 +923,7 @@ class _SendBackAcquisitionPageState
           initProvince = p;
           initCity = c;
           initTown = t;
+          sendBackAddress = p + c + t;
         });
       },
     );

@@ -26,7 +26,7 @@ class _HomePageState extends BaseWidgetState<HomePage> {
 
   //首页banner
   List<String> bannerList = [];
-
+  ScrollController _controller = new ScrollController();
   @override
   void pageWidgetInitState() {
     UiUitls.setBlackTextStatus();
@@ -39,26 +39,26 @@ class _HomePageState extends BaseWidgetState<HomePage> {
     isListPage = true;
     setWantKeepAlive = true;
     backImgPath = "assets/images/home/bg_home.png";
+
+    //监听滚动事件，打印滚动位置
+    _controller.addListener(() {
+      _onScroll(_controller.offset);
+    });
     super.pageWidgetInitState();
   }
-
+  @override
+  void dispose() {
+    //为了避免内存泄露，需要调用_controller.dispose
+    _controller.dispose();
+    super.dispose();
+  }
   @override
   Widget viewPageBody(BuildContext context) {
     return Stack(
       children: <Widget>[
         RefreshIndicator(
             onRefresh: _handleRefresh,
-            child: NotificationListener(
-              onNotification: (scrollNotification) {
-                if (scrollNotification is ScrollUpdateNotification &&
-                    scrollNotification.depth == 0) {
-                  //滚动且是列表滚动的时候
-                  _onScroll(scrollNotification.metrics.pixels);
-                }
-                return false;
-              },
-              child: _listView,
-            )),
+            child: _listView),
         _appBar
       ],
     );
@@ -66,6 +66,7 @@ class _HomePageState extends BaseWidgetState<HomePage> {
 
   Widget get _listView {
     return ListView(
+      controller: _controller,
       shrinkWrap: true,
       physics: BouncingScrollPhysics(),
       padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top,bottom: 40),
@@ -182,7 +183,6 @@ class _HomePageState extends BaseWidgetState<HomePage> {
       setState(() {
         appBarAlpha = alpha;
       });
-      print(appBarAlpha);
     }
   }
 }

@@ -222,11 +222,13 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           viewCustomHeadBody(),
-          Container(
-              height: MediaQuery.of(context).size.height -
-                  ((showBaseHead || showHead) ? 55.h : 0) -
-                  MediaQuery.of(context).padding.top,
-              child: viewPageBody(context))
+          Expanded(
+              flex: 1,
+              child: Container(
+                  height: MediaQuery.of(context).size.height -
+                      ((showBaseHead || showHead) ? 55.h : 0) -
+                      MediaQuery.of(context).padding.top,
+                  child: viewPageBody(context)))
         ],
       );
     }

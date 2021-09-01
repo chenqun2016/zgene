@@ -102,6 +102,22 @@ Future<void> getSetting() async {
             spUtils.setStorage(
                 SpConstant.SvcMsgStatus, item.value.toLowerCase());
           }
+          // Z基因配置接口
+          if (item.name == SpConstant.appAsalesRules) {
+            spUtils.setStorage(SpConstant.appAsalesRules, item.value);
+          }
+          if (item.name == SpConstant.appReceiveAddress) {
+            spUtils.setStorage(SpConstant.appReceiveAddress, item.value);
+          }
+          if (item.name == SpConstant.appReceiveName) {
+            spUtils.setStorage(SpConstant.appReceiveName, item.value);
+          }
+          if (item.name == SpConstant.appReceivePhone) {
+            spUtils.setStorage(SpConstant.appReceivePhone, item.value);
+          }
+          if (item.name == SpConstant.appReceivePtype) {
+            spUtils.setStorage(SpConstant.appReceivePtype, item.value);
+          }
         }
       } catch (e) {
         print(e);

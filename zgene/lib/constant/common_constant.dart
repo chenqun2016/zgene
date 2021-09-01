@@ -1,8 +1,6 @@
-
 ///app公共常量
 class CommonConstant {
-
-  static const String BASE_API = "https://www.divms.com";
+  static const String BASE_API = "http://zgene.divms.com";
 
   //APP名称
   static const String AppName = "Z基因";
@@ -15,7 +13,6 @@ class CommonConstant {
 
   //iOSAppId
   static const String iOSAppId = "";
-
 
 //主题颜色
   static int THEME_COLOR = 0xFF2E9CF9;

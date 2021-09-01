@@ -16,12 +16,16 @@ class ColorConstant {
   static const Color TextFildShadowColor = Color(0x19373E7D);
   //背景标准透明
   static const Color TextFildShadow00Color = Color(0x00373E7D);
+  //text背景灰
+  static const Color TextFildBackColor = Color(0xFFEBEDEF);
 //主要蓝色
   static const Color MainBlueColor = Color(0xFF007AF7);
   //微信绿
   static const Color WxGreenColor = Color(0xFF25D3B2);
   //苹果黑
   static const Color AppleBlackColor = Color(0xFF000000);
+  //苹果黑40%
+  static const Color AppleBlack99Color = Color(0x99000000);
   //提示灰
   static const Color PromptGrayColor = Color(0xFF9DA7B6);
   static const Color TextMainColor = Color(0xFF007AF7);
@@ -58,6 +62,8 @@ class ColorConstant {
 
   //透明度50%白色
   static const Color WhiteColor7F = Color(0x7FFFFFFF);
+  //透明度70%白色
+  static const Color WhiteColorB2 = Color(0xB2FFFFFF);
   //标准黑
   static const Color MainBlack = Color(0xFF2E2E33);
 

@@ -15,6 +15,8 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
   bool get wantKeepAlive => setWantKeepAlive;
   //页面是否保存
   bool setWantKeepAlive = false;
+  //键盘弹出屏幕内容是否滚动
+  bool isresizeToAvoidBottomInset = true;
   //页面是否纯list
   bool isListPage = false;
 // 系统自带appbar 的显示与否
@@ -242,7 +244,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
         orientation: Orientation.portrait);
     return Scaffold(
       backgroundColor: backColor,
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: isresizeToAvoidBottomInset,
       appBar: showBaseHead == true ? _viewAppBar() : null,
       body: GestureDetector(
           onTap: () {

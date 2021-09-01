@@ -72,8 +72,6 @@ class _HomePageState extends BaseWidgetState<HomePage> {
             // 控制器
             controller: _easyController,
             header: RefreshConfigUtils.classicalHeader(),
-            // 自定义顶部上啦加载
-            footer: RefreshConfigUtils.classicalFooter(),
             child: _listView,
             //下拉刷新事件回调
             onRefresh: () async {

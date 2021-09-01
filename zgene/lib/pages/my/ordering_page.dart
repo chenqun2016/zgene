@@ -65,12 +65,12 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
         Padding(
           padding: EdgeInsets.only(bottom: 90),
           child: SingleChildScrollView(
-            // controller: _controller,
+            controller: listeningController,
             child: ListView(
               shrinkWrap: true,
               physics: BouncingScrollPhysics(),
               padding:
-              EdgeInsets.only(top: 10, left: 15, right: 15, bottom: 30),
+                  EdgeInsets.only(top: 10, left: 15, right: 15, bottom: 30),
               children: [
                 _tips,
                 _prodectDetail,
@@ -208,9 +208,9 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
 
   Widget _faPiao1(
       {@required String des,
-        @required String hint,
-        String hint2,
-        String hint3}) {
+      @required String hint,
+      String hint2,
+      String hint3}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -360,7 +360,7 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
                 color: ColorConstant.TextMainBlack,
               )),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
                 onTap: () {
@@ -368,42 +368,56 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
                     isWeixinPay = true;
                   });
                 },
-                child: Container(
-                  height: 100,
-                  width: 100,
-                  margin: EdgeInsets.only(top: 14, left: 35),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: isWeixinPay
-                          ? ColorConstant.TextMainColor
-                          : ColorConstant.bg_D1D8E2,
-                      width: 1,
-                    ),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10),
-                    ),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        "assets/images/buy/icon_weixinpay.png",
-                        height: 40,
-                        width: 40,
-                        fit: BoxFit.cover,
+                child: Stack(
+                  children: [
+                    Container(
+                      height: 100,
+                      width: 100,
+                      margin: EdgeInsets.only(top: 14, right: 5),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: isWeixinPay
+                              ? ColorConstant.TextMainColor
+                              : ColorConstant.bg_D1D8E2,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
                       ),
-                      Divider(
-                        height: 6,
-                        color: Colors.transparent,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            "assets/images/buy/icon_weixinpay.png",
+                            height: 40,
+                            width: 40,
+                            fit: BoxFit.cover,
+                          ),
+                          Divider(
+                            height: 6,
+                            color: Colors.transparent,
+                          ),
+                          Text("微信支付",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: ColorConstant.TextMainBlack,
+                              )),
+                        ],
                       ),
-                      Text("微信支付",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: ColorConstant.TextMainBlack,
-                          )),
-                    ],
-                  ),
+                    ),
+                    if(isWeixinPay)
+                      Positioned(
+                        top: 9,
+                        right: 0,
+                        child: Image.asset(
+                          "assets/images/buy/img_ok.png",
+                          height: 20,
+                          width: 20,
+                        ),
+                      )
+                  ],
                 ),
               ),
               GestureDetector(
@@ -412,43 +426,57 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
                     isWeixinPay = false;
                   });
                 },
-                child: Container(
-                  height: 100,
-                  width: 100,
-                  alignment: Alignment.center,
-                  margin: EdgeInsets.only(top: 14, right: 35),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: isWeixinPay
-                          ? ColorConstant.bg_D1D8E2
-                          : ColorConstant.TextMainColor,
-                      width: 1,
-                    ),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10),
-                    ),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        "assets/images/buy/icon_zhifubaopay.png",
-                        height: 40,
-                        width: 40,
-                        fit: BoxFit.cover,
+                child: Stack(
+                  children: [
+                    Container(
+                      height: 100,
+                      width: 100,
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.only(top: 14, right: 5, left: 47),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: isWeixinPay
+                              ? ColorConstant.bg_D1D8E2
+                              : ColorConstant.TextMainColor,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
                       ),
-                      Divider(
-                        height: 6,
-                        color: Colors.transparent,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            "assets/images/buy/icon_zhifubaopay.png",
+                            height: 40,
+                            width: 40,
+                            fit: BoxFit.cover,
+                          ),
+                          Divider(
+                            height: 6,
+                            color: Colors.transparent,
+                          ),
+                          Text("支付宝支付",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: ColorConstant.TextMainBlack,
+                              )),
+                        ],
                       ),
-                      Text("支付宝支付",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: ColorConstant.TextMainBlack,
-                          )),
-                    ],
-                  ),
+                    ),
+                    if(!isWeixinPay)
+                      Positioned(
+                        top: 9,
+                        right: 0,
+                        child: Image.asset(
+                          "assets/images/buy/img_ok.png",
+                          height: 20,
+                          width: 20,
+                        ),
+                      )
+                  ],
                 ),
               )
             ],
@@ -836,19 +864,19 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
                 color: ColorConstant.TextMainColor,
                 disabledColor: ColorConstant.Text_B2BAC6,
                 onPressed: _phoneController.text.isNotEmpty &&
-                    _nameController.text.isNotEmpty &&
-                    _areaController.text.isNotEmpty &&
-                    _cityController.text.isNotEmpty &&
-                    (fapiao == 2
-                        ? (_messageController.text.isNotEmpty &&
-                        _message2Controller.text.isNotEmpty &&
-                        _message3Controller.text.isNotEmpty)
-                        : fapiao == 1
-                        ? _messageController.text.isNotEmpty
-                        : true)
+                        _nameController.text.isNotEmpty &&
+                        _areaController.text.isNotEmpty &&
+                        _cityController.text.isNotEmpty &&
+                        (fapiao == 2
+                            ? (_messageController.text.isNotEmpty &&
+                                _message2Controller.text.isNotEmpty &&
+                                _message3Controller.text.isNotEmpty)
+                            : fapiao == 1
+                                ? _messageController.text.isNotEmpty
+                                : true)
                     ? () {
-                  NavigatorUtil.push(context, OrderingPage());
-                }
+                        NavigatorUtil.push(context, OrderingPage());
+                      }
                     : null,
                 child: Text("立即支付",
                     style: TextStyle(

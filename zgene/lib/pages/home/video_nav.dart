@@ -50,6 +50,7 @@ class VideoNav extends StatelessWidget {
               Expanded(
                 child: _item(context, 0),
               ),
+              Container(width: 10,),
               Expanded(
                 child: _item(context, 1),
               )

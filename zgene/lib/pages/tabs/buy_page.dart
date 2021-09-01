@@ -6,7 +6,7 @@ import 'package:zgene/util/base_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/util/ui_uitls.dart';
 
-const APPBAR_SCROLL_OFFSET = 100;
+const APPBAR_SCROLL_OFFSET = 50;
 const APPBAR_SCROLL_OFFSET2 = 400;
 
 ///首页购买页面
@@ -258,16 +258,23 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
   }
 
   _onScroll(offset) {
-    print(offset);
     double alpha = offset / APPBAR_SCROLL_OFFSET;
     if (alpha < 0) {
       alpha = 0;
     } else if (alpha > 1) {
       alpha = 1;
     }
-    setState(() {
-      appBarAlpha = alpha;
-      showBuyButtom = offset > APPBAR_SCROLL_OFFSET2;
-    });
+    if (appBarAlpha != alpha) {
+      setState(() {
+        appBarAlpha = alpha;
+      });
+      print(appBarAlpha);
+    }
+    bool showLittleButtom = offset > APPBAR_SCROLL_OFFSET2;
+    if (showLittleButtom != showBuyButtom) {
+      setState(() {
+        showBuyButtom = showLittleButtom;
+      });
+    }
   }
 }

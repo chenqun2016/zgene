@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -16,6 +17,8 @@ import 'package:zgene/widget/restart_widget.dart';
 void main() async {
   //提前初始化flutter
   WidgetsFlutterBinding.ensureInitialized();
+  //滚动性能优化 1.22.0
+  GestureBinding.instance.resamplingEnabled = true;
   //初始化SharedPreferences
   await SpUtils().initStorage();
   //设置透明状态栏

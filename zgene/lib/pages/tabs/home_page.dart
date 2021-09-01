@@ -10,7 +10,7 @@ import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/ui_uitls.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-const APPBAR_SCROLL_OFFSET = 100;
+const APPBAR_SCROLL_OFFSET = 50;
 
 ///首页
 class HomePage extends BaseWidget {
@@ -178,9 +178,11 @@ class _HomePageState extends BaseWidgetState<HomePage> {
     } else if (alpha > 1) {
       alpha = 1;
     }
-    setState(() {
-      appBarAlpha = alpha;
-    });
-    print(appBarAlpha);
+    if(appBarAlpha != alpha){
+      setState(() {
+        appBarAlpha = alpha;
+      });
+      print(appBarAlpha);
+    }
   }
 }

@@ -270,8 +270,8 @@ class _SendBackAcquisitionPageState
                 height: 40.h,
                 width: ScreenUtils.screenW(context) - 98.w,
                 child: TextField(
-                    keyboardType:
-                        TextInputType.numberWithOptions(decimal: true),
+                    // keyboardType:
+                    //     TextInputType.numberWithOptions(decimal: true),
                     style: TextStyle(
                         fontSize: 18.sp,
                         fontStyle: FontStyle.normal,
@@ -442,7 +442,7 @@ class _SendBackAcquisitionPageState
               right: 30.w,
               child: InkWell(
                 onTap: () {
-                  print(123);
+                  selectAddress();
                 },
                 child: Image(
                     width: 22.h,
@@ -457,7 +457,7 @@ class _SendBackAcquisitionPageState
             height: 40.h,
             width: ScreenUtils.screenW(context) - 96.w,
             child: TextField(
-                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                // keyboardType: TextInputType.numberWithOptions(decimal: true),
                 style: TextStyle(
                     fontSize: 18.sp,
                     fontStyle: FontStyle.normal,
@@ -600,7 +600,6 @@ class _SendBackAcquisitionPageState
               right: 30.w,
               child: InkWell(
                 onTap: () {
-                  print(123);
                   selectTime();
                 },
                 child: Image(
@@ -896,6 +895,25 @@ class _SendBackAcquisitionPageState
 
   void selectTime() {
     showSelectPickerTool(context);
+  }
+
+  String initProvince = '', initCity = '', initTown = '';
+
+  void selectAddress() {
+    Pickers.showAddressPicker(
+      context,
+      initProvince: initProvince,
+      initCity: initCity,
+      initTown: initTown,
+      addAllItem: false,
+      onConfirm: (p, c, t) {
+        setState(() {
+          initProvince = p;
+          initCity = c;
+          initTown = t;
+        });
+      },
+    );
   }
 
   @override

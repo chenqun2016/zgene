@@ -203,18 +203,28 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
   /// 配置页面头部返回
   Widget customBodyView() {
     if (!isListPage) {
-      return CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              padding: EdgeInsets.all(0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [viewCustomHeadBody(), viewPageBody(context)],
-              ),
+      return Column(
+        children: [
+          viewCustomHeadBody(),
+          Container(
+            height: MediaQuery.of(context).size.height -
+                ((showBaseHead || showHead) ? 55.h : 0) -
+                MediaQuery.of(context).padding.top,
+            child: CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(
+                  child: SingleChildScrollView(
+                    physics: BouncingScrollPhysics(),
+                    padding: EdgeInsets.all(0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [viewPageBody(context)],
+                    ),
+                  ),
+                )
+              ],
             ),
-          )
+          ),
         ],
       );
     } else {
@@ -246,7 +256,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
         orientation: Orientation.portrait);
     return Scaffold(
       backgroundColor: backColor,
-      resizeToAvoidBottomInset: isresizeToAvoidBottomInset,
+      resizeToAvoidBottomInset: false,
       appBar: showBaseHead == true ? _viewAppBar() : null,
       body: GestureDetector(
           onTap: () {

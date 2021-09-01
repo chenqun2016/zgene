@@ -98,14 +98,14 @@ class UiUitls {
   }
 
   ///异常界面
-  static getErrorPage({type, text, onClick}) {
+  static getErrorPage({context,type, text, onClick,height}) {
     //1.暂无数据 2.错误 3.没有网络
     String imageUrl, title;
     switch (type) {
       case 1: //暂无数据
         imageUrl = "assets/images/img_no_data.png";
         if (text == null) {
-          title = "暂无数据内容，点击我再试试看";
+          title = "暂无内容";
         } else {
           title = text;
         }
@@ -129,33 +129,70 @@ class UiUitls {
     }
     return GestureDetector(
       onTap: () {
-        onClick();
+        if(type!=1) {
+          onClick();
+        }
       },
       child: Container(
-        height: double.infinity,
         width: double.infinity,
+        height: height!=0?height:double.infinity,
+        margin: EdgeInsets.only(top: 25),
+        padding: EdgeInsets.only(top: 100),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+            bottomLeft: Radius.circular(0),
+            bottomRight: Radius.circular(0),
+          ),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
           children: [
             Image(
               image: AssetImage(imageUrl),
-              height: 150,
-              width: 240,
+              height: 166,
+              width: 140,
             ),
-            Container(
-              margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-              child: Text(
-                title,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: ColorConstant.TextThreeColor,
-                ),
+            Text(
+              title,
+              style: TextStyle(
+                color: ColorConstant.Text_8E9AB,
+                fontSize: 18,
               ),
+              textAlign: TextAlign.center,
             ),
           ],
         ),
       ),
+      // Container(
+      //   height: double.infinity,
+      //   width: double.infinity,
+      //   child: Column(
+      //     crossAxisAlignment: CrossAxisAlignment.center,
+      //     mainAxisAlignment: MainAxisAlignment.center,
+      //     children: [
+      //       Image(
+      //         image: AssetImage(imageUrl),
+      //         height: 166,
+      //         width: 141,
+      //       ),
+      //       Container(
+      //         margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+      //         child: Text(
+      //           title,
+      //           style: TextStyle(
+      //             fontSize: 12,
+      //             color: ColorConstant.TextThreeColor,
+      //           ),
+      //         ),
+      //       ),
+      //     ],
+      //   ),
+      // ),
     );
   }
 

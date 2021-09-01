@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/navigator/navigator_util.dart';
+import 'package:zgene/pages/my/my_address_list.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/ui_uitls.dart';
 
@@ -319,7 +321,7 @@ class _MySetPageState extends BaseWidgetState<MySetPage> {
         UiUitls.showToast("手机");
         break;
       case 4: //收货地址
-        UiUitls.showToast("收货地址");
+        NavigatorUtil.push(context, MyAddressListPage());
         break;
       case 5: //推送设置
         UiUitls.showToast("推送设置");

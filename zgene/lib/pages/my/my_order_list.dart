@@ -22,6 +22,7 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
   List list = [];
   List tempList = [];
   int page = 1;
+  int errorCode = 0; //0.正常 1.暂无数据 2.错误 3.没有网络
 
   @override
   void initState() {
@@ -35,49 +36,67 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
 
   @override
   Widget viewPageBody(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top: 15),
-      decoration: BoxDecoration(
-        color: Color(0xB3FFFFFF),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
-        ),
-      ),
-      child: EasyRefresh(
-        // 是否开启控制结束加载
-        enableControlFinishLoad: false,
-        firstRefresh: true,
-        // 控制器
-        controller: _controller,
-        header: RefreshConfigUtils.classicalHeader(),
-        // 自定义顶部上啦加载
-        footer: RefreshConfigUtils.classicalFooter(),
-        child: _listView,
-        //下拉刷新事件回调
-        onRefresh: () async {
-          // page = 1;
-          // // 获取数据
-          // getHttp();
-          // await Future.delayed(Duration(seconds: 1), () {
-          // 重置刷新状态 【没错，这里用的是resetLoadState】
-          if (_controller != null) {
-            _controller.resetLoadState();
-          }
-          // });
-        },
-        // 上拉加载事件回调
-        onLoad: () async {
-          // await Future.delayed(Duration(seconds: 1), () {
-          //   // 获取数据
-          //   getHttp();
-          // 结束加载
-          _controller.finishLoad();
-          // _controller.finishLoad(noMore:true);
-          // });
-        },
-      ),
-    );
+    return errorCode != 0
+        ? UiUitls.getErrorPage(
+            context: context,
+            type: errorCode,
+            onClick: () {
+              // if (lastTime == null) {
+              //   lastTime = DateTime.now();
+              //   page = 1;
+              //   getHttp();
+              // } else {
+              //   //可以点击
+              //   if (TimeUtils.intervalClick(lastTime, 2)) {
+              //     lastTime = DateTime.now();
+              //     page = 1;
+              //     getHttp();
+              //   }
+              // }
+            })
+        : Container(
+            margin: EdgeInsets.only(top: 15),
+            decoration: BoxDecoration(
+              color: Color(0xB3FFFFFF),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+              ),
+            ),
+            child: EasyRefresh(
+              // 是否开启控制结束加载
+              enableControlFinishLoad: false,
+              firstRefresh: true,
+              // 控制器
+              controller: _controller,
+              header: RefreshConfigUtils.classicalHeader(),
+              // 自定义顶部上啦加载
+              footer: RefreshConfigUtils.classicalFooter(),
+              child: _listView,
+              //下拉刷新事件回调
+              onRefresh: () async {
+                // page = 1;
+                // // 获取数据
+                // getHttp();
+                // await Future.delayed(Duration(seconds: 1), () {
+                // 重置刷新状态 【没错，这里用的是resetLoadState】
+                if (_controller != null) {
+                  _controller.resetLoadState();
+                }
+                // });
+              },
+              // 上拉加载事件回调
+              onLoad: () async {
+                // await Future.delayed(Duration(seconds: 1), () {
+                //   // 获取数据
+                //   getHttp();
+                // 结束加载
+                _controller.finishLoad();
+                // _controller.finishLoad(noMore:true);
+                // });
+              },
+            ),
+          );
   }
 
   ///列表
@@ -99,7 +118,7 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
 
   Widget getItem() {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         _onTapEvent(1);
       },
       behavior: HitTestBehavior.opaque,
@@ -216,7 +235,6 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
                               textAlign: TextAlign.right,
                             ),
                           ),
-
                         ],
                       ),
                     ],
@@ -283,9 +301,7 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
                       ),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16)),
-                      onPressed: () {
-
-                      },
+                      onPressed: () {},
                     ),
                   ),
                 ],

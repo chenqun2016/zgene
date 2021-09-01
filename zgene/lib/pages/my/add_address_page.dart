@@ -19,7 +19,6 @@ class AddAddressPageState extends BaseWidgetState<AddAddressPage> {
   void pageWidgetInitState() {
     pageWidgetTitle = "添加收货地址";
     backImgPath = "assets/images/mine/img_bg_my.png";
-    isresizeToAvoidBottomInset = true;
     super.pageWidgetInitState();
   }
 

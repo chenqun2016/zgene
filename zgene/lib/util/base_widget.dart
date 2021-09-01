@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/color_constant.dart';
-import 'package:zgene/util/screen_utils.dart';
 
 abstract class BaseWidget extends StatefulWidget {
   @override
@@ -35,6 +34,8 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
   String customRightBtnText = '';
   // 自定义顶部栏右上角图标按钮 传值为显示iconButton
   String customRightBtnImg = '';
+
+  FocusNode _focusNode;
 
   @override
   void initState() {
@@ -206,23 +207,25 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
       return Column(
         children: [
           viewCustomHeadBody(),
-          Container(
-            height: MediaQuery.of(context).size.height -
-                ((showBaseHead || showHead) ? 55.h : 0) -
-                MediaQuery.of(context).padding.top,
-            child: CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(
-                  child: SingleChildScrollView(
-                    physics: BouncingScrollPhysics(),
-                    padding: EdgeInsets.all(0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [viewPageBody(context)],
+          Expanded(
+            child: Container(
+              height: MediaQuery.of(context).size.height -
+                  ((showBaseHead || showHead) ? 55.h : 0) -
+                  MediaQuery.of(context).padding.top,
+              child: CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: SingleChildScrollView(
+                      physics: BouncingScrollPhysics(),
+                      padding: EdgeInsets.all(0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [viewPageBody(context)],
+                      ),
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
           ),
         ],
@@ -254,27 +257,47 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
             maxHeight: MediaQuery.of(context).size.height),
         designSize: Size(375, 812),
         orientation: Orientation.portrait);
-    return Scaffold(
-      backgroundColor: backColor,
-      resizeToAvoidBottomInset: false,
-      appBar: showBaseHead == true ? _viewAppBar() : null,
-      body: GestureDetector(
-          onTap: () {
-            print("点击屏幕");
-            FocusScope.of(context).requestFocus(FocusNode());
-          },
+    return Stack(children: [
+      Positioned(
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
           child: Container(
             decoration: backImgPath != ''
                 ? BoxDecoration(
+                    color: backColor,
                     image: DecorationImage(
                       image: AssetImage(backImgPath),
                       fit: BoxFit.fill,
                     ),
                   )
-                : null,
-            child: customBodyView(),
+                : BoxDecoration(
+                    color: backColor,
+                  ),
           )),
-      bottomNavigationBar: viewBottomNavigationBar(),
-    );
+      Scaffold(
+        backgroundColor: Colors.transparent,
+        resizeToAvoidBottomInset: true,
+        appBar: showBaseHead == true ? _viewAppBar() : null,
+        body: GestureDetector(
+            onTap: () {
+              print("点击屏幕");
+              FocusScope.of(context).requestFocus(FocusNode());
+            },
+            child: Container(
+              //   decoration: backImgPath != ''
+              //       ? BoxDecoration(
+              //           image: DecorationImage(
+              //             image: AssetImage(backImgPath),
+              //             fit: BoxFit.fill,
+              //           ),
+              //         )
+              //       : null,
+              child: customBodyView(),
+            )),
+        bottomNavigationBar: viewBottomNavigationBar(),
+      ),
+    ]);
   }
 }

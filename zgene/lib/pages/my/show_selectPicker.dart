@@ -238,7 +238,7 @@ class _selectTimePicker extends State<selectTimePicker> {
         ),
         margin: EdgeInsets.only(top: 26.h),
         width: (ScreenUtils.screenW(context) / 3) * 2,
-        height: 268.h,
+        height: 290.h,
         child: ListView.builder(
           itemCount:
               daySelectIndex == 0 ? todayTimeData.length : otherTimeData.length,

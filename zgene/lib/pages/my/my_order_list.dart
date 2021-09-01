@@ -22,7 +22,7 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
   List list = [];
   List tempList = [];
   int page = 1;
-  int errorCode = 1; //0.正常 1.暂无数据 2.错误 3.没有网络
+  int errorCode = 0; //0.正常 1.暂无数据 2.错误 3.没有网络
 
   @override
   void initState() {

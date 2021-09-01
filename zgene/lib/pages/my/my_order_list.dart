@@ -37,23 +37,50 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
   @override
   Widget viewPageBody(BuildContext context) {
     return errorCode != 0
-        ? UiUitls.getErrorPage(
-            context: context,
-            type: errorCode,
-            onClick: () {
-              // if (lastTime == null) {
-              //   lastTime = DateTime.now();
-              //   page = 1;
-              //   getHttp();
-              // } else {
-              //   //可以点击
-              //   if (TimeUtils.intervalClick(lastTime, 2)) {
-              //     lastTime = DateTime.now();
-              //     page = 1;
-              //     getHttp();
-              //   }
-              // }
-            })
+        ? Stack(
+            children: [
+              UiUitls.getErrorPage(
+                  context: context,
+                  type: errorCode,
+                  onClick: () {
+                    // if (lastTime == null) {
+                    //   lastTime = DateTime.now();
+                    //   page = 1;
+                    //   getHttp();
+                    // } else {
+                    //   //可以点击
+                    //   if (TimeUtils.intervalClick(lastTime, 2)) {
+                    //     lastTime = DateTime.now();
+                    //     page = 1;
+                    //     getHttp();
+                    //   }
+                    // }
+                  }),
+              Positioned(
+                bottom: 90,
+                  left: 50,
+                  right: 50,
+                  child: SizedBox(
+                    height: 50,
+                    child: RaisedButton(
+                      color: ColorConstant.TextMainColor,
+                      child: Text(
+                        "立即购买",
+                        style: TextStyle(
+                          color: ColorConstant.WhiteColor,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(40.0)),
+                      onPressed: () {
+                        UiUitls.showToast("去购买");
+                      },
+                    ),
+                  )),
+            ],
+          )
         : Container(
             margin: EdgeInsets.only(top: 15),
             decoration: BoxDecoration(

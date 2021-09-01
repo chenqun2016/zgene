@@ -148,6 +148,18 @@ setConfiguration() {
 
     CommonConstant.Svc_Msg_Status =
         spUtils.getStorageDefault(SpConstant.SvcMsgStatus, false);
+
+    //Z基因配置读取
+    CommonConstant.appAsalesRules = spUtils.getStorageDefault(
+        SpConstant.appAsalesRules, CommonConstant.defaultAppAsalesRules);
+    CommonConstant.appReceiveAddress = spUtils.getStorageDefault(
+        SpConstant.appReceiveAddress, "江西省南昌市高新区南昌国家医药国际创新园联合研究院14号楼");
+    CommonConstant.appReceiveName =
+        spUtils.getStorageDefault(SpConstant.appReceiveName, "周子芳");
+    CommonConstant.appReceivePhone =
+        spUtils.getStorageDefault(SpConstant.appReceivePhone, "0791-88829758");
+    CommonConstant.appReceivePtype =
+        spUtils.getStorageDefault(SpConstant.appReceivePtype, "到付即可");
   } catch (e) {
     print(e);
   }

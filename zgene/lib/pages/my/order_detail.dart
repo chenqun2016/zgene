@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/ui_uitls.dart';
 
@@ -127,6 +128,7 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
                   child: Text(
                     "78898587888",
                     style: textStyleRight,
+                    textAlign: TextAlign.right,
                   ),
                 ),
                 Positioned(
@@ -153,6 +155,7 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
                   child: Text(
                     "ZGene 检测标准版 3.0 X1",
                     style: textStyleRight,
+                    textAlign: TextAlign.right,
                   ),
                 ),
                 Positioned(
@@ -177,8 +180,9 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
                   alignment: Alignment.topRight,
                   padding: EdgeInsets.only(left: 100, top: 16),
                   child: Text(
-                    "上海市 山西南路187号(山西南路天津路),张三,1862888913",
+                    "上海市 山西南路187号(山西南路天津路),张三,1862888913路187号(山西南路天津路),张三,1862888913",
                     style: textStyleRight,
+                    textAlign: TextAlign.right,
                   ),
                 ),
                 Positioned(
@@ -205,6 +209,7 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
                   child: Text(
                     "2021-08-10  17:28:36",
                     style: textStyleRight,
+                    textAlign: TextAlign.right,
                   ),
                 ),
                 Positioned(
@@ -231,6 +236,7 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
                   child: Text(
                     "上海XX互联网科技有限公司",
                     style: textStyleRight,
+                    textAlign: TextAlign.right,
                   ),
                 ),
                 Positioned(
@@ -257,6 +263,7 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
                   child: Text(
                     "98545MGHNH5555845",
                     style: textStyleRight,
+                    textAlign: TextAlign.right,
                   ),
                 ),
                 Positioned(
@@ -283,6 +290,7 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
                   child: Text(
                     "suiug@126.com",
                     style: textStyleRight,
+                    textAlign: TextAlign.right,
                   ),
                 ),
                 Positioned(
@@ -356,8 +364,77 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
         UiUitls.showToast("联系客服");
         break;
       case 3: //售后规则
-        UiUitls.showToast("售后规则");
+        _showRule();
         break;
     }
+  }
+
+  ///规则的展示
+  _showRule() {
+    showModalBottomSheet(
+      barrierColor: ColorConstant.AppleBlack99Color,
+      context: context,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+      builder: (ctx) {
+        return Container(
+          height: 419,
+          width: double.infinity,
+          decoration: BoxDecoration(
+              color: ColorConstant.WhiteColor,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Stack(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(top: 21, left: 16),
+                    height: 25,
+                    width: double.infinity,
+                    child: Text(
+                      "售后规则：",
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.w500,
+                        color: ColorConstant.TextSecondColor,
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    right: 11,
+                    top: 18,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(5),
+                        child: Image(
+                          image: AssetImage("assets/images/mine/icon_quxiao.png"),
+                          height: 18,
+                          width: 18,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Scrollbar(
+                // 显示进度条
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.all(16.0),
+                  child: Expanded(child: Text("发送到发撒旦法撒打发斯蒂芬仿阿萨德发送到会计法"*10)),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }

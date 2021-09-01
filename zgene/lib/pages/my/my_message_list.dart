@@ -10,7 +10,7 @@ class MyMessagePage extends StatefulWidget {
 }
 
 class _MyMessagePageState extends State<MyMessagePage>{
-  int errorCode = 1; //0.正常 1.暂无数据 2.错误 3.没有网络
+  int errorCode = 0; //0.正常 1.暂无数据 2.错误 3.没有网络
   @override
   Widget build(BuildContext context) {
     return Scaffold(

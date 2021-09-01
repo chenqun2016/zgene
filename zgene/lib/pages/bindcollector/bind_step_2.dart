@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_pickers/pickers.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/util/ui_uitls.dart';
 
@@ -151,13 +152,19 @@ class _BindStep2State extends State<BindStep2> {
                 color: ColorConstant.Divider,
               ),
               GestureDetector(
-                onTap:  () async{
-                  DateTime text = await _showDatePicker(context);
-                  setState(() {
-                    birthText = text.toString();
-                  });
-                  hasBirth = true;
-                  widget.onChangeNextButtomState(hasName && hasBirth);
+                onTap: () async {
+                  Pickers.showDatePicker(
+                    context,
+                    onConfirm: (p) {
+                      setState(() {
+                        birthText = "${p.year} / ${p.month} / ${p.day}";
+                      });
+                      hasBirth = true;
+                      Navigator.pop(context);
+                      widget.onChangeNextButtomState(hasName && hasBirth);
+                    },
+                    // onChanged: (p) => print(p),
+                  );
                 },
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(15, 20, 15, 20),
@@ -224,7 +231,7 @@ class _BindStep2State extends State<BindStep2> {
     UiUitls.showToast("联系客服");
   }
 
-   _showDatePicker(context) async {
+  _showDatePicker(context) async {
     var first = DateTime(1900);
     var date = DateTime.now();
     date.add(Duration());

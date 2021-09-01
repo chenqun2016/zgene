@@ -65,12 +65,12 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
         Padding(
           padding: EdgeInsets.only(bottom: 90),
           child: SingleChildScrollView(
-            controller: listeningController,
+            // controller: _controller,
             child: ListView(
               shrinkWrap: true,
               physics: BouncingScrollPhysics(),
               padding:
-                  EdgeInsets.only(top: 10, left: 15, right: 15, bottom: 30),
+              EdgeInsets.only(top: 10, left: 15, right: 15, bottom: 30),
               children: [
                 _tips,
                 _prodectDetail,
@@ -208,9 +208,9 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
 
   Widget _faPiao1(
       {@required String des,
-      @required String hint,
-      String hint2,
-      String hint3}) {
+        @required String hint,
+        String hint2,
+        String hint3}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -586,6 +586,7 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
               onTap: () {
                 Pickers.showAddressPicker(
                   context,
+                  addAllItem: false,
                   initProvince: initProvince,
                   initCity: initCity,
                   initTown: initTown,
@@ -835,19 +836,19 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
                 color: ColorConstant.TextMainColor,
                 disabledColor: ColorConstant.Text_B2BAC6,
                 onPressed: _phoneController.text.isNotEmpty &&
-                        _nameController.text.isNotEmpty &&
-                        _areaController.text.isNotEmpty &&
-                        _cityController.text.isNotEmpty &&
-                        (fapiao == 2
-                            ? (_messageController.text.isNotEmpty &&
-                                _message2Controller.text.isNotEmpty &&
-                                _message3Controller.text.isNotEmpty)
-                            : fapiao == 1
-                                ? _messageController.text.isNotEmpty
-                                : true)
+                    _nameController.text.isNotEmpty &&
+                    _areaController.text.isNotEmpty &&
+                    _cityController.text.isNotEmpty &&
+                    (fapiao == 2
+                        ? (_messageController.text.isNotEmpty &&
+                        _message2Controller.text.isNotEmpty &&
+                        _message3Controller.text.isNotEmpty)
+                        : fapiao == 1
+                        ? _messageController.text.isNotEmpty
+                        : true)
                     ? () {
-                        NavigatorUtil.push(context, OrderingPage());
-                      }
+                  NavigatorUtil.push(context, OrderingPage());
+                }
                     : null,
                 child: Text("立即支付",
                     style: TextStyle(

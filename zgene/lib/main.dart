@@ -18,7 +18,7 @@ void main() async {
   //提前初始化flutter
   WidgetsFlutterBinding.ensureInitialized();
   //滚动性能优化 1.22.0
-  GestureBinding.instance.resamplingEnabled = true;
+  // GestureBinding.instance.resamplingEnabled = true;
   //初始化SharedPreferences
   await SpUtils().initStorage();
   //设置透明状态栏

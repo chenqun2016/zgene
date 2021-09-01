@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -16,6 +17,8 @@ import 'package:zgene/widget/restart_widget.dart';
 void main() async {
   //提前初始化flutter
   WidgetsFlutterBinding.ensureInitialized();
+  //滚动性能优化 1.22.0
+  // GestureBinding.instance.resamplingEnabled = true;
   //初始化SharedPreferences
   await SpUtils().initStorage();
   //设置透明状态栏
@@ -99,6 +102,22 @@ Future<void> getSetting() async {
             spUtils.setStorage(
                 SpConstant.SvcMsgStatus, item.value.toLowerCase());
           }
+          // Z基因配置接口
+          if (item.name == SpConstant.appAsalesRules) {
+            spUtils.setStorage(SpConstant.appAsalesRules, item.value);
+          }
+          if (item.name == SpConstant.appReceiveAddress) {
+            spUtils.setStorage(SpConstant.appReceiveAddress, item.value);
+          }
+          if (item.name == SpConstant.appReceiveName) {
+            spUtils.setStorage(SpConstant.appReceiveName, item.value);
+          }
+          if (item.name == SpConstant.appReceivePhone) {
+            spUtils.setStorage(SpConstant.appReceivePhone, item.value);
+          }
+          if (item.name == SpConstant.appReceivePtype) {
+            spUtils.setStorage(SpConstant.appReceivePtype, item.value);
+          }
         }
       } catch (e) {
         print(e);
@@ -129,6 +148,18 @@ setConfiguration() {
 
     CommonConstant.Svc_Msg_Status =
         spUtils.getStorageDefault(SpConstant.SvcMsgStatus, false);
+
+    //Z基因配置读取
+    CommonConstant.appAsalesRules = spUtils.getStorageDefault(
+        SpConstant.appAsalesRules, CommonConstant.defaultAppAsalesRules);
+    CommonConstant.appReceiveAddress = spUtils.getStorageDefault(
+        SpConstant.appReceiveAddress, "江西省南昌市高新区南昌国家医药国际创新园联合研究院14号楼");
+    CommonConstant.appReceiveName =
+        spUtils.getStorageDefault(SpConstant.appReceiveName, "周子芳");
+    CommonConstant.appReceivePhone =
+        spUtils.getStorageDefault(SpConstant.appReceivePhone, "0791-88829758");
+    CommonConstant.appReceivePtype =
+        spUtils.getStorageDefault(SpConstant.appReceivePtype, "到付即可");
   } catch (e) {
     print(e);
   }

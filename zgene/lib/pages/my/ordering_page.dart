@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pickers/pickers.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/util/base_widget.dart';
-import 'package:zgene/util/ui_uitls.dart';
 
 class OrderingPage extends BaseWidget {
   @override
@@ -15,6 +15,37 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
   var canPay = false;
   var isWeixinPay = true;
   var fapiao = 0;
+  String initProvince = '上海市', initCity = '上海市', initTown = '黄浦区';
+
+  List _billDes = [
+    "购买后那您如需不开发票，可在付款后60天内联系客服进行查询和申请",
+    "电子发票将在15个工作日内发送到您的电子邮箱，请注意查收。",
+    "电子发票将在15个工作日内发送到您的电子邮箱，请注意查收。"
+  ];
+  List _billHint = [
+    ["备注留言（选填）", null, null],
+    ["请填写收票人电子邮箱", null, null],
+    ["请填写单位名称", "请填写纳税人识别码", "请填写收票人电子邮箱"]
+  ];
+
+  TextEditingController _nameController = new TextEditingController();
+  TextEditingController _phoneController = new TextEditingController();
+  TextEditingController _cityController = new TextEditingController();
+  TextEditingController _areaController = new TextEditingController();
+
+  TextEditingController _messageController = new TextEditingController();
+  TextEditingController _message2Controller = new TextEditingController();
+  TextEditingController _message3Controller = new TextEditingController();
+
+  // GlobalKey _formKey = new GlobalKey<FormState>();
+  // ScrollController _controller = new ScrollController();
+  //
+  // @override
+  // void dispose() {
+  //   //为了避免内存泄露，需要调用_controller.dispose
+  //   _controller.dispose();
+  //   super.dispose();
+  // }
 
   @override
   void pageWidgetInitState() {
@@ -23,6 +54,8 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
     showHead = true;
     isListPage = true;
     backImgPath = "assets/images/mine/img_bg_my.png";
+    isresizeToAvoidBottomInset = true;
+
     super.pageWidgetInitState();
   }
 
@@ -30,17 +63,24 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
   Widget viewPageBody(BuildContext context) {
     return Stack(
       children: [
-        ListView(
-          shrinkWrap: true,
-          physics: BouncingScrollPhysics(),
-          padding: EdgeInsets.only(top: 10, left: 15, right: 15, bottom: 120),
-          children: [
-            _tips,
-            _prodectDetail,
-            _addressDetail,
-            _payDetail,
-            _fapiaoDetail,
-          ],
+        Padding(
+          padding: EdgeInsets.only(bottom: 90),
+          child: SingleChildScrollView(
+            // controller: _controller,
+            child: ListView(
+              shrinkWrap: true,
+              physics: BouncingScrollPhysics(),
+              padding:
+                  EdgeInsets.only(top: 10, left: 15, right: 15, bottom: 30),
+              children: [
+                _tips,
+                _prodectDetail,
+                _addressDetail,
+                _payDetail,
+                _fapiaoDetail,
+              ],
+            ),
+          ),
         ),
         _bottom,
       ],
@@ -157,17 +197,109 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
               ],
             ),
           ),
-          Container(
-            margin: EdgeInsets.only(left: 35, top: 8, bottom: 12),
-            child: Text(
-              "购买后那您如需不开发票，可在付款后60天内联系客服进行查询和申请",
-              style: TextStyle(
-                  color: ColorConstant.Text_5E6F88,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500),
-            ),
+          _faPiao1(
+              des: _billDes[fapiao],
+              hint: _billHint[fapiao][0],
+              hint2: _billHint[fapiao][1],
+              hint3: _billHint[fapiao][2]),
+        ],
+      ),
+    );
+  }
+
+  Widget _faPiao1(
+      {@required String des,
+      @required String hint,
+      String hint2,
+      String hint3}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          margin: EdgeInsets.only(left: 35, top: 8, bottom: 12),
+          child: Text(
+            des,
+            style: TextStyle(
+                color: ColorConstant.Text_5E6F88,
+                fontSize: 14,
+                fontWeight: FontWeight.w500),
           ),
+        ),
+        TextField(
+            controller: _messageController,
+            onChanged: (str) {},
+            keyboardType: TextInputType.multiline,
+            textAlign: TextAlign.left,
+            style: TextStyle(
+                fontWeight: FontWeight.w600,
+                color: ColorConstant.TextMainBlack,
+                fontSize: 15),
+            decoration: InputDecoration(
+              disabledBorder: _textLineBorder,
+              focusedBorder: _textLineBorder,
+              enabledBorder: _textLineBorder,
+              border: _textLineBorder,
+              contentPadding: EdgeInsets.fromLTRB(15, 12, 0, 12),
+              isCollapsed: true,
+              // suffixIcon: GestureDetector(
+              //   onTap: () {},
+              //   child: Icon(Icons.keyboard_arrow_down),
+              // ),
+              // suffixStyle: TextStyle(color: ColorConstant.TextMainColor),
+              fillColor: ColorConstant.bg_EBEDEF,
+              filled: true,
+              hintText: hint,
+              hintMaxLines: 1,
+              hintStyle: TextStyle(
+                  color: ColorConstant.Text_5E6F88,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500),
+              icon: Container(
+                width: 20,
+                height: 20,
+              ),
+            )),
+        if (null != hint2)
+          Padding(
+            padding: EdgeInsets.only(top: 8, bottom: 8),
+            child: TextField(
+                controller: _message2Controller,
+                onChanged: (str) {},
+                keyboardType: TextInputType.multiline,
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: ColorConstant.TextMainBlack,
+                    fontSize: 15),
+                decoration: InputDecoration(
+                  disabledBorder: _textLineBorder,
+                  focusedBorder: _textLineBorder,
+                  enabledBorder: _textLineBorder,
+                  border: _textLineBorder,
+                  contentPadding: EdgeInsets.fromLTRB(15, 12, 0, 12),
+                  isCollapsed: true,
+                  // suffixIcon: GestureDetector(
+                  //   onTap: () {},
+                  //   child: Icon(Icons.keyboard_arrow_down),
+                  // ),
+                  // suffixStyle: TextStyle(color: ColorConstant.TextMainColor),
+                  fillColor: ColorConstant.bg_EBEDEF,
+                  filled: true,
+                  hintText: hint2,
+                  hintMaxLines: 1,
+                  hintStyle: TextStyle(
+                      color: ColorConstant.Text_5E6F88,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500),
+                  icon: Container(
+                    width: 20,
+                    height: 20,
+                  ),
+                )),
+          ),
+        if (null != hint3)
           TextField(
+              controller: _message3Controller,
               onChanged: (str) {},
               keyboardType: TextInputType.multiline,
               textAlign: TextAlign.left,
@@ -189,7 +321,7 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
                 // suffixStyle: TextStyle(color: ColorConstant.TextMainColor),
                 fillColor: ColorConstant.bg_EBEDEF,
                 filled: true,
-                hintText: "备注留言（选填）",
+                hintText: hint3,
                 hintMaxLines: 1,
                 hintStyle: TextStyle(
                     color: ColorConstant.Text_5E6F88,
@@ -200,8 +332,7 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
                   height: 20,
                 ),
               ))
-        ],
-      ),
+      ],
     );
   }
 
@@ -367,6 +498,11 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
             height: 10,
           ),
           TextField(
+              controller: _nameController,
+              onTap: onTextTab,
+              // validator: (v) {
+              //   return v.trim().length > 0 ? null : "";
+              // },
               onChanged: (str) {},
               keyboardType: TextInputType.multiline,
               maxLines: 1,
@@ -379,6 +515,8 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
                 disabledBorder: _textLineBorder,
                 focusedBorder: _textLineBorder,
                 enabledBorder: _textLineBorder,
+                errorBorder: _textLineBorder,
+                focusedErrorBorder: _textLineBorder,
                 border: _textLineBorder,
                 contentPadding: EdgeInsets.fromLTRB(15, 12, 0, 12),
                 isCollapsed: true,
@@ -401,6 +539,11 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
             height: 10,
           ),
           TextField(
+              controller: _phoneController,
+              onTap: onTextTab,
+              // validator: (v) {
+              //   return v.trim().length > 0 ? null : "";
+              // },
               onChanged: (str) {},
               keyboardType: TextInputType.multiline,
               maxLines: 1,
@@ -413,6 +556,8 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
                 disabledBorder: _textLineBorder,
                 focusedBorder: _textLineBorder,
                 enabledBorder: _textLineBorder,
+                errorBorder: _textLineBorder,
+                focusedErrorBorder: _textLineBorder,
                 border: _textLineBorder,
                 contentPadding: EdgeInsets.fromLTRB(15, 12, 0, 12),
                 isCollapsed: true,
@@ -435,10 +580,27 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
             height: 10,
           ),
           TextField(
+              controller: _cityController,
+              // validator: (v) {
+              //   return v.trim().length > 0 ? null : "";
+              // },
               onTap: () {
-                UiUitls.showToast("点击");
+                Pickers.showAddressPicker(
+                  context,
+                  initProvince: initProvince,
+                  initCity: initCity,
+                  initTown: initTown,
+                  onConfirm: (p, c, t) {
+                    setState(() {
+                      initProvince = p;
+                      initCity = c;
+                      initTown = t;
+                    });
+                    _cityController.text = initProvince + initCity + initTown;
+                  },
+                );
+                onTextTab();
               },
-              onChanged: (str) {},
               keyboardType: TextInputType.multiline,
               maxLines: 1,
               readOnly: true,
@@ -451,6 +613,8 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
                 disabledBorder: _textLineBorder,
                 focusedBorder: _textLineBorder,
                 enabledBorder: _textLineBorder,
+                errorBorder: _textLineBorder,
+                focusedErrorBorder: _textLineBorder,
                 border: _textLineBorder,
                 contentPadding: EdgeInsets.fromLTRB(15, 12, 0, 12),
                 isCollapsed: true,
@@ -480,6 +644,11 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
             height: 10,
           ),
           TextField(
+              controller: _areaController,
+              // validator: (v) {
+              //   return v.trim().length > 0 ? null : "";
+              // },
+              onTap: onTextTab,
               onChanged: (str) {},
               keyboardType: TextInputType.multiline,
               textAlign: TextAlign.left,
@@ -491,6 +660,8 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
                 disabledBorder: _textLineBorder,
                 focusedBorder: _textLineBorder,
                 enabledBorder: _textLineBorder,
+                errorBorder: _textLineBorder,
+                focusedErrorBorder: _textLineBorder,
                 border: _textLineBorder,
                 contentPadding: EdgeInsets.fromLTRB(15, 12, 0, 12),
                 isCollapsed: true,
@@ -515,6 +686,13 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
         ],
       ),
     );
+  }
+
+  void onTextTab() {
+    // if (_controller.offset < 300) {
+    //   _controller.animateTo(300,
+    //       duration: Duration(milliseconds: 300), curve: Curves.linear);
+    // }
   }
 
   OutlineInputBorder get _textLineBorder {
@@ -657,7 +835,17 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
                     borderRadius: BorderRadius.circular(40)),
                 color: ColorConstant.TextMainColor,
                 disabledColor: ColorConstant.Text_B2BAC6,
-                onPressed: canPay
+                onPressed: _phoneController.text.isNotEmpty &&
+                        _nameController.text.isNotEmpty &&
+                        _areaController.text.isNotEmpty &&
+                        _cityController.text.isNotEmpty &&
+                        (fapiao == 2
+                            ? (_messageController.text.isNotEmpty &&
+                                _message2Controller.text.isNotEmpty &&
+                                _message3Controller.text.isNotEmpty)
+                            : fapiao == 1
+                                ? _messageController.text.isNotEmpty
+                                : true)
                     ? () {
                         NavigatorUtil.push(context, OrderingPage());
                       }

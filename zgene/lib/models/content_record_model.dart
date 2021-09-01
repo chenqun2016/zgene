@@ -1,4 +1,3 @@
-
 ///内容各种记录（收藏，点赞，消费，浏览历史）
 class ContentRecordModel {
   int id;
@@ -10,11 +9,11 @@ class ContentRecordModel {
 
   ContentRecordModel(
       {this.id,
-        this.createdAt,
-        this.updatedAt,
-        this.aid,
-        this.archive,
-        this.uid});
+      this.createdAt,
+      this.updatedAt,
+      this.aid,
+      this.archive,
+      this.uid});
 
   ContentRecordModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -22,7 +21,7 @@ class ContentRecordModel {
     updatedAt = json['updated_at'];
     aid = json['aid'];
     archive =
-    json['archive'] != null ? new Archive.fromJson(json['archive']) : null;
+        json['archive'] != null ? new Archive.fromJson(json['archive']) : null;
     uid = json['uid'];
   }
 
@@ -59,6 +58,8 @@ class Archive {
   String audioUrl;
   String source;
   String sourceUrl;
+  String linkUrl;
+  int linkType;
   String author;
   int coin;
   int sortRank;
@@ -71,32 +72,34 @@ class Archive {
 
   Archive(
       {this.id,
-        this.createdAt,
-        this.updatedAt,
-        this.cid,
-        this.category,
-        this.chid,
-        this.channel,
-        this.uid,
-        this.title,
-        this.titleShort,
-        this.description,
-        this.keywords,
-        this.seoUrl,
-        this.imageUrl,
-        this.videoUrl,
-        this.audioUrl,
-        this.source,
-        this.sourceUrl,
-        this.author,
-        this.coin,
-        this.sortRank,
-        this.count,
-        this.countComment,
-        this.countDigg,
-        this.duration,
-        this.tags,
-        this.isTop});
+      this.createdAt,
+      this.updatedAt,
+      this.cid,
+      this.category,
+      this.chid,
+      this.channel,
+      this.uid,
+      this.title,
+      this.titleShort,
+      this.description,
+      this.keywords,
+      this.seoUrl,
+      this.imageUrl,
+      this.videoUrl,
+      this.audioUrl,
+      this.linkType,
+      this.linkUrl,
+      this.source,
+      this.sourceUrl,
+      this.author,
+      this.coin,
+      this.sortRank,
+      this.count,
+      this.countComment,
+      this.countDigg,
+      this.duration,
+      this.tags,
+      this.isTop});
 
   Archive.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -108,7 +111,7 @@ class Archive {
         : null;
     chid = json['chid'];
     channel =
-    json['channel'] != null ? new Channel.fromJson(json['channel']) : null;
+        json['channel'] != null ? new Channel.fromJson(json['channel']) : null;
     uid = json['uid'];
     title = json['title'];
     titleShort = json['title_short'];
@@ -120,6 +123,8 @@ class Archive {
     audioUrl = json['audio_url'];
     source = json['source'];
     sourceUrl = json['source_url'];
+    linkType = json['link_type'];
+    linkUrl = json['link_url'];
     author = json['author'];
     coin = json['coin'];
     sortRank = json['sort_rank'];
@@ -160,6 +165,8 @@ class Archive {
     data['audio_url'] = this.audioUrl;
     data['source'] = this.source;
     data['source_url'] = this.sourceUrl;
+    data['link_type'] = this.linkType;
+    data['link_url'] = this.linkUrl;
     data['author'] = this.author;
     data['coin'] = this.coin;
     data['sort_rank'] = this.sortRank;
@@ -197,23 +204,23 @@ class Category {
 
   Category(
       {this.id,
-        this.createdAt,
-        this.updatedAt,
-        this.parentCid,
-        this.topCid,
-        this.chid,
-        this.total,
-        this.step,
-        this.categoryName,
-        this.keywords,
-        this.seoTitle,
-        this.description,
-        this.seoUrl,
-        this.sortRank,
-        this.isHidden,
-        this.templateList,
-        this.templateArchive,
-        this.body});
+      this.createdAt,
+      this.updatedAt,
+      this.parentCid,
+      this.topCid,
+      this.chid,
+      this.total,
+      this.step,
+      this.categoryName,
+      this.keywords,
+      this.seoTitle,
+      this.description,
+      this.seoUrl,
+      this.sortRank,
+      this.isHidden,
+      this.templateList,
+      this.templateArchive,
+      this.body});
 
   Category.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -270,11 +277,11 @@ class Channel {
 
   Channel(
       {this.id,
-        this.createdAt,
-        this.updatedAt,
-        this.name,
-        this.addonTable,
-        this.title});
+      this.createdAt,
+      this.updatedAt,
+      this.name,
+      this.addonTable,
+      this.title});
 
   Channel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -311,15 +318,15 @@ class Tags {
 
   Tags(
       {this.id,
-        this.createdAt,
-        this.updatedAt,
-        this.name,
-        this.keywords,
-        this.seoTitle,
-        this.click,
-        this.count,
-        this.description,
-        this.seoUrl});
+      this.createdAt,
+      this.updatedAt,
+      this.name,
+      this.keywords,
+      this.seoTitle,
+      this.click,
+      this.count,
+      this.description,
+      this.seoUrl});
 
   Tags.fromJson(Map<String, dynamic> json) {
     id = json['id'];

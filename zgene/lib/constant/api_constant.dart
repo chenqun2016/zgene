@@ -1,7 +1,6 @@
 ///api路径
 class ApiConstant {
-
-  static const String BASE_API = "https://www.divms.com";
+  static const String BASE_API = "http://zgene.divms.com";
 
   ///********************************** 自媒体流 *****************************///
   //获取所有分类
@@ -89,8 +88,6 @@ class ApiConstant {
   static const String settings = "/api/v1/settings";
   //获取广告配置
   static const String adConfig = "/bxapi/getappadposition";
-
-
 
   //隐私政策
   static const String privacys = BASE_API + ApiConstant.privacy;

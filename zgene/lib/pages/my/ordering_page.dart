@@ -61,29 +61,44 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
 
   @override
   Widget viewPageBody(BuildContext context) {
-    return Stack(
-      children: [
-        Padding(
-          padding: EdgeInsets.only(bottom: 90),
-          child: SingleChildScrollView(
-            // controller: _controller,
-            child: ListView(
-              shrinkWrap: true,
-              physics: BouncingScrollPhysics(),
-              padding:
-                  EdgeInsets.only(top: 10, left: 15, right: 15, bottom: 30),
-              children: [
-                _tips,
-                _prodectDetail,
-                _addressDetail,
-                _payDetail,
-                _fapiaoDetail,
-              ],
-            ),
-          ),
-        ),
-        _bottom,
-      ],
+    // return Stack(
+    //   children: [
+    //     Padding(
+    //       padding: EdgeInsets.only(bottom: 90),
+    //       child: SingleChildScrollView(
+    //         // controller: _controller,
+    //         child: ListView(
+    //           shrinkWrap: true,
+    //           physics: BouncingScrollPhysics(),
+    //           padding:
+    //               EdgeInsets.only(top: 10, left: 15, right: 15, bottom: 30),
+    //           children: [
+    //             _tips,
+    //             _prodectDetail,
+    //             _addressDetail,
+    //             _payDetail,
+    //             _fapiaoDetail,
+    //           ],
+    //         ),
+    //       ),
+    //     ),
+    //     _bottom,
+    //   ],
+    // );
+
+    return SingleChildScrollView(
+      physics: BouncingScrollPhysics(),
+      // controller: _controller,
+      child: Column(
+        children: [
+          _tips,
+          _prodectDetail,
+          _addressDetail,
+          _payDetail,
+          _fapiaoDetail,
+          _bottom,
+        ],
+      ),
     );
   }
 

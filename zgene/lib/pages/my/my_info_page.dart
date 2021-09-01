@@ -11,6 +11,7 @@ class MyInfoPage extends StatefulWidget {
 }
 
 class _MyInfoPageState extends State<MyInfoPage> {
+  int sexType=3;
 
   @override
   Widget build(BuildContext context) {
@@ -244,29 +245,70 @@ class _MyInfoPageState extends State<MyInfoPage> {
                     style: TextStyle(fontSize: 15, color: Color(0xFF112950)),
                   )),
               Positioned(
-                right: 22,
+                right: 0,
                 top: 8,
                 child: Row(
                   children: [
-                    Text("男"),
                     Radio(
                       value: 1,
-                      groupValue: 1,
-                      visualDensity: VisualDensity(horizontal: -4, vertical: -4),
+                      groupValue: sexType,
+                      visualDensity:
+                          VisualDensity(horizontal: -4, vertical: -4),
                       onChanged: (value) {
-
+                        setState(() {
+                          sexType=value;
+                        });
                       },
                     ),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          sexType=1;
+                        });
+                      },
+                      child: Container(
+                          margin: EdgeInsets.only(right: 15), child: Text("男")),
+                    ),
+                    Radio(
+                      value: 2,
+                      groupValue: sexType,
+                      visualDensity:
+                          VisualDensity(horizontal: -4, vertical: -4),
+                      onChanged: (value) {
+                        setState(() {
+                          sexType=value;
+                        });
+                      },
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          sexType=2;
+                        });
+                      },
+                      child: Container(
+                          margin: EdgeInsets.only(right: 15), child: Text("女")),
+                    ),
+                    Radio(
+                      value: 3,
+                      groupValue: sexType,
+                      visualDensity:
+                          VisualDensity(horizontal: -4, vertical: -4),
+                      onChanged: (value) {
+                        setState(() {
+                          sexType=value;
+                        });
+                      },
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          sexType=3;
+                        });
+                      },
+                      child: Text("保密"),
+                    ),
                   ],
-                ),
-              ),
-              Positioned(
-                right: 0,
-                top: 15,
-                child: Image(
-                  image: AssetImage("assets/images/mine/icon_my_right.png"),
-                  height: 16,
-                  width: 16,
                 ),
               ),
             ],

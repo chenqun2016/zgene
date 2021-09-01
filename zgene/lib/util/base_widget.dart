@@ -46,15 +46,11 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
     pageWidgetInitState();
     listeningController = ScrollController();
     listeningController.addListener(() {
-      print(listeningController.position.pixels.toInt());
-      if (listeningController.position.pixels.toInt() <= 250) {
-        if (listeningController.position.pixels.toInt() < 0) {
-          trans = 0;
-        } else {
-          trans = listeningController.position.pixels.toInt();
-        }
+      if (listeningController.position.pixels.toInt() < 255 &&
+          listeningController.position.pixels.toInt() > 0) {
+        trans = listeningController.position.pixels.toInt();
         setState(() {});
-      } else {
+      } else if (listeningController.position.pixels.toInt() == 255) {
         trans = 255;
         setState(() {});
       }

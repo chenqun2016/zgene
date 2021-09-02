@@ -35,7 +35,7 @@ class _SendBackAcquisitionPageState
           sendBackTopView(context),
           needSendInfoView(context),
           sendPeopleView(context),
-          sendBackTime(context),
+          sendBackTimeView(context),
           deliverTheGoodsView(context),
           atOnceOrder(context)
         ],
@@ -415,7 +415,7 @@ class _SendBackAcquisitionPageState
                               )
                             : TextStyle(
                                 color: ColorConstant.TextSecondColor,
-                                fontSize: 18.sp,
+                                fontSize: 15.sp,
                                 fontStyle: FontStyle.normal,
                                 fontWeight: FontWeight.w500,
                                 // textBaseline: TextBaseline.ideographic,
@@ -513,7 +513,7 @@ class _SendBackAcquisitionPageState
   }
 
   /// 预约取件时间View
-  Widget sendBackTime(BuildContext context) {
+  Widget sendBackTimeView(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: 16.h, left: 16.w, right: 16.w),
       height: 120.h,
@@ -570,15 +570,23 @@ class _SendBackAcquisitionPageState
                           color: ColorConstant.TextSecondColor),
                       //输入文本的样式
                       decoration: InputDecoration(
-                        hintText: "请选择上门时间",
+                        hintText: sendBackTime == "" ? "请选择上门时间" : sendBackTime,
                         //设置输入文本框的提示文字的样式
-                        hintStyle: TextStyle(
-                          color: ColorConstant.Text_5E6F88,
-                          fontSize: 15.sp,
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.w400,
-                          // textBaseline: TextBaseline.ideographic,
-                        ),
+                        hintStyle: sendBackTime == ""
+                            ? TextStyle(
+                                color: ColorConstant.Text_5E6F88,
+                                fontSize: 15.sp,
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.w400,
+                                // textBaseline: TextBaseline.ideographic,
+                              )
+                            : TextStyle(
+                                color: ColorConstant.TextSecondColor,
+                                fontSize: 15.sp,
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.w500,
+                                // textBaseline: TextBaseline.ideographic,
+                              ),
                         fillColor: ColorConstant.TextFildBackColor,
                         filled: true,
                         contentPadding:
@@ -905,11 +913,16 @@ class _SendBackAcquisitionPageState
   }
 
   void selectTime() {
-    showSelectPickerTool(context);
+    showSelectPickerTool(context, (timeStr) {
+      sendBackTime = timeStr;
+      print(sendBackTime);
+      setState(() {});
+    });
   }
 
   String initProvince = '', initCity = '', initTown = '';
   String sendBackAddress = "";
+  String sendBackTime = "";
 
   void selectAddress() {
     Pickers.showAddressPicker(

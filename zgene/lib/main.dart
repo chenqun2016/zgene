@@ -13,8 +13,10 @@ import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/widget/restart_widget.dart';
+import 'configure_nonweb.dart' if (dart.library.html) 'configure_web.dart';
 
 void main() async {
+  configureApp();
   //提前初始化flutter
   WidgetsFlutterBinding.ensureInitialized();
   //滚动性能优化 1.22.0

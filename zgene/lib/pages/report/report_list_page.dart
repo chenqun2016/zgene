@@ -27,13 +27,13 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
     backImgPath = "assets/images/mine/img_bg_my.png";
 
     listeningController.addListener(() {
-      if (listeningController.position.pixels.toInt() > 150 &&
+      if (listeningController.position.pixels.toInt() > 170 &&
           !canFixedHeadShow) {
         setState(() {
           canFixedHeadShow = true;
         });
       }
-      if (listeningController.position.pixels.toInt() <= 150 &&
+      if (listeningController.position.pixels.toInt() <= 170 &&
           canFixedHeadShow) {
         setState(() {
           canFixedHeadShow = false;
@@ -51,18 +51,18 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
           child: Stack(
             children: [
               _buildSliverAppBar(),
-              _buildPersistentHeader(150),
+              _buildPersistentHeader(170),
               _buildSliverList(),
             ],
           ),
         ),
         _buildfixedHeader(),
-        Positioned(left: 15, right: 15, bottom: 30, child: _bug)
+        Positioned(left: 15, right: 15, bottom: 30, child: _buy)
       ],
     );
   }
 
-  Widget get _bug {
+  Widget get _buy {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -83,7 +83,9 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
           minWidth: double.infinity,
           disabledColor: Colors.white,
           color: ColorConstant.TextMainColor,
-          onPressed: () {},
+          onPressed: () {
+            UiUitls.showToast("立即购买");
+          },
           child: Text("立即购买",
               style: TextStyle(
                 fontSize: 16,
@@ -135,18 +137,20 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
       );
 
   Widget _buildPersistentHeader(double marginHeight) => Container(
-      height: 50,
+      height: 88,
       margin: EdgeInsets.only(top: marginHeight),
       decoration: BoxDecoration(
-        color: Color.fromARGB(trans < 200 ? 200 : trans, 255, 255, 255),
+        color: Color.fromARGB(trans < 150 ? 150 : trans, 255, 255, 255),
         // color: Colors.white,
         border: Border.all(
           color: Colors.white,
           width: 1,
         ),
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(25 * (1 - trans / 255)),
-          topRight: Radius.circular(25 * (1 - trans / 255)),
+          // topLeft: Radius.circular(25 * (1 - trans / 255)),
+          // topRight: Radius.circular(25 * (1 - trans / 255)),
+          topLeft: Radius.circular(25),
+          topRight: Radius.circular(25),
         ),
       ),
       child: Row(
@@ -177,13 +181,13 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
       ));
 
   Widget _buildSliverList() => Container(
-        margin: EdgeInsets.only(top: 200),
+        margin: EdgeInsets.only(top: 220),
         decoration: BoxDecoration(
           color: Colors.white,
-          // borderRadius: BorderRadius.only(
-          //   topLeft: Radius.circular(20),
-          //   topRight: Radius.circular(20),
-          // ),
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
         ),
         child: ListView.builder(
           shrinkWrap: true,
@@ -249,7 +253,7 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
       children: [
         Container(
           width: double.infinity,
-          height: 148,
+          height: 168,
           decoration: BoxDecoration(
               image: DecorationImage(
             image: AssetImage("assets/images/report/banner_yundong.png"),

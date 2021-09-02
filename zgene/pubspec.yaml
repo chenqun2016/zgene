@@ -75,6 +75,7 @@ flutter:
      - assets/images/tabs/
      - assets/images/mine/
      - assets/images/buy/
+     - assets/images/report/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

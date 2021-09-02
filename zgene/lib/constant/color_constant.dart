@@ -52,7 +52,7 @@ class ColorConstant {
   static const Color bg_EBEDEF = Color(0xFFEBEDEF);
   static const Color bg_D1D8E2 = Color(0xFFD1D8E2);
   static const Color bg_E5E7F3 = Color(0xFFE5E7F3);
-
+  static const Color bg_EA4335 = Color(0xFFEA4335);
   //分割线
   static const Color Divider = Color(0xFFCED0DE);
 

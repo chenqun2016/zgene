@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pickers/pickers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/util/date_utils.dart';
 import 'package:zgene/util/screen_utils.dart';
 
-void showSelectPickerTool(BuildContext context) {
+typedef _CallBack = void Function(String timeStr);
+// ignore: unused_element
+String _senderBackTime = "";
+
+void showSelectPickerTool(BuildContext context, _CallBack callback) {
   showModalBottomSheet(
     barrierColor: ColorConstant.AppleBlack99Color,
     context: context,
@@ -43,7 +48,17 @@ void showSelectPickerTool(BuildContext context) {
               ],
             ),
             Positioned(
-                top: 340.h,
+                top: 335.h,
+                left: 0,
+                child: Container(
+                  width: ScreenUtils.screenW(context) / 3,
+                  height: 50.h,
+                  decoration: new BoxDecoration(
+                    color: ColorConstant.TextFildBackColor,
+                  ),
+                )),
+            Positioned(
+                top: 335.h,
                 left: 0,
                 right: 0,
                 child: Container(
@@ -82,6 +97,9 @@ void showSelectPickerTool(BuildContext context) {
                           ),
                           onPressed: () {
                             Navigator.pop(context);
+                            if (callback != null) {
+                              callback(_senderBackTime);
+                            }
                           },
                           child: Container(
                             child: Center(
@@ -128,11 +146,12 @@ class _selectTimePicker extends State<selectTimePicker> {
     // TODO: implement initState
     super.initState();
     screeningOverTime();
+    callBackTime();
   }
 
   var dayData = ["今天", "明天", "后天"];
   int daySelectIndex = 0;
-  int timeSelectIndex = -1;
+  int timeSelectIndex = 0;
   var todayTimeState = [];
   var todayTimeData = [
     "一小时内",
@@ -165,6 +184,8 @@ class _selectTimePicker extends State<selectTimePicker> {
     "19:00-20:00",
     "20:00-20:30"
   ];
+  DateTime dayTime;
+
   Widget contextView(BuildContext context) {
     return Container(
       child: Row(
@@ -180,11 +201,11 @@ class _selectTimePicker extends State<selectTimePicker> {
         ),
         margin: EdgeInsets.only(top: 26.h),
         width: ScreenUtils.screenW(context) / 3,
-        height: 290.h,
+        height: 263.h,
         child: Column(
           children: [
             Container(
-              height: 263.h,
+              // height: 263.h,
               child: ListView.builder(
                 itemCount: dayData.length,
                 shrinkWrap: true,
@@ -193,8 +214,9 @@ class _selectTimePicker extends State<selectTimePicker> {
                   return InkWell(
                     onTap: () {
                       daySelectIndex = index;
-                      timeSelectIndex = -1;
+                      timeSelectIndex = 0;
                       setState(() {});
+                      callBackTime();
                     },
                     child: Container(
                       decoration: new BoxDecoration(
@@ -238,7 +260,7 @@ class _selectTimePicker extends State<selectTimePicker> {
         ),
         margin: EdgeInsets.only(top: 26.h),
         width: (ScreenUtils.screenW(context) / 3) * 2,
-        height: 290.h,
+        height: 263.h,
         child: ListView.builder(
           itemCount:
               daySelectIndex == 0 ? todayTimeData.length : otherTimeData.length,
@@ -250,6 +272,7 @@ class _selectTimePicker extends State<selectTimePicker> {
                 if (!(daySelectIndex == 0 && todayTimeState[index])) {
                   timeSelectIndex = index;
                   setState(() {});
+                  callBackTime();
                 }
               },
               child: Row(
@@ -289,10 +312,8 @@ class _selectTimePicker extends State<selectTimePicker> {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            // Expanded(child: Container()),
                             Container(
                               margin: EdgeInsets.only(left: 21.w),
-                              // width: 55.w,
                               child: Text(
                                 (daySelectIndex == 0 && todayTimeState[index])
                                     ? "已过期  "
@@ -321,7 +342,6 @@ class _selectTimePicker extends State<selectTimePicker> {
                                 ),
                               ),
                             ),
-                            // Expanded(child: Container()),
                           ],
                         ),
                       )),
@@ -332,19 +352,24 @@ class _selectTimePicker extends State<selectTimePicker> {
         ));
   }
 
+  var week = [];
+
   void screeningOverTime() {
+    DateTime dateTime = DateTime.now();
+
     for (var time in todayTimeData) {
       if (time == "一小时内") {
         todayTimeState += [false];
       } else {
         String endTime = time.substring(time.length - 5);
-        DateTime dateTime = DateTime.now();
         DateTime currentTime = new DateTime(
             dateTime.year,
             dateTime.month,
-            dateTime.day,
+            dateTime.day + daySelectIndex,
             int.parse(endTime.substring(0, 2)),
             int.parse(endTime.substring(endTime.length - 2)));
+        dayTime = currentTime;
+
         if (currentTime.millisecondsSinceEpoch <
             dateTime.millisecondsSinceEpoch) {
           todayTimeState += [true];
@@ -353,5 +378,22 @@ class _selectTimePicker extends State<selectTimePicker> {
         }
       }
     }
+
+    for (var i = 0; i < dayData.length; i++) {
+      // CusDateUtils.getWeek(dayTime)
+      DateTime currentTime = new DateTime(dateTime.year, dateTime.month,
+          dateTime.day + i, dateTime.hour, dateTime.minute);
+      week += [CusDateUtils.getWeek(currentTime)];
+    }
+  }
+
+  void callBackTime() {
+    _senderBackTime = dayData[daySelectIndex] +
+        '  (' +
+        week[daySelectIndex] +
+        ')  ' +
+        (daySelectIndex == 0
+            ? todayTimeData[timeSelectIndex]
+            : otherTimeData[timeSelectIndex]);
   }
 }

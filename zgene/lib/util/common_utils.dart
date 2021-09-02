@@ -1,5 +1,6 @@
 
 import 'package:connectivity/connectivity.dart';
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
@@ -82,6 +83,12 @@ class CommonUtils{
       }
       return t + t3;
     }
+  }
+
+
+  ///公共跳转链接
+  static toUrl({context,url,type}){
+    Navigator.of(context).pushNamed(url, arguments: "hi");
   }
 
 

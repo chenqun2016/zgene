@@ -8,13 +8,40 @@ import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/setting_model.dart';
+import 'package:zgene/pages/home/video_nav.dart';
 import 'package:zgene/pages/splash_page.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/widget/restart_widget.dart';
+import 'configure_nonweb.dart' if (dart.library.html) 'configure_web.dart';
+import 'pages/bindcollector/bind_collector_page.dart';
+import 'pages/bindcollector/bind_step_1.dart';
+import 'pages/bindcollector/bind_step_2.dart';
+import 'pages/bindcollector/bind_step_3.dart';
+import 'pages/home/explore_nav.dart';
+import 'pages/home/local_nav.dart';
+import 'pages/home/problem_nav.dart';
+import 'pages/home/video_page.dart';
+import 'pages/login/bindPhone_login.dart';
+import 'pages/login/getVFCode_login.dart';
+import 'pages/login/main_login.dart';
+import 'pages/login/phone_login.dart';
+import 'pages/my/add_address_page.dart';
+import 'pages/my/my_address_list.dart';
+import 'pages/my/my_editor_name.dart';
+import 'pages/my/my_info_page.dart';
+import 'pages/my/my_message_list.dart';
+import 'pages/my/my_order_list.dart';
+import 'pages/my/my_set.dart';
+import 'pages/my/order_detail.dart';
+import 'pages/my/order_step_page.dart';
+import 'pages/my/ordering_page.dart';
+import 'pages/my/sendBack_acquisition.dart';
+import 'pages/my/show_selectPicker.dart';
 
 void main() async {
+  configureApp();
   //提前初始化flutter
   WidgetsFlutterBinding.ensureInitialized();
   //滚动性能优化 1.22.0
@@ -53,6 +80,33 @@ class MyApp extends StatelessWidget {
         const Locale('zh', 'CN'), // 中文简体
         //其它Locales
       ],
+      //注册路由表
+      routes:{
+        "bindcollector/bind_collector_page":(context) => BindCollectorPage(),
+        // "bindcollector/bind_step_1":(context) => BindStep1(),
+        // "bindcollector/bind_step_2":(context) => BindStep2(),
+        // "bindcollector/bind_step_3":(context) => BindStep3(),
+        "home/explore_nav":(context) => ExploreNav(),
+        "home/local_nav":(context) => LocalNav(),
+        "home/problem_nav":(context) => ProblemNav(),
+        "home/video_nav":(context) => VideoNav(),
+        "home/video_page":(context) => VideoPage(),
+        "login/bindPhone_login":(context) => BindPhoneLoginPage(),
+        "login/getVFCode_login":(context) => GetVFCodeLoginPage(),
+        "login/main_login":(context) => MainLoginPage(),
+        "login/phone_login":(context) => PhoneLoginPage(),
+        "my/add_address_page":(context) => AddAddressPage(),
+        "my/my_address_list":(context) => MyAddressListPage(),
+        "my/my_editor_name":(context) => MyEditorPage(),
+        "my/my_info_page":(context) => MyInfoPage(),
+        "my/my_message_list":(context) => MyMessagePage(),
+        "my/my_order_list":(context) => MyOrderListPage(),
+        "my/order_detail":(context) => OrderDetailPage(),
+        "my/order_step_page":(context) => OrderStepPage(),
+        "my/ordering_page":(context) => OrderingPage(),
+        "my/sendBack_acquisition":(context) => SendBackAcquisitionPage(),
+        "my/show_selectPicker":(context) => selectTimePicker(),
+      } ,
     ));
   }
 }

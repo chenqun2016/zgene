@@ -9,6 +9,7 @@ import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/address_list_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
+import 'package:zgene/pages/my/add_address_page.dart';
 import 'package:zgene/pages/my/order_detail.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
@@ -223,8 +224,14 @@ class _MyAddressListPageState extends BaseWidgetState<MyAddressListPage> {
   }
 
   @override
-  rightBtnTap(BuildContext context) {
+  rightBtnTap(BuildContext context) async {
     UiUitls.showToast("添加");
+    final result = await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => AddAddressPage()));
+    if (result != null) {
+      getHttp();
+      // setState(() {});
+    }
   }
 
   ///点击事件

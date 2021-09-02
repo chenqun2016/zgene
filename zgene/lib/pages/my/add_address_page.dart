@@ -296,7 +296,8 @@ class AddAddressPageState extends BaseWidgetState<AddAddressPage> {
       onSuccess: (result) async {
         print(result);
         EasyLoading.showSuccess("添加成功");
-        Navigator.pop(context);
+        //1为刷新页面
+        Navigator.pop(context, 1);
       },
       onError: (code, error) {
         EasyLoading.showError(error);

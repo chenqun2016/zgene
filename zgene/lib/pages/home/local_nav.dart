@@ -10,6 +10,7 @@ import 'package:zgene/pages/bindcollector/bind_collector_page.dart';
 import 'package:zgene/pages/my/add_address_page.dart';
 import 'package:zgene/pages/my/order_step_page.dart';
 import 'package:zgene/util/common_utils.dart';
+import 'package:zgene/util/time_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 
 class LocalNav extends StatefulWidget {
@@ -46,17 +47,17 @@ class LocalNav extends StatefulWidget {
   _items(BuildContext context) {
     if (goldList == null) return null;
     List<Widget> items = [];
-
-    // localNavList.forEach((model) {
-    //   items.add(_item(context, model, localNavList.indexOf(model)));
-    // });
+    for(var i=0; i<goldList.length;i++){
+      items.add(_item(context,i));
+    }
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: items,
     );
   }
 
-  Widget _item(BuildContext context, String title, int index) {
+  Widget _item(BuildContext context, int index) {
+    Archives archives = goldList[index];
     return GestureDetector(
       onTap: () {
         if (0 == index) {
@@ -71,13 +72,24 @@ class LocalNav extends StatefulWidget {
       },
       child: Column(
         children: <Widget>[
-          Image.asset(
-            localNavIcon[index],
-            width: 80,
-            height: 80,
-          ),
+          FadeInImage.assetNetwork(
+              placeholder: 'assets/images/home/img_default2.png',
+              image: CommonUtils.splicingUrl(archives.imageUrl),
+              width: 80,
+              height: 80,
+              fadeInDuration: TimeUtils.fadeInDuration(),
+              fadeOutDuration: TimeUtils.fadeOutDuration(),
+              fit: BoxFit.cover,
+              imageErrorBuilder: (context, error, stackTrace) {
+                return Image.asset(
+                  'assets/images/home/img_default2.png',
+                  width: 80,
+                  height: 80,
+                  fit: BoxFit.fill,
+                );
+              }),
           Text(
-            title,
+            archives.title,
             style: TextStyle(fontSize: 13, color: ColorConstant.TextMainBlack),
           )
         ],

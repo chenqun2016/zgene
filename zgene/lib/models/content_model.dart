@@ -62,6 +62,8 @@ class Archives {
   int _countDigg;
   bool _isTop;
   Null _tags;
+  int _linkType;
+  String _linkUrl;
 
   Archives(
       {int id,
@@ -90,6 +92,8 @@ class Archives {
         int duration,
         int countDigg,
         bool isTop,
+        int linkType,
+        String linkUrl,
         Null tags}) {
     this._id = id;
     this._createdAt = createdAt;
@@ -118,6 +122,8 @@ class Archives {
     this._countDigg=countDigg;
     this._isTop=isTop;
     this._tags = tags;
+    this._linkType=linkType;
+    this._linkUrl = linkUrl;
   }
 
   int get id => _id;
@@ -174,6 +180,10 @@ class Archives {
   set isTop(bool isTop) => _isTop = isTop;
   Null get tags => _tags;
   set tags(Null tags) => _tags = tags;
+  int get linkType => _linkType;
+  set linkType(int linkType) => _linkType = linkType;
+  String get linkUrl => _linkUrl;
+  set linkUrl(String linkUrl) => _linkUrl = linkUrl;
 
   Archives.fromJson(Map<String, dynamic> json) {
     _id = json['id'];
@@ -206,6 +216,8 @@ class Archives {
     _countDigg = json['count_digg'];
     _isTop = json['is_top'];
     _tags = json['tags'];
+    _linkType = json['link_type'];
+    _linkUrl = json['link_url'];
   }
 
   Map<String, dynamic> toJson() {
@@ -241,6 +253,8 @@ class Archives {
     data['count_digg'] = this._countDigg;
     data['count_digg'] = this._countDigg;
     data['is_top'] = this._isTop;
+    data['link_type'] = this._linkType;
+    data['link_url'] = this._linkUrl;
     return data;
   }
 }

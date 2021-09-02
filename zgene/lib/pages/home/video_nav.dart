@@ -6,6 +6,7 @@ import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/content_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
+import 'package:zgene/pages/home/home_getHttp.dart';
 import 'package:zgene/pages/home/video_page.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/time_utils.dart';
@@ -22,7 +23,13 @@ class VideoNav extends StatefulWidget {
     @override
     void initState() {
       super.initState();
-      getHttp(12);
+      HomeGetHttp(12, (result) {
+        ContentModel contentModel = ContentModel.fromJson(result);
+        aloneList.clear();
+        setState(() {
+          aloneList=contentModel.archives;
+        });
+      });
     }
 
   @override
@@ -141,29 +148,4 @@ class VideoNav extends StatefulWidget {
       }
   }
 
-    ///获取内容列表
-    getHttp(type) async {
-      bool isNetWorkAvailable = await CommonUtils.isNetWorkAvailable();
-      if (!isNetWorkAvailable) {
-        return;
-      }
-      Map<String, dynamic> map = new HashMap();
-      map['cid'] =type;//栏目ID 9:金刚区 10:Banner 11:探索之旅 12:独一无二的你 3:常见问题 6:示例报告（男） 7:示例报告（女） 15：精选报告
-      HttpUtils.requestHttp(
-        ApiConstant.contentList,
-        parameters: map,
-        method: HttpUtils.GET,
-        onSuccess: (result) async {
-          ContentModel contentModel = ContentModel.fromJson(result);
-          aloneList.clear();
-          setState(() {
-            aloneList=contentModel.archives;
-          });
-
-        },
-        onError: (code, error) {
-          UiUitls.showToast(error);
-        },
-      );
-    }
 }

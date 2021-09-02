@@ -1,14 +1,10 @@
-import 'dart:collection';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
-import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/content_model.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/time_utils.dart';
-import 'package:zgene/util/ui_uitls.dart';
+import 'home_getHttp.dart';
 
 class ExploreNav extends StatefulWidget {
   @override
@@ -22,7 +18,13 @@ class _ExploreNavState extends State<ExploreNav> {
   @override
   void initState() {
     super.initState();
-    getHttp(11);
+    HomeGetHttp(11, (result) {
+      ContentModel contentModel = ContentModel.fromJson(result);
+      tourList.clear();
+      setState(() {
+        tourList=contentModel.archives;
+      });
+    });
   }
 
   @override
@@ -118,29 +120,4 @@ class _ExploreNavState extends State<ExploreNav> {
         ));
   }
 
-  ///获取内容列表
-  getHttp(type) async {
-    bool isNetWorkAvailable = await CommonUtils.isNetWorkAvailable();
-    if (!isNetWorkAvailable) {
-      return;
-    }
-    Map<String, dynamic> map = new HashMap();
-    map['cid'] =type;//栏目ID 9:金刚区 10:Banner 11:探索之旅 12:独一无二的你 3:常见问题 6:示例报告（男） 7:示例报告（女） 15：精选报告
-    HttpUtils.requestHttp(
-      ApiConstant.contentList,
-      parameters: map,
-      method: HttpUtils.GET,
-      onSuccess: (result) async {
-        ContentModel contentModel = ContentModel.fromJson(result);
-        tourList.clear();
-        setState(() {
-          tourList=contentModel.archives;
-        });
-
-      },
-      onError: (code, error) {
-        UiUitls.showToast(error);
-      },
-    );
-  }
 }

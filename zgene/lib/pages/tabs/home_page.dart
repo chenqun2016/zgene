@@ -1,14 +1,21 @@
+import 'dart:collection';
+
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/http/http_utils.dart';
+import 'package:zgene/models/content_model.dart';
 import 'package:zgene/pages/home/explore_nav.dart';
 import 'package:zgene/pages/home/local_nav.dart';
 import 'package:zgene/pages/home/problem_nav.dart';
 import 'package:zgene/pages/home/video_nav.dart';
 import 'package:zgene/util/base_widget.dart';
+import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/refresh_config_utils.dart';
+import 'package:zgene/util/time_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -28,15 +35,17 @@ class _HomePageState extends BaseWidgetState<HomePage> {
   EasyRefreshController _easyController;
 
   //首页banner
-  List<String> bannerList = [];
+  List bannerList = [];
+
+  List tourList=[];
+  List aloneList=[];
+  List problemList=[];
+
   ScrollController _controller = new ScrollController();
 
   @override
   void pageWidgetInitState() {
     UiUitls.setBlackTextStatus();
-    bannerList.add("");
-    bannerList.add("");
-    bannerList.add("");
 
     showBaseHead = false;
     showHead = false;
@@ -49,6 +58,10 @@ class _HomePageState extends BaseWidgetState<HomePage> {
     _controller.addListener(() {
       _onScroll(_controller.offset);
     });
+    getHttp(3);
+    getHttp(10);
+    getHttp(11);
+    getHttp(12);
     super.pageWidgetInitState();
   }
 
@@ -133,6 +146,7 @@ class _HomePageState extends BaseWidgetState<HomePage> {
         itemCount: bannerList.length,
         autoplay: true,
         itemBuilder: (BuildContext context, int index) {
+          Archives archives = bannerList[index];
           return GestureDetector(
             onTap: () {
               // String model = bannerList[index];
@@ -142,11 +156,30 @@ class _HomePageState extends BaseWidgetState<HomePage> {
             //   bannerList[index],
             //   fit: BoxFit.fill,
             // ),
-            child: Image.asset(
-              "assets/images/banner.png",
-              height: 168,
-              fit: BoxFit.fill,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(0),
+              child: FadeInImage.assetNetwork(
+                  placeholder: 'assets/images/home/img_default2.png',
+                  image: CommonUtils.splicingUrl(archives.imageUrl),
+                  width: double.infinity,
+                  height: 168,
+                  fadeInDuration: TimeUtils.fadeInDuration(),
+                  fadeOutDuration: TimeUtils.fadeOutDuration(),
+                  fit: BoxFit.cover,
+                  imageErrorBuilder: (context, error, stackTrace) {
+                    return Image.asset(
+                      'assets/images/home/img_default2.png',
+                      width: double.infinity,
+                      height: 168,
+                      fit: BoxFit.fill,
+                    );
+                  }),
             ),
+            // child: Image.asset(
+            //   "assets/images/banner.png",
+            //   height: 168,
+            //   fit: BoxFit.fill,
+            // ),
           );
         },
         pagination: SwiperPagination(),
@@ -189,20 +222,6 @@ class _HomePageState extends BaseWidgetState<HomePage> {
     );
   }
 
-  //
-  // Future<Null> _handleRefresh() async {
-  //   try {
-  //     setState(() {
-  //       _loading = false;
-  //     });
-  //   } catch (e) {
-  //     print(e);
-  //     setState(() {
-  //       _loading = false;
-  //     });
-  //   }
-  //   return null;
-  // }
 
   _onScroll(offset) {
     double alpha = offset / APPBAR_SCROLL_OFFSET;
@@ -216,5 +235,60 @@ class _HomePageState extends BaseWidgetState<HomePage> {
         appBarAlpha = alpha;
       });
     }
+  }
+
+  ///获取内容列表
+  getHttp(type) async {
+    bool isNetWorkAvailable = await CommonUtils.isNetWorkAvailable();
+    if (!isNetWorkAvailable) {
+      return;
+    }
+    Map<String, dynamic> map = new HashMap();
+    map['cid'] =type;//栏目ID 9:金刚区 10:Banner 11:探索之旅 12:独一无二的你 3:常见问题 6:示例报告（男） 7:示例报告（女） 15：精选报告
+    HttpUtils.requestHttp(
+      ApiConstant.contentList,
+      parameters: map,
+      method: HttpUtils.GET,
+      onSuccess: (result) async {
+        ContentModel contentModel = ContentModel.fromJson(result);
+        switch(type){
+          case 3://常见问题
+            problemList.clear();
+            setState(() {
+              problemList=contentModel.archives;
+            });
+            break;
+          // case 9://金刚区
+          //   goldList.clear();
+          //   setState(() {
+          //     goldList=contentModel.archives;
+          //   });
+          //   break;
+          case 10://Banner
+            bannerList.clear();
+            setState(() {
+              bannerList=contentModel.archives;
+            });
+            break;
+          case 11://探索之旅
+            tourList.clear();
+            setState(() {
+              tourList=contentModel.archives;
+            });
+
+            break;
+          case 12://独一无二的你
+            aloneList.clear();
+            setState(() {
+              aloneList=contentModel.archives;
+            });
+
+            break;
+        }
+      },
+      onError: (code, error) {
+        UiUitls.showToast(error);
+      },
+    );
   }
 }

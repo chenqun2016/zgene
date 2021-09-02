@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/navigator/navigator_util.dart';
+import 'package:zgene/pages/report/report_list_page.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/util/ui_uitls.dart';
@@ -206,40 +208,45 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
   }
 
   Widget _item(index) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(
-          Radius.circular(20),
+    return GestureDetector(
+      onTap: () {
+        NavigatorUtil.push(context, ReportListPage());
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(
+            Radius.circular(20),
+          ),
         ),
+        child: (Column(
+          children: [
+            Image.asset(
+              "assets/images/report/icon_geti.png",
+              height: 76,
+              width: 76,
+            ),
+            Text(
+              "个体特征",
+              style: TextStyle(
+                fontSize: 14.sp,
+                fontStyle: FontStyle.normal,
+                fontWeight: FontWeight.w600,
+                color: ColorConstant.TextMainBlack,
+              ),
+            ),
+            Text(
+              "共33项",
+              style: TextStyle(
+                fontSize: 12.sp,
+                fontStyle: FontStyle.normal,
+                fontWeight: FontWeight.w500,
+                color: ColorConstant.Text_8E9AB,
+              ),
+            ),
+          ],
+        )),
       ),
-      child: (Column(
-        children: [
-          Image.asset(
-            "assets/images/report/icon_geti.png",
-            height: 76,
-            width: 76,
-          ),
-          Text(
-            "个体特征",
-            style: TextStyle(
-              fontSize: 14.sp,
-              fontStyle: FontStyle.normal,
-              fontWeight: FontWeight.w600,
-              color: ColorConstant.TextMainBlack,
-            ),
-          ),
-          Text(
-            "共33项",
-            style: TextStyle(
-              fontSize: 12.sp,
-              fontStyle: FontStyle.normal,
-              fontWeight: FontWeight.w500,
-              color: ColorConstant.Text_8E9AB,
-            ),
-          ),
-        ],
-      )),
     );
   }
 

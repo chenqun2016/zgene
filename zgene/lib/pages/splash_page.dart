@@ -17,7 +17,7 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> {
   bool isFirst = true;
   var container = TabNavigator();
-  bool showSplash = true;
+  bool showSplash = false;
   bool showSkip = false;
 
   CountDownWidget _countDownWidget;

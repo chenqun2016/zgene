@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
+import 'package:zgene/util/platform_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 
 //基础webview
@@ -93,18 +94,19 @@ class _BaseWebViewState extends State<BaseWebView> {
                         headers: {"Referer ": CommonConstant.BASE_API}),
 
                     onWebViewCreated: (controller) {
-                      try{
+                      try {
                         controller.addJavaScriptHandler(
                             handlerName: "handlerGetCode",
                             callback: (args) {
                               print(args);
                               return {
-                                'os': Platform.isAndroid ? 'Android' : 'iOS',
+                                'os':
+                                    PlatformUtils.isAndroid ? 'Android' : 'iOS',
                                 'token': SpUtils()
                                     .getStorageDefault(SpConstant.Token, "")
                               };
                             });
-                      }catch(e){
+                      } catch (e) {
                         print(e);
                       }
 

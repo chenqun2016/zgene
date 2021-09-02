@@ -2,11 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:device_info/device_info.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:package_info/package_info.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
+import 'package:zgene/util/platform_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 
 import 'base_response.dart';
@@ -37,28 +37,27 @@ class HttpUtils {
       if (!spUtils.getStorageDefault(SpConstant.SpIsFirst, true)) {
         //获取设备信息
         DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-        //判断是否为web
-        if (!kIsWeb) {
-          if (Platform.isAndroid) {
-            AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-            model = androidInfo.model;
-            vendor = androidInfo.manufacturer;
-            os = 1;
-            udid = androidInfo.androidId;
-            spUtils.setStorage(SpConstant.AppUdid, androidInfo.androidId);
-          } else {
-            IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
-            model = iosInfo.model;
-            vendor = iosInfo.localizedModel;
-            os = 2;
-            udid = iosInfo.identifierForVendor;
-            spUtils.setStorage(SpConstant.AppUdid, iosInfo.identifierForVendor);
-          }
-          //app版本信息
+
+        if (PlatformUtils.isAndroid) {
+          AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+          model = androidInfo.model;
+          vendor = androidInfo.manufacturer;
+          os = 1;
+          udid = androidInfo.androidId;
+          spUtils.setStorage(SpConstant.AppUdid, androidInfo.androidId);
+        } else if (PlatformUtils.isIOS) {
+          IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+          model = iosInfo.model;
+          vendor = iosInfo.localizedModel;
+          os = 2;
+          udid = iosInfo.identifierForVendor;
+          spUtils.setStorage(SpConstant.AppUdid, iosInfo.identifierForVendor);
+        }
+        //app版本信息
+        if (PlatformUtils.isIOS || PlatformUtils.isAndroid) {
           PackageInfo packageInfo = await PackageInfo.fromPlatform();
           version = packageInfo.version; //版本号
           // String buildNumber = packageInfo.buildNumber;//版本构建号
-
         }
 
         authorization = spUtils.getStorageDefault(SpConstant.Token, "");

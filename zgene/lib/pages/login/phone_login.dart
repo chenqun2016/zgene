@@ -1,7 +1,12 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/phonetextFild_input.dart';
 
@@ -25,6 +30,7 @@ class _PhoneLoginPageState extends BaseWidgetState<PhoneLoginPage> {
   bool isTextFildSelect = false;
 
   FocusNode _focusNode = FocusNode();
+  String _phoneText = "";
 
   @override
   void initState() {
@@ -107,6 +113,7 @@ class _PhoneLoginPageState extends BaseWidgetState<PhoneLoginPage> {
                   } else {
                     canGetCode = false;
                   }
+                  _phoneText = value;
                   setState(() {});
                 },
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
@@ -200,7 +207,31 @@ class _PhoneLoginPageState extends BaseWidgetState<PhoneLoginPage> {
     if (!canGetCode) {
       return;
     }
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => GetVFCodeLoginPage()));
+    getVerifyCode();
+  }
+
+  void getVerifyCode() {
+    Map<String, dynamic> map = new HashMap();
+    var number = _phoneText.replaceAll(new RegExp(r"\s+\b|\b\s"), "");
+    map["mobile"] = number;
+
+    EasyLoading.show(status: 'loading...');
+
+    HttpUtils.requestHttp(
+      ApiConstant.loginSms,
+      parameters: map,
+      method: HttpUtils.POST,
+      onSuccess: (data) {
+        EasyLoading.dismiss();
+        print(number);
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => GetVFCodeLoginPage(phoneText: number)));
+      },
+      onError: (code, error) {
+        EasyLoading.showError(error ?? "");
+      },
+    );
   }
 }

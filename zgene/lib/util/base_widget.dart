@@ -5,6 +5,7 @@ import 'package:zgene/constant/color_constant.dart';
 const APPBAR_SCORLL_OFFSET = 100;
 
 abstract class BaseWidget extends StatefulWidget {
+  BaseWidget({Key key}) : super(key: key);
   @override
   BaseWidgetState createState() => getState();
   BaseWidgetState getState();

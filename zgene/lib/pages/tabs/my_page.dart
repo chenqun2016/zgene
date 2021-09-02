@@ -482,6 +482,7 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
         break;
       case 11: //关于Z基因
         UiUitls.showToast("关于Z基因");
+        NavigatorUtil.push(context, MainLoginPage());
         break;
     }
   }

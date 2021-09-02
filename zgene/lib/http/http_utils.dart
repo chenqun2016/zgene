@@ -10,7 +10,6 @@ import 'package:zgene/util/sp_utils.dart';
 
 import 'base_response.dart';
 
-
 ///网络请求工具类
 class HttpUtils {
   static int CONNECTTIMEOUT = 8000;
@@ -18,7 +17,7 @@ class HttpUtils {
   //需要登录错误码
   static const int _needLoginCode = 20201;
 
-  static  Dio _dio;
+  static Dio _dio;
 
   /// http request methods
   static const String GET = 'get';
@@ -45,7 +44,7 @@ class HttpUtils {
           os = 1;
           udid = androidInfo.androidId;
           spUtils.setStorage(SpConstant.AppUdid, androidInfo.androidId);
-        } else {
+        } else if (Platform.isIOS) {
           IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
           model = iosInfo.model;
           vendor = iosInfo.localizedModel;
@@ -95,6 +94,7 @@ class HttpUtils {
   static clear() {
     _dio = null;
   }
+
   /// request Get、Post 请/求
   //url 请求链接
   //parameters 请求参数
@@ -103,9 +103,9 @@ class HttpUtils {
   //onError 失败回调
   static void requestHttp(String url,
       {parameters,
-        method,
-        Function(dynamic t) onSuccess,
-        Function(int code, String error) onError}) async {
+      method,
+      Function(dynamic t) onSuccess,
+      Function(int code, String error) onError}) async {
     parameters = parameters ?? {"": ""};
     method = method ?? 'GET';
     if (method == HttpUtils.GET) {
@@ -113,12 +113,12 @@ class HttpUtils {
         url,
         parameters: parameters,
         onSuccess: (data) {
-          if(null != onSuccess){
+          if (null != onSuccess) {
             onSuccess(data);
           }
         },
         onError: (code, error) {
-          if(null != onError){
+          if (null != onError) {
             onError(code, error);
           }
         },
@@ -128,12 +128,12 @@ class HttpUtils {
         url,
         parameters: parameters,
         onSuccess: (data) {
-          if(null != onSuccess){
+          if (null != onSuccess) {
             onSuccess(data);
           }
         },
         onError: (code, error) {
-          if(null != onError){
+          if (null != onError) {
             onError(code, error);
           }
         },
@@ -145,8 +145,8 @@ class HttpUtils {
   static void getHttp(
     String url, {
     parameters,
-        Function(dynamic) onSuccess,
-        Function(int code, String error) onError,
+    Function(dynamic) onSuccess,
+    Function(int code, String error) onError,
   }) async {
     ///定义请求参数
 
@@ -174,7 +174,7 @@ class HttpUtils {
         case _needLoginCode:
           EasyLoading.dismiss();
           if (onError != null) {
-            onError(code??0, "请登录");
+            onError(code ?? 0, "请登录");
           }
           // BaseLogin.login();
           return;
@@ -189,7 +189,7 @@ class HttpUtils {
         }
       } else {
         if (onError != null) {
-          onError(code??0, msg??"");
+          onError(code ?? 0, msg ?? "");
         }
       }
       print('响应数据：' + response.toString());
@@ -205,8 +205,8 @@ class HttpUtils {
   static void postHttp<T>(
     String url, {
     parameters,
-         Function(T) onSuccess,
-         Function(int code, String error) onError,
+    Function(T) onSuccess,
+    Function(int code, String error) onError,
   }) async {
     ///定义请求参数
     parameters = parameters ?? {};
@@ -230,7 +230,7 @@ class HttpUtils {
       switch (code) {
         case _needLoginCode:
           EasyLoading.dismiss();
-          onError(code?? 0, "请登录");
+          onError(code ?? 0, "请登录");
           // BaseLogin.login();
           return;
         default:
@@ -240,7 +240,7 @@ class HttpUtils {
       if (code == 0) {
         onSuccess(result);
       } else {
-        onError(code??0, msg??"");
+        onError(code ?? 0, msg ?? "");
       }
       print('响应数据：' + response.toString());
     } catch (e) {

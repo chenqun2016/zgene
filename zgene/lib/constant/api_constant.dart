@@ -13,9 +13,14 @@ class ApiConstant {
   static const String agreement = "/agreement";
   //用户隐私
   static const String payLink = "/service/pay/#/pages/CoinRecharge/index";
+
   ///********************************** 登录 *****************************///
   //配置
   static const String settings = "/api/v1/settings";
+  //获取验证码
+  static const String loginSms = "/api/v1/login/sms";
+  //手机号登录
+  static const String loginApp_phone = "/api/v1/user/login/app_phone";
   //隐私政策
   static const String privacys = BASE_API + ApiConstant.privacy;
   //用户协议

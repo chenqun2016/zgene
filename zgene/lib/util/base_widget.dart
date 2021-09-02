@@ -43,7 +43,6 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
   @override
   void initState() {
     super.initState();
-    pageWidgetInitState();
     listeningController = ScrollController();
     listeningController.addListener(() {
       if (listeningController.position.pixels.toInt() < 255 &&
@@ -57,6 +56,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
         setState(() {});
       }
     });
+    pageWidgetInitState();
   }
 
   @override

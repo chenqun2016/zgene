@@ -13,14 +13,12 @@ import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 
 class LocalNav extends StatefulWidget {
-
   @override
   _LocalNavState createState() => _LocalNavState();
-  }
+}
 
-  class _LocalNavState extends State<LocalNav> {
-
-  List goldList=[];
+class _LocalNavState extends State<LocalNav> {
+  List goldList = [];
 
   @override
   void initState() {
@@ -31,7 +29,7 @@ class LocalNav extends StatefulWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 16,left: 15,right: 15),
+      margin: EdgeInsets.only(top: 16, left: 15, right: 15),
       padding: EdgeInsets.fromLTRB(0, 0, 0, 16),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -85,29 +83,29 @@ class LocalNav extends StatefulWidget {
     );
   }
 
-    ///获取内容列表
-    getHttp(type) async {
-      bool isNetWorkAvailable = await CommonUtils.isNetWorkAvailable();
-      if (!isNetWorkAvailable) {
-        return;
-      }
-      Map<String, dynamic> map = new HashMap();
-      map['cid'] =type;//栏目ID 9:金刚区 10:Banner 11:探索之旅 12:独一无二的你 3:常见问题 6:示例报告（男） 7:示例报告（女） 15：精选报告
-      HttpUtils.requestHttp(
-        ApiConstant.contentList,
-        parameters: map,
-        method: HttpUtils.GET,
-        onSuccess: (result) async {
-          ContentModel contentModel = ContentModel.fromJson(result);
-          goldList.clear();
-          setState(() {
-            goldList=contentModel.archives;
-          });
-
-        },
-        onError: (code, error) {
-          UiUitls.showToast(error);
-        },
-      );
+  ///获取内容列表
+  getHttp(type) async {
+    bool isNetWorkAvailable = await CommonUtils.isNetWorkAvailable();
+    if (!isNetWorkAvailable) {
+      return;
     }
+    Map<String, dynamic> map = new HashMap();
+    map['cid'] =
+        type; //栏目ID 9:金刚区 10:Banner 11:探索之旅 12:独一无二的你 3:常见问题 6:示例报告（男） 7:示例报告（女） 15：精选报告
+    HttpUtils.requestHttp(
+      ApiConstant.contentList,
+      parameters: map,
+      method: HttpUtils.GET,
+      onSuccess: (result) async {
+        ContentModel contentModel = ContentModel.fromJson(result);
+        goldList.clear();
+        setState(() {
+          goldList = contentModel.archives;
+        });
+      },
+      onError: (code, error) {
+        UiUitls.showToast(error);
+      },
+    );
+  }
 }

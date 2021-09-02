@@ -6,6 +6,7 @@ import 'package:zgene/pages/my/my_info_page.dart';
 import 'package:zgene/pages/my/my_message_list.dart';
 import 'package:zgene/pages/my/my_order_list.dart';
 import 'package:zgene/pages/my/my_set.dart';
+import 'package:zgene/pages/my/sendBack_acquisition.dart';
 import 'package:zgene/util/ui_uitls.dart';
 
 ///我的
@@ -43,8 +44,8 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
                   margin: EdgeInsets.fromLTRB(0, 45, 0, 0),
                   child: Stack(children: [
                     Image(
-                      image: AssetImage(
-                          "assets/images/mine/icon_my_message.png"),
+                      image:
+                          AssetImage("assets/images/mine/icon_my_message.png"),
                       height: 42,
                       width: 42,
                     ),
@@ -56,7 +57,7 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
                           height: 16,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                            color: Color(0XFFF72937),
+                              color: Color(0XFFF72937),
                               borderRadius: BorderRadius.circular(15)),
                           child: Text(
                             "44",
@@ -460,7 +461,9 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
         UiUitls.showToast("绑定采集器");
         break;
       case 5: //回寄采集器
-        UiUitls.showToast("回寄采集器");
+
+        NavigatorUtil.push(context, SendBackAcquisitionPage());
+
         break;
       case 6: //产品购买
         UiUitls.showToast("产品购买");

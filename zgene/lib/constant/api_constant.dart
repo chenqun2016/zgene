@@ -1,6 +1,6 @@
 ///api路径
 class ApiConstant {
-  static const String BASE_API = "http://zgene.divms.com";
+  static const String BASE_API = "https://zgene.divms.com";
 
   ///********************************** 自媒体流 *****************************///
   //内容列表
@@ -13,6 +13,10 @@ class ApiConstant {
   static const String agreement = "/agreement";
   //用户隐私
   static const String payLink = "/service/pay/#/pages/CoinRecharge/index";
+//地址查询
+  static const String userAddresses = "/api/v1/user/addresses";
+//地址添加
+  static const String userAddAddress = "/api/v1/user/address";
 
   ///********************************** 登录 *****************************///
   //配置
@@ -27,4 +31,9 @@ class ApiConstant {
   static const String agreements = BASE_API + ApiConstant.agreement;
   //用户协议
   static const String payLinks = BASE_API + ApiConstant.payLink;
+
+  ///********************************* 消息 *****************************///
+
+  //消息列表
+  static const String messageList = "/api/v1/user/notices";
 }

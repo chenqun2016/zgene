@@ -15,16 +15,20 @@ class ProblemNav extends StatefulWidget {
 }
 
 class _ProblemNavState extends State<ProblemNav> {
-  List<String> contents = ["关于基因检测。？", "基因检测的原理是什么？", "对用户隐私安全有什么保护措施？"];
+  // List<String> contents = ["关于基因检测。？", "基因检测的原理是什么？", "对用户隐私安全有什么保护措施？"];
 
-  List goldList = [];
+  List contentList = [];
 
   @override
   void initState() {
-    print("99999");
     super.initState();
     HomeGetHttp(3, (result) {
       print(result);
+      ContentModel contentModel = ContentModel.fromJson(result);
+      contentList.clear();
+      setState(() {
+        contentList = contentModel.archives;
+      });
     });
   }
 
@@ -60,8 +64,8 @@ class _ProblemNavState extends State<ProblemNav> {
 
   List<Widget> _items() {
     List<Widget> items = [];
-    contents.forEach((element) {
-      if (contents.indexOf(element) != 0) {
+    contentList.forEach((element) {
+      if (contentList.indexOf(element) != 0) {
         items.add(Padding(
           padding: EdgeInsets.only(
             left: 10,
@@ -70,7 +74,8 @@ class _ProblemNavState extends State<ProblemNav> {
           child: Divider(),
         ));
       }
-      items.add(_item(element));
+
+      items.add(_item(element.title));
     });
     return items;
   }

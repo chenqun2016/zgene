@@ -45,8 +45,8 @@ class _LocalNavState extends State<LocalNav> {
   _items(BuildContext context) {
     if (goldList == null) return null;
     List<Widget> items = [];
-    for(var i=0; i<goldList.length;i++){
-      items.add(_item(context,i));
+    for (var i = 0; i < goldList.length; i++) {
+      items.add(_item(context, i));
     }
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,

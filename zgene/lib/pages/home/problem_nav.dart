@@ -1,13 +1,37 @@
-import 'package:flutter/material.dart';
-import 'package:zgene/constant/color_constant.dart';
+import 'dart:collection';
 
-class ProblemNav extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:zgene/constant/api_constant.dart';
+import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/http/http_utils.dart';
+import 'package:zgene/models/content_model.dart';
+import 'package:zgene/pages/home/home_getHttp.dart';
+import 'package:zgene/util/common_utils.dart';
+import 'package:zgene/util/ui_uitls.dart';
+
+class ProblemNav extends StatefulWidget {
+  @override
+  _ProblemNavState createState() => _ProblemNavState();
+}
+
+class _ProblemNavState extends State<ProblemNav> {
   List<String> contents = ["关于基因检测。？", "基因检测的原理是什么？", "对用户隐私安全有什么保护措施？"];
+
+  List goldList = [];
+
+  @override
+  void initState() {
+    print("99999");
+    super.initState();
+    HomeGetHttp(3, (result) {
+      print(result);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 24,left: 15,right: 15),
+      margin: EdgeInsets.only(top: 24, left: 15, right: 15),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

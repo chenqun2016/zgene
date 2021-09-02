@@ -1,4 +1,4 @@
 .PHONY: web
 
 web:
-	flutter build web --web-renderer canvaskit
+	flutter build web --release

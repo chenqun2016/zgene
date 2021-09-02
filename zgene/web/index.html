@@ -28,7 +28,7 @@
   <meta name="apple-mobile-web-app-title" content="zgene">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
-  <title>zgene</title>
+  <title>Z基因 - 遇见微观的自己，越探索·越幸福 - 越探索·越健康</title>
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" type="text/css" href="splash/style.css">
 </head>
@@ -36,6 +36,10 @@
   <!-- This script installs service_worker.js to provide PWA functionality to
        application. For more information, see:
        https://developers.google.com/web/fundamentals/primers/service-workers -->
+  <script src="js/vconsole.min.js"></script>
+  <script>
+    const vConsole = new VConsole();
+  </script>
   <script>
     var serviceWorkerVersion = null;
     var scriptLoaded = false;
@@ -70,7 +74,11 @@
             if (!reg.active && (reg.installing || reg.waiting)) {
               // No active web worker and we have installed or are installing
               // one for the first time. Simply wait for it to activate.
-              waitForActivation(reg.installing ?? reg.waiting);
+              if (typeof reg.installing !== "undefined") {
+                waitForActivation(reg.installing);
+              } else {
+                waitForActivation(reg.waiting);
+              }
             } else if (!reg.active.scriptURL.endsWith(serviceWorkerVersion)) {
               // When the app updates the serviceWorkerVersion changes, so we
               // need to ask the service worker to update.

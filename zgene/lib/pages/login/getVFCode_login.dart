@@ -1,15 +1,24 @@
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:zgene/constant/api_constant.dart';
+import 'package:zgene/constant/app_notification.dart';
 import 'package:zgene/constant/color_constant.dart';
-import 'package:zgene/constant/common_constant.dart';
+import 'package:zgene/constant/sp_constant.dart';
+import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/util/base_widget.dart';
-import 'package:zgene/util/phonetextFild_input.dart';
+import 'package:zgene/util/notification_utils.dart';
+import 'package:zgene/util/sp_utils.dart';
 
 class GetVFCodeLoginPage extends BaseWidget {
+  String phoneText;
+  GetVFCodeLoginPage({Key key, this.phoneText}) : super(key: key);
+
   @override
   BaseWidgetState getState() {
     return _GetVFCodeLoginPageState();
@@ -28,7 +37,7 @@ class _GetVFCodeLoginPageState extends BaseWidgetState<GetVFCodeLoginPage> {
   String _verifyStr = ' 60s ';
   bool _isAvailableGetVCode = true; //是否可以获取验证码，默认为`false`
   bool isTextFildSelect = false;
-
+  String _verifyText = "";
   FocusNode _focusNode = FocusNode();
 
   /// 倒计时的计时器。
@@ -42,6 +51,8 @@ class _GetVFCodeLoginPageState extends BaseWidgetState<GetVFCodeLoginPage> {
 
   void initState() {
     super.initState();
+    print(99999999999);
+    print(widget.phoneText);
     _seconds = countdown;
     _startTimer();
     _focusNode.addListener(() {
@@ -108,11 +119,12 @@ class _GetVFCodeLoginPageState extends BaseWidgetState<GetVFCodeLoginPage> {
               child: TextField(
                   focusNode: _focusNode,
                   onChanged: (value) {
-                    if (value.length >= 6) {
+                    if (value.length >= 4) {
                       canLogin = true;
                     } else {
                       canLogin = false;
                     }
+                    _verifyText = value;
                     setState(() {});
                   },
                   keyboardType: TextInputType.numberWithOptions(decimal: true),
@@ -204,7 +216,9 @@ class _GetVFCodeLoginPageState extends BaseWidgetState<GetVFCodeLoginPage> {
                           : ColorConstant.WhiteColor),
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(40.h)))),
-                  onPressed: () {},
+                  onPressed: () {
+                    loginIn();
+                  },
                   child: Container(
                     child: Center(
                       child: Container(
@@ -233,24 +247,52 @@ class _GetVFCodeLoginPageState extends BaseWidgetState<GetVFCodeLoginPage> {
   void getVerifyCode() {
     setState(() {});
 
-    // Map<String, dynamic> map = new HashMap();
-    // map["mobile"] = _phoneText;
+    Map<String, dynamic> map = new HashMap();
+    map["mobile"] = widget.phoneText;
 
-    // EasyLoading.show(status: 'loading...');
+    EasyLoading.show(status: 'loading...');
 
-    // HttpUtils.requestHttp(
-    //   ApiConstant.loginSms,
-    //   parameters: map,
-    //   // method: HttpUtils.POST,
-    //   onSuccess: (data) {
-    //     print(data.toString());
-    //     // EasyLoading.dismiss();
-    _startTimer();
-    //   },
-    //   onError: (code, error) {
-    //     // EasyLoading.showError(error ?? "");
-    //   },
-    // );
+    HttpUtils.requestHttp(
+      ApiConstant.loginSms,
+      parameters: map,
+      method: HttpUtils.POST,
+      onSuccess: (data) {
+        EasyLoading.dismiss();
+        _startTimer();
+      },
+      onError: (code, error) {
+        EasyLoading.showError(error ?? "");
+      },
+    );
+  }
+
+  void loginIn() {
+    Map<String, dynamic> map = new HashMap();
+    map["mobile"] = widget.phoneText;
+    map["code"] = _verifyText;
+    EasyLoading.show(status: 'loading...');
+
+    HttpUtils.requestHttp(
+      ApiConstant.loginApp_phone,
+      parameters: map,
+      method: HttpUtils.POST,
+      onSuccess: (data) async {
+        EasyLoading.showSuccess('登录成功');
+        var spUtils = SpUtils();
+        spUtils.setStorage(SpConstant.Token, data["token"]);
+        spUtils.setStorage(SpConstant.IsLogin, true);
+        spUtils.setStorage(SpConstant.Uid, data["uid"]);
+        HttpUtils.clear();
+
+        NotificationCenter.instance
+            .postNotification(NotificationName.GetUserInfo, null);
+
+        Navigator.popUntil(context, ModalRoute.withName('/'));
+      },
+      onError: (code, error) {
+        EasyLoading.showError(error ?? "");
+      },
+    );
   }
 
   _startTimer() {

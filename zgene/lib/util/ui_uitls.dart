@@ -8,6 +8,7 @@ import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/navigator/navigator_util.dart';
+import 'package:zgene/util/platform_utils.dart';
 import 'package:zgene/widget/base_web.dart';
 import 'package:zgene/widget/privacy_view.dart';
 
@@ -16,7 +17,7 @@ class UiUitls {
   ///状态栏（背景透明）
   static setTransparentStatus() {
     try {
-      if (Platform.isAndroid) {
+      if (PlatformUtils.isAndroid) {
         //设置Android头部的导航栏透明
         SystemUiOverlayStyle systemUiOverlayStyle =
             SystemUiOverlayStyle(statusBarColor: Colors.transparent);
@@ -30,7 +31,7 @@ class UiUitls {
   ///状态栏（字体白色背景透明）
   static setWhiteTextStatus() {
     try {
-      if (Platform.isAndroid) {
+      if (PlatformUtils.isAndroid) {
         //设置Android头部的导航栏透明
         SystemUiOverlayStyle systemUiOverlayStyle = SystemUiOverlayStyle(
           statusBarBrightness: Brightness.light,
@@ -46,7 +47,7 @@ class UiUitls {
   ///状态栏（字体黑色背景白色）
   static setBlackTextStatus() {
     try {
-      if (Platform.isAndroid) {
+      if (PlatformUtils.isAndroid) {
         //设置Android头部的导航栏透明
         SystemUiOverlayStyle systemUiOverlayStyle = SystemUiOverlayStyle(
           statusBarBrightness: Brightness.dark,
@@ -98,7 +99,7 @@ class UiUitls {
   }
 
   ///异常界面
-  static getErrorPage({context,type, text, onClick,height}) {
+  static getErrorPage({context, type, text, onClick, height}) {
     //1.暂无数据 2.错误 3.没有网络
     String imageUrl, title;
     switch (type) {
@@ -129,13 +130,13 @@ class UiUitls {
     }
     return GestureDetector(
       onTap: () {
-        if(type!=1) {
+        if (type != 1) {
           onClick();
         }
       },
       child: Container(
         width: double.infinity,
-        height: height!=0?height:double.infinity,
+        height: height != 0 ? height : double.infinity,
         margin: EdgeInsets.only(top: 25),
         padding: EdgeInsets.only(top: 100),
         decoration: BoxDecoration(

@@ -1,14 +1,11 @@
-import 'dart:collection';
-
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
-import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/content_model.dart';
 import 'package:zgene/pages/home/explore_nav.dart';
+import 'package:zgene/pages/home/home_getHttp.dart';
 import 'package:zgene/pages/home/local_nav.dart';
 import 'package:zgene/pages/home/problem_nav.dart';
 import 'package:zgene/pages/home/video_nav.dart';
@@ -37,10 +34,6 @@ class _HomePageState extends BaseWidgetState<HomePage> {
   //首页banner
   List bannerList = [];
 
-  List tourList=[];
-  List aloneList=[];
-  List problemList=[];
-
   ScrollController _controller = new ScrollController();
 
   @override
@@ -58,10 +51,13 @@ class _HomePageState extends BaseWidgetState<HomePage> {
     _controller.addListener(() {
       _onScroll(_controller.offset);
     });
-    getHttp(3);
-    getHttp(10);
-    getHttp(11);
-    getHttp(12);
+    HomeGetHttp(10, (result) {
+      ContentModel contentModel = ContentModel.fromJson(result);
+      bannerList.clear();
+      setState(() {
+        bannerList=contentModel.archives;
+      });
+    });
     super.pageWidgetInitState();
   }
 
@@ -222,7 +218,6 @@ class _HomePageState extends BaseWidgetState<HomePage> {
     );
   }
 
-
   _onScroll(offset) {
     double alpha = offset / APPBAR_SCROLL_OFFSET;
     if (alpha < 0) {
@@ -237,58 +232,4 @@ class _HomePageState extends BaseWidgetState<HomePage> {
     }
   }
 
-  ///获取内容列表
-  getHttp(type) async {
-    bool isNetWorkAvailable = await CommonUtils.isNetWorkAvailable();
-    if (!isNetWorkAvailable) {
-      return;
-    }
-    Map<String, dynamic> map = new HashMap();
-    map['cid'] =type;//栏目ID 9:金刚区 10:Banner 11:探索之旅 12:独一无二的你 3:常见问题 6:示例报告（男） 7:示例报告（女） 15：精选报告
-    HttpUtils.requestHttp(
-      ApiConstant.contentList,
-      parameters: map,
-      method: HttpUtils.GET,
-      onSuccess: (result) async {
-        ContentModel contentModel = ContentModel.fromJson(result);
-        switch(type){
-          case 3://常见问题
-            problemList.clear();
-            setState(() {
-              problemList=contentModel.archives;
-            });
-            break;
-          // case 9://金刚区
-          //   goldList.clear();
-          //   setState(() {
-          //     goldList=contentModel.archives;
-          //   });
-          //   break;
-          case 10://Banner
-            bannerList.clear();
-            setState(() {
-              bannerList=contentModel.archives;
-            });
-            break;
-          case 11://探索之旅
-            tourList.clear();
-            setState(() {
-              tourList=contentModel.archives;
-            });
-
-            break;
-          case 12://独一无二的你
-            aloneList.clear();
-            setState(() {
-              aloneList=contentModel.archives;
-            });
-
-            break;
-        }
-      },
-      onError: (code, error) {
-        UiUitls.showToast(error);
-      },
-    );
-  }
 }

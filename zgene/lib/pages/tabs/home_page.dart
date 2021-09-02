@@ -37,10 +37,6 @@ class _HomePageState extends BaseWidgetState<HomePage> {
   //首页banner
   List bannerList = [];
 
-  List tourList=[];
-  List aloneList=[];
-  List problemList=[];
-
   ScrollController _controller = new ScrollController();
 
   @override
@@ -58,10 +54,7 @@ class _HomePageState extends BaseWidgetState<HomePage> {
     _controller.addListener(() {
       _onScroll(_controller.offset);
     });
-    getHttp(3);
     getHttp(10);
-    getHttp(11);
-    getHttp(12);
     super.pageWidgetInitState();
   }
 
@@ -222,7 +215,6 @@ class _HomePageState extends BaseWidgetState<HomePage> {
     );
   }
 
-
   _onScroll(offset) {
     double alpha = offset / APPBAR_SCROLL_OFFSET;
     if (alpha < 0) {
@@ -244,47 +236,18 @@ class _HomePageState extends BaseWidgetState<HomePage> {
       return;
     }
     Map<String, dynamic> map = new HashMap();
-    map['cid'] =type;//栏目ID 9:金刚区 10:Banner 11:探索之旅 12:独一无二的你 3:常见问题 6:示例报告（男） 7:示例报告（女） 15：精选报告
+    map['cid'] =
+        type; //栏目ID 9:金刚区 10:Banner 11:探索之旅 12:独一无二的你 3:常见问题 6:示例报告（男） 7:示例报告（女） 15：精选报告
     HttpUtils.requestHttp(
       ApiConstant.contentList,
       parameters: map,
       method: HttpUtils.GET,
       onSuccess: (result) async {
         ContentModel contentModel = ContentModel.fromJson(result);
-        switch(type){
-          case 3://常见问题
-            problemList.clear();
-            setState(() {
-              problemList=contentModel.archives;
-            });
-            break;
-          // case 9://金刚区
-          //   goldList.clear();
-          //   setState(() {
-          //     goldList=contentModel.archives;
-          //   });
-          //   break;
-          case 10://Banner
-            bannerList.clear();
-            setState(() {
-              bannerList=contentModel.archives;
-            });
-            break;
-          case 11://探索之旅
-            tourList.clear();
-            setState(() {
-              tourList=contentModel.archives;
-            });
-
-            break;
-          case 12://独一无二的你
-            aloneList.clear();
-            setState(() {
-              aloneList=contentModel.archives;
-            });
-
-            break;
-        }
+        bannerList.clear();
+        setState(() {
+          bannerList = contentModel.archives;
+        });
       },
       onError: (code, error) {
         UiUitls.showToast(error);

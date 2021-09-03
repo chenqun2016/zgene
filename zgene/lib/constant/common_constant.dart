@@ -52,4 +52,11 @@ class CommonConstant {
   static String appReceivePhone = "";
   //回寄付费方式
   static String appReceivePtype = "";
+
+  //isWeChatInstalled
+  static bool Is_WeChat_Installed = false;
+
+  static String wxAppKey = "wx5efe242ed516d3c1";
+  //Ios universalLink
+  static String universalLink = "https://www.divms.com/";
 }

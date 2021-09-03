@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/phonetextFild_input.dart';
+import 'package:zgene/util/isChina_phone.dart';
 
 class BindPhoneLoginPage extends BaseWidget {
   @override
@@ -28,6 +29,8 @@ class _BindPhoneLoginPageState extends BaseWidgetState<BindPhoneLoginPage> {
 
   String _verifyStr = ' 获取验证码 ';
   bool _isAvailableGetVCode = true; //是否可以获取验证码，默认为`false`
+  String _phoneErrorText = null;
+  String _phoneText = "";
 
   /// 倒计时的计时器。
   Timer _timer;
@@ -123,7 +126,9 @@ class _BindPhoneLoginPageState extends BaseWidgetState<BindPhoneLoginPage> {
                     isPhoneSuccess = true;
                   } else {
                     isPhoneSuccess = false;
+                    _phoneErrorText = null;
                   }
+                  _phoneText = value;
                   setState(() {});
                 },
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
@@ -137,6 +142,7 @@ class _BindPhoneLoginPageState extends BaseWidgetState<BindPhoneLoginPage> {
                     fontWeight: FontWeight.w600,
                     color: ColorConstant.TextFildBlackColor), //输入文本的样式
                 decoration: InputDecoration(
+                    errorText: _phoneErrorText,
                     hintText: "请输入手机号",
                     //设置输入文本框的提示文字的样式
                     hintStyle: TextStyle(
@@ -333,6 +339,17 @@ class _BindPhoneLoginPageState extends BaseWidgetState<BindPhoneLoginPage> {
 
   //获取验证码
   void getVerifyCode() {
+    var number = _phoneText.replaceAll(new RegExp(r"\s+\b|\b\s"), "");
+
+    if (!isPhoneUtils.isChinaPhoneLegal(number)) {
+      _phoneErrorText = "请填写正确格式的手机号！";
+      setState(() {});
+      return;
+    } else {
+      _phoneErrorText = null;
+      setState(() {});
+    }
+
     setState(() {});
 
     // Map<String, dynamic> map = new HashMap();

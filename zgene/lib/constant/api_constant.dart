@@ -38,4 +38,9 @@ class ApiConstant {
 
   //消息列表
   static const String messageList = "/api/v1/user/notices";
+
+  ///********************************* 订单 *****************************///
+
+  //消息列表
+  static const String orderReturn = "/api/v1/order/return";
 }

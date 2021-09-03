@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+// import 'package:fluwx/fluwx.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
@@ -58,7 +59,62 @@ void main() async {
   });
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  MyApp({Key key}) : super(key: key);
+
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // registerWxApi(
+    //     appId: CommonConstant.wxAppKey, //查看微信开放平台
+    //     doOnAndroid: true,
+    //     doOnIOS: true,
+    //     universalLink: CommonConstant.universalLink //查看微信开放平台
+    //     );
+    // _installFluwx();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  // _installFluwx() async {
+  //   var result = await isWeChatInstalled;
+  //   CommonConstant.Is_WeChat_Installed = result;
+
+  //   if (result) {
+  //     print('该手机上安装了微信');
+  //   } else {
+  //     print('该手机上未安装微信');
+  //   }
+  // }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    print("-didChangeAppLifecycleState-" + state.toString());
+    switch (state) {
+      case AppLifecycleState.inactive:
+        // jpush.setBadge(0);
+        print("前后台更改"); // 处于这种状态的应用程序应该假设它们可能在任何时候暂停
+        break;
+      case AppLifecycleState.resumed: //从后台切换前台，界面可见
+        break;
+      case AppLifecycleState.paused: // 界面不可见，后台
+        break;
+      case AppLifecycleState.detached: // APP结束时调用
+        break;
+    }
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return RestartWidget(

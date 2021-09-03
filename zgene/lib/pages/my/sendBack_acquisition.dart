@@ -1,11 +1,18 @@
+import 'dart:collection';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/http/http_utils.dart';
+import 'package:zgene/pages/my/my_address_list.dart';
 import 'package:zgene/pages/my/show_selectPicker.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/screen_utils.dart';
 import 'package:flutter_pickers/pickers.dart';
+import 'package:zgene/util/isChina_phone.dart';
 
 class SendBackAcquisitionPage extends BaseWidget {
   @override
@@ -16,6 +23,10 @@ class SendBackAcquisitionPage extends BaseWidget {
 
 class _SendBackAcquisitionPageState
     extends BaseWidgetState<SendBackAcquisitionPage> {
+  TextEditingController _nameController = new TextEditingController();
+  TextEditingController _phoneController = new TextEditingController();
+  TextEditingController _addressController = new TextEditingController();
+
   @override
   void pageWidgetInitState() {
     super.pageWidgetInitState();
@@ -26,7 +37,17 @@ class _SendBackAcquisitionPageState
   }
 
   String sendBackText = "江西省南昌市高新区南昌国家医药国际创新园联合研究院14号楼";
-  bool isCanOrder = false;
+  // bool isCanOrder = false;
+
+  bool get isCanOrder {
+    return (_nameController.text.isNotEmpty &&
+        _phoneController.text.isNotEmpty &&
+        sendBackAddress.isNotEmpty &&
+        _addressController.text.isNotEmpty &&
+        reportTime.isNotEmpty &&
+        isPhoneUtils.isChinaPhoneLegal(_phoneController.text));
+  }
+
   @override
   Widget viewPageBody(BuildContext context) {
     return Container(
@@ -243,7 +264,8 @@ class _SendBackAcquisitionPageState
                 margin: EdgeInsets.only(top: 20.h, right: 16.w),
                 child: InkWell(
                   onTap: () {
-                    print(123);
+                    // print(123);
+                    toAddressList();
                   },
                   child: Image(
                       width: 25.h,
@@ -259,17 +281,24 @@ class _SendBackAcquisitionPageState
               Container(
                 margin: EdgeInsets.only(top: 12.h, left: 16.w),
                 height: 40.h,
-                child: Image(
-                    width: 20.w,
-                    height: 20.w,
-                    image: AssetImage(
-                        "assets/images/mine/icon_sendBack_people.png")),
+                child: Builder(builder: (context) {
+                  return InkWell(
+                    onTap: () {},
+                    child: Image(
+                        width: 20.w,
+                        height: 20.w,
+                        image: AssetImage(
+                            "assets/images/mine/icon_sendBack_people.png")),
+                  );
+                }),
               ),
               Container(
                 margin: EdgeInsets.only(top: 12.h, left: 12.w, right: 16.w),
                 height: 40.h,
                 width: ScreenUtils.screenW(context) - 98.w,
                 child: TextField(
+                    onChanged: (value) {},
+                    controller: _nameController,
                     // keyboardType:
                     //     TextInputType.numberWithOptions(decimal: true),
                     style: TextStyle(
@@ -329,6 +358,8 @@ class _SendBackAcquisitionPageState
                 height: 40.h,
                 width: ScreenUtils.screenW(context) - 98.w,
                 child: TextField(
+                    onChanged: (value) {},
+                    controller: _phoneController,
                     keyboardType:
                         TextInputType.numberWithOptions(decimal: true),
                     style: TextStyle(
@@ -466,7 +497,8 @@ class _SendBackAcquisitionPageState
             height: 40.h,
             width: ScreenUtils.screenW(context) - 96.w,
             child: TextField(
-
+                onChanged: (value) {},
+                controller: _addressController,
                 // keyboardType: TextInputType.numberWithOptions(decimal: true),
                 style: TextStyle(
                     fontSize: 18.sp,
@@ -877,7 +909,11 @@ class _SendBackAcquisitionPageState
                     : ColorConstant.WhiteColor),
                 shape: MaterialStateProperty.all(RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(40.h)))),
-            onPressed: () {},
+            onPressed: () {
+              if (isCanOrder) {
+                reporHttp();
+              }
+            },
             child: Container(
               child: Center(
                 child: Container(
@@ -913,9 +949,9 @@ class _SendBackAcquisitionPageState
   }
 
   void selectTime() {
-    showSelectPickerTool(context, (timeStr) {
+    showSelectPickerTool(context, (timeStr, reportStr) {
       sendBackTime = timeStr;
-      print(sendBackTime);
+      reportTime = reportStr;
       setState(() {});
     });
   }
@@ -923,6 +959,7 @@ class _SendBackAcquisitionPageState
   String initProvince = '', initCity = '', initTown = '';
   String sendBackAddress = "";
   String sendBackTime = "";
+  String reportTime = "";
 
   void selectAddress() {
     Pickers.showAddressPicker(
@@ -932,12 +969,57 @@ class _SendBackAcquisitionPageState
       initTown: initTown,
       addAllItem: false,
       onConfirm: (p, c, t) {
-        setState(() {
-          initProvince = p;
-          initCity = c;
-          initTown = t;
-          sendBackAddress = p + c + t;
-        });
+        initProvince = p;
+        initCity = c;
+        initTown = t;
+        sendBackAddress = p + c + t;
+        setState(() {});
+      },
+    );
+  }
+
+  Future<void> toAddressList() async {
+    final result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => MyAddressListPage(isSelectFrom: true)));
+    if (result != null) {
+      _nameController.text = result.rcvName;
+      _phoneController.text = result.rcvPhone;
+      sendBackAddress = result.province + result.city + result.county;
+      _addressController.text = result.address;
+
+      initProvince = result.province;
+      initCity = result.city;
+      initTown = result.county;
+      setState(() {});
+      // setState(() {});
+    }
+  }
+
+  void reporHttp() {
+    Map<String, dynamic> map = new HashMap();
+    map["order_id"] = "8778087";
+    map["rcv_name"] = _nameController.text;
+    map["rcv_phone"] = _phoneController.text;
+    map["province"] = initProvince;
+    map["city"] = initCity;
+    map["county"] = initTown;
+    map["address"] = _addressController.text;
+    map["pick_time"] = reportTime;
+
+    EasyLoading.show(status: 'loading...');
+
+    HttpUtils.requestHttp(
+      ApiConstant.orderReturn,
+      parameters: map,
+      method: HttpUtils.POST,
+      onSuccess: (data) {
+        EasyLoading.showSuccess("预约成功");
+        Navigator.pop(context);
+      },
+      onError: (code, error) {
+        EasyLoading.showError(error ?? "");
       },
     );
   }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:fluwx/fluwx.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
@@ -51,6 +52,9 @@ void main() async {
   //设置透明状态栏
   UiUitls.setTransparentStatus();
 
+  registerWxApi(
+      appId: CommonConstant.wxAppKey,
+      universalLink: CommonConstant.universalLink);
   //设置手机竖屏
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {

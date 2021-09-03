@@ -52,4 +52,9 @@ class CommonConstant {
   static String appReceivePhone = "";
   //回寄付费方式
   static String appReceivePtype = "";
+
+  //Ios universalLink
+  static String universalLink="www.divms.com";
+  //微信appKey
+  static String wxAppKey="wx5efe242ed516d3c1";
 }

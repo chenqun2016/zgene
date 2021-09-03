@@ -3,12 +3,11 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_pickers/pickers.dart';
+import 'package:fluwx/fluwx.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/content_model.dart';
-import 'package:zgene/models/ordering_model_entity.dart';
-import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
 
@@ -914,10 +913,10 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
 
     Map<String, dynamic> map = new HashMap();
     map['pid'] = widget.product.id;
-    map['price'] = widget.product.coin/1000;
+    map['price'] = widget.product.coin / 1000;
     map['nums'] = 1;
 
-    map['amounts'] = widget.product.coin/1000;
+    map['amounts'] = widget.product.coin / 1000;
     map['rev_name'] = _nameController.text.toString();
     map['rev_phone'] = _phoneController.text.toString();
     map['province'] = _initProvince;
@@ -932,8 +931,25 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
       method: HttpUtils.POST,
       onSuccess: (result) async {
         EasyLoading.dismiss();
-         var contentModel = OrderingModelEntity.fromJson(result);
-         print(contentModel);
+
+        payWithWeChat(
+          appId: result['appid'],
+          partnerId: result['partnerid'],
+          prepayId: result['prepayid'],
+          packageValue: result['package'],
+          nonceStr: result['noncestr'],
+          timeStamp: result['timestamp'],
+          sign: result['sign'],
+        );
+
+        // 监听支付结果
+        weChatResponseEventHandler.listen((event) async {
+          print(event.errCode);
+          // 支付成功
+          if (event.errCode == 0) {
+          }
+          // 关闭弹窗
+        });
       },
       onError: (code, error) {
         EasyLoading.showError(error);

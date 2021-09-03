@@ -40,6 +40,8 @@ import 'pages/my/order_step_page.dart';
 import 'pages/my/ordering_page.dart';
 import 'pages/my/sendBack_acquisition.dart';
 import 'pages/my/show_selectPicker.dart';
+import 'pages/report/report_list_page.dart';
+import 'pages/tabs/buy_page.dart';
 
 void main() async {
   configureApp();
@@ -62,7 +64,62 @@ void main() async {
   });
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  MyApp({Key key}) : super(key: key);
+
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // registerWxApi(
+    //     appId: CommonConstant.wxAppKey, //查看微信开放平台
+    //     doOnAndroid: true,
+    //     doOnIOS: true,
+    //     universalLink: CommonConstant.universalLink //查看微信开放平台
+    //     );
+    // _installFluwx();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  // _installFluwx() async {
+  //   var result = await isWeChatInstalled;
+  //   CommonConstant.Is_WeChat_Installed = result;
+
+  //   if (result) {
+  //     print('该手机上安装了微信');
+  //   } else {
+  //     print('该手机上未安装微信');
+  //   }
+  // }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    print("-didChangeAppLifecycleState-" + state.toString());
+    switch (state) {
+      case AppLifecycleState.inactive:
+        // jpush.setBadge(0);
+        print("前后台更改"); // 处于这种状态的应用程序应该假设它们可能在任何时候暂停
+        break;
+      case AppLifecycleState.resumed: //从后台切换前台，界面可见
+        break;
+      case AppLifecycleState.paused: // 界面不可见，后台
+        break;
+      case AppLifecycleState.detached: // APP结束时调用
+        break;
+    }
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return RestartWidget(
@@ -86,30 +143,19 @@ class MyApp extends StatelessWidget {
       ],
       //注册路由表
       routes: {
-        "bindcollector/bind_collector_page": (context) => BindCollectorPage(),
-        // "bindcollector/bind_step_1":(context) => BindStep1(),
-        // "bindcollector/bind_step_2":(context) => BindStep2(),
-        // "bindcollector/bind_step_3":(context) => BindStep3(),
-        "home/explore_nav": (context) => ExploreNav(),
-        "home/local_nav": (context) => LocalNav(),
-        "home/problem_nav": (context) => ProblemNav(),
-        "home/video_nav": (context) => VideoNav(),
-        "home/video_page": (context) => VideoPage(),
-        "login/bindPhone_login": (context) => BindPhoneLoginPage(),
-        // "login/getVFCode_login":(context) => GetVFCodeLoginPage(),
-        "login/main_login": (context) => MainLoginPage(),
-        "login/phone_login": (context) => PhoneLoginPage(),
-        "my/add_address_page": (context) => AddAddressPage(),
-        "my/my_address_list": (context) => MyAddressListPage(),
-        "my/my_editor_name": (context) => MyEditorPage(),
-        "my/my_info_page": (context) => MyInfoPage(),
-        "my/my_message_list": (context) => MyMessagePage(),
-        "my/my_order_list": (context) => MyOrderListPage(),
-        "my/order_detail": (context) => OrderDetailPage(),
-        "my/order_step_page": (context) => OrderStepPage(),
-        "my/ordering_page": (context) => OrderingPage(),
-        "my/sendBack_acquisition": (context) => SendBackAcquisitionPage(),
-        "my/show_selectPicker": (context) => selectTimePicker(),
+        "/article_detail": (context) => null,//文章详情
+        "/report": (context) => ReportListPage(),//报告
+        "/report_detail": (context) => null,//报告详情
+        "/login": (context) => MainLoginPage(),//登录
+        "/my_message": (context) => MyMessagePage(),//消息
+        "/my_address": (context) => MyAddressListPage(),//我的地址
+        "/my_info": (context) => MyInfoPage(),//我的资料
+        "/my_order": (context) => MyOrderListPage(),//我的订单
+        "/order_step_detail": (context) => OrderStepPage(),//订单步骤详情
+        "/order_detail": (context) => OrderDetailPage(),//订单详情
+        "/bind_collector": (context) => BindCollectorPage(),//绑定采集器
+        "/kefu": (context) => null,//联系客服
+        "/about": (context) => null,//关于我们
       },
     ));
   }

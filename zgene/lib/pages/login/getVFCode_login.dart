@@ -119,7 +119,7 @@ class _GetVFCodeLoginPageState extends BaseWidgetState<GetVFCodeLoginPage> {
               child: TextField(
                   focusNode: _focusNode,
                   onChanged: (value) {
-                    if (value.length >= 4) {
+                    if (value.length >= 6) {
                       canLogin = true;
                     } else {
                       canLogin = false;

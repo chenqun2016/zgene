@@ -57,4 +57,7 @@ class CommonConstant {
   static String universalLink="www.divms.com";
   //微信appKey
   static String wxAppKey="wx5efe242ed516d3c1";
+  //isWeChatInstalled
+  static bool Is_WeChat_Installed = false;
+
 }

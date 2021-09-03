@@ -1,11 +1,14 @@
 import 'dart:io';
 
+import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/models/msg_event.dart';
 import 'package:zgene/pages/tabs/buy_page.dart';
 import 'package:zgene/pages/tabs/home_page.dart';
 import 'package:zgene/pages/tabs/my_page.dart';
 import 'package:zgene/pages/tabs/report_page.dart';
+import 'package:zgene/util/common_utils.dart';
 
 class TabNavigator extends StatefulWidget {
   @override
@@ -16,9 +19,26 @@ class _TabNavigatorState extends State<TabNavigator> {
   final _defaultColor = ColorConstant.TextMainGray;
   final _activeColor = ColorConstant.TextMainColor;
   int _currentIndex = 0;
+  final eventBus = CommonUtils.getInstance();
   final PageController _controller = PageController(
     initialPage: 0,
   );
+
+  @override
+  void initState() {
+    super.initState();
+    // 监听数据变化
+    eventBus.on<MsgEvent>().listen((event) {
+      switch (event.type) {
+        case 100: //切换tab
+          _controller.jumpToPage(event.msg);
+          setState(() {
+            _currentIndex = event.msg;
+          });
+          break;
+      }
+    });
+  }
 
   /// extendBody = true 凹嵌透明，需要处理底部 边距
   @override
@@ -108,5 +128,11 @@ class _TabNavigatorState extends State<TabNavigator> {
           style: TextStyle(
               color: _currentIndex != index ? _defaultColor : _activeColor),
         ));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    eventBus.destroy();
   }
 }

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/models/content_model.dart';
@@ -25,7 +24,7 @@ class _LocalNavState extends State<LocalNav> {
       ContentModel contentModel = ContentModel.fromJson(result);
       goldList.clear();
       setState(() {
-        goldList=contentModel.archives;
+        goldList = contentModel.archives;
       });
     });
   }
@@ -61,15 +60,16 @@ class _LocalNavState extends State<LocalNav> {
     Archives archives = goldList[index];
     return GestureDetector(
       onTap: () {
-        if (0 == index) {
-          NavigatorUtil.push(context, BindCollectorPage());
-        }
-        if (1 == index) {
-          NavigatorUtil.push(context, OrderStepPage());
-        }
-        if (2 == index) {
-          NavigatorUtil.push(context, AddAddressPage());
-        }
+        CommonUtils.toUrl(context: context,type: archives.linkType,url: archives.linkUrl);
+        // if (0 == index) {
+        //   NavigatorUtil.push(context, BindCollectorPage());
+        // }
+        // if (1 == index) {
+        //   NavigatorUtil.push(context, OrderStepPage());
+        // }
+        // if (2 == index) {
+        //   NavigatorUtil.push(context, AddAddressPage());
+        // }
       },
       child: Column(
         children: <Widget>[
@@ -97,5 +97,4 @@ class _LocalNavState extends State<LocalNav> {
       ),
     );
   }
-
 }

@@ -20,8 +20,10 @@ class ApiConstant {
 //地址查询
   static const String userAddresses = "/api/v1/user/addresses";
 
-//地址添加
+  //地址添加
   static const String userAddAddress = "/api/v1/user/address";
+  //地址添加
+  static const String userDeleteAddress = "/api/v1/user/address/:id";
 
   ///********************************** 登录 *****************************///
   //配置
@@ -43,7 +45,6 @@ class ApiConstant {
   static const String payLinks = CommonConstant.BASE_API + ApiConstant.payLink;
 
   ///********************************* 消息 *****************************///
-
   //消息列表
   static const String messageList = "/api/v1/user/notices";
 
@@ -54,4 +55,8 @@ class ApiConstant {
   static String getH5DetailUrl(id) {
     return CommonConstant.BASE_API + "/archive/embed/$id";
   }
+  ///********************************* 订单 *****************************///
+
+  //消息列表
+  static const String orderReturn = "/api/v1/order/return";
 }

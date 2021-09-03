@@ -5,9 +5,10 @@ import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/util/date_utils.dart';
 import 'package:zgene/util/screen_utils.dart';
 
-typedef _CallBack = void Function(String timeStr);
+typedef _CallBack = void Function(String timeStr, String reportStr);
 // ignore: unused_element
 String _senderBackTime = "";
+String _reporStrTime = "";
 
 void showSelectPickerTool(BuildContext context, _CallBack callback) {
   showModalBottomSheet(
@@ -98,7 +99,7 @@ void showSelectPickerTool(BuildContext context, _CallBack callback) {
                           onPressed: () {
                             Navigator.pop(context);
                             if (callback != null) {
-                              callback(_senderBackTime);
+                              callback(_senderBackTime, _reporStrTime);
                             }
                           },
                           child: Container(
@@ -381,9 +382,16 @@ class _selectTimePicker extends State<selectTimePicker> {
 
     for (var i = 0; i < dayData.length; i++) {
       // CusDateUtils.getWeek(dayTime)
-      DateTime currentTime = new DateTime(dateTime.year, dateTime.month,
-          dateTime.day + i, dateTime.hour, dateTime.minute);
-      week += [CusDateUtils.getWeek(currentTime)];
+      var dayCount = DateTime(dateTime.year, dateTime.month + 1, 0).day;
+      if (dateTime.day < dayCount) {
+        DateTime currentTime = new DateTime(dateTime.year, dateTime.month,
+            dateTime.day + i, dateTime.hour, dateTime.minute);
+        week += [CusDateUtils.getWeek(currentTime)];
+      } else {
+        DateTime currentTime = new DateTime(dateTime.year, dateTime.month + i,
+            1, dateTime.hour, dateTime.minute);
+        week += [CusDateUtils.getWeek(currentTime)];
+      }
     }
   }
 
@@ -395,5 +403,54 @@ class _selectTimePicker extends State<selectTimePicker> {
         (daySelectIndex == 0
             ? todayTimeData[timeSelectIndex]
             : otherTimeData[timeSelectIndex]);
+
+    DateTime dateTime = DateTime.now();
+    var dayCount = DateTime(dateTime.year, dateTime.month + 1, 0).day;
+
+    if (daySelectIndex == 0) {
+      if (timeSelectIndex == 0) {
+        _reporStrTime = dateTime.toString();
+      } else {
+        if (dateTime.day < dayCount) {
+          _reporStrTime = new DateTime(
+                  dateTime.year,
+                  dateTime.month,
+                  dateTime.day + daySelectIndex,
+                  int.parse(todayTimeData[timeSelectIndex].substring(0, 2)),
+                  0,
+                  0)
+              .toString();
+        } else {
+          _reporStrTime = new DateTime(
+                  dateTime.year,
+                  dateTime.month + daySelectIndex,
+                  1,
+                  int.parse(todayTimeData[timeSelectIndex].substring(0, 2)),
+                  0,
+                  0)
+              .toString();
+        }
+      }
+    } else {
+      if (dateTime.day < dayCount) {
+        _reporStrTime = new DateTime(
+                dateTime.year,
+                dateTime.month,
+                dateTime.day + daySelectIndex,
+                int.parse(otherTimeData[timeSelectIndex].substring(0, 2)),
+                0,
+                0)
+            .toString();
+      } else {
+        _reporStrTime = new DateTime(
+                dateTime.year,
+                dateTime.month + daySelectIndex,
+                1,
+                int.parse(otherTimeData[timeSelectIndex].substring(0, 2)),
+                0,
+                0)
+            .toString();
+      }
+    }
   }
 }

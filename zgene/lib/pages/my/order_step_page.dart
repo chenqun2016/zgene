@@ -117,25 +117,25 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
       isVerticalAnimatedCrossFade: false,
       stepperWidth: 240,
       currentStep: _position,
-      onStepTapped: (index) {
-        setState(() {
-          _position = index;
-        });
-      },
-      onStepContinue: () {
-        setState(() {
-          if (_position < 2) {
-            _position++;
-          }
-        });
-      },
-      onStepCancel: () {
-        if (_position > 0) {
-          setState(() {
-            _position--;
-          });
-        }
-      },
+      // onStepTapped: (index) {
+      //   setState(() {
+      //     _position = index;
+      //   });
+      // },
+      // onStepContinue: () {
+      //   setState(() {
+      //     if (_position < 2) {
+      //       _position++;
+      //     }
+      //   });
+      // },
+      // onStepCancel: () {
+      //   if (_position > 0) {
+      //     setState(() {
+      //       _position--;
+      //     });
+      //   }
+      // },
       type: EStepperType.vertical,
       steps: steps.map(
         (s) {

@@ -66,6 +66,12 @@ class _WebViewWidgetState extends State<BasePageWebView> {
                 url: Uri.parse(_url),
                 headers: {"Referer ": CommonConstant.BASE_API}),
 
+            onLoadError: (controller,url,code,message){
+              print("url==$url // code==$code  // message==$message");
+            },
+            onLoadHttpError: (controller,url,code,message){
+              print("url==$url // code==$code  // message==$message");
+            },
             onWebViewCreated: (controller) {
               try {
                 controller.addJavaScriptHandler(

@@ -7,6 +7,7 @@ import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/content_model.dart';
+import 'package:zgene/models/ordering_model_entity.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
@@ -28,7 +29,7 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
   var canPay = false;
   var isWeixinPay = true;
   var fapiao = 0;
-  String initProvince = '上海市', initCity = '上海市', initTown = '黄浦区';
+  String _initProvince = '上海市', _initCity = '上海市', _initTown = '黄浦区';
 
   List _billDes = [
     "购买后那您如需不开发票，可在付款后60天内联系客服进行查询和申请",
@@ -628,16 +629,17 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
                 Pickers.showAddressPicker(
                   context,
                   addAllItem: false,
-                  initProvince: initProvince,
-                  initCity: initCity,
-                  initTown: initTown,
+                  initProvince: _initProvince,
+                  initCity: _initCity,
+                  initTown: _initTown,
                   onConfirm: (p, c, t) {
                     setState(() {
-                      initProvince = p;
-                      initCity = c;
-                      initTown = t;
+                      _initProvince = p;
+                      _initCity = c;
+                      _initTown = t;
                     });
-                    _cityController.text = initProvince + initCity + initTown;
+                    _cityController.text =
+                        _initProvince + _initCity + _initTown;
                   },
                 );
                 onTextTab();
@@ -888,7 +890,7 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
                                 ? _messageController.text.isNotEmpty
                                 : true)
                     ? () {
-                        // doPay();
+                        doPay();
                       }
                     : null,
                 child: Text("立即支付",
@@ -911,14 +913,27 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
     EasyLoading.show(status: 'loading...');
 
     Map<String, dynamic> map = new HashMap();
-    map['chid'] = 5;
+    map['pid'] = widget.product.id;
+    map['price'] = widget.product.coin/1000;
+    map['nums'] = 1;
+
+    map['amounts'] = widget.product.coin/1000;
+    map['rev_name'] = _nameController.text.toString();
+    map['rev_phone'] = _phoneController.text.toString();
+    map['province'] = _initProvince;
+    map['city'] = _initCity;
+    map['county'] = _initTown;
+    map['address'] = _areaController.text.toString();
+    map['pay_type'] = isWeixinPay ? 2 : 1;
+
     HttpUtils.requestHttp(
-      ApiConstant.contentList,
+      ApiConstant.ordering,
       parameters: map,
-      method: HttpUtils.GET,
+      method: HttpUtils.POST,
       onSuccess: (result) async {
         EasyLoading.dismiss();
-        ContentModel contentModel = ContentModel.fromJson(result);
+         var contentModel = OrderingModelEntity.fromJson(result);
+         print(contentModel);
       },
       onError: (code, error) {
         EasyLoading.showError(error);

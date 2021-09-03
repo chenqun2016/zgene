@@ -1,6 +1,7 @@
+import 'common_constant.dart';
+
 ///api路径
 class ApiConstant {
-  static const String BASE_API = "https://zgene.divms.com";
 
   ///********************************** 自媒体流 *****************************///
   //内容列表
@@ -33,13 +34,13 @@ class ApiConstant {
   static const String loginApp_phone = "/api/v1/user/login/app_phone";
 
   //隐私政策
-  static const String privacys = BASE_API + ApiConstant.privacy;
+  static const String privacys = CommonConstant.BASE_API + ApiConstant.privacy;
 
   //用户协议
-  static const String agreements = BASE_API + ApiConstant.agreement;
+  static const String agreements = CommonConstant.BASE_API + ApiConstant.agreement;
 
   //用户协议
-  static const String payLinks = BASE_API + ApiConstant.payLink;
+  static const String payLinks = CommonConstant.BASE_API + ApiConstant.payLink;
 
   ///********************************* 消息 *****************************///
 
@@ -47,9 +48,10 @@ class ApiConstant {
   static const String messageList = "/api/v1/user/notices";
 
   //下单
-  static const String order = "/api/v1/order/create";
-
+  static const String ordering = "/api/v1/order/create";
+  //绑定采集器
+  static const String bindColector = "/api/v1/order/bind";
   static String getH5DetailUrl(id) {
-    return BASE_API + "/archive/embed/$id";
+    return CommonConstant.BASE_API + "/archive/embed/$id";
   }
 }

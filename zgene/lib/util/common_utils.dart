@@ -86,6 +86,11 @@ class CommonUtils {
     }
   }
 
+  // 服务器数据除以1000
+  static String formatMoney(int money) {
+    return formartNum(money / 1000, 2);
+  }
+
   static EventBus _eventBus;
 
   //获取单例

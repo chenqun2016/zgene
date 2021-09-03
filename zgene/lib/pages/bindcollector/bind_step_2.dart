@@ -160,7 +160,7 @@ class _BindStep2State extends State<BindStep2> {
                         birthText = "${p.year} / ${p.month} / ${p.day}";
                       });
                       hasBirth = true;
-                      Navigator.pop(context);
+                      // Navigator.pop(context);
                       widget.onChangeNextButtomState(hasName && hasBirth);
                     },
                     // onChanged: (p) => print(p),

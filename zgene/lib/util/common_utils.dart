@@ -2,6 +2,7 @@ import 'package:connectivity/connectivity.dart';
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
@@ -99,12 +100,17 @@ class CommonUtils {
   static toUrl({context, url, type}) {
     var eventBus = getInstance();
 
-    if (url == "/buy") {
+    if (url == "/buy") {//购买
       //跳到购买
       eventBus.fire(MsgEvent(100, 1));
-    } else if (url == "/my") {
+    } else if (url == "/my") {//我的
       //跳到我的
       eventBus.fire(MsgEvent(100, 3));
+    } else if(url.contains('/webview')){//跳转浏览器
+      var uri = Uri.dataFromString(url);
+      Map<String, String> params = uri.queryParameters;
+      launch(params['url']);
+
     } else {
       switch (type) {
         // type 0:无 1:HTTP 2:应用内 3:视频
@@ -122,11 +128,10 @@ class CommonUtils {
           var uri = Uri.dataFromString(url);
           Map<String, String> params = uri.queryParameters;
           var id = params['id'];
-          print("sssssssss:${id}");
           if(id==null){
             Navigator.of(context).pushNamed(url);
           }else{
-            Navigator.of(context).pushNamed(url.split("?")[0], arguments:{"id":id});
+            Navigator.of(context).pushNamed(url.split("?")[0], arguments:id);
           }
           break;
         case 3:

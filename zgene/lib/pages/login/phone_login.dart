@@ -8,6 +8,7 @@ import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/util/base_widget.dart';
+import 'package:zgene/util/isChina_phone.dart';
 import 'package:zgene/util/phonetextFild_input.dart';
 
 import 'getVFCode_login.dart';
@@ -31,6 +32,7 @@ class _PhoneLoginPageState extends BaseWidgetState<PhoneLoginPage> {
 
   FocusNode _focusNode = FocusNode();
   String _phoneText = "";
+  String _phoneErrorText = null;
 
   @override
   void initState() {
@@ -112,6 +114,7 @@ class _PhoneLoginPageState extends BaseWidgetState<PhoneLoginPage> {
                     canGetCode = true;
                   } else {
                     canGetCode = false;
+                    _phoneErrorText = null;
                   }
                   _phoneText = value;
                   setState(() {});
@@ -127,6 +130,7 @@ class _PhoneLoginPageState extends BaseWidgetState<PhoneLoginPage> {
                     fontWeight: FontWeight.w600,
                     color: ColorConstant.TextFildBlackColor), //输入文本的样式
                 decoration: InputDecoration(
+                    errorText: _phoneErrorText,
                     fillColor: ColorConstant.WhiteColor,
                     filled: true,
                     contentPadding: EdgeInsets.only(left: 13.w, right: 13.w),
@@ -211,8 +215,18 @@ class _PhoneLoginPageState extends BaseWidgetState<PhoneLoginPage> {
   }
 
   void getVerifyCode() {
-    Map<String, dynamic> map = new HashMap();
     var number = _phoneText.replaceAll(new RegExp(r"\s+\b|\b\s"), "");
+
+    if (!isPhoneUtils.isChinaPhoneLegal(number)) {
+      _phoneErrorText = "请填写正确格式的手机号！";
+      setState(() {});
+      return;
+    } else {
+      _phoneErrorText = null;
+      setState(() {});
+    }
+
+    Map<String, dynamic> map = new HashMap();
     map["mobile"] = number;
 
     EasyLoading.show(status: 'loading...');

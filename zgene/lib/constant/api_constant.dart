@@ -13,10 +13,12 @@ class ApiConstant {
   static const String agreement = "/agreement";
   //用户隐私
   static const String payLink = "/service/pay/#/pages/CoinRecharge/index";
-//地址查询
+  //地址查询
   static const String userAddresses = "/api/v1/user/addresses";
-//地址添加
+  //地址添加
   static const String userAddAddress = "/api/v1/user/address";
+  //地址添加
+  static const String userDeleteAddress = "/api/v1/user/address/:id";
 
   ///********************************** 登录 *****************************///
   //配置

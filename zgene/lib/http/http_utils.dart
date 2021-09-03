@@ -111,101 +111,27 @@ class HttpUtils {
       Function(int code, String error) onError}) async {
     parameters = parameters ?? {"": ""};
     method = method ?? 'GET';
-    if (method == HttpUtils.GET) {
-      getHttp(
-        url,
-        parameters: parameters,
-        onSuccess: (data) {
-          if (null != onSuccess) {
-            onSuccess(data);
-          }
-        },
-        onError: (code, error) {
-          if (null != onError) {
-            onError(code, error);
-          }
-        },
-      );
-    } else if (method == HttpUtils.POST) {
-      postHttp(
-        url,
-        parameters: parameters,
-        onSuccess: (data) {
-          if (null != onSuccess) {
-            onSuccess(data);
-          }
-        },
-        onError: (code, error) {
-          if (null != onError) {
-            onError(code, error);
-          }
-        },
-      );
-    }
+
+    intiateHttp(
+      method,
+      url,
+      parameters: parameters,
+      onSuccess: (data) {
+        if (null != onSuccess) {
+          onSuccess(data);
+        }
+      },
+      onError: (code, error) {
+        if (null != onError) {
+          onError(code, error);
+        }
+      },
+    );
   }
 
-  ///Get请求
-  static void getHttp(
-    String url, {
-    parameters,
-    Function(dynamic) onSuccess,
-    Function(int code, String error) onError,
-  }) async {
-    ///定义请求参数
-
-    parameters = parameters ?? {};
-
-    //参数处理
-    try {
-      parameters.forEach((key, value) {
-        if (url.indexOf(key) != -1) {
-          url = url.replaceAll(':$key', value.toString());
-        }
-      });
-    } catch (e) {}
-
-    try {
-      Dio dio = await createInstance();
-
-      Response response = await dio.get(url, queryParameters: parameters);
-      var responseString = json.decode(response.toString());
-      var responseResult = BaseResponse.fromJson(responseString);
-      print(responseString);
-      int code = responseResult.code;
-      print(responseResult.code);
-      switch (code) {
-        case _needLoginCode:
-          EasyLoading.dismiss();
-          if (onError != null) {
-            onError(code ?? 0, "请登录");
-          }
-          // BaseLogin.login();
-          return;
-        default:
-          break;
-      }
-      String msg = responseResult.msg;
-      dynamic result = responseResult.result;
-      if (code == 0) {
-        if (onSuccess != null) {
-          onSuccess(result);
-        }
-      } else {
-        if (onError != null) {
-          onError(code ?? 0, msg ?? "");
-        }
-      }
-      print('响应数据：' + response.toString());
-    } catch (e) {
-      print('请求出错：' + e.toString());
-      if (onError != null) {
-        onError(0, e.toString());
-      }
-    }
-  }
-
-  ///Post请求
-  static void postHttp<T>(
+  ///http请求
+  static void intiateHttp<T>(
+    String method,
     String url, {
     parameters,
     Function(T) onSuccess,
@@ -223,7 +149,24 @@ class HttpUtils {
     print(parameters);
     try {
       Dio dio = await createInstance();
-      Response response = await dio.post(url, data: parameters);
+      Response response;
+      switch (method) {
+        case HttpUtils.GET:
+          response = await dio.get(url, queryParameters: parameters);
+          break;
+        case HttpUtils.POST:
+          response = await dio.post(url, data: parameters);
+          break;
+        case HttpUtils.PATCH:
+          response = await dio.patch(url, data: parameters);
+          break;
+        case HttpUtils.DELETE:
+          response = await dio.delete(url);
+          break;
+        default:
+          response = await dio.get(url, queryParameters: parameters);
+          break;
+      }
       var responseString = json.decode(response.toString());
       var responseResult = BaseResponse.fromJson(responseString);
       int code = responseResult.code;

@@ -144,7 +144,13 @@ class _MyAddressListPageState extends BaseWidgetState<MyAddressListPage> {
           Container(
             margin: EdgeInsets.only(top: 6),
             child: Text(
-              content.province + " " + content.city + " " + content.address,
+              content.province +
+                  " " +
+                  content.city +
+                  " " +
+                  content.county +
+                  " " +
+                  content.address,
               // textAlign: TextAlign.left,
               style: TextStyle(
                 fontSize: 15,
@@ -157,7 +163,7 @@ class _MyAddressListPageState extends BaseWidgetState<MyAddressListPage> {
             children: [
               GestureDetector(
                 onTap: () {
-                  _onTapEvent(1);
+                  addressDelete(index);
                 },
                 child: Container(
                   margin: EdgeInsets.only(top: 8),
@@ -173,7 +179,7 @@ class _MyAddressListPageState extends BaseWidgetState<MyAddressListPage> {
               ),
               GestureDetector(
                 onTap: () {
-                  _onTapEvent(2);
+                  changeAddress(index);
                 },
                 child: Container(
                   margin: EdgeInsets.only(top: 8, left: 15),
@@ -225,7 +231,6 @@ class _MyAddressListPageState extends BaseWidgetState<MyAddressListPage> {
 
   @override
   rightBtnTap(BuildContext context) async {
-    UiUitls.showToast("添加");
     final result = await Navigator.push(
         context, MaterialPageRoute(builder: (context) => AddAddressPage()));
     if (result != null) {
@@ -234,15 +239,31 @@ class _MyAddressListPageState extends BaseWidgetState<MyAddressListPage> {
     }
   }
 
-  ///点击事件
-  _onTapEvent(index) {
-    switch (index) {
-      case 1: //删除
-        UiUitls.showToast("删除");
-        break;
-      case 2: //编辑
-        UiUitls.showToast("编辑");
-        break;
+  void addressDelete(int index) {
+    Map<String, dynamic> map = new HashMap();
+    map['id'] = list[index].id;
+    HttpUtils.requestHttp(
+      ApiConstant.userDeleteAddress,
+      parameters: map,
+      method: HttpUtils.DELETE,
+      onSuccess: (result) async {
+        print(result);
+        EasyLoading.showSuccess("删除成功");
+        getHttp();
+      },
+      onError: (code, error) {
+        EasyLoading.showError(error);
+      },
+    );
+  }
+
+  Future<void> changeAddress(int index) async {
+    final result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => AddAddressPage(model: list[index])));
+    if (result != null) {
+      getHttp();
     }
   }
 }

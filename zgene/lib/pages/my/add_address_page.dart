@@ -7,11 +7,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/http/http_utils.dart';
+import 'package:zgene/models/address_list_model.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
-import 'package:zgene/util/ui_uitls.dart';
+import 'package:zgene/util/isChina_phone.dart';
 
 class AddAddressPage extends BaseWidget {
+  AddressListModel model;
+  AddAddressPage({Key key, this.model}) : super(key: key);
+
   @override
   BaseWidgetState<BaseWidget> getState() {
     return AddAddressPageState();
@@ -23,6 +27,28 @@ class AddAddressPageState extends BaseWidgetState<AddAddressPage> {
   TextEditingController _phoneController = new TextEditingController();
   TextEditingController _cityController = new TextEditingController();
   TextEditingController _areaController = new TextEditingController();
+  // 0新增1更改
+  var type = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print(widget.model);
+    if (widget.model != null) {
+      _nameController.text = widget.model.rcvName;
+      _phoneController.text = widget.model.rcvPhone;
+      sendBackAddress =
+          widget.model.province + widget.model.city + widget.model.county;
+      _areaController.text = widget.model.address;
+
+      initProvince = widget.model.province;
+      initCity = widget.model.city;
+      initTown = widget.model.county;
+      type = 1;
+      setState(() {});
+    }
+  }
 
   @override
   void pageWidgetInitState() {
@@ -279,23 +305,36 @@ class AddAddressPageState extends BaseWidgetState<AddAddressPage> {
     if (!isNetWorkAvailable) {
       return;
     }
+    if (!isPhoneUtils.isChinaPhoneLegal(_phoneController.text)) {
+      EasyLoading.showError("请填写正确格式的手机号！");
+      return;
+    }
+
     EasyLoading.show(status: 'loading...');
 
     Map<String, dynamic> map = new HashMap();
     map['province'] = initProvince;
     map['city'] = initCity;
-    map['Town'] = initTown;
+    map['county'] = initTown;
     map['address'] = _areaController.text;
     map['rcv_name'] = _nameController.text;
     map['rcv_phone'] = _phoneController.text;
 
+    var method = HttpUtils.POST;
+    var toastString = "添加成功";
+    if (type == 1) {
+      method = HttpUtils.PATCH;
+      toastString = "更新成功";
+      map['id'] = widget.model.id;
+      map['uid'] = widget.model.uid;
+    }
     HttpUtils.requestHttp(
       ApiConstant.userAddAddress,
       parameters: map,
-      method: HttpUtils.POST,
+      method: method,
       onSuccess: (result) async {
         print(result);
-        EasyLoading.showSuccess("添加成功");
+        EasyLoading.showSuccess(toastString);
         //1为刷新页面
         Navigator.pop(context, 1);
       },

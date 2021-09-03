@@ -1,10 +1,21 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/http/http_utils.dart';
+import 'package:zgene/models/content_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/my/ordering_page.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:zgene/util/common_utils.dart';
+import 'package:zgene/util/refresh_config_utils.dart';
+import 'package:zgene/util/time_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
+import 'package:zgene/widget/base_web_view.dart';
 
 const APPBAR_SCROLL_OFFSET = 50;
 const APPBAR_SCROLL_OFFSET2 = 400;
@@ -18,65 +29,130 @@ class BuyPage extends BaseWidget {
 class _BuyPageState extends BaseWidgetState<BuyPage> {
   double appBarAlpha = 0;
   bool showBuyButtom = false;
+  EasyRefreshController _easyController;
+  ScrollController _controller = new ScrollController();
+  Archives _productDetail;
 
   @override
   void pageWidgetInitState() {
+    super.pageWidgetInitState();
     showBaseHead = false;
     showHead = false;
     isListPage = true;
     setWantKeepAlive = true;
     backImgPath = "assets/images/mine/img_bg_my.png";
-    super.pageWidgetInitState();
+    _easyController = EasyRefreshController();
+    //监听滚动事件，打印滚动位置
+    _controller.addListener(() {
+      _onScroll(_controller.offset);
+    });
+  }
+
+  @override
+  void dispose() {
+    //为了避免内存泄露，需要调用_controller.dispose
+    _controller.dispose();
+    super.dispose();
+  }
+
+  Future<void> HomeGetHttp() async {
+    bool isNetWorkAvailable = await CommonUtils.isNetWorkAvailable();
+    if (!isNetWorkAvailable) {
+      return;
+    }
+    EasyLoading.show(status: 'loading...');
+
+    Map<String, dynamic> map = new HashMap();
+    map['chid'] = 5;
+    HttpUtils.requestHttp(
+      ApiConstant.contentList,
+      parameters: map,
+      method: HttpUtils.GET,
+      onSuccess: (result) async {
+        EasyLoading.dismiss();
+        ContentModel contentModel = ContentModel.fromJson(result);
+        if (null != contentModel &&
+            null != contentModel.archives &&
+            contentModel.archives.length > 0) {
+          setState(() {
+            _productDetail = contentModel.archives[0];
+          });
+        }
+      },
+      onError: (code, error) {
+        EasyLoading.showError(error);
+      },
+    );
   }
 
   @override
   Widget viewPageBody(BuildContext context) {
     return Stack(
       alignment: Alignment.topLeft,
-      children: [_listview, _appBar],
+      children: [
+        Padding(
+          padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+          child: EasyRefresh(
+            // 是否开启控制结束加载
+            enableControlFinishLoad: false,
+            firstRefresh: true,
+            // 控制器
+            controller: _easyController,
+            header: RefreshConfigUtils.classicalHeader(),
+            child: _listview,
+            //下拉刷新事件回调
+            onRefresh: () async {
+              // page = 1;
+              // // 获取数据
+              HomeGetHttp();
+              // await Future.delayed(Duration(seconds: 1), () {
+              // 重置刷新状态 【没错，这里用的是resetLoadState】
+              if (_easyController != null) {
+                _easyController.resetLoadState();
+              }
+              // });
+            },
+          ),
+        ),
+        _appBar
+      ],
     );
   }
 
   Widget get _listview {
-    return NotificationListener(
-      onNotification: (scrollNotification) {
-        if (scrollNotification is ScrollUpdateNotification &&
-            scrollNotification.depth == 0) {
-          //滚动且是列表滚动的时候
-          _onScroll(scrollNotification.metrics.pixels);
-        }
-        return false;
-      },
-      child: ListView(
-        shrinkWrap: true,
-        physics: BouncingScrollPhysics(),
-        padding: EdgeInsets.only(bottom: 40),
-        children: [
-          _title,
-          _banner,
-          _products,
-          _picture,
-        ],
-      ),
+    return ListView(
+      controller: _controller,
+      shrinkWrap: true,
+      physics: BouncingScrollPhysics(),
+      padding: EdgeInsets.zero,
+      children: [
+        _title,
+        if (null != _productDetail) _banner,
+        if (null != _productDetail) _products,
+        if (null != _productDetail) _picture,
+      ],
     );
   }
 
   Widget get _banner {
     return Container(
       alignment: Alignment.topCenter,
-      child: ClipRRect(
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-            bottomLeft: Radius.zero,
-            bottomRight: Radius.zero),
-        child: Image.asset(
-          "assets/images/buy/banner_zhutu.png",
-          height: 192,
+      child: FadeInImage.assetNetwork(
+          placeholder: 'assets/images/home/img_default2.png',
+          image: CommonUtils.splicingUrl(_productDetail.imageUrl),
           width: 343,
-          fit: BoxFit.fill,
-        ),
-      ),
+          height: 192,
+          fadeInDuration: TimeUtils.fadeInDuration(),
+          fadeOutDuration: TimeUtils.fadeOutDuration(),
+          fit: BoxFit.cover,
+          imageErrorBuilder: (context, error, stackTrace) {
+            return Image.asset(
+              'assets/images/home/img_default2.png',
+              width: double.infinity,
+              height: 192,
+              fit: BoxFit.fill,
+            );
+          }),
     );
   }
 
@@ -97,7 +173,7 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "ZGene检测标准版1.0",
+            _productDetail.title,
             style: TextStyle(
               fontSize: 22.sp,
               fontStyle: FontStyle.normal,
@@ -108,7 +184,7 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
           Padding(
             padding: EdgeInsets.only(top: 12, bottom: 16),
             child: Text(
-              "全面了解自己和家人的基因,只需要1分钟在家釆样,您就可以轻松在家获取个人基因检测报告,足以解锁您的「出厂设置」",
+              _productDetail.description,
               style: TextStyle(
                 fontSize: 15.sp,
                 fontStyle: FontStyle.normal,
@@ -122,7 +198,7 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
             children: [
               Expanded(
                 child: Text(
-                  "¥799.20",
+                  "¥${CommonUtils.formatMoney(_productDetail.coin)}",
                   style: TextStyle(
                     fontSize: 22.sp,
                     fontStyle: FontStyle.normal,
@@ -140,7 +216,8 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
                     borderRadius: BorderRadius.circular(25)),
                 color: ColorConstant.TextMainColor,
                 onPressed: () {
-                  NavigatorUtil.push(context, OrderingPage());
+                  NavigatorUtil.push(
+                      context, OrderingPage(productDetail: _productDetail));
                 },
                 child: Text("立即购买",
                     style: TextStyle(
@@ -160,30 +237,16 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
     return Container(
       color: Colors.white,
       width: double.infinity,
-      padding: EdgeInsets.only(top: 16),
-      margin: EdgeInsets.only(top: 16),
-      child: Column(
-        children: [
-          Image.asset(
-            "assets/images/buy/buy_banner.png",
-            height: 81.h,
-            width: 344.w,
-            fit: BoxFit.cover,
-          ),
-          Container(
-            color: Colors.white,
-            width: double.infinity,
-            height: 1000,
-          )
-        ],
+      margin: EdgeInsets.only(top: 16, bottom: 100),
+      child: BasePageWebView(
+        url: ApiConstant.getH5DetailUrl(_productDetail.id.toString()),
       ),
     );
   }
 
   Widget get _title {
     return Container(
-      margin: EdgeInsets.only(
-          left: 16, top: 10.w + MediaQuery.of(context).padding.top, bottom: 13),
+      margin: EdgeInsets.only(left: 16, top: 10.w, bottom: 13),
       child: Text(
         "购买",
         style: TextStyle(
@@ -242,7 +305,8 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
                             borderRadius: BorderRadius.circular(25)),
                         color: ColorConstant.TextMainColor,
                         onPressed: () {
-                          NavigatorUtil.push(context, OrderingPage());
+                          NavigatorUtil.push(context,
+                              OrderingPage(productDetail: _productDetail));
                         },
                         child: Text("立即购买",
                             style: TextStyle(

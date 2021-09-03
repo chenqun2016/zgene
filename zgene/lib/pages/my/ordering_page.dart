@@ -1,10 +1,23 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_pickers/pickers.dart';
+import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/http/http_utils.dart';
+import 'package:zgene/models/content_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/util/base_widget.dart';
+import 'package:zgene/util/common_utils.dart';
 
 class OrderingPage extends BaseWidget {
+  Archives product;
+
+  OrderingPage({Archives productDetail}) {
+    product = productDetail;
+  }
+
   @override
   BaseWidgetState<BaseWidget> getState() {
     return _OrderingPageState();
@@ -407,7 +420,7 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
                         ],
                       ),
                     ),
-                    if(isWeixinPay)
+                    if (isWeixinPay)
                       Positioned(
                         top: 9,
                         right: 0,
@@ -466,7 +479,7 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
                         ],
                       ),
                     ),
-                    if(!isWeixinPay)
+                    if (!isWeixinPay)
                       Positioned(
                         top: 9,
                         right: 0,
@@ -753,7 +766,7 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
           ),
           child: Column(
             children: [
-              Text("Z基因-精装版-家庭套装",
+              Text(widget.product.title,
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -765,7 +778,7 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text("单价：¥799.00",
+                    Text("单价：¥${CommonUtils.formatMoney(widget.product.coin)}",
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -849,7 +862,7 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
                   )),
               Expanded(
                   flex: 1,
-                  child: Text("799.0",
+                  child: Text("${CommonUtils.formatMoney(widget.product.coin)}",
                       style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.w500,
@@ -875,7 +888,7 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
                                 ? _messageController.text.isNotEmpty
                                 : true)
                     ? () {
-                        NavigatorUtil.push(context, OrderingPage());
+                        // doPay();
                       }
                     : null,
                 child: Text("立即支付",
@@ -888,5 +901,28 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
             ],
           ),
         ));
+  }
+
+  Future<void> doPay() async {
+    bool isNetWorkAvailable = await CommonUtils.isNetWorkAvailable();
+    if (!isNetWorkAvailable) {
+      return;
+    }
+    EasyLoading.show(status: 'loading...');
+
+    Map<String, dynamic> map = new HashMap();
+    map['chid'] = 5;
+    HttpUtils.requestHttp(
+      ApiConstant.contentList,
+      parameters: map,
+      method: HttpUtils.GET,
+      onSuccess: (result) async {
+        EasyLoading.dismiss();
+        ContentModel contentModel = ContentModel.fromJson(result);
+      },
+      onError: (code, error) {
+        EasyLoading.showError(error);
+      },
+    );
   }
 }

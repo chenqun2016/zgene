@@ -1,4 +1,3 @@
-
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -8,19 +7,18 @@ import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/util/sp_utils.dart';
 
 ///公共工具类
-class CommonUtils{
-
+class CommonUtils {
   ///拼接图片和视频路径
-  static String splicingUrl(String url){
-    if(url.isEmpty){
+  static String splicingUrl(String url) {
+    if (url.isEmpty) {
       return "";
     }
-    return CommonConstant.BASE_API+url;
+    return CommonConstant.BASE_API + url;
   }
 
   ///判断网络是否可用
   ///0 - none | 1 - mobile | 2 - WIFI
-  static Future<bool> isNetWorkAvailable() async{
+  static Future<bool> isNetWorkAvailable() async {
     var connectivityResult = await (new Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
       Fluttertoast.showToast(
@@ -29,21 +27,19 @@ class CommonUtils{
           backgroundColor: ColorConstant.LineMainColor,
           textColor: ColorConstant.TextMainColor);
       return false;
-    }else{
+    } else {
       return true;
     }
   }
 
   ///处理数量（过万以万为单位）
-  static String getCountText(int count){
-    if(count>=10000){
-      double tempCount=count.toDouble()/10000;
-      return formartNum(tempCount.toDouble(),1)+"w";
+  static String getCountText(int count) {
+    if (count >= 10000) {
+      double tempCount = count.toDouble() / 10000;
+      return formartNum(tempCount.toDouble(), 1) + "w";
     }
     return count.toString();
   }
-
-
 
   ///
   ///target  要转换的数字
@@ -76,7 +72,7 @@ class CommonUtils{
       }
     } else {
       // 不含小数的部分补点和相应的0
-      String t3 =  postion>0?".":"";
+      String t3 = postion > 0 ? "." : "";
 
       for (int i = 0; i < postion; i++) {
         t3 += "0";
@@ -85,11 +81,13 @@ class CommonUtils{
     }
   }
 
-
-  ///公共跳转链接
-  static toUrl({context,url,type}){
-    Navigator.of(context).pushNamed(url, arguments: "hi");
+  // 服务器数据除以1000
+  static String formatMoney(int money) {
+    return formartNum(money / 1000, 2);
   }
 
-
+  ///公共跳转链接
+  static toUrl({context, url, type}) {
+    Navigator.of(context).pushNamed(url, arguments: "hi");
+  }
 }

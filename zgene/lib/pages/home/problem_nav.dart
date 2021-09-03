@@ -83,7 +83,9 @@ class _ProblemNavState extends State<ProblemNav> {
   Widget _item(contents) {
     BorderSide borderSide = BorderSide(width: 0.8, color: Colors.white);
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        CommonUtils.toUrl(context: context,type: contents.linkType,url: contents.linkUrl);
+      },
       child: Container(
         padding: EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 10),
         child: Row(

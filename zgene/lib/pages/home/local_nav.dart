@@ -60,15 +60,16 @@ class _LocalNavState extends State<LocalNav> {
     Archives archives = goldList[index];
     return GestureDetector(
       onTap: () {
-        if (0 == index) {
-          NavigatorUtil.push(context, BindCollectorPage());
-        }
-        if (1 == index) {
-          NavigatorUtil.push(context, OrderStepPage());
-        }
-        if (2 == index) {
-          NavigatorUtil.push(context, AddAddressPage());
-        }
+        CommonUtils.toUrl(context: context,type: archives.linkType,url: archives.linkUrl);
+        // if (0 == index) {
+        //   NavigatorUtil.push(context, BindCollectorPage());
+        // }
+        // if (1 == index) {
+        //   NavigatorUtil.push(context, OrderStepPage());
+        // }
+        // if (2 == index) {
+        //   NavigatorUtil.push(context, AddAddressPage());
+        // }
       },
       child: Column(
         children: <Widget>[

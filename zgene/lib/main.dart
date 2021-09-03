@@ -39,6 +39,8 @@ import 'pages/my/order_step_page.dart';
 import 'pages/my/ordering_page.dart';
 import 'pages/my/sendBack_acquisition.dart';
 import 'pages/my/show_selectPicker.dart';
+import 'pages/report/report_list_page.dart';
+import 'pages/tabs/buy_page.dart';
 
 void main() async {
   configureApp();
@@ -82,30 +84,19 @@ class MyApp extends StatelessWidget {
       ],
       //注册路由表
       routes: {
-        "bindcollector/bind_collector_page": (context) => BindCollectorPage(),
-        // "bindcollector/bind_step_1":(context) => BindStep1(),
-        // "bindcollector/bind_step_2":(context) => BindStep2(),
-        // "bindcollector/bind_step_3":(context) => BindStep3(),
-        "home/explore_nav": (context) => ExploreNav(),
-        "home/local_nav": (context) => LocalNav(),
-        "home/problem_nav": (context) => ProblemNav(),
-        "home/video_nav": (context) => VideoNav(),
-        "home/video_page": (context) => VideoPage(),
-        "login/bindPhone_login": (context) => BindPhoneLoginPage(),
-        // "login/getVFCode_login":(context) => GetVFCodeLoginPage(),
-        "login/main_login": (context) => MainLoginPage(),
-        "login/phone_login": (context) => PhoneLoginPage(),
-        "my/add_address_page": (context) => AddAddressPage(),
-        "my/my_address_list": (context) => MyAddressListPage(),
-        "my/my_editor_name": (context) => MyEditorPage(),
-        "my/my_info_page": (context) => MyInfoPage(),
-        "my/my_message_list": (context) => MyMessagePage(),
-        "my/my_order_list": (context) => MyOrderListPage(),
-        "my/order_detail": (context) => OrderDetailPage(),
-        "my/order_step_page": (context) => OrderStepPage(),
-        "my/ordering_page": (context) => OrderingPage(),
-        "my/sendBack_acquisition": (context) => SendBackAcquisitionPage(),
-        "my/show_selectPicker": (context) => selectTimePicker(),
+        "/article_detail": (context) => null,//文章详情
+        "/report": (context) => ReportListPage(),//报告
+        "/report_detail": (context) => null,//报告详情
+        "/login": (context) => MainLoginPage(),//登录
+        "/my_message": (context) => MyMessagePage(),//消息
+        "/my_address": (context) => MyAddressListPage(),//我的地址
+        "/my_info": (context) => MyInfoPage(),//我的资料
+        "/my_order": (context) => MyOrderListPage(),//我的订单
+        "/order_step_detail": (context) => OrderStepPage(),//订单步骤详情
+        "/order_detail": (context) => OrderDetailPage(),//订单详情
+        "/bind_collector": (context) => BindCollectorPage(),//绑定采集器
+        "/kefu": (context) => null,//联系客服
+        "/about": (context) => null,//关于我们
       },
     ));
   }

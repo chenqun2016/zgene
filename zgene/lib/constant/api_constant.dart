@@ -35,7 +35,6 @@ class ApiConstant {
   static const String payLinks = BASE_API + ApiConstant.payLink;
 
   ///********************************* 消息 *****************************///
-
   //消息列表
   static const String messageList = "/api/v1/user/notices";
 }

@@ -61,63 +61,68 @@ class _ExploreNavState extends State<ExploreNav> {
 
   Widget _item(position) {
     Archives archives = tourList[position];
-    return Container(
-        margin: EdgeInsets.only(left: 16, top: 10),
-        width: 136,
-        child: Stack(
-          alignment: Alignment.topCenter,
-          children: [
-            Container(
-              margin: EdgeInsets.only(top: 37),
-              padding: EdgeInsets.only(left: 10, right: 10, bottom: 14),
-              alignment: Alignment.bottomLeft,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(20),
+    return GestureDetector(
+      onTap: (){
+        CommonUtils.toUrl(context: context,type: archives.linkType,url: archives.linkUrl);
+      },
+      child: Container(
+          margin: EdgeInsets.only(left: 16, top: 10),
+          width: 136,
+          child: Stack(
+            alignment: Alignment.topCenter,
+            children: [
+              Container(
+                margin: EdgeInsets.only(top: 37),
+                padding: EdgeInsets.only(left: 10, right: 10, bottom: 14),
+                alignment: Alignment.bottomLeft,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(20),
+                  ),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                        padding: EdgeInsets.only(bottom: 10),
+                        child: Text(
+                          archives.title,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: ColorConstant.TextMainBlack,
+                              fontWeight: FontWeight.bold),
+                        )),
+                    Text(
+                      archives.keywords,
+                      style: TextStyle(
+                          fontSize: 13, color: ColorConstant.Text_8E9AB),
+                    )
+                  ],
                 ),
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                      padding: EdgeInsets.only(bottom: 10),
-                      child: Text(
-                        archives.title,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: ColorConstant.TextMainBlack,
-                            fontWeight: FontWeight.bold),
-                      )),
-                  Text(
-                    archives.keywords,
-                    style: TextStyle(
-                        fontSize: 13, color: ColorConstant.Text_8E9AB),
-                  )
-                ],
-              ),
-            ),
-            FadeInImage.assetNetwork(
-                placeholder: 'assets/images/home/img_default2.png',
-                image: CommonUtils.splicingUrl(archives.imageUrl),
-                width: 90,
-                height: 90,
-                fadeInDuration: TimeUtils.fadeInDuration(),
-                fadeOutDuration: TimeUtils.fadeOutDuration(),
-                fit: BoxFit.cover,
-                imageErrorBuilder: (context, error, stackTrace) {
-                  return Image.asset(
-                    'assets/images/home/img_default2.png',
-                    width: 90,
-                    height: 90,
-                    fit: BoxFit.fill,
-                  );
-                }),
-          ],
-        ));
+              FadeInImage.assetNetwork(
+                  placeholder: 'assets/images/home/img_default2.png',
+                  image: CommonUtils.splicingUrl(archives.imageUrl),
+                  width: 90,
+                  height: 90,
+                  fadeInDuration: TimeUtils.fadeInDuration(),
+                  fadeOutDuration: TimeUtils.fadeOutDuration(),
+                  fit: BoxFit.cover,
+                  imageErrorBuilder: (context, error, stackTrace) {
+                    return Image.asset(
+                      'assets/images/home/img_default2.png',
+                      width: 90,
+                      height: 90,
+                      fit: BoxFit.fill,
+                    );
+                  }),
+            ],
+          )),
+    );
   }
 
 }

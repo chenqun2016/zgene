@@ -1,16 +1,35 @@
+import 'dart:collection';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/constant/common_constant.dart';
+import 'package:zgene/http/http_utils.dart';
+import 'package:zgene/util/common_utils.dart';
+import 'package:zgene/util/refresh_config_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 
 ///我的消息列表
 class MyMessagePage extends StatefulWidget {
+
   @override
   _MyMessagePageState createState() => _MyMessagePageState();
+
 }
 
 class _MyMessagePageState extends State<MyMessagePage>{
   int errorCode = 0; //0.正常 1.暂无数据 2.错误 3.没有网络
+  List list = [];
+  List tempList = [];
+  int page = 1;
+
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -247,5 +266,32 @@ class _MyMessagePageState extends State<MyMessagePage>{
         UiUitls.showToast("完成");
         break;
     }
+  }
+
+  ///获取消息列表
+  getHttp() async {
+    bool isNetWorkAvailable = await CommonUtils.isNetWorkAvailable();
+    if (!isNetWorkAvailable) {
+      // if (page == 1 && list.length == 0) {
+      //   errorCode = 3;
+      //   _controller = null;
+      //   setState(() {});
+      // }
+      return;
+    }
+    Map<String, dynamic> map = new HashMap();
+    map["page"] = page;
+    map["page_size"] = CommonConstant.PAGE_SIZE;
+
+    HttpUtils.requestHttp(
+      ApiConstant.messageList,
+      parameters: map,
+      method: HttpUtils.GET,
+      onSuccess: (result) async {
+
+      },
+      onError: (code, error) {
+      },
+    );
   }
 }

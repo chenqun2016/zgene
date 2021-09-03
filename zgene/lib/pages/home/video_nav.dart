@@ -112,37 +112,42 @@ class VideoNav extends StatefulWidget {
         return Text("");
       }else {
         Archives archives = aloneList[index];
-        return Container(
-          height: 153,
-          margin: EdgeInsets.only(top: 17),
-          padding: EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            image: DecorationImage(
-                fit: BoxFit.fill,
-                image: index % 2 == 0
-                    ? AssetImage("assets/images/home/img_jiyinjieguo.png")
-                    : AssetImage("assets/images/home/img_jiyinjieguo2.png")),
-            borderRadius: BorderRadius.all(
-              Radius.circular(10),
+        return GestureDetector(
+          onTap: (){
+            CommonUtils.toUrl(context: context,type: archives.linkType,url: archives.linkUrl);
+          },
+          child: Container(
+            height: 153,
+            margin: EdgeInsets.only(top: 17),
+            padding: EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                  fit: BoxFit.fill,
+                  image: index % 2 == 0
+                      ? AssetImage("assets/images/home/img_jiyinjieguo.png")
+                      : AssetImage("assets/images/home/img_jiyinjieguo2.png")),
+              borderRadius: BorderRadius.all(
+                Radius.circular(10),
+              ),
+              //
+              // image: DecorationImage(
+              //     fit: BoxFit.fill,
+              //     image: index % 2 == 0
+              //         ? AssetImage("assets/images/home/img_jiyinjieguo.png")
+              //         : AssetImage("assets/images/home/img_jiyinjieguo2.png")),
+              // borderRadius: BorderRadius.all(
+              //   Radius.circular(10),
+              // ),
             ),
-            //
-            // image: DecorationImage(
-            //     fit: BoxFit.fill,
-            //     image: index % 2 == 0
-            //         ? AssetImage("assets/images/home/img_jiyinjieguo.png")
-            //         : AssetImage("assets/images/home/img_jiyinjieguo2.png")),
-            // borderRadius: BorderRadius.all(
-            //   Radius.circular(10),
-            // ),
-          ),
-          child: Text(
-            archives.title,
-            style: TextStyle(
-                fontSize: 16,
-                color: index % 2 == 0
-                    ? ColorConstant.Text_776359
-                    : ColorConstant.Text_64747F,
-                fontWeight: FontWeight.bold),
+            child: Text(
+              archives.title,
+              style: TextStyle(
+                  fontSize: 16,
+                  color: index % 2 == 0
+                      ? ColorConstant.Text_776359
+                      : ColorConstant.Text_64747F,
+                  fontWeight: FontWeight.bold),
+            ),
           ),
         );
       }

@@ -52,6 +52,7 @@ dependencies:
   flutter_pickers: ^2.1.1
   # sign_in_with_apple: ^3.0.0
   # fluwx: ^3.5.1
+  event_bus: ^2.0.0
 
 
 dev_dependencies:

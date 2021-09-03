@@ -145,6 +145,7 @@ class _HomePageState extends BaseWidgetState<HomePage> {
           Archives archives = bannerList[index];
           return GestureDetector(
             onTap: () {
+              CommonUtils.toUrl(context: context,type: archives.linkType,url: archives.linkUrl);
               // String model = bannerList[index];
               // NavigatorUtil.push();
             },

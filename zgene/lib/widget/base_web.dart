@@ -8,6 +8,8 @@ import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/util/platform_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
+import 'package:easy_web_view2/easy_web_view2.dart';
+import 'package:zgene/util/platform_utils.dart';
 
 //基础webview
 class BaseWebView extends StatefulWidget {
@@ -27,6 +29,7 @@ class _BaseWebViewState extends State<BaseWebView> {
   // final Map arguments;
 
   String _url = "";
+  static ValueKey key = ValueKey('key_0');
 
   @override
   void initState() {
@@ -85,53 +88,73 @@ class _BaseWebViewState extends State<BaseWebView> {
                       ),
                 Expanded(
                   // 官方代码
-                  child: InAppWebView(
-                    // initialUrl: widget.url,
-
-                    initialOptions: options,
-                    initialUrlRequest: URLRequest(
-                        url: Uri.parse(_url),
-                        headers: {"Referer ": CommonConstant.BASE_API}),
-
-                    onWebViewCreated: (controller) {
-                      try {
-                        controller.addJavaScriptHandler(
-                            handlerName: "handlerGetCode",
-                            callback: (args) {
-                              print(args);
-                              return {
-                                'os':
-                                    PlatformUtils.isAndroid ? 'Android' : 'iOS',
-                                'token': SpUtils()
-                                    .getStorageDefault(SpConstant.Token, "")
-                              };
-                            });
-                      } catch (e) {
-                        print(e);
-                      }
-
-                      controller.loadUrl(
-                          urlRequest: URLRequest(
+                  child: PlatformUtils.isWeb
+                      ? EasyWebView(
+                          onLoaded: () {
+                            print('Loaded: $_url');
+                            this._flag = false;
+                          },
+                          src: _url,
+                          isHtml: false,
+                          isMarkdown: false,
+                          convertToWidgets: false,
+                          widgetsTextSelectable: false,
+                          key: key,
+                          webNavigationDelegate: (_) => false
+                              ? WebNavigationDecision.prevent
+                              : WebNavigationDecision.navigate,
+                          // width: 100,
+                          // height: 100,
+                        )
+                      : InAppWebView(
+                          // initialUrl: widget.url,
+                          initialOptions: options,
+                          initialUrlRequest: URLRequest(
                               url: Uri.parse(_url),
-                              headers: {"Referer ": CommonConstant.BASE_API}));
-                    },
-                    onLoadStart: (controller, url) async {
-                      if (!(url.toString().startsWith("http:") ||
-                          url.toString().startsWith("https:"))) {
-                        await launch(url.toString());
-                      }
-                    },
+                              headers: {"Referer ": CommonConstant.BASE_API}),
 
-                    // 加载进度变化事件.
-                    onProgressChanged:
-                        (InAppWebViewController controller, int progress) {
-                      if ((progress / 100) > 0.999) {
-                        setState(() {
-                          this._flag = false;
-                        });
-                      }
-                    },
-                  ),
+                          onWebViewCreated: (controller) {
+                            try {
+                              controller.addJavaScriptHandler(
+                                  handlerName: "handlerGetCode",
+                                  callback: (args) {
+                                    print(args);
+                                    return {
+                                      'os': PlatformUtils.isAndroid
+                                          ? 'Android'
+                                          : 'iOS',
+                                      'token': SpUtils().getStorageDefault(
+                                          SpConstant.Token, "")
+                                    };
+                                  });
+                            } catch (e) {
+                              print(e);
+                            }
+
+                            controller.loadUrl(
+                                urlRequest: URLRequest(
+                                    url: Uri.parse(_url),
+                                    headers: {
+                                  "Referer ": CommonConstant.BASE_API
+                                }));
+                          },
+                          onLoadStart: (controller, url) async {
+                            if (!(url.toString().startsWith("http:") ||
+                                url.toString().startsWith("https:"))) {
+                              await launch(url.toString());
+                            }
+                          },
+
+                          // 加载进度变化事件.
+                          onProgressChanged: (InAppWebViewController controller,
+                              int progress) {
+                            if ((progress / 100) > 0.999) {
+                              setState(() {
+                                this._flag = false;
+                              });
+                            }
+                          },
+                        ),
                 )
               ],
             )));

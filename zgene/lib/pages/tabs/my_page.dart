@@ -1,95 +1,102 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/bindcollector/bind_collector_page.dart';
 import 'package:zgene/pages/login/main_login.dart';
+import 'package:zgene/pages/my/my_about_us.dart';
+import 'package:zgene/pages/my/my_commonQus.dart';
+import 'package:zgene/pages/my/my_contant_us.dart';
 import 'package:zgene/pages/my/my_info_page.dart';
 import 'package:zgene/pages/my/my_message_list.dart';
 import 'package:zgene/pages/my/my_order_list.dart';
 import 'package:zgene/pages/my/my_set.dart';
 import 'package:zgene/pages/my/sendBack_acquisition.dart';
+import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/ui_uitls.dart';
 
-///我的
-class MyPage extends StatefulWidget {
+class MyPage extends BaseWidget {
   @override
-  _MyPageState createState() => _MyPageState();
+  BaseWidgetState getState() {
+    return _MyPageState();
+  }
 }
 
-class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
+class _MyPageState extends BaseWidgetState<MyPage> {
   @override
-  bool get wantKeepAlive => true;
+  void pageWidgetInitState() {
+    super.pageWidgetInitState();
+    showHead = false;
+    // isShowBack = false;
+    setWantKeepAlive = true;
+    backImgPath = "assets/images/mine/img_bg_my.png";
+  }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          width: double.infinity,
-          padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/images/mine/img_bg_my.png"),
-              fit: BoxFit.cover,
+  Widget viewPageBody(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("assets/images/mine/img_bg_my.png"),
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          GestureDetector(
+            onTap: () {
+              _onTapEvent(1);
+            },
+            behavior: HitTestBehavior.opaque,
+            child: Container(
+              margin: EdgeInsets.fromLTRB(0, 45, 0, 0),
+              child: Stack(children: [
+                Image(
+                  image: AssetImage("assets/images/mine/icon_my_message.png"),
+                  height: 42,
+                  width: 42,
+                ),
+                Positioned(
+                    right: 6,
+                    top: 6,
+                    child: Container(
+                      width: 16,
+                      height: 16,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          color: Color(0XFFF72937),
+                          borderRadius: BorderRadius.circular(15)),
+                      child: Text(
+                        "44",
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: ColorConstant.WhiteColor,
+                        ),
+                      ),
+                    )),
+              ]),
+              alignment: Alignment.topRight,
             ),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  _onTapEvent(1);
-                },
-                behavior: HitTestBehavior.opaque,
-                child: Container(
-                  margin: EdgeInsets.fromLTRB(0, 45, 0, 0),
-                  child: Stack(children: [
-                    Image(
-                      image:
-                          AssetImage("assets/images/mine/icon_my_message.png"),
-                      height: 42,
-                      width: 42,
-                    ),
-                    Positioned(
-                        right: 6,
-                        top: 6,
-                        child: Container(
-                          width: 16,
-                          height: 16,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              color: Color(0XFFF72937),
-                              borderRadius: BorderRadius.circular(15)),
-                          child: Text(
-                            "44",
-                            style: TextStyle(
-                              fontSize: 11,
-                              color: ColorConstant.WhiteColor,
-                            ),
-                          ),
-                        )),
-                  ]),
-                  alignment: Alignment.topRight,
-                ),
+          _getMyInfo(),
+          Visibility(
+            visible: true,
+            child: Container(
+              margin: EdgeInsets.only(bottom: 15),
+              child: Image(
+                image: AssetImage("assets/images/mine/img_my_banner.png"),
+                height: 80,
+                width: double.infinity,
               ),
-              _getMyInfo(),
-              Visibility(
-                visible: true,
-                child: Container(
-                  margin: EdgeInsets.only(bottom: 15),
-                  child: Image(
-                    image: AssetImage("assets/images/mine/img_my_banner.png"),
-                    height: 80,
-                    width: double.infinity,
-                  ),
-                ),
-              ),
-              _getMyOrder(),
-              _getProductPurchase(),
-              _getSet(),
-            ],
+            ),
           ),
-        ),
+          _getMyOrder(),
+          _getProductPurchase(),
+          _getSet(),
+        ],
       ),
     );
   }
@@ -471,19 +478,20 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
         break;
       case 7: //我的报告
         UiUitls.showToast("我的报告");
+        NavigatorUtil.push(context, MainLoginPage());
+
         break;
       case 8: //设置
         NavigatorUtil.push(context, MySetPage());
         break;
       case 9: //联系客服
-        UiUitls.showToast("联系客服");
+        NavigatorUtil.push(context, contantUsPage());
         break;
       case 10: //常见问题
-        UiUitls.showToast("常见问题");
+        NavigatorUtil.push(context, CommonQusListPage());
         break;
       case 11: //关于Z基因
-        UiUitls.showToast("关于Z基因");
-        NavigatorUtil.push(context, MainLoginPage());
+        NavigatorUtil.push(context, AboutUsPage());
         break;
     }
   }

@@ -123,10 +123,11 @@ class CommonUtils {
           Map<String, String> params = uri.queryParameters;
           var id = params['id'];
           print("sssssssss:${id}");
-          if(id==null){
+          if (id == null) {
             Navigator.of(context).pushNamed(url);
-          }else{
-            Navigator.of(context).pushNamed(url.split("?")[0], arguments:{"id":id});
+          } else {
+            Navigator.of(context)
+                .pushNamed(url.split("?")[0], arguments: {"id": id});
           }
           break;
         case 3:

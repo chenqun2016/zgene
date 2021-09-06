@@ -5,18 +5,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/navigator/navigator_util.dart';
+import 'package:zgene/pages/login/set_passwoed.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/phonetextFild_input.dart';
 import 'package:zgene/util/isChina_phone.dart';
 
-class BindPhoneLoginPage extends BaseWidget {
+class ChangePasswordPage extends BaseWidget {
   @override
   BaseWidgetState getState() {
-    return _BindPhoneLoginPageState();
+    return _ChangePasswordPageState();
   }
 }
 
-class _BindPhoneLoginPageState extends BaseWidgetState<BindPhoneLoginPage> {
+class _ChangePasswordPageState extends BaseWidgetState<ChangePasswordPage> {
   @override
   void pageWidgetInitState() {
     super.pageWidgetInitState();
@@ -78,7 +80,7 @@ class _BindPhoneLoginPageState extends BaseWidgetState<BindPhoneLoginPage> {
           Container(
             margin: EdgeInsets.only(top: 54.h, left: 25.w),
             child: Text(
-              "绑定手机号",
+              "修改密码",
               textAlign: TextAlign.left,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
@@ -90,13 +92,13 @@ class _BindPhoneLoginPageState extends BaseWidgetState<BindPhoneLoginPage> {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(left: 30.w, top: 5.h),
+            margin: EdgeInsets.only(left: 30.w, top: 10.h),
             child: Text(
-              "以便能为您提供更好的服务",
+              "为了保证您的账户安全，请先验证身份。",
               textAlign: TextAlign.left,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                fontSize: 22.sp,
+                fontSize: 16.sp,
                 fontStyle: FontStyle.normal,
                 fontWeight: FontWeight.w400,
                 color: ColorConstant.TextMainBlack,
@@ -312,12 +314,14 @@ class _BindPhoneLoginPageState extends BaseWidgetState<BindPhoneLoginPage> {
                               : ColorConstant.WhiteColor),
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(40.h)))),
-                  onPressed: () {},
+                  onPressed: () {
+                    setPassword();
+                  },
                   child: Container(
                     child: Center(
                       child: Container(
                         child: Text(
-                          "绑定并登录",
+                          "下一步",
                           textAlign: TextAlign.center,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -399,5 +403,9 @@ class _BindPhoneLoginPageState extends BaseWidgetState<BindPhoneLoginPage> {
     _cancelTimer();
     _timer = null;
     super.dispose();
+  }
+
+  void setPassword() {
+    NavigatorUtil.push(context, SetPasswordPage());
   }
 }

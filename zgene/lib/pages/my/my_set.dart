@@ -5,6 +5,8 @@ import 'package:zgene/pages/my/my_address_list.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/ui_uitls.dart';
 
+import 'account_security.dart';
+
 ///我的设置
 class MySetPage extends BaseWidget {
   @override
@@ -32,42 +34,40 @@ class _MySetPageState extends BaseWidgetState<MySetPage> {
   Widget viewPageBody(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: MediaQuery.of(context).size.height-100,
+      height: MediaQuery.of(context).size.height - 100,
       child: Stack(
         children: [
-            Column(
+          Column(
             children: [
               _getAccountSet(),
               _getOtherSet(),
             ],
           ),
-          Positioned(
-              bottom: 40,
-              left: 6,
-              right: 6,
-              height: 55,
-              child: RaisedButton(
-                color: ColorConstant.TextMainColor,
-                child: Text(
-                  "退出登录",
-                  style: TextStyle(
-                    color: ColorConstant.WhiteColor,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(40.0)),
-                onPressed: () {
-                  _onTapEvent(8);
-                },
-              )),
+          // Positioned(
+          //     bottom: 40,
+          //     left: 6,
+          //     right: 6,
+          //     height: 55,
+          //     child: RaisedButton(
+          //       color: ColorConstant.TextMainColor,
+          //       child: Text(
+          //         "退出登录",
+          //         style: TextStyle(
+          //           color: ColorConstant.WhiteColor,
+          //           fontSize: 18,
+          //           fontWeight: FontWeight.w500,
+          //         ),
+          //       ),
+          //       shape: RoundedRectangleBorder(
+          //           borderRadius: BorderRadius.circular(40.0)),
+          //       onPressed: () {
+          //         _onTapEvent(8);
+          //       },
+          //     )),
         ],
       ),
     );
-
   }
-
 
   ///设置板块
   Widget _getAccountSet() {
@@ -75,11 +75,11 @@ class _MySetPageState extends BaseWidgetState<MySetPage> {
       padding: EdgeInsets.fromLTRB(16, 11, 16, 11),
       margin: EdgeInsets.fromLTRB(15, 5, 15, 8),
       width: double.infinity,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(
-          Radius.circular(20),
-        ),
+      decoration: new BoxDecoration(
+        color: ColorConstant.WhiteColorB2,
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+        //设置四周边框
+        border: new Border.all(width: 1, color: ColorConstant.WhiteColor),
       ),
       child: Column(
         children: [
@@ -98,7 +98,6 @@ class _MySetPageState extends BaseWidgetState<MySetPage> {
                       "用户名",
                       style: textStyle,
                     )),
-
                 Positioned(
                   right: 0,
                   top: 15,
@@ -188,7 +187,7 @@ class _MySetPageState extends BaseWidgetState<MySetPage> {
                     height: 45,
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      "收货地址",
+                      "地址管理",
                       style: textStyle,
                     )),
                 Positioned(
@@ -214,11 +213,11 @@ class _MySetPageState extends BaseWidgetState<MySetPage> {
       padding: EdgeInsets.fromLTRB(16, 11, 16, 11),
       margin: EdgeInsets.fromLTRB(15, 5, 15, 8),
       width: double.infinity,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(
-          Radius.circular(20),
-        ),
+      decoration: new BoxDecoration(
+        color: ColorConstant.WhiteColorB2,
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+        //设置四周边框
+        border: new Border.all(width: 1, color: ColorConstant.WhiteColor),
       ),
       child: Column(
         children: [
@@ -330,7 +329,7 @@ class _MySetPageState extends BaseWidgetState<MySetPage> {
         UiUitls.showToast("隐私政策");
         break;
       case 7: //账号安全
-        UiUitls.showToast("账号安全");
+        NavigatorUtil.push(context, accountSecurityPage());
         break;
       case 8: //退出登录
         UiUitls.showToast("退出登录");

@@ -410,46 +410,49 @@ class _selectTimePicker extends State<selectTimePicker> {
     if (daySelectIndex == 0) {
       if (timeSelectIndex == 0) {
         _reporStrTime = dateTime.toString();
+        _reporStrTime = dateTime.year.toString() +
+            "-" +
+            dateTime.month.toString() +
+            "-" +
+            dateTime.day.toString() +
+            " " +
+            dateTime.hour.toString() +
+            ":" +
+            dateTime.minute.toString();
       } else {
         if (dateTime.day < dayCount) {
-          _reporStrTime = new DateTime(
-                  dateTime.year,
-                  dateTime.month,
-                  dateTime.day + daySelectIndex,
-                  int.parse(todayTimeData[timeSelectIndex].substring(0, 2)),
-                  0,
-                  0)
-              .toString();
+          _reporStrTime = dateTime.year.toString() +
+              "-" +
+              dateTime.month.toString() +
+              "-" +
+              (dateTime.day + daySelectIndex).toString() +
+              " " +
+              todayTimeData[timeSelectIndex].substring(0, 5);
         } else {
-          _reporStrTime = new DateTime(
-                  dateTime.year,
-                  dateTime.month + daySelectIndex,
-                  1,
-                  int.parse(todayTimeData[timeSelectIndex].substring(0, 2)),
-                  0,
-                  0)
-              .toString();
+          _reporStrTime = dateTime.year.toString() +
+              "-" +
+              (dateTime.month + daySelectIndex).toString() +
+              "-" +
+              "1 " +
+              todayTimeData[timeSelectIndex].substring(0, 5);
         }
       }
     } else {
       if (dateTime.day < dayCount) {
-        _reporStrTime = new DateTime(
-                dateTime.year,
-                dateTime.month,
-                dateTime.day + daySelectIndex,
-                int.parse(otherTimeData[timeSelectIndex].substring(0, 2)),
-                0,
-                0)
-            .toString();
+        _reporStrTime = dateTime.year.toString() +
+            "-" +
+            dateTime.month.toString() +
+            "-" +
+            (dateTime.day + daySelectIndex).toString() +
+            " " +
+            otherTimeData[timeSelectIndex].substring(0, 5);
       } else {
-        _reporStrTime = new DateTime(
-                dateTime.year,
-                dateTime.month + daySelectIndex,
-                1,
-                int.parse(otherTimeData[timeSelectIndex].substring(0, 2)),
-                0,
-                0)
-            .toString();
+        _reporStrTime = _reporStrTime = dateTime.year.toString() +
+            "-" +
+            (dateTime.month + daySelectIndex).toString() +
+            "-" +
+            "1 " +
+            otherTimeData[timeSelectIndex].substring(0, 5);
       }
     }
   }

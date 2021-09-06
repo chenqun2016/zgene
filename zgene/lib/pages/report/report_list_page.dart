@@ -224,6 +224,9 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
       );
 
   Widget _buildSliverItem(context, archive, index) {
+    var json = jsonDecode(archive.description);
+    ReportDesModel model = ReportDesModel.fromJson(json);
+
     return GestureDetector(
       onTap: () {
         CommonUtils.toUrl(
@@ -245,21 +248,27 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
                       fontSize: 15),
                 ),
               ),
-              Image.asset(
-                "assets/images/report/img_qiang.png",
-                width: 22,
-                height: 22,
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 6, right: 28),
-                child: Text(
-                  "弱",
-                  style: TextStyle(
-                      color: ColorConstant.Text_8E9AB,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16),
+              if (null != model &&
+                  null != model.items &&
+                  model.items.length > 0)
+                Image.asset(
+                  _getAssetIcon(model.items[0].color),
+                  width: 22,
+                  height: 22,
                 ),
-              ),
+              if (null != model &&
+                  null != model.items &&
+                  model.items.length > 0)
+                Padding(
+                  padding: EdgeInsets.only(left: 6, right: 28),
+                  child: Text(
+                    model.items[0].title,
+                    style: TextStyle(
+                        color: ColorConstant.Text_8E9AB,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16),
+                  ),
+                ),
               Image.asset(
                 "assets/images/mine/icon_my_name_right.png",
                 width: 22,
@@ -270,6 +279,18 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
         ),
       ),
     );
+  }
+
+  String _getAssetIcon(String color) {
+    if ("green" == color) {
+      return "assets/images/report/img_zhong.png";
+    }
+    if ("blue" == color) {
+      return "assets/images/report/img_qiang.png";
+    }
+    if ("red" == color) {
+      return "assets/images/report/img_luo.png";
+    }
   }
 
   Widget _buildSliverAppBar() {
@@ -378,36 +399,5 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
         Color(0xFFFE4343),
       ]);
     }
-  }
-}
-
-class _SliverDelegate extends SliverPersistentHeaderDelegate {
-  _SliverDelegate({
-    @required this.minHeight,
-    @required this.maxHeight,
-    @required this.child,
-  });
-
-  final double minHeight; //最小高度
-  final double maxHeight; //最大高度
-  final Widget child; //孩子
-
-  @override
-  double get minExtent => minHeight;
-
-  @override
-  double get maxExtent => max(maxHeight, minHeight);
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return new SizedBox.expand(child: child);
-  }
-
-  @override //是否需要重建
-  bool shouldRebuild(_SliverDelegate oldDelegate) {
-    return maxHeight != oldDelegate.maxHeight ||
-        minHeight != oldDelegate.minHeight ||
-        child != oldDelegate.child;
   }
 }

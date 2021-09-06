@@ -11,6 +11,7 @@ import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/setting_model.dart';
 import 'package:zgene/pages/home/video_nav.dart';
 import 'package:zgene/pages/splash_page.dart';
+import 'package:zgene/pages/tabs/report_page.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
@@ -144,7 +145,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       //注册路由表
       routes: {
         "/article_detail": (context) => null,//文章详情
-        "/report": (context) => ReportListPage(),//报告
+        "/report": (context) => ReportPage(),//报告
         "/report_detail": (context) => null,//报告详情
         "/login": (context) => MainLoginPage(),//登录
         "/my_message": (context) => MyMessagePage(),//消息

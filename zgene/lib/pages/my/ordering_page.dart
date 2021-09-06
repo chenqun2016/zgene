@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -10,6 +11,7 @@ import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/content_model.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
+import 'package:tobias/tobias.dart' as tobias;
 
 class OrderingPage extends BaseWidget {
   Archives product;
@@ -913,12 +915,12 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
 
     Map<String, dynamic> map = new HashMap();
     map['pid'] = widget.product.id;
-    map['price'] = widget.product.coin / 1000;
+    map['price'] = widget.product.coin;
     map['nums'] = 1;
 
-    map['amounts'] = widget.product.coin / 1000;
-    map['rev_name'] = _nameController.text.toString();
-    map['rev_phone'] = _phoneController.text.toString();
+    map['amounts'] = widget.product.coin;
+    map['rcv_name'] = _nameController.text.toString();
+    map['rcv_phone'] = _phoneController.text.toString();
     map['province'] = _initProvince;
     map['city'] = _initCity;
     map['county'] = _initTown;
@@ -932,24 +934,36 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
       onSuccess: (result) async {
         EasyLoading.dismiss();
 
-        payWithWeChat(
-          appId: result['appid'],
-          partnerId: result['partnerid'],
-          prepayId: result['prepayid'],
-          packageValue: result['package'],
-          nonceStr: result['noncestr'],
-          timeStamp: result['timestamp'],
-          sign: result['sign'],
-        );
+        log("ordering result==${result}");
+        if(isWeixinPay){
+          payWithWeChat(
+            appId: result['appid'],
+            partnerId: result['partnerid'],
+            prepayId: result['prepayid'],
+            packageValue: result['package'],
+            nonceStr: result['noncestr'],
+            timeStamp: result['timestamp'],
+            sign: result['sign'],
+          );
 
-        // 监听支付结果
-        weChatResponseEventHandler.listen((event) async {
-          print(event.errCode);
+          // 监听支付结果
+          weChatResponseEventHandler.listen((event) async {
+            print(event.errCode);
+            // 支付成功
+            if (event.errCode == 0) {
+            }
+            // 关闭弹窗
+          });
+        }else{
+          var aliPay = await tobias.aliPay(result['pay_param']);
+          log("aliPay result==${aliPay}");
+
           // 支付成功
-          if (event.errCode == 0) {
+          if('9000' == aliPay['resultStatus']){
+
           }
-          // 关闭弹窗
-        });
+        }
+
       },
       onError: (code, error) {
         EasyLoading.showError(error);

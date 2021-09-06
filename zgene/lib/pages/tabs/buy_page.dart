@@ -135,24 +135,29 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
   }
 
   Widget get _banner {
-    return Container(
-      alignment: Alignment.topCenter,
-      child: FadeInImage.assetNetwork(
-          placeholder: 'assets/images/home/img_default2.png',
-          image: CommonUtils.splicingUrl(_productDetail.imageUrl),
-          width: 343,
-          height: 192,
-          fadeInDuration: TimeUtils.fadeInDuration(),
-          fadeOutDuration: TimeUtils.fadeOutDuration(),
-          fit: BoxFit.cover,
-          imageErrorBuilder: (context, error, stackTrace) {
-            return Image.asset(
-              'assets/images/home/img_default2.png',
-              width: double.infinity,
-              height: 192,
-              fit: BoxFit.fill,
-            );
-          }),
+    return ClipRect(
+      child: Container(
+        width: 343,
+        height:172 ,
+        alignment: Alignment.topCenter,
+        child: FadeInImage.assetNetwork(
+            placeholder: 'assets/images/home/img_default2.png',
+            image: CommonUtils.splicingUrl(_productDetail.imageUrl),
+            width: 343,
+            height: 192,
+            fadeInDuration: TimeUtils.fadeInDuration(),
+            fadeOutDuration: TimeUtils.fadeOutDuration(),
+            fit: BoxFit.cover,
+            alignment: Alignment.topCenter,
+            imageErrorBuilder: (context, error, stackTrace) {
+              return Image.asset(
+                'assets/images/home/img_default2.png',
+                width: double.infinity,
+                height: 192,
+                fit: BoxFit.fill,
+              );
+            }),
+      ),
     );
   }
 

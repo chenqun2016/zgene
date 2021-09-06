@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/navigator/navigator_util.dart';
+import 'package:zgene/pages/bindcollector/bind_collector_page.dart';
 import 'package:zgene/pages/login/main_login.dart';
 import 'package:zgene/pages/my/my_info_page.dart';
 import 'package:zgene/pages/my/my_message_list.dart';
@@ -458,7 +459,7 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
         NavigatorUtil.push(context, MyOrderListPage());
         break;
       case 4: //绑定采集器
-        UiUitls.showToast("绑定采集器");
+        NavigatorUtil.push(context, BindCollectorPage());
         break;
       case 5: //回寄采集器
 

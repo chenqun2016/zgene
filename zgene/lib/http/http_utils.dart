@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:device_info/device_info.dart';
 import 'package:dio/dio.dart';
@@ -188,7 +189,7 @@ class HttpUtils {
       } else {
         onError(code ?? 0, msg ?? "");
       }
-      print('响应数据：' + response.toString());
+      log('响应数据：' + response.toString());
     } catch (e) {
       print('请求出错：' + e.toString());
       onError(0, e.toString());

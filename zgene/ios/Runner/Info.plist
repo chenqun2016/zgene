@@ -33,6 +33,7 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+	    <string>alipays</string>
 		<string>weixinULAPI</string>
 		<string>wechat</string>
 		<string>weixin</string>
@@ -93,6 +94,18 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<array>
+       	<dict>
+       		<key>CFBundleTypeRole</key>
+       		<string>Editor</string>
+       		<key>CFBundleURLName</key>
+       		<string>alipay</string>
+       		<key>CFBundleURLSchemes</key>
+       		<array>
+       			<string>www.divms.com</string>
+       		</array>
+       	</dict>
+    </array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

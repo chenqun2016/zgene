@@ -33,7 +33,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.jt.zgene"
+        applicationId "com.divms.app"
         minSdkVersion 17
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
@@ -41,11 +41,31 @@ android {
         multiDexEnabled true
     }
 
+    signingConfigs {
+
+        release {
+            storeFile file(localProperties.getProperty('storeFile'))
+            storePassword localProperties.getProperty('storePassword')
+            keyAlias localProperties.getProperty('keyAlias')
+            keyPassword localProperties.getProperty('keyPassword')
+        }
+    }
     buildTypes {
+        debug {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            shrinkResources false
+        }
         release {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
+            //开启混淆
+            minifyEnabled false
+            //开启资源压缩
+            shrinkResources false
+            //开启zip对齐
+            zipAlignEnabled false
         }
     }
 }

@@ -9,7 +9,7 @@ class CommonConstant {
   static const String AppVersion = "1.0.0";
 
   //android包名
-  static const String AndroidAppId = "com.jt.zgene";
+  static const String AndroidAppId = "com.divms.app";
 
   //iOSAppId
   static const String iOSAppId = "";

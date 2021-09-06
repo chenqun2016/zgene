@@ -113,6 +113,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.0.1"
+  csslib:
+    dependency: transitive
+    description:
+      name: csslib
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.17.0"
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -141,6 +148,15 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "4.0.0"
+  easy_web_view:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: master
+      resolved-ref: "1b4ed060a4b4caa4b8c5597461dcf9580e014fed"
+      url: "https://gitee.com/benshar-com/easy_web_view.git"
+    source: git
+    version: "1.5.0"
   event_bus:
     dependency: "direct main"
     description:
@@ -200,6 +216,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_markdown:
+    dependency: transitive
+    description:
+      name: flutter_markdown
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.6.6"
   flutter_native_splash:
     dependency: "direct main"
     description:
@@ -259,6 +282,20 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.6.1+1"
+  html:
+    dependency: transitive
+    description:
+      name: html
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.15.0"
+  html2md:
+    dependency: transitive
+    description:
+      name: html2md
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.2.5"
   http:
     dependency: transitive
     description:
@@ -329,6 +366,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.0.1"
+  markdown:
+    dependency: transitive
+    description:
+      name: markdown
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "4.0.0"
   matcher:
     dependency: transitive
     description:
@@ -649,6 +693,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.1.0+1"
+  webview_flutter:
+    dependency: transitive
+    description:
+      name: webview_flutter
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.0.12"
   win32:
     dependency: transitive
     description:

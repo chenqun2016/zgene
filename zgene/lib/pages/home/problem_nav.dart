@@ -87,10 +87,11 @@ class _ProblemNavState extends State<ProblemNav> {
     BorderSide borderSide = BorderSide(width: 0.8, color: Colors.white);
     return GestureDetector(
       onTap: () {
+        var link = ApiConstant.getH5DetailUrl(archives.id.toString());
         NavigatorUtil.push(
             context,
             BaseWebView(
-              url: archives.linkUrl,
+              url: link,
               title: archives.title,
             ));
       },

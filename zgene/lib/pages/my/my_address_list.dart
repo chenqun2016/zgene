@@ -96,14 +96,17 @@ class _MyAddressListPageState extends BaseWidgetState<MyAddressListPage> {
     return Container(
       margin: EdgeInsets.only(top: 10),
       width: double.infinity,
-      child: ListView.builder(
-        itemCount: list.length,
-        shrinkWrap: true,
-        padding: EdgeInsets.all(0),
-        physics: ScrollPhysics(),
-        itemBuilder: (BuildContext context, int index) {
-          return getItem(index);
-        },
+      child: SingleChildScrollView(
+        controller: listeningController,
+        child: ListView.builder(
+          itemCount: list.length,
+          shrinkWrap: true,
+          padding: EdgeInsets.all(0),
+          physics: ScrollPhysics(),
+          itemBuilder: (BuildContext context, int index) {
+            return getItem(index);
+          },
+        ),
       ),
     );
   }

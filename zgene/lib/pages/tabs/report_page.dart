@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/navigator/navigator_util.dart';
+import 'package:zgene/pages/home/home_getHttp.dart';
 import 'package:zgene/pages/report/report_list_page.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -50,6 +51,23 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
     //监听滚动事件，打印滚动位置
     _controller.addListener(() {
       _onScroll(_controller.offset);
+    });
+    _getReport();
+    _getJingXuanReport();
+  }
+
+  _getReport(){
+    CategoriesGetHttp(type==0?7:6, (result) {
+      setState(() {
+
+      });
+    });
+  }
+  _getJingXuanReport(){
+    HomeGetHttp(15, (result) {
+      setState(() {
+
+      });
     });
   }
 
@@ -362,6 +380,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
                     setState(() {
                       type = 1;
                     });
+                    _getReport();
                   }
                   Navigator.of(context).pop();
                 },
@@ -390,6 +409,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
                     setState(() {
                       type = 0;
                     });
+                    _getReport();
                   }
                   Navigator.of(context).pop();
                 },

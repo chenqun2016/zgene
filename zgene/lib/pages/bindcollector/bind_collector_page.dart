@@ -22,19 +22,20 @@ class BindCollectorPage extends BaseWidget {
 class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
   var steps = [0, 1, 2];
   int _position = 0;
-  bool canNextClick = false;
 
   //编码文本控制器
   TextEditingController _textEditingController;
+
   //姓名文本控制器
   TextEditingController _nameEditingController;
   var sex = ['男', '女'];
+
   //当前选中性别
   var currentSex;
+
   //当前的生日
   var birthText = "请选择您的生日";
-  bool hasName;
-  bool hasBirth;
+  bool hasBirth = false;
 
   @override
   void pageWidgetInitState() {
@@ -66,41 +67,6 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
         children: [
           // _titlebar(),
           _stepper(),
-          Container(
-            margin: EdgeInsets.only(top: 30),
-            child: MaterialButton(
-              height: 55,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(27)),
-              minWidth: double.infinity,
-              disabledColor: Colors.white,
-              color: ColorConstant.TextMainColor,
-              onPressed: canNextClick
-                  ? () {
-                      if (_position != steps.length - 1) {
-                        canNextClick = false;
-                      }
-                      if (_position == 0) {
-                        setState(() {
-                          _position++;
-                        });
-                      }
-                      if (_position == 1) {
-                        _bindcollector();
-                      }
-                      if (_position == 2) {
-                        //绑定成功
-                      }
-                    }
-                  : null,
-              child: Text(_getBottomText(_position),
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                    color: canNextClick ? Colors.white : ColorConstant.Divider,
-                  )),
-            ),
-          ),
         ],
       ),
     );
@@ -208,52 +174,76 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
   Widget get _bindstep3 {
     return Container(
       margin: EdgeInsets.only(top: 0),
-      child: Stack(
+      child: Column(
         children: [
-          Container(
-            margin: EdgeInsets.only(top: 30),
-            padding: EdgeInsets.only(top: 90),
-            decoration: BoxDecoration(
-              color: Colors.white70,
-              borderRadius: BorderRadius.all(
-                Radius.circular(20),
-              ),
-            ),
-            child: Column(
-              children: [
-                Text(
-                  "恭喜 ${""} 绑定成功！",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: ColorConstant.TextMainBlack,
+          Stack(
+            children: [
+              Container(
+                margin: EdgeInsets.only(top: 30),
+                padding: EdgeInsets.only(top: 90),
+                decoration: BoxDecoration(
+                  color: Colors.white70,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(20),
                   ),
                 ),
-                Container(
-                  alignment: Alignment.topCenter,
-                  padding: EdgeInsets.only(top: 20, bottom: 40),
-                  child: Text.rich(TextSpan(children: [
-                    TextSpan(
-                      text: "如果取样完成,可点击此处直接",
+                child: Column(
+                  children: [
+                    Text(
+                      "恭喜 ${_nameEditingController.text.toString()} 绑定成功！",
                       style: TextStyle(
-                          color: ColorConstant.Text_5E6F88, fontSize: 14),
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: ColorConstant.TextMainBlack,
+                      ),
                     ),
-                    TextSpan(
-                      text: "《预约上门取件》",
-                      style: TextStyle(
-                          color: ColorConstant.TextMainColor, fontSize: 14),
-                      recognizer: TapGestureRecognizer()..onTap = () {},
+                    Container(
+                      alignment: Alignment.topCenter,
+                      padding: EdgeInsets.only(top: 20, bottom: 40),
+                      child: Text.rich(TextSpan(children: [
+                        TextSpan(
+                          text: "如果取样完成,可点击此处直接",
+                          style: TextStyle(
+                              color: ColorConstant.Text_5E6F88, fontSize: 14),
+                        ),
+                        TextSpan(
+                          text: "《预约上门取件》",
+                          style: TextStyle(
+                              color: ColorConstant.TextMainColor, fontSize: 14),
+                          recognizer: TapGestureRecognizer()..onTap = () {},
+                        ),
+                      ])),
                     ),
-                  ])),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              Center(
+                child: Image.asset(
+                  "assets/images/home/img_chenggong.png",
+                  height: 116,
+                  width: 116,
+                ),
+              )
+            ],
           ),
-          Center(
-            child: Image.asset(
-              "assets/images/home/img_chenggong.png",
-              height: 116,
-              width: 116,
+          Container(
+            margin: EdgeInsets.only(top: 30),
+            child: MaterialButton(
+              height: 55,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(27)),
+              minWidth: double.infinity,
+              disabledColor: Colors.white,
+              color: ColorConstant.TextMainColor,
+              onPressed: () {
+                //绑定成功
+              },
+              child: Text(_getBottomText(_position),
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                  )),
             ),
           )
         ],
@@ -302,10 +292,7 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
                         fontWeight: FontWeight.w500,
                         color: ColorConstant.TextMainBlack,
                       ),
-                      onChanged: (str) {
-                        hasName = str.isNotEmpty;
-                        _onChangeNextButtomState(hasName && hasBirth);
-                      },
+                      onChanged: (str) {},
                       // autocorrect: true,
                       // autofocus: true,
                     )),
@@ -375,11 +362,10 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
                     context,
                     onConfirm: (p) {
                       setState(() {
-                        birthText = "${p.year} / ${p.month} / ${p.day}";
+                        birthText = "${p.year}-${p.month}-${p.day}";
                       });
                       hasBirth = true;
                       // Navigator.pop(context);
-                      _onChangeNextButtomState(hasName && hasBirth);
                     },
                     // onChanged: (p) => print(p),
                   );
@@ -427,6 +413,30 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
                 ),
               ])),
         ),
+        Container(
+          margin: EdgeInsets.only(top: 30),
+          child: MaterialButton(
+            height: 55,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(27)),
+            minWidth: double.infinity,
+            disabledColor: Colors.white,
+            color: ColorConstant.TextMainColor,
+            onPressed: (_nameEditingController.text.isNotEmpty && hasBirth)
+                ? () {
+                    _bindcollector();
+                  }
+                : null,
+            child: Text(_getBottomText(_position),
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                  color: (_nameEditingController.text.isNotEmpty && hasBirth)
+                      ? Colors.white
+                      : ColorConstant.Divider,
+                )),
+          ),
+        )
       ],
     );
   }
@@ -534,9 +544,7 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
                     fontWeight: FontWeight.w500,
                     color: ColorConstant.TextMainBlack,
                   ),
-                  onChanged: (str) {
-                    _onChangeNextButtomState(str.isNotEmpty);
-                  },
+                  onChanged: (str) {},
                   onSubmitted: (value) {
                     // _onTapEvent(2);
                   },
@@ -566,13 +574,33 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
             ),
           ])),
         ),
+        Container(
+          margin: EdgeInsets.only(top: 30),
+          child: MaterialButton(
+            height: 55,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(27)),
+            minWidth: double.infinity,
+            disabledColor: Colors.white,
+            color: ColorConstant.TextMainColor,
+            onPressed: _textEditingController.text.isNotEmpty
+                ? () {
+                    setState(() {
+                      _position++;
+                    });
+                  }
+                : null,
+            child: Text(_getBottomText(_position),
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                  color: _textEditingController.text.isNotEmpty
+                      ? Colors.white
+                      : ColorConstant.Divider,
+                )),
+          ),
+        )
       ],
     );
-  }
-
-  _onChangeNextButtomState(bool canNext) {
-    setState(() {
-      canNextClick = canNext;
-    });
   }
 }

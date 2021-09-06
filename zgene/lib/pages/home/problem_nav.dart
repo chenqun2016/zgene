@@ -5,9 +5,11 @@ import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/content_model.dart';
+import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/home/home_getHttp.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
+import 'package:zgene/widget/base_web.dart';
 
 class ProblemNav extends StatefulWidget {
   @override
@@ -75,16 +77,23 @@ class _ProblemNavState extends State<ProblemNav> {
         ));
       }
 
-      items.add(_item(element.title));
+      items.add(_item(contentList.indexOf(element)));
     });
     return items;
   }
 
-  Widget _item(contents) {
+  Widget _item(index) {
+    Archives archives = contentList[index];
     BorderSide borderSide = BorderSide(width: 0.8, color: Colors.white);
     return GestureDetector(
       onTap: () {
-        CommonUtils.toUrl(context: context,type: contents.linkType,url: contents.linkUrl);
+        var link = ApiConstant.getH5DetailUrl(archives.id.toString());
+        NavigatorUtil.push(
+            context,
+            BaseWebView(
+              url: link,
+              title: archives.title,
+            ));
       },
       child: Container(
         padding: EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 10),
@@ -94,7 +103,7 @@ class _ProblemNavState extends State<ProblemNav> {
             Expanded(
               flex: 1,
               child: Text(
-                contents,
+                archives.title,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(

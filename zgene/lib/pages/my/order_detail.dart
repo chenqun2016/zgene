@@ -22,6 +22,10 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
 
   @override
   Widget viewPageBody(BuildContext context) {
+    //获取路由传的参数
+    var id=ModalRoute.of(context).settings.arguments;
+    print(id);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

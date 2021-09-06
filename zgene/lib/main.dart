@@ -76,26 +76,26 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // registerWxApi(
-    //     appId: CommonConstant.wxAppKey, //查看微信开放平台
-    //     doOnAndroid: true,
-    //     doOnIOS: true,
-    //     universalLink: CommonConstant.universalLink //查看微信开放平台
-    //     );
-    // _installFluwx();
+    registerWxApi(
+        appId: CommonConstant.wxAppKey, //查看微信开放平台
+        doOnAndroid: true,
+        doOnIOS: true,
+        universalLink: CommonConstant.universalLink //查看微信开放平台
+        );
+    _installFluwx();
     WidgetsBinding.instance.addObserver(this);
   }
 
-  // _installFluwx() async {
-  //   var result = await isWeChatInstalled;
-  //   CommonConstant.Is_WeChat_Installed = result;
+  _installFluwx() async {
+    var result = await isWeChatInstalled;
+    CommonConstant.Is_WeChat_Installed = result;
 
-  //   if (result) {
-  //     print('该手机上安装了微信');
-  //   } else {
-  //     print('该手机上未安装微信');
-  //   }
-  // }
+    if (result) {
+      print('该手机上安装了微信');
+    } else {
+      print('该手机上未安装微信');
+    }
+  }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
@@ -143,19 +143,19 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       ],
       //注册路由表
       routes: {
-        "/article_detail": (context) => null,//文章详情
-        "/report": (context) => ReportListPage(),//报告
-        "/report_detail": (context) => null,//报告详情
-        "/login": (context) => MainLoginPage(),//登录
-        "/my_message": (context) => MyMessagePage(),//消息
-        "/my_address": (context) => MyAddressListPage(),//我的地址
-        "/my_info": (context) => MyInfoPage(),//我的资料
-        "/my_order": (context) => MyOrderListPage(),//我的订单
-        "/order_step_detail": (context) => OrderStepPage(),//订单步骤详情
-        "/order_detail": (context) => OrderDetailPage(),//订单详情
-        "/bind_collector": (context) => BindCollectorPage(),//绑定采集器
-        "/kefu": (context) => null,//联系客服
-        "/about": (context) => null,//关于我们
+        "/article_detail": (context) => null, //文章详情
+        "/report": (context) => ReportListPage(), //报告
+        "/report_detail": (context) => null, //报告详情
+        "/login": (context) => MainLoginPage(), //登录
+        "/my_message": (context) => MyMessagePage(), //消息
+        "/my_address": (context) => MyAddressListPage(), //我的地址
+        "/my_info": (context) => MyInfoPage(), //我的资料
+        "/my_order": (context) => MyOrderListPage(), //我的订单
+        "/order_step_detail": (context) => OrderStepPage(), //订单步骤详情
+        "/order_detail": (context) => OrderDetailPage(), //订单详情
+        "/bind_collector": (context) => BindCollectorPage(), //绑定采集器
+        "/kefu": (context) => null, //联系客服
+        "/about": (context) => null, //关于我们
       },
     ));
   }

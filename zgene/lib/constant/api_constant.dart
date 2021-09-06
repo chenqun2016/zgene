@@ -2,7 +2,6 @@ import 'common_constant.dart';
 
 ///api路径
 class ApiConstant {
-
   ///********************************** 自媒体流 *****************************///
   //内容列表
   static const String contentList = "/api/v1/archives";
@@ -35,11 +34,15 @@ class ApiConstant {
   //手机号登录
   static const String loginApp_phone = "/api/v1/user/login/app_phone";
 
+  //手机号登录
+  static const String login_wx = "/api/v1/user/login/wx";
+
   //隐私政策
   static const String privacys = CommonConstant.BASE_API + ApiConstant.privacy;
 
   //用户协议
-  static const String agreements = CommonConstant.BASE_API + ApiConstant.agreement;
+  static const String agreements =
+      CommonConstant.BASE_API + ApiConstant.agreement;
 
   //用户协议
   static const String payLinks = CommonConstant.BASE_API + ApiConstant.payLink;
@@ -55,6 +58,7 @@ class ApiConstant {
   static String getH5DetailUrl(id) {
     return CommonConstant.BASE_API + "/archive/embed/$id";
   }
+
   ///********************************* 订单 *****************************///
 
   //消息列表

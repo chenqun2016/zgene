@@ -54,10 +54,9 @@ class CommonConstant {
   static String appReceivePtype = "";
 
   //Ios universalLink
-  static String universalLink="www.divms.com";
+  static String universalLink = "https://www.divms.com/";
   //微信appKey
-  static String wxAppKey="wx5efe242ed516d3c1";
+  static String wxAppKey = "wx5efe242ed516d3c1";
   //isWeChatInstalled
   static bool Is_WeChat_Installed = false;
-
 }

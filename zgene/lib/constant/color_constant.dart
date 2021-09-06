@@ -18,6 +18,8 @@ class ColorConstant {
   static const Color TextFildShadow00Color = Color(0x00373E7D);
   //背景标准透明
   static const Color TextFildShadow0cColor = Color(0x0c373E7D);
+  //背景标准透明
+  static const Color TextFildShadowE5Color = Color(0xE5FFFFFF);
   //text背景灰
   static const Color TextFildBackColor = Color(0xFFEBEDEF);
 //主要蓝色

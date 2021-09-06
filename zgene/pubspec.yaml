@@ -56,8 +56,7 @@ dependencies:
       url: https://gitee.com/benshar-com/easy_web_view.git
       ref: master
   fluwx: ^3.6.1+1
-  # sign_in_with_apple: ^3.0.0
-  # fluwx: ^3.5.1
+  sign_in_with_apple: ^3.0.0
   event_bus: ^2.0.0
 
 

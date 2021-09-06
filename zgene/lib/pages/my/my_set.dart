@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/my/my_address_list.dart';
+import 'package:zgene/pages/my/my_change_phone.dart';
 import 'package:zgene/util/base_widget.dart';
+import 'package:zgene/util/dia_log.dart';
 import 'package:zgene/util/ui_uitls.dart';
 
 import 'account_security.dart';
@@ -83,33 +85,33 @@ class _MySetPageState extends BaseWidgetState<MySetPage> {
       ),
       child: Column(
         children: [
-          GestureDetector(
-            onTap: () {
-              _onTapEvent(1);
-            },
-            behavior: HitTestBehavior.opaque,
-            child: Stack(
-              children: [
-                Container(
-                    width: double.infinity,
-                    height: 45,
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "用户名",
-                      style: textStyle,
-                    )),
-                Positioned(
-                  right: 0,
-                  top: 15,
-                  child: Image(
-                    image: AssetImage("assets/images/mine/icon_my_right.png"),
-                    height: 16,
-                    width: 16,
-                  ),
-                ),
-              ],
-            ),
-          ),
+          // GestureDetector(
+          //   onTap: () {
+          //     _onTapEvent(1);
+          //   },
+          //   behavior: HitTestBehavior.opaque,
+          //   child: Stack(
+          //     children: [
+          //       Container(
+          //           width: double.infinity,
+          //           height: 45,
+          //           alignment: Alignment.centerLeft,
+          //           child: Text(
+          //             "用户名",
+          //             style: textStyle,
+          //           )),
+          //       Positioned(
+          //         right: 0,
+          //         top: 15,
+          //         child: Image(
+          //           image: AssetImage("assets/images/mine/icon_my_right.png"),
+          //           height: 16,
+          //           width: 16,
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
           GestureDetector(
             onTap: () {
               _onTapEvent(2);
@@ -310,14 +312,26 @@ class _MySetPageState extends BaseWidgetState<MySetPage> {
   ///点击事件
   _onTapEvent(index) {
     switch (index) {
-      case 1: //用户名
-        UiUitls.showToast("用户名");
-        break;
+      // case 1: //用户名
+      //   UiUitls.showToast("用户名");
+      //   break;
       case 2: //微信
-        UiUitls.showToast("微信");
+        showDialog(
+            context: context,
+            builder: (context) {
+              return MyDialog(
+                title: "确认解绑微信吗?",
+                img: "assets/images/mine/icon_set_ unbundling.png",
+                falseText: "取消",
+                tureText: "确认",
+              );
+            }).then((value) => {
+              if (value) {print("点击了确定")}
+            });
+
         break;
       case 3: //手机
-        UiUitls.showToast("手机");
+        NavigatorUtil.push(context, ChangePhonePage());
         break;
       case 4: //收货地址
         NavigatorUtil.push(context, MyAddressListPage());

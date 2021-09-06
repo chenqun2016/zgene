@@ -1,19 +1,32 @@
+import 'dart:convert';
 import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/models/archive_des_model.dart';
+import 'package:zgene/models/content_model.dart';
+import 'package:zgene/models/report_des_model.dart';
+import 'package:zgene/pages/home/home_getHttp.dart';
 import 'package:zgene/util/base_widget.dart';
+import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 
 class ReportListPage extends BaseWidget {
+  var _archives;
+
+  ReportListPage(bean) {
+    _archives = bean;
+  }
+
   @override
   BaseWidgetState<BaseWidget> getState() => _ReportListPageState();
 }
 
 class _ReportListPageState extends BaseWidgetState<ReportListPage> {
-  final data = <int>[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
   var canFixedHeadShow = false;
+  ReportDesModel reportDesModel;
+  List list = [];
 
   @override
   void pageWidgetInitState() {
@@ -21,7 +34,7 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
 
     showBaseHead = false;
     showHead = true;
-    pageWidgetTitle = "运动健康";
+    pageWidgetTitle = widget._archives.title;
     isListPage = true;
     // backColor = Colors.red;
     backImgPath = "assets/images/mine/img_bg_my.png";
@@ -39,6 +52,16 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
           canFixedHeadShow = false;
         });
       }
+    });
+    var json = jsonDecode(widget._archives.description);
+    reportDesModel = ReportDesModel.fromJson(json);
+
+    ArchiveGetHttp(widget._archives.id, (result) {
+      ArchiveDesModel model = ArchiveDesModel.fromJson(result);
+      list.clear();
+      setState(() {
+        list = model.addon.archives;
+      });
     });
   }
 
@@ -191,19 +214,20 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
         ),
         child: ListView.builder(
           shrinkWrap: true,
-          itemCount: data.length,
+          itemCount: list.length,
           physics: BouncingScrollPhysics(),
           padding: EdgeInsets.fromLTRB(0, 12, 0, 140),
           itemBuilder: (BuildContext context, int index) {
-            return _buildSliverItem(index);
+            return _buildSliverItem(context, list[index], index);
           },
         ),
       );
 
-  Widget _buildSliverItem(index) {
+  Widget _buildSliverItem(context, archive, index) {
     return GestureDetector(
       onTap: () {
-        UiUitls.showToast("index==$index");
+        CommonUtils.toUrl(
+            context: context, type: archive.linkType, url: archive.linkUrl);
       },
       child: Opacity(
         opacity: index < 3 ? 1 : 0.4,
@@ -214,7 +238,7 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
             children: [
               Expanded(
                 child: Text(
-                  "锻炼对体重指数效果",
+                  archive.title,
                   style: TextStyle(
                       color: ColorConstant.TextMainBlack,
                       fontWeight: FontWeight.w500,
@@ -256,7 +280,8 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
           height: 168,
           decoration: BoxDecoration(
               image: DecorationImage(
-            image: AssetImage("assets/images/report/banner_yundong.png"),
+            image: NetworkImage(
+                CommonUtils.splicingUrl(widget._archives.imageUrl)),
             fit: BoxFit.fill,
           )),
           padding: EdgeInsets.fromLTRB(30, 22, 0, 0),
@@ -285,117 +310,74 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "运动健身",
+          widget._archives.title,
           style: TextStyle(
               fontWeight: FontWeight.bold, color: Colors.white, fontSize: 28),
         ),
         Text(
-          "共12项",
+          widget._archives.keywords,
           style: TextStyle(
               fontWeight: FontWeight.w500, color: Colors.white, fontSize: 14),
         ),
-        Row(
-          children: [
-            Container(
-              margin: EdgeInsets.only(top: 16, right: 10),
-              padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
-              decoration: BoxDecoration(
-                color: Colors.white24,
-                borderRadius: BorderRadius.all(Radius.circular(32)),
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    height: 12,
-                    width: 12,
-                    margin: EdgeInsets.only(right: 6),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(colors: [
-                        Color(0xFF47FEDB),
-                        Color(0xFF23CFAF),
-                      ]),
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Colors.white,
-                        width: 1,
-                      ),
-                    ),
-                  ),
-                  Text(
-                    "强  04",
-                    style: TextStyle(color: Colors.white, fontSize: 12),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 16, right: 10),
-              padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
-              decoration: BoxDecoration(
-                color: Colors.white24,
-                borderRadius: BorderRadius.all(Radius.circular(32)),
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    height: 12,
-                    width: 12,
-                    margin: EdgeInsets.only(right: 6),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(colors: [
-                        Color(0xFF5EECFD),
-                        Color(0xFF248DFA),
-                      ]),
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Colors.white,
-                        width: 1,
-                      ),
-                    ),
-                  ),
-                  Text(
-                    "中  07",
-                    style: TextStyle(color: Colors.white, fontSize: 12),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 16, right: 10),
-              padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
-              decoration: BoxDecoration(
-                color: Colors.white24,
-                borderRadius: BorderRadius.all(Radius.circular(32)),
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    height: 12,
-                    width: 12,
-                    margin: EdgeInsets.only(right: 6),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(colors: [
-                        Color(0xFFFE8B8C),
-                        Color(0xFFFE4343),
-                      ]),
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Colors.white,
-                        width: 1,
-                      ),
-                    ),
-                  ),
-                  Text(
-                    "弱  01",
-                    style: TextStyle(color: Colors.white, fontSize: 12),
-                  )
-                ],
-              ),
-            ),
-          ],
-        )
+        if (null != reportDesModel.items)
+          Row(
+            children: reportDesModel.items.map((e) => _titletip(e)).toList(),
+          )
       ],
     );
+  }
+
+  Widget _titletip(Items item) {
+    return Container(
+      margin: EdgeInsets.only(top: 16, right: 10),
+      padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
+      decoration: BoxDecoration(
+        color: Colors.white24,
+        borderRadius: BorderRadius.all(Radius.circular(32)),
+      ),
+      child: Row(
+        children: [
+          Container(
+            height: 12,
+            width: 12,
+            margin: EdgeInsets.only(right: 6),
+            decoration: BoxDecoration(
+              gradient: _getTipColor(item.color),
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: Colors.white,
+                width: 1,
+              ),
+            ),
+          ),
+          Text(
+            "${item.title}  ${item.number}",
+            style: TextStyle(color: Colors.white, fontSize: 12),
+          )
+        ],
+      ),
+    );
+  }
+
+  _getTipColor(String color) {
+    if ("green" == color) {
+      return LinearGradient(colors: [
+        Color(0xFF47FEDB),
+        Color(0xFF23CFAF),
+      ]);
+    }
+    if ("blue" == color) {
+      return LinearGradient(colors: [
+        Color(0xFF5EECFD),
+        Color(0xFF248DFA),
+      ]);
+    }
+    if ("red" == color) {
+      return LinearGradient(colors: [
+        Color(0xFFFE8B8C),
+        Color(0xFFFE4343),
+      ]);
+    }
   }
 }
 

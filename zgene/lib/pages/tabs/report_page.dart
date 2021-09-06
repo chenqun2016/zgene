@@ -1,11 +1,23 @@
+import 'dart:collection';
+import 'dart:convert';
+import 'dart:developer';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/http/base_response.dart';
+import 'package:zgene/http/http_utils.dart';
+import 'package:zgene/models/category_model.dart';
+import 'package:zgene/models/content_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/home/home_getHttp.dart';
 import 'package:zgene/pages/report/report_list_page.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:zgene/util/common_utils.dart';
+import 'package:zgene/util/time_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 
 import 'home_page.dart';
@@ -17,6 +29,7 @@ class ReportPage extends BaseWidget {
 }
 
 class _ReportPageState extends BaseWidgetState<ReportPage> {
+  List<Categories> categories = [];
   var lists = [
     [1, 2, 3, 4],
     [1, 2, 3, 4],
@@ -45,7 +58,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
     showBaseHead = false;
     showHead = false;
     isListPage = true;
-    // setWantKeepAlive = true;
+    setWantKeepAlive = true;
     backImgPath = "assets/images/home/bg_home.png";
 
     //监听滚动事件，打印滚动位置
@@ -53,22 +66,42 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
       _onScroll(_controller.offset);
     });
     _getReport();
-    _getJingXuanReport();
+    // _getJingXuanReport();
   }
 
-  _getReport(){
-    CategoriesGetHttp(type==0?7:6, (result) {
-      setState(() {
-
-      });
+  _getReport() {
+    CategoriesGetHttp(type == 0 ? 7 : 6, (result) {
+      var categoryModel = CategoryModel.fromJson(result);
+      if (null != categoryModel) {
+        setState(() {
+          categories = categoryModel.categories;
+        });
+      }
     });
   }
-  _getJingXuanReport(){
-    HomeGetHttp(15, (result) {
-      setState(() {
 
-      });
-    });
+  var cache = HashMap<String, ContentModel>();
+
+  Future<dynamic> _getReportItem(id) async {
+    try {
+      if (cache.containsKey(id)) {
+        return cache[id];
+      }
+      Map<String, dynamic> map = new HashMap();
+      map['cid'] = id;
+      Dio dio = await HttpUtils.createInstance();
+      Response response =
+          await dio.get(ApiConstant.contentList, queryParameters: map);
+      var responseString = json.decode(response.toString());
+      var responseResult = BaseResponse.fromJson(responseString);
+      log('响应数据item：${id}//' + response.toString());
+      ContentModel contentModel = ContentModel.fromJson(responseResult.result);
+      cache[id] = contentModel;
+      return contentModel;
+    } catch (e) {
+      print(e);
+    }
+    return;
   }
 
   _onScroll(offset) {
@@ -97,7 +130,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
             shrinkWrap: true,
             physics: BouncingScrollPhysics(),
             padding: EdgeInsets.fromLTRB(0, 0, 0, 100),
-            children: lists.map((e) {
+            children: categories.map((e) {
               return _items(e);
             }).toList()
               ..add(_bottomBanner),
@@ -108,86 +141,123 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
   }
 
   Widget get _bottomBanner {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(left: 15, top: 24, right: 15, bottom: 8),
-            child: Text(
-              "精选报告",
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontStyle: FontStyle.normal,
-                fontWeight: FontWeight.bold,
-                color: ColorConstant.TextMainBlack,
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 128,
-            child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.fromLTRB(0, 15, 16, 0),
-                physics: BouncingScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: banners.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return GestureDetector(
-                    onTap: () {
-                      UiUitls.showToast("跳转");
-                    },
-                    // child: Image.network(
-                    //   bannerList[index],
-                    //   fit: BoxFit.fill,
-                    // ),
-                    child: Container(
-                      width: 256,
-                      padding: EdgeInsets.fromLTRB(16, 16, 90, 15),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(20),
-                          ),
-                          gradient: LinearGradient(colors: [
-                            Color(0xFFFF5D66),
-                            Color(0xFFFFB254),
-                          ])
-                          // image: DecorationImage(
-                          //     image: NetworkImage("assets/images/banner.png"))
-                          ),
-                      margin: EdgeInsets.only(left: 16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                              child: Text(
-                            "怎样的运动与饮食方案最适合我？",
-                            maxLines: 2,
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white,
-                                fontSize: 16),
-                          )),
-                          Text(
-                            "共12项",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white,
-                                fontSize: 13),
-                          ),
-                        ],
-                      ),
+    return FutureBuilder(
+      future: _getReportItem("15"),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.connectionState == ConnectionState.done &&
+            snapshot.hasData) {
+          return Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding:
+                      EdgeInsets.only(left: 15, top: 24, right: 15, bottom: 8),
+                  child: Text(
+                    snapshot.data.archives[0].category.categoryName,
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.bold,
+                      color: ColorConstant.TextMainBlack,
                     ),
-                  );
-                }),
-          ),
-        ],
-      ),
+                  ),
+                ),
+                SizedBox(
+                  height: 128,
+                  child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      padding: EdgeInsets.fromLTRB(0, 15, 16, 0),
+                      physics: BouncingScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: snapshot.data.archives.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        var bean = snapshot.data.archives[index];
+                        return GestureDetector(
+                          onTap: () {
+                            CommonUtils.toUrl(
+                                context: context,
+                                type: bean.linkType,
+                                url: bean.linkUrl);
+                          },
+                          // child: Image.network(
+                          //   bannerList[index],
+                          //   fit: BoxFit.fill,
+                          // ),
+                          child: Container(
+                            width: 256,
+                            padding: EdgeInsets.fromLTRB(16, 16, 90, 15),
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: FadeInImage.assetNetwork(
+                                    placeholder:
+                                        'assets/images/home/img_default2.png',
+                                    image:
+                                        CommonUtils.splicingUrl(bean.imageUrl),
+                                    width: 76,
+                                    height: 76,
+                                    fadeInDuration: TimeUtils.fadeInDuration(),
+                                    fadeOutDuration:
+                                        TimeUtils.fadeOutDuration(),
+                                    fit: BoxFit.cover,
+                                    imageErrorBuilder:
+                                        (context, error, stackTrace) {
+                                      return Image.asset(
+                                        'assets/images/home/img_default2.png',
+                                        width: 76,
+                                        height: 76,
+                                        fit: BoxFit.fill,
+                                      );
+                                    }).image,
+                                fit: BoxFit.cover,
+                              ),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(20),
+                              ),
+                              // gradient: LinearGradient(colors: [
+                              //   Color(0xFFFF5D66),
+                              //   Color(0xFFFFB254),
+                              // ])
+                              // image: DecorationImage(
+                              //     image: NetworkImage("assets/images/banner.png"))
+                            ),
+                            margin: EdgeInsets.only(left: 16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                    child: Text(
+                                  bean.title,
+                                  maxLines: 2,
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white,
+                                      fontSize: 16),
+                                )),
+                                Text(
+                                  bean.keywords,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white,
+                                      fontSize: 13),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }),
+                ),
+              ],
+            ),
+          );
+        }
+        return Text("");
+      },
     );
   }
 
-  Widget _items(list) {
+  Widget _items(Categories category) {
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -195,7 +265,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
           Padding(
             padding: EdgeInsets.only(left: 16, top: 24),
             child: Text(
-              "探索基因蓝图",
+              category.categoryName,
               style: TextStyle(
                 fontSize: 18.sp,
                 fontStyle: FontStyle.normal,
@@ -204,31 +274,40 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
               ),
             ),
           ),
-          GridView.builder(
-              padding: EdgeInsets.fromLTRB(16, 15, 16, 0),
-              physics: NeverScrollableScrollPhysics(),
-              //增加
-              shrinkWrap: true,
-              //增加
-              scrollDirection: Axis.vertical,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3, //条目个数
-                  mainAxisSpacing: 16, //主轴间距
-                  crossAxisSpacing: 16, //交叉轴间距
-                  childAspectRatio: 0.86),
-              itemCount: list.length,
-              itemBuilder: (context, i) {
-                return _item(list[i]);
-              }),
+          FutureBuilder(
+            future: _getReportItem(category.id.toString()),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.connectionState == ConnectionState.done &&
+                  snapshot.hasData) {
+                return GridView.builder(
+                    padding: EdgeInsets.fromLTRB(16, 15, 16, 0),
+                    physics: NeverScrollableScrollPhysics(),
+                    //增加
+                    shrinkWrap: true,
+                    //增加
+                    scrollDirection: Axis.vertical,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3, //条目个数
+                        mainAxisSpacing: 16, //主轴间距
+                        crossAxisSpacing: 16, //交叉轴间距
+                        childAspectRatio: 0.86),
+                    itemCount: snapshot.data.archives.length,
+                    itemBuilder: (context, i) {
+                      return _item(snapshot.data.archives[i]);
+                    });
+              }
+              return Text("");
+            },
+          ),
         ],
       ),
     );
   }
 
-  Widget _item(index) {
+  Widget _item(Archives bean) {
     return GestureDetector(
       onTap: () {
-        NavigatorUtil.push(context, ReportListPage());
+        NavigatorUtil.push(context, ReportListPage(bean));
       },
       child: Container(
         decoration: BoxDecoration(
@@ -239,13 +318,24 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
         ),
         child: (Column(
           children: [
-            Image.asset(
-              "assets/images/report/icon_geti.png",
-              height: 76,
-              width: 76,
-            ),
+            FadeInImage.assetNetwork(
+                placeholder: 'assets/images/home/img_default2.png',
+                image: CommonUtils.splicingImageId(bean.id.toString()),
+                width: 76,
+                height: 76,
+                fadeInDuration: TimeUtils.fadeInDuration(),
+                fadeOutDuration: TimeUtils.fadeOutDuration(),
+                fit: BoxFit.cover,
+                imageErrorBuilder: (context, error, stackTrace) {
+                  return Image.asset(
+                    'assets/images/home/img_default2.png',
+                    width: 76,
+                    height: 76,
+                    fit: BoxFit.fill,
+                  );
+                }),
             Text(
-              "个体特征",
+              bean.title,
               style: TextStyle(
                 fontSize: 14.sp,
                 fontStyle: FontStyle.normal,
@@ -254,7 +344,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
               ),
             ),
             Text(
-              "共33项",
+              bean.keywords,
               style: TextStyle(
                 fontSize: 12.sp,
                 fontStyle: FontStyle.normal,

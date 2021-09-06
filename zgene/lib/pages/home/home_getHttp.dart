@@ -58,3 +58,27 @@ Future<void> CategoriesGetHttp(int type, _CallBack callback) async {
     },
   );
 }
+
+Future<void> ArchiveGetHttp(int id, _CallBack callback) async {
+  bool isNetWorkAvailable = await CommonUtils.isNetWorkAvailable();
+  if (!isNetWorkAvailable) {
+    return;
+  }
+  EasyLoading.show(status: 'loading...');
+
+
+  HttpUtils.requestHttp(
+    ApiConstant.contentDetail+"/${id}",
+    method: HttpUtils.GET,
+    onSuccess: (result) async {
+      EasyLoading.dismiss();
+      if (callback != null) {
+        callback(result);
+      }
+    },
+    onError: (code, error) {
+      EasyLoading.showError(error);
+    },
+  );
+}
+

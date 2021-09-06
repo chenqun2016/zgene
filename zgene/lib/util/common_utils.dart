@@ -20,6 +20,13 @@ class CommonUtils {
     }
     return CommonConstant.BASE_API + url;
   }
+  ///拼接图片路径
+  static String splicingImageId(String id) {
+    if (id.isEmpty) {
+      return "";
+    }
+    return CommonConstant.BASE_API +"/public/statics/img/"+ id + ".png";
+  }
 
   ///判断网络是否可用
   ///0 - none | 1 - mobile | 2 - WIFI

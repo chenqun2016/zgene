@@ -30,6 +30,7 @@ import 'package:zgene/util/notification_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/time_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
+import 'package:zgene/widget/base_web.dart';
 
 class MyPage extends BaseWidget {
   @override
@@ -59,8 +60,12 @@ class _MyPageState extends BaseWidgetState<MyPage> {
       ContentModel contentModel = ContentModel.fromJson(result);
       if (contentModel.archives.length > 0) {
         bannerImg = contentModel.archives[0].imageUrl;
+        bannerUrl = (contentModel.archives[0].id).toString();
+        bannerTitle = contentModel.archives[0].title;
       } else {
         bannerImg = "";
+        bannerUrl = "";
+        bannerTitle = "";
       }
       setState(() {});
     });
@@ -70,6 +75,8 @@ class _MyPageState extends BaseWidgetState<MyPage> {
   String avatarImg = "";
   String userName = "";
   String bannerImg = "";
+  String bannerUrl = "";
+  String bannerTitle = "";
 
   UserInfoModel userInfo = UserInfoModel();
 
@@ -164,23 +171,35 @@ class _MyPageState extends BaseWidgetState<MyPage> {
           _getMyInfo(),
           Visibility(
             visible: bannerImg == "" ? false : true,
-            child: Container(
-                margin: EdgeInsets.only(bottom: 15),
-                child: FadeInImage.assetNetwork(
-                    placeholder: 'assets/images/mine/icon_default_banner.png',
-                    image: CommonUtils.splicingUrl(bannerImg),
-                    height: 80,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                    fadeInDuration: TimeUtils.fadeInDuration(),
-                    fadeOutDuration: TimeUtils.fadeOutDuration(),
-                    imageErrorBuilder: (context, error, stackTrace) {
-                      return Image.asset(
-                        "assets/images/mine/icon_default_banner.png",
-                        height: 80,
-                        width: double.infinity,
-                      );
-                    })),
+            child: InkWell(
+              onTap: () {
+                var link = ApiConstant.getH5DetailUrl(bannerUrl);
+                print(link);
+                NavigatorUtil.push(
+                    context,
+                    BaseWebView(
+                      url: link,
+                      title: bannerTitle,
+                    ));
+              },
+              child: Container(
+                  margin: EdgeInsets.only(bottom: 15),
+                  child: FadeInImage.assetNetwork(
+                      placeholder: 'assets/images/mine/icon_default_banner.png',
+                      image: CommonUtils.splicingUrl(bannerImg),
+                      height: 80,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      fadeInDuration: TimeUtils.fadeInDuration(),
+                      fadeOutDuration: TimeUtils.fadeOutDuration(),
+                      imageErrorBuilder: (context, error, stackTrace) {
+                        return Image.asset(
+                          "assets/images/mine/icon_default_banner.png",
+                          height: 80,
+                          width: double.infinity,
+                        );
+                      })),
+            ),
           ),
           MyoRderNav(),
           _getProductPurchase(),

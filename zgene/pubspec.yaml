@@ -60,7 +60,7 @@ dependencies:
   event_bus: ^2.0.0
   tobias: ^2.1.2+1
   syncfusion_flutter_pdfviewer: ^19.2.59-beta
-  flutter_barcode_scanner: ^2.0.0
+  # flutter_barcode_scanner: ^2.0.0
 
 
 dev_dependencies:

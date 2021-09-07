@@ -61,7 +61,6 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
         _position = stepMap.keys.toList().indexOf(widget._order.status);
       }
     }
-
     super.pageWidgetInitState();
   }
 
@@ -220,7 +219,7 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
       color: ColorConstant.TextMainColor,
       onPressed: _isButtomAchieve(model)
           ? () async {
-              onButtomClicked(context,model);
+              onButtomClicked(context, model);
             }
           : null,
       child: Text(model.title2,
@@ -240,11 +239,16 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
 // OrderStatus8  int8 = 50 //待检测
 // OrderStatus9  int8 = 60 //待出报告
 // OrderStatus10 int8 = 70 //完成
-  void onButtomClicked(context,model) {
-    switch(model.status){
+  void onButtomClicked(context, model) {
+    switch (model.status) {
       case 50:
       case 20:
-        NavigatorUtil.push(context, BaseWebView(url: "https://www.sf-express.com/cn/sc/dynamic_function/waybill/",));
+        NavigatorUtil.push(
+            context,
+            BaseWebView(
+              // url: 'https://zgene.divms.com/user/sf?nu=SF7444435400346',
+              url: "https://zgene.divms.com/user/sf?nu=${widget._order.sfNo}",
+            ));
         break;
       case 30:
         NavigatorUtil.push(context, BindCollectorPage());
@@ -253,8 +257,8 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
         NavigatorUtil.push(context, SendBackAcquisitionPage());
         break;
       case 60:
-        // CommonUtils.toUrl(context: context,url: CommonUtils.URL_REPORT);
-        NavigatorUtil.pushAndRemoveUntil(context,SplashPage());
+         // CommonUtils.toUrl(context: context, url: CommonUtils.URL_REPORT);
+        Navigator.popUntil(context, (route) => route.isFirst);
         break;
       case 70:
         NavigatorUtil.push(context, MyReportPage());

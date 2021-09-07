@@ -35,6 +35,8 @@ class _BaseWebViewState extends State<BaseWebView> {
   void initState() {
     super.initState();
     _url = widget.url;
+
+   setCookie();
   }
 
   InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
@@ -93,7 +95,7 @@ class _BaseWebViewState extends State<BaseWebView> {
                           onLoaded: () {
                             print('Loaded: $_url');
                           },
-                          src: _url,
+                          src: _uri,
                           isHtml: false,
                           isMarkdown: false,
                           convertToWidgets: false,
@@ -109,7 +111,7 @@ class _BaseWebViewState extends State<BaseWebView> {
                           // initialUrl: widget.url,
                           initialOptions: options,
                           initialUrlRequest: URLRequest(
-                              url: Uri.parse(_url),
+                              url: _uri,
                               headers: {"Referer ": CommonConstant.BASE_API}),
 
                           onWebViewCreated: (controller) {
@@ -181,6 +183,18 @@ class _BaseWebViewState extends State<BaseWebView> {
           ),
         ),
       ),
+    );
+  }
+
+  var _uri;
+  void setCookie() async{
+    _uri = Uri.parse(_url);
+    CookieManager cookieManager = CookieManager.instance();
+    await cookieManager.setCookie(
+      url: _uri,
+      name: "jwt",
+      value: SpUtils().getStorageDefault(SpConstant.Token, ""),
+      isSecure: true,
     );
   }
 }

@@ -7,6 +7,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:package_info/package_info.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
+import 'package:zgene/util/login_base.dart';
 import 'package:zgene/util/platform_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 
@@ -63,6 +64,8 @@ class HttpUtils {
 
         authorization = spUtils.getStorageDefault(SpConstant.Token, "");
         uid = spUtils.getStorageDefault(SpConstant.Uid, 0);
+
+        print(authorization);
       }
 
       /// 全局属性：请求前缀、连接超时时间、响应超时时间
@@ -178,8 +181,8 @@ class HttpUtils {
       switch (code) {
         case _needLoginCode:
           EasyLoading.dismiss();
+          BaseLogin.login();
           onError(code ?? 0, "请登录");
-          // BaseLogin.login();
           return;
         default:
           break;

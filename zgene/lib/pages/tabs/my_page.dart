@@ -1,6 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:zgene/constant/api_constant.dart';
+import 'package:zgene/constant/app_notification.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/constant/sp_constant.dart';
+import 'package:zgene/http/http_utils.dart';
+import 'package:zgene/models/userInfo_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/bindcollector/bind_collector_page.dart';
 import 'package:zgene/pages/login/main_login.dart';
@@ -13,6 +19,10 @@ import 'package:zgene/pages/my/my_order_list.dart';
 import 'package:zgene/pages/my/my_set.dart';
 import 'package:zgene/pages/my/sendBack_acquisition.dart';
 import 'package:zgene/util/base_widget.dart';
+import 'package:zgene/util/common_utils.dart';
+import 'package:zgene/util/notification_utils.dart';
+import 'package:zgene/util/sp_utils.dart';
+import 'package:zgene/util/time_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 
 class MyPage extends BaseWidget {
@@ -28,21 +38,74 @@ class _MyPageState extends BaseWidgetState<MyPage> {
     super.pageWidgetInitState();
     showHead = false;
     // isShowBack = false;
+    getHttp();
     setWantKeepAlive = true;
     backImgPath = "assets/images/mine/img_bg_my.png";
+    NotificationCenter.instance.addObserver(NotificationName.GetUserInfo,
+        (object) {
+      if (object != null) {
+        setData();
+      } else {
+        getHttp();
+      }
+    });
   }
 
+  var spUtils = SpUtils();
+  String avatarImg = "";
+  String userName = "";
+  UserInfoModel userInfo = UserInfoModel();
+
+  getHttp() {
+    // EasyLoading.show(status: 'loading...');
+    // Map<String, dynamic> map = new HashMap();
+    HttpUtils.requestHttp(
+      ApiConstant.userInfo,
+      // parameters: map,
+      method: HttpUtils.GET,
+      onSuccess: (data) {
+        EasyLoading.dismiss();
+        UserInfoModel userInfoModel = UserInfoModel.fromJson(data);
+        userInfo = userInfoModel;
+
+        spUtils.setStorage(SpConstant.UserName, userInfo.nickname);
+        spUtils.setStorage(SpConstant.UserAvatar, userInfo.avatar);
+        setData();
+      },
+      onError: (code, error) {
+        EasyLoading.showError(error ?? "");
+        print(error);
+      },
+    );
+  }
+
+  setData() {
+    userName = spUtils.getStorageDefault(SpConstant.UserName, "").toString();
+    avatarImg = spUtils.getStorageDefault(SpConstant.UserAvatar, "").toString();
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    print("注销了");
+
+    NotificationCenter.instance
+        .removeNotification(NotificationName.GetUserInfo);
+  }
+
+// assets/images/mine/img_bg_my.png
   @override
   Widget viewPageBody(BuildContext context) {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage("assets/images/mine/img_bg_my.png"),
-          fit: BoxFit.cover,
-        ),
-      ),
+      // decoration: BoxDecoration(
+      //   image: DecorationImage(
+      //     image: AssetImage("assets/images/mine/img_bg_my.png"),
+      //     fit: BoxFit.cover,
+      //   ),
+      // ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -115,12 +178,38 @@ class _MyPageState extends BaseWidgetState<MyPage> {
             Row(
               mainAxisSize: MainAxisSize.max,
               children: [
+                //   Container(
+                //     margin: EdgeInsets.only(right: 14),
+                //     child: Image(
+                //       image: AssetImage("assets/images/mine/img_my_avatar.png"),
+                //       height: 66,
+                //       width: 66,
+                //     ),
+                //   ),
                 Container(
                   margin: EdgeInsets.only(right: 14),
-                  child: Image(
-                    image: AssetImage("assets/images/mine/img_my_avatar.png"),
-                    height: 66,
-                    width: 66,
+                  child: ClipOval(
+                    child: avatarImg == ""
+                        ? Image.asset(
+                            'assets/images/mine/img_my_avatar.png',
+                            height: 66,
+                            width: 66,
+                          )
+                        : FadeInImage.assetNetwork(
+                            placeholder: 'assets/images/mine/img_my_avatar.png',
+                            image: CommonUtils.splicingUrl(avatarImg),
+                            width: 66,
+                            height: 66,
+                            fit: BoxFit.cover,
+                            fadeInDuration: TimeUtils.fadeInDuration(),
+                            fadeOutDuration: TimeUtils.fadeOutDuration(),
+                            imageErrorBuilder: (context, error, stackTrace) {
+                              return Image.asset(
+                                "assets/images/mine/img_my_avatar.png",
+                                height: 66,
+                                width: 66,
+                              );
+                            }),
                   ),
                 ),
                 Column(

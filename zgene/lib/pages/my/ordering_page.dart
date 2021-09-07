@@ -40,7 +40,7 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
   List _billHint = [
     ["备注留言（选填）", null, null],
     ["请填写收票人电子邮箱", null, null],
-    ["请填写单位名称", "请填写纳税人识别码", "请填写收票人电子邮箱"]
+    ["请填写收票人电子邮箱", "请填写单位名称", "请填写纳税人识别码"]
   ];
 
   TextEditingController _nameController = new TextEditingController();
@@ -967,6 +967,21 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
     map['county'] = _initTown;
     map['address'] = _areaController.text.toString();
     map['pay_type'] = isWeixinPay ? 2 : 1;
+
+    Map<String, dynamic> mapBill = new HashMap();
+    mapBill['type'] = (fapiao + 1).toString();
+    if (fapiao == 0) {
+      mapBill['remark'] = _messageController.text.toString();
+    }
+    if (fapiao == 1) {
+      mapBill['email'] = _messageController.text.toString();
+    }
+    if (fapiao == 2) {
+      mapBill['email'] = _messageController.text.toString();
+      mapBill['company'] = _message2Controller.text.toString();
+      mapBill['numbers'] = _message3Controller.text.toString();
+    }
+    map['bill'] = mapBill;
 
     HttpUtils.requestHttp(
       ApiConstant.ordering,

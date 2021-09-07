@@ -969,7 +969,7 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
     map['pay_type'] = isWeixinPay ? 2 : 1;
 
     Map<String, dynamic> mapBill = new HashMap();
-    mapBill['type'] = (fapiao + 1).toString();
+    mapBill['bill_type'] = (fapiao + 1).toString();
     if (fapiao == 0) {
       mapBill['remark'] = _messageController.text.toString();
     }

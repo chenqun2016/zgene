@@ -1,11 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/models/order_list_model.dart';
 import 'package:zgene/util/base_widget.dart';
+import 'package:zgene/util/common_utils.dart';
+import 'package:zgene/util/date_utils.dart';
+import 'package:zgene/util/time_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 
 ///订单详情
 class OrderDetailPage extends BaseWidget {
+  OrderListmodel _order;
+
+  OrderDetailPage({OrderListmodel order}) {
+    _order = order;
+  }
+
   @override
   BaseWidgetState getState() {
     return _OrderDetailState();
@@ -23,17 +33,18 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
   @override
   Widget viewPageBody(BuildContext context) {
     //获取路由传的参数
-    var id=ModalRoute.of(context).settings.arguments;
+    var id = ModalRoute.of(context).settings.arguments;
     print(id);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _getTopInfo(),
-        _getBottomInfo(),
-        _bottom(),
-      ],
-    );
+    if (null != widget._order)
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _getTopInfo(),
+          _getBottomInfo(),
+          _bottom(),
+        ],
+      );
   }
 
   ///顶部信息
@@ -51,15 +62,16 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
           ),
           child: Column(
             children: [
-              Container(
-                margin: EdgeInsets.only(top: 90, bottom: 10),
-                child: Text("Z基因-精装版-家庭套装",
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Color(0xFF112950),
-                      fontWeight: FontWeight.w500,
-                    )),
-              ),
+              if (null != widget._order.prodInfo)
+                Container(
+                  margin: EdgeInsets.only(top: 90, bottom: 10),
+                  child: Text(widget._order.prodInfo.name,
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Color(0xFF112950),
+                        fontWeight: FontWeight.w500,
+                      )),
+                ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -83,15 +95,30 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
             ],
           ),
         ),
-        Positioned(
-          child: Center(
-            child: Image(
-              image: AssetImage("assets/images/mine/img_zhutu.png"),
-              height: 116,
-              width: 116,
+        if (null != widget._order.prodInfo)
+          Positioned(
+            child: Center(
+              child: ClipOval(
+                child: FadeInImage.assetNetwork(
+                    placeholder: 'assets/images/home/img_default2.png',
+                    image:
+                        CommonUtils.splicingUrl(widget._order.prodInfo.images),
+                    width: 116,
+                    height: 116,
+                    fadeInDuration: TimeUtils.fadeInDuration(),
+                    fadeOutDuration: TimeUtils.fadeOutDuration(),
+                    fit: BoxFit.cover,
+                    imageErrorBuilder: (context, error, stackTrace) {
+                      return Image.asset(
+                        'assets/images/home/img_default2.png',
+                        width: 116,
+                        height: 116,
+                        fit: BoxFit.fill,
+                      );
+                    }),
+              ),
             ),
           ),
-        ),
       ]),
     );
   }
@@ -130,7 +157,7 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
                   alignment: Alignment.topRight,
                   padding: EdgeInsets.only(left: 100, top: 16),
                   child: Text(
-                    "78898587888",
+                    widget._order.id.toString(),
                     style: textStyleRight,
                     textAlign: TextAlign.right,
                   ),
@@ -147,60 +174,65 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
               ],
             ),
           ),
-          GestureDetector(
-            onTap: () {},
-            behavior: HitTestBehavior.opaque,
-            child: Stack(
-              children: [
-                Container(
-                  width: double.infinity,
-                  alignment: Alignment.topRight,
-                  padding: EdgeInsets.only(left: 100, top: 16),
-                  child: Text(
-                    "ZGene 检测标准版 3.0 X1",
-                    style: textStyleRight,
-                    textAlign: TextAlign.right,
+          if (null != widget._order.prodInfo)
+            GestureDetector(
+              onTap: () {},
+              behavior: HitTestBehavior.opaque,
+              child: Stack(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    alignment: Alignment.topRight,
+                    padding: EdgeInsets.only(left: 100, top: 16),
+                    child: Text(
+                      widget._order.prodInfo.name,
+                      style: textStyleRight,
+                      textAlign: TextAlign.right,
+                    ),
                   ),
-                ),
-                Positioned(
-                  child: Container(
-                      alignment: Alignment.topLeft,
-                      margin: EdgeInsets.only(top: 15),
-                      child: Text(
-                        "商品",
-                        style: textStyle,
-                      )),
-                ),
-              ],
-            ),
-          ),
-          GestureDetector(
-            onTap: () {},
-            behavior: HitTestBehavior.opaque,
-            child: Stack(
-              children: [
-                Container(
-                  width: double.infinity,
-                  alignment: Alignment.topRight,
-                  padding: EdgeInsets.only(left: 100, top: 16),
-                  child: Text(
-                    "上海市 山西南路187号(山西南路天津路),张三,1862888913路187号(山西南路天津路),张三,1862888913",
-                    style: textStyleRight,
-                    textAlign: TextAlign.right,
+                  Positioned(
+                    child: Container(
+                        alignment: Alignment.topLeft,
+                        margin: EdgeInsets.only(top: 15),
+                        child: Text(
+                          "商品",
+                          style: textStyle,
+                        )),
                   ),
-                ),
-                Positioned(
-                  child: Container(
-                      alignment: Alignment.topLeft,
-                      margin: EdgeInsets.only(top: 15),
-                      child: Text(
-                        "收件信息",
-                        style: textStyle,
-                      )),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
+          if (null != widget._order.revAddress)
+            GestureDetector(
+              onTap: () {},
+              behavior: HitTestBehavior.opaque,
+              child: Stack(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    alignment: Alignment.topRight,
+                    padding: EdgeInsets.only(left: 100, top: 16),
+                    child: Text(
+                      widget._order.revAddress.province +
+                          widget._order.revAddress.city +
+                          widget._order.revAddress.county +
+                          widget._order.revAddress.address,
+                      style: textStyleRight,
+                      textAlign: TextAlign.right,
+                    ),
+                  ),
+                  Positioned(
+                    child: Container(
+                        alignment: Alignment.topLeft,
+                        margin: EdgeInsets.only(top: 15),
+                        child: Text(
+                          "收件信息",
+                          style: textStyle,
+                        )),
+                  ),
+                ],
+              ),
+            ),
           GestureDetector(
             onTap: () {},
             behavior: HitTestBehavior.opaque,
@@ -211,7 +243,9 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
                   alignment: Alignment.topRight,
                   padding: EdgeInsets.only(left: 100, top: 16),
                   child: Text(
-                    "2021-08-10  17:28:36",
+                    CusDateUtils.getFormatDataS(
+                        timeSamp: widget._order.createdAt,
+                        format: CusDateUtils.PARAM_TIME_FORMAT_H_M),
                     style: textStyleRight,
                     textAlign: TextAlign.right,
                   ),
@@ -228,87 +262,90 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
               ],
             ),
           ),
-          GestureDetector(
-            onTap: () {},
-            behavior: HitTestBehavior.opaque,
-            child: Stack(
-              children: [
-                Container(
-                  width: double.infinity,
-                  alignment: Alignment.topRight,
-                  padding: EdgeInsets.only(left: 100, top: 16),
-                  child: Text(
-                    "上海XX互联网科技有限公司",
-                    style: textStyleRight,
-                    textAlign: TextAlign.right,
+          if (null != widget._order.billInfo)
+            GestureDetector(
+              onTap: () {},
+              behavior: HitTestBehavior.opaque,
+              child: Stack(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    alignment: Alignment.topRight,
+                    padding: EdgeInsets.only(left: 100, top: 16),
+                    child: Text(
+                      widget._order.billInfo.company,
+                      style: textStyleRight,
+                      textAlign: TextAlign.right,
+                    ),
                   ),
-                ),
-                Positioned(
-                  child: Container(
-                      alignment: Alignment.topLeft,
-                      margin: EdgeInsets.only(top: 15),
-                      child: Text(
-                        "发票信息",
-                        style: textStyle,
-                      )),
-                ),
-              ],
-            ),
-          ),
-          GestureDetector(
-            onTap: () {},
-            behavior: HitTestBehavior.opaque,
-            child: Stack(
-              children: [
-                Container(
-                  width: double.infinity,
-                  alignment: Alignment.topRight,
-                  padding: EdgeInsets.only(left: 100, top: 16),
-                  child: Text(
-                    "98545MGHNH5555845",
-                    style: textStyleRight,
-                    textAlign: TextAlign.right,
+                  Positioned(
+                    child: Container(
+                        alignment: Alignment.topLeft,
+                        margin: EdgeInsets.only(top: 15),
+                        child: Text(
+                          "发票信息",
+                          style: textStyle,
+                        )),
                   ),
-                ),
-                Positioned(
-                  child: Container(
-                      alignment: Alignment.topLeft,
-                      margin: EdgeInsets.only(top: 15),
-                      child: Text(
-                        "纳税人识别号",
-                        style: textStyle,
-                      )),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          GestureDetector(
-            onTap: () {},
-            behavior: HitTestBehavior.opaque,
-            child: Stack(
-              children: [
-                Container(
-                  width: double.infinity,
-                  alignment: Alignment.topRight,
-                  padding: EdgeInsets.only(left: 100, top: 16),
-                  child: Text(
-                    "suiug@126.com",
-                    style: textStyleRight,
-                    textAlign: TextAlign.right,
+          if (null != widget._order.billInfo)
+            GestureDetector(
+              onTap: () {},
+              behavior: HitTestBehavior.opaque,
+              child: Stack(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    alignment: Alignment.topRight,
+                    padding: EdgeInsets.only(left: 100, top: 16),
+                    child: Text(
+                      widget._order.billInfo.numbers,
+                      style: textStyleRight,
+                      textAlign: TextAlign.right,
+                    ),
                   ),
-                ),
-                Positioned(
-                  child: Container(
-                      alignment: Alignment.topLeft,
-                      margin: EdgeInsets.only(top: 15),
-                      child: Text(
-                        "收票邮箱",
-                        style: textStyle,
-                      )),
-                ),
-              ],
+                  Positioned(
+                    child: Container(
+                        alignment: Alignment.topLeft,
+                        margin: EdgeInsets.only(top: 15),
+                        child: Text(
+                          "纳税人识别号",
+                          style: textStyle,
+                        )),
+                  ),
+                ],
+              ),
             ),
-          ),
+          if (null != widget._order.billInfo)
+            GestureDetector(
+              onTap: () {},
+              behavior: HitTestBehavior.opaque,
+              child: Stack(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    alignment: Alignment.topRight,
+                    padding: EdgeInsets.only(left: 100, top: 16),
+                    child: Text(
+                      widget._order.billInfo.email,
+                      style: textStyleRight,
+                      textAlign: TextAlign.right,
+                    ),
+                  ),
+                  Positioned(
+                    child: Container(
+                        alignment: Alignment.topLeft,
+                        margin: EdgeInsets.only(top: 15),
+                        child: Text(
+                          "收票邮箱",
+                          style: textStyle,
+                        )),
+                  ),
+                ],
+              ),
+            ),
         ],
       ),
     );
@@ -419,7 +456,8 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
                       child: Container(
                         padding: EdgeInsets.all(5),
                         child: Image(
-                          image: AssetImage("assets/images/mine/icon_quxiao.png"),
+                          image:
+                              AssetImage("assets/images/mine/icon_quxiao.png"),
                           height: 18,
                           width: 18,
                         ),
@@ -432,7 +470,7 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
                 // 显示进度条
                 child: SingleChildScrollView(
                   padding: EdgeInsets.all(16.0),
-                  child: Expanded(child: Text("发送到发撒旦法撒打发斯蒂芬仿阿萨德发送到会计法"*10)),
+                  child: Expanded(child: Text("发送到发撒旦法撒打发斯蒂芬仿阿萨德发送到会计法" * 10)),
                 ),
               ),
             ],

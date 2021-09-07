@@ -7,10 +7,12 @@ import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/models/archive_des_model.dart';
 import 'package:zgene/models/content_model.dart';
 import 'package:zgene/models/report_des_model.dart';
+import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/home/home_getHttp.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
+import 'package:zgene/widget/base_web.dart';
 
 class ReportListPage extends BaseWidget {
   var _archives;
@@ -242,8 +244,12 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
     }
     return GestureDetector(
       onTap: () {
-        CommonUtils.toUrl(
-            context: context, type: archive.linkType, url: archive.linkUrl);
+        NavigatorUtil.push(
+            context,
+            BaseWebView(
+              url: ApiConstant.getH5DetailUrl(archive.id.toString()),
+              title: archive.title,
+            ));
       },
       child: Opacity(
         opacity: index < 3 ? 1 : 0.4,

@@ -57,16 +57,20 @@ class ApiConstant {
   //消息列表
   static const String messageList = "/api/v1/user/notices";
 
+
+  ///********************************* 订单 *****************************///
   //下单
   static const String ordering = "/api/v1/order/create";
   //绑定采集器
   static const String bindColector = "/api/v1/order/bind";
+  //H5地址，直接webview加载
   static String getH5DetailUrl(id) {
     return CommonConstant.BASE_API + "/archive/embed/$id";
   }
-
-  ///********************************* 订单 *****************************///
+  //订单列表
+  static const String orderList = "/api/v1/order/list";
 
   //消息列表
   static const String orderReturn = "/api/v1/order/return";
+
 }

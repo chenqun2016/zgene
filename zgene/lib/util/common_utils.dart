@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:connectivity/connectivity.dart';
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
@@ -110,6 +112,7 @@ class CommonUtils {
 
   static const String URL_BUY = "/buy";
   static const String URL_MY =  "/my";
+  static const String URL_REPORT =  "/report";
   ///公共跳转链接
   static toUrl({context, url, type}) {
     var eventBus = getInstance();
@@ -122,6 +125,9 @@ class CommonUtils {
       //我的
       //跳到我的
       eventBus.fire(MsgEvent(100, 3));
+    } else if (url == URL_REPORT) {
+      //报告
+      eventBus.fire(MsgEvent(100, 2));
     } else if (url.contains('/webview')) {
       //跳转浏览器
       var uri = Uri.dataFromString(url);
@@ -154,5 +160,61 @@ class CommonUtils {
           break;
       }
     }
+  }
+
+//OrderStatus1 int8 = -20 //取消
+// OrderStatus2 int8 = -10 //退款
+// OrderStatus3 int8 = 0   //未付款
+// OrderStatus4 int8 = 10  //代发货
+// //OrderStatus5  int8 = 20  //代签收
+// OrderStatus6  int8 = 30 //代绑定
+// OrderStatus7  int8 = 40 //待回寄
+// OrderStatus8  int8 = 50 //待检测
+// OrderStatus9  int8 = 60 //待出报告
+// OrderStatus10 int8 = 70 //完成
+
+
+  static String getOrderType(int status){
+    switch(status){
+      case -20:
+        return "取消";
+      case -10:
+        return "退款";
+      case 0:
+        return "未付款";
+      case 10:
+        return "待发货";
+      case 20:
+        return "待签收";
+      case 30:
+        return "待绑定";
+      case 40:
+        return "待回寄";
+      case 50:
+        return "待检测";
+      case 60:
+        return "待出报告";
+      case 70:
+        return "完成";
+    }
+    return "";
+  }
+
+  static String getOrderStepType(int status){
+    switch(status){
+      case 20:
+        return "物流跟踪";
+      case 30:
+        return "绑定采集器";
+      case 40:
+        return "立即回寄";
+      case 50:
+        return "物流跟踪";
+      case 60:
+        return "查看示例报告";
+      case 70:
+        return "查看检测报告";
+    }
+    return "";
   }
 }

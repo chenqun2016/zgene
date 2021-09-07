@@ -1,6 +1,7 @@
 class OrderStepModel{
-  String name;
-  int type;
+  String title;
+  String title2;
+  int status;
 
-  OrderStepModel(this.name, this.type);
+  OrderStepModel(this.title, this.title2,this.status);
 }

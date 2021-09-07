@@ -10,6 +10,8 @@ import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/setting_model.dart';
 import 'package:zgene/pages/home/video_nav.dart';
+import 'package:zgene/pages/my/my_about_us.dart';
+import 'package:zgene/pages/my/my_contant_us.dart';
 import 'package:zgene/pages/splash_page.dart';
 import 'package:zgene/pages/tabs/report_page.dart';
 import 'package:zgene/util/common_utils.dart';
@@ -155,8 +157,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         "/order_step_detail": (context) => OrderStepPage(), //订单步骤详情
         "/order_detail": (context) => OrderDetailPage(), //订单详情
         "/bind_collector": (context) => BindCollectorPage(), //绑定采集器
-        "/kefu": (context) => null, //联系客服
-        "/about": (context) => null, //关于我们
+        "/back_collector": (context) => SendBackAcquisitionPage(), //回寄采集器
+        "/kefu": (context) => contantUsPage(), //联系客服
+        "/about": (context) => AboutUsPage(), //关于我们
       },
     ));
   }
@@ -220,8 +223,20 @@ Future<void> getSetting() async {
           if (item.name == SpConstant.appReceivePhone) {
             spUtils.setStorage(SpConstant.appReceivePhone, item.value);
           }
-          if (item.name == SpConstant.appReceivePtype) {
-            spUtils.setStorage(SpConstant.appReceivePtype, item.value);
+          if (item.name == SpConstant.appAboutusDescription) {
+            spUtils.setStorage(SpConstant.appAboutusDescription, item.value);
+          }
+          if (item.name == SpConstant.appAboutusDescription) {
+            spUtils.setStorage(SpConstant.appAboutusDescription, item.value);
+          }
+          if (item.name == SpConstant.appLatestVersion) {
+            spUtils.setStorage(SpConstant.appLatestVersion, item.value);
+          }
+          if (item.name == SpConstant.appKefuQq) {
+            spUtils.setStorage(SpConstant.appKefuQq, item.value);
+          }
+          if (item.name == SpConstant.appServiceTime) {
+            spUtils.setStorage(SpConstant.appServiceTime, item.value);
           }
         }
       } catch (e) {

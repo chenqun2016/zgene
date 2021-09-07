@@ -6,25 +6,31 @@ import 'package:zgene/constant/app_notification.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/http/http_utils.dart';
+import 'package:zgene/models/content_model.dart';
 import 'package:zgene/models/userInfo_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/bindcollector/bind_collector_page.dart';
+import 'package:zgene/pages/home/home_getHttp.dart';
 import 'package:zgene/pages/login/main_login.dart';
 import 'package:zgene/pages/my/my_about_us.dart';
+import 'package:zgene/pages/my/my_about_z.dart';
 import 'package:zgene/pages/my/my_commonQus.dart';
 import 'package:zgene/pages/my/my_contant_us.dart';
 import 'package:zgene/pages/my/my_info_page.dart';
 import 'package:zgene/pages/my/my_message_list.dart';
 import 'package:zgene/pages/my/my_order_list.dart';
+import 'package:zgene/pages/my/my_order_local.dart';
 import 'package:zgene/pages/my/my_report_page.dart';
 import 'package:zgene/pages/my/my_set.dart';
 import 'package:zgene/pages/my/sendBack_acquisition.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
+import 'package:zgene/util/login_base.dart';
 import 'package:zgene/util/notification_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/time_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
+import 'package:zgene/widget/base_web.dart';
 
 class MyPage extends BaseWidget {
   @override
@@ -50,11 +56,28 @@ class _MyPageState extends BaseWidgetState<MyPage> {
         getHttp();
       }
     });
+    HomeGetHttp(18, (result) {
+      ContentModel contentModel = ContentModel.fromJson(result);
+      if (contentModel.archives.length > 0) {
+        bannerImg = contentModel.archives[0].imageUrl;
+        bannerUrl = (contentModel.archives[0].id).toString();
+        bannerTitle = contentModel.archives[0].title;
+      } else {
+        bannerImg = "";
+        bannerUrl = "";
+        bannerTitle = "";
+      }
+      setState(() {});
+    });
   }
 
   var spUtils = SpUtils();
   String avatarImg = "";
   String userName = "";
+  String bannerImg = "";
+  String bannerUrl = "";
+  String bannerTitle = "";
+
   UserInfoModel userInfo = UserInfoModel();
 
   getHttp() {
@@ -71,6 +94,7 @@ class _MyPageState extends BaseWidgetState<MyPage> {
 
         spUtils.setStorage(SpConstant.UserName, userInfo.nickname);
         spUtils.setStorage(SpConstant.UserAvatar, userInfo.avatar);
+        spUtils.setStorage(SpConstant.UserMobile, userInfo.mobile);
         setData();
       },
       onError: (code, error) {
@@ -89,7 +113,6 @@ class _MyPageState extends BaseWidgetState<MyPage> {
   @override
   void dispose() {
     super.dispose();
-    print("注销了");
 
     NotificationCenter.instance
         .removeNotification(NotificationName.GetUserInfo);
@@ -147,17 +170,38 @@ class _MyPageState extends BaseWidgetState<MyPage> {
           ),
           _getMyInfo(),
           Visibility(
-            visible: true,
-            child: Container(
-              margin: EdgeInsets.only(bottom: 15),
-              child: Image(
-                image: AssetImage("assets/images/mine/img_my_banner.png"),
-                height: 80,
-                width: double.infinity,
-              ),
+            visible: bannerImg == "" ? false : true,
+            child: InkWell(
+              onTap: () {
+                var link = ApiConstant.getH5DetailUrl(bannerUrl);
+                print(link);
+                NavigatorUtil.push(
+                    context,
+                    BaseWebView(
+                      url: link,
+                      title: bannerTitle,
+                    ));
+              },
+              child: Container(
+                  margin: EdgeInsets.only(bottom: 15),
+                  child: FadeInImage.assetNetwork(
+                      placeholder: 'assets/images/mine/icon_default_banner.png',
+                      image: CommonUtils.splicingUrl(bannerImg),
+                      height: 80,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      fadeInDuration: TimeUtils.fadeInDuration(),
+                      fadeOutDuration: TimeUtils.fadeOutDuration(),
+                      imageErrorBuilder: (context, error, stackTrace) {
+                        return Image.asset(
+                          "assets/images/mine/icon_default_banner.png",
+                          height: 80,
+                          width: double.infinity,
+                        );
+                      })),
             ),
           ),
-          _getMyOrder(),
+          MyoRderNav(),
           _getProductPurchase(),
           _getSet(),
         ],
@@ -217,7 +261,7 @@ class _MyPageState extends BaseWidgetState<MyPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "登录/注册",
+                      userName == "" ? "登录/注册" : userName,
                       style: TextStyle(
                         fontSize: 28,
                         color: ColorConstant.TextMainBlack,
@@ -225,7 +269,9 @@ class _MyPageState extends BaseWidgetState<MyPage> {
                       ),
                     ),
                     Text(
-                      "Z基因帮你解锁出厂设置",
+                      spUtils.getStorageDefault(SpConstant.IsLogin, false)
+                          ? "欢迎来到Z基因研究中心"
+                          : "Z基因帮你解锁出厂设置",
                       style: TextStyle(
                         fontSize: 15,
                         color: ColorConstant.TextSecondColor,
@@ -544,13 +590,30 @@ class _MyPageState extends BaseWidgetState<MyPage> {
   }
 
   ///点击事件
-  _onTapEvent(index) {
+  _onTapEvent(index) async {
     switch (index) {
       case 1: //消息
         NavigatorUtil.push(context, MyMessagePage());
         break;
       case 2: //个人信息
-        NavigatorUtil.push(context, MyInfoPage());
+        // NavigatorUtil.push(context, MyInfoPage());
+        if (userInfo.id != null) {
+          if (spUtils.getStorageDefault(SpConstant.IsLogin, false)) {
+            final result = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => MyInfoPage(userInfo: userInfo)));
+            if (result != null) {
+              userInfo = result;
+              setData();
+            }
+          } else {
+            BaseLogin.login();
+          }
+        } else {
+          EasyLoading.showError("个人信息获取失败，请稍后再试。");
+          getHttp();
+        }
         break;
       case 3: //我的订单
         NavigatorUtil.push(context, MyOrderListPage());
@@ -579,7 +642,7 @@ class _MyPageState extends BaseWidgetState<MyPage> {
         NavigatorUtil.push(context, CommonQusListPage());
         break;
       case 11: //关于Z基因
-        NavigatorUtil.push(context, AboutUsPage());
+        NavigatorUtil.push(context, AboutZPage());
         break;
     }
   }

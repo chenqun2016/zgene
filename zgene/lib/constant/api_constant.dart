@@ -15,6 +15,8 @@ class ApiConstant {
   ///********************************* 用户 *****************************///
   //隐私政策
   static const String privacy = "/privacy";
+  //用户头像上传
+  static const String userAvatar = "/api/v1/user/avatar";
 
   //用户隐私
   static const String agreement = "/agreement";
@@ -39,7 +41,8 @@ class ApiConstant {
 
   //手机号登录
   static const String loginApp_phone = "/api/v1/user/login/app_phone";
-
+  //手机号绑定
+  static const String bindAppPhone = "/api/v1/user/bind/mobile";
   //手机号登录
   static const String login_wx = "/api/v1/user/login/wx";
 

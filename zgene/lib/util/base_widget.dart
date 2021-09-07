@@ -50,12 +50,10 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
     listeningController.addListener(() {
       if (listeningController.position.pixels.toInt() < 255 &&
           listeningController.position.pixels.toInt() > 0) {
-        print(listeningController.position.pixels.toInt());
         trans = listeningController.position.pixels.toInt();
         setState(() {});
       } else if (listeningController.position.pixels.toInt() == 255) {
         trans = 255;
-        print(listeningController.position.pixels.toInt());
         setState(() {});
       }
     });

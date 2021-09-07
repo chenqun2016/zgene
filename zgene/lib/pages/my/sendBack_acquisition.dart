@@ -6,6 +6,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/pages/my/my_address_list.dart';
 import 'package:zgene/pages/my/show_selectPicker.dart';
@@ -37,7 +38,7 @@ class _SendBackAcquisitionPageState
     customRightBtnText = "采集引导";
   }
 
-  String sendBackText = "江西省南昌市高新区南昌国家医药国际创新园联合研究院14号楼";
+  String sendBackText = CommonConstant.appReceiveAddress;
   // bool isCanOrder = false;
 
   bool get isCanOrder {
@@ -752,7 +753,7 @@ class _SendBackAcquisitionPageState
                         height: 22.h,
                         width: ScreenUtils.screenW(context) - 178.w,
                         child: Text(
-                          "周子芳",
+                          CommonConstant.appReceiveName,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: 14.sp,
@@ -786,7 +787,7 @@ class _SendBackAcquisitionPageState
                         height: 22.h,
                         width: ScreenUtils.screenW(context) - 178.w,
                         child: Text(
-                          "0791-88829758",
+                          CommonConstant.appReceivePhone,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: 14.sp,
@@ -855,7 +856,8 @@ class _SendBackAcquisitionPageState
                   Row(
                     children: [
                       Container(
-                        margin: EdgeInsets.only(left: 16.w, bottom: 15.h),
+                        margin: EdgeInsets.only(
+                            top: 10.h, left: 16.w, bottom: 15.h),
                         height: 22.h,
                         width: 80.w,
                         child: Text(
@@ -870,11 +872,12 @@ class _SendBackAcquisitionPageState
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(right: 16.w, bottom: 15.h),
+                        margin: EdgeInsets.only(
+                            top: 10.h, right: 16.w, bottom: 15.h),
                         height: 22.h,
                         width: ScreenUtils.screenW(context) - 178.w,
                         child: Text(
-                          "到付即可",
+                          CommonConstant.appReceivePtype,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: 14.sp,

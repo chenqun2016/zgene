@@ -7,13 +7,17 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/api_constant.dart';
+import 'package:zgene/constant/app_notification.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/login/set_passwoed.dart';
 import 'package:zgene/util/base_widget.dart';
+import 'package:zgene/util/notification_utils.dart';
 import 'package:zgene/util/phonetextFild_input.dart';
 import 'package:zgene/util/isChina_phone.dart';
+import 'package:zgene/util/sp_utils.dart';
 
 class MyNewPhonePage extends BaseWidget {
   @override
@@ -37,6 +41,7 @@ class _MyNewPhonePageState extends BaseWidgetState<MyNewPhonePage> {
   bool _isAvailableGetVCode = true; //是否可以获取验证码，默认为`false`
   String _phoneErrorText = null;
   String _phoneText = "";
+  String _verifyText = "";
 
   /// 倒计时的计时器。
   Timer _timer;
@@ -217,6 +222,8 @@ class _MyNewPhonePageState extends BaseWidgetState<MyNewPhonePage> {
                     } else {
                       isVFCodeSuccess = false;
                     }
+                    _verifyText = value;
+
                     setState(() {});
                   },
                   keyboardType: TextInputType.numberWithOptions(decimal: true),
@@ -319,7 +326,7 @@ class _MyNewPhonePageState extends BaseWidgetState<MyNewPhonePage> {
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(40.h)))),
                   onPressed: () {
-                    // selectNext();
+                    selectNext();
                   },
                   child: Container(
                     child: Center(
@@ -409,6 +416,42 @@ class _MyNewPhonePageState extends BaseWidgetState<MyNewPhonePage> {
   }
 
   void selectNext() {
-    NavigatorUtil.push(context, SetPasswordPage());
+    var number = _phoneText.replaceAll(new RegExp(r"\s+\b|\b\s"), "");
+    if (!isPhoneUtils.isChinaPhoneLegal(number)) {
+      _phoneErrorText = "请填写正确格式的手机号！";
+      setState(() {});
+      return;
+    } else {
+      _phoneErrorText = null;
+      setState(() {});
+    }
+    Map<String, dynamic> map = new HashMap();
+    map["mobile"] = number;
+    map["code"] = _verifyText;
+    EasyLoading.show(status: 'loading...');
+
+    HttpUtils.requestHttp(
+      ApiConstant.bindAppPhone,
+      parameters: map,
+      method: HttpUtils.POST,
+      onSuccess: (data) async {
+        EasyLoading.showSuccess('修改成功');
+        var spUtils = SpUtils();
+        spUtils.setStorage(SpConstant.Token, data["token"]);
+        spUtils.setStorage(SpConstant.IsLogin, true);
+        spUtils.setStorage(SpConstant.Uid, data["uid"]);
+        HttpUtils.clear();
+
+        NotificationCenter.instance
+            .postNotification(NotificationName.GetUserInfo, null);
+
+        Navigator.of(context)
+          ..pop()
+          ..pop();
+      },
+      onError: (code, error) {
+        EasyLoading.showError(error ?? "");
+      },
+    );
   }
 }

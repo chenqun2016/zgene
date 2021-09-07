@@ -58,14 +58,14 @@ class HttpUtils {
         //app版本信息
         if (PlatformUtils.isIOS || PlatformUtils.isAndroid) {
           PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
           version = packageInfo.version; //版本号
           // String buildNumber = packageInfo.buildNumber;//版本构建号
         }
 
         authorization = spUtils.getStorageDefault(SpConstant.Token, "");
-        uid = spUtils.getStorageDefault(SpConstant.Uid, 0);
-
         print(authorization);
+        uid = spUtils.getStorageDefault(SpConstant.Uid, 0);
       }
 
       /// 全局属性：请求前缀、连接超时时间、响应超时时间
@@ -150,7 +150,6 @@ class HttpUtils {
         }
       });
     } catch (e) {}
-    print(parameters);
     try {
       print(url);
       Dio dio = await createInstance();

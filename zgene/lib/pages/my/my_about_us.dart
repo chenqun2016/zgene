@@ -4,9 +4,11 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
+import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/login/change_Password.dart';
 import 'package:zgene/util/base_widget.dart';
+import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 
 import 'my_address_list.dart';
@@ -24,7 +26,7 @@ class _AboutUsPageState extends BaseWidgetState<AboutUsPage> {
     super.pageWidgetInitState();
     showHead = true;
     backImgPath = "assets/images/mine/icon_about_us_back.png";
-    pageWidgetTitle = "关于Z基因";
+    pageWidgetTitle = "关于我们";
     textStyle = TextStyle(
       fontSize: 16.sp,
       color: Color(0xFF112950),
@@ -38,14 +40,32 @@ class _AboutUsPageState extends BaseWidgetState<AboutUsPage> {
   @override
   Widget viewPageBody(BuildContext context) {
     return Container(
+      margin: EdgeInsets.only(top: 24.h),
       width: double.infinity,
-      height: MediaQuery.of(context).size.height - 100,
+      height: MediaQuery.of(context).size.height - 100.h,
       child: Stack(
         children: [
           Column(
             children: [
               operationView(),
             ],
+          ),
+          Positioned(
+            bottom: 29.h,
+            left: 16.w,
+            right: 16.w,
+            // height: 55,
+            child: Text(
+              "上海晓得基因科技有限公司",
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.visible,
+              style: TextStyle(
+                fontSize: 15.sp,
+                fontStyle: FontStyle.normal,
+                fontWeight: FontWeight.w400,
+                color: ColorConstant.Text_5E6F88,
+              ),
+            ),
           ),
         ],
       ),
@@ -83,129 +103,23 @@ class _AboutUsPageState extends BaseWidgetState<AboutUsPage> {
                   height: 28.h,
                   // width: 97.w,
                 ),
-              ))
+              )),
             ],
           ),
           Container(
-            margin: EdgeInsets.only(top: 39.h),
-            child: GestureDetector(
-              onTap: () {
-                _onTapEvent(6);
-              },
-              behavior: HitTestBehavior.opaque,
-              child: Stack(
-                children: [
-                  Container(
-                      width: double.infinity,
-                      height: 45,
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "Z基因官网",
-                        style: textStyle,
-                      )),
-                  Positioned(
-                    right: 0,
-                    top: 15,
-                    child: Image(
-                      image: AssetImage("assets/images/mine/icon_my_right.png"),
-                      height: 16,
-                      width: 16,
-                    ),
-                  ),
-                ],
+            margin: EdgeInsets.only(top: 25.h, bottom: 32.h),
+            child: Text(
+              SpUtils().getStorageDefault(SpConstant.appAboutusDescription, ""),
+              textAlign: TextAlign.left,
+              overflow: TextOverflow.visible,
+              style: TextStyle(
+                fontSize: 15.sp,
+                fontStyle: FontStyle.normal,
+                fontWeight: FontWeight.w400,
+                color: ColorConstant.TextSecondColor,
               ),
             ),
-          ),
-          GestureDetector(
-            onTap: () {
-              _onTapEvent(6);
-            },
-            behavior: HitTestBehavior.opaque,
-            child: Stack(
-              children: [
-                Container(
-                    width: double.infinity,
-                    height: 45,
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "关于我们",
-                      style: textStyle,
-                    )),
-                Positioned(
-                  right: 0,
-                  top: 15,
-                  child: Image(
-                    image: AssetImage("assets/images/mine/icon_my_right.png"),
-                    height: 16,
-                    width: 16,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              _onTapEvent(6);
-            },
-            behavior: HitTestBehavior.opaque,
-            child: Stack(
-              children: [
-                Container(
-                    width: double.infinity,
-                    height: 45,
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "检测更新",
-                      style: textStyle,
-                    )),
-                Positioned(
-                  right: 0,
-                  top: 15,
-                  child: Row(
-                    children: [
-                      Offstage(
-                        offstage: !isNew,
-                        child: Container(
-                          margin: EdgeInsets.only(right: 6.w),
-                          child: Text(
-                            "●",
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              fontStyle: FontStyle.normal,
-                              fontWeight: FontWeight.w400,
-                              color: ColorConstant.MainRed,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(right: 8.w),
-                        child: Text(
-                          "版本号：V1.0",
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.w400,
-                            color: isNew
-                                ? ColorConstant.MainBlueColor
-                                : ColorConstant.Text_5E6F88,
-                          ),
-                        ),
-                      ),
-                      Image(
-                        image:
-                            AssetImage("assets/images/mine/icon_my_right.png"),
-                        height: 16,
-                        width: 16,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
+          )
         ],
       ),
     );

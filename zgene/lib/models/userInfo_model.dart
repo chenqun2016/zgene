@@ -5,6 +5,7 @@ class UserInfoModel {
   int id;
   String intro;
   String nickname;
+  String mobile;
 
   UserInfoModel(
       {this.avatar,
@@ -12,7 +13,8 @@ class UserInfoModel {
       this.gender,
       this.id,
       this.intro,
-      this.nickname});
+      this.nickname,
+      this.mobile});
 
   UserInfoModel.fromJson(Map<String, dynamic> json) {
     avatar = json['avatar'];
@@ -21,6 +23,7 @@ class UserInfoModel {
     id = json['id'];
     intro = json['intro'];
     nickname = json['nickname'];
+    mobile = json['mobile'];
   }
 
   Map<String, dynamic> toJson() {
@@ -31,6 +34,7 @@ class UserInfoModel {
     data['id'] = this.id;
     data['intro'] = this.intro;
     data['nickname'] = this.nickname;
+    data['mobile'] = this.mobile;
     return data;
   }
 }

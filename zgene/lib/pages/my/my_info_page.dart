@@ -1,17 +1,61 @@
+import 'dart:collection';
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/constant/sp_constant.dart';
+import 'package:zgene/http/http_utils.dart';
+import 'package:zgene/models/userInfo_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/my/my_editor_name.dart';
+import 'package:zgene/pages/my/my_introduction.dart';
+import 'package:zgene/util/common_utils.dart';
+import 'package:zgene/util/sp_utils.dart';
+import 'package:zgene/util/time_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
+import 'package:zgene/widget/camer_crop_image_route.dart';
 
 ///我的资料
 class MyInfoPage extends StatefulWidget {
+  UserInfoModel userInfo = UserInfoModel();
+  MyInfoPage({Key key, this.userInfo}) : super(key: key);
+
   @override
   _MyInfoPageState createState() => _MyInfoPageState();
 }
 
 class _MyInfoPageState extends State<MyInfoPage> {
-  int sexType=3;
+  int sexType = 0;
+  String _avatatHttp = "";
+  String _nickName = "";
+  String _introduction = "";
+
+  @override
+  void initState() {
+    super.initState();
+    switch (widget.userInfo.gender) {
+      case 0:
+        sexType = 0;
+        break;
+      case 1:
+        sexType = 1;
+        break;
+      case -1:
+        sexType = -1;
+        break;
+      default:
+        sexType = 0;
+        break;
+    }
+    _nickName = widget.userInfo.nickname != "" ? widget.userInfo.nickname : "";
+    _avatatHttp = widget.userInfo.avatar;
+    _introduction = widget.userInfo.intro;
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -114,19 +158,45 @@ class _MyInfoPageState extends State<MyInfoPage> {
       child: Row(
         mainAxisSize: MainAxisSize.max,
         children: [
+          // Container(
+          //   margin: EdgeInsets.only(right: 13),
+          //   child: Image(
+          //     image: AssetImage("assets/images/mine/img_my_avatar.png"),
+          //     height: 66,
+          //     width: 66,
+          //   ),
+          // ),
           Container(
-            margin: EdgeInsets.only(right: 13),
-            child: Image(
-              image: AssetImage("assets/images/mine/img_my_avatar.png"),
-              height: 66,
-              width: 66,
+            margin: EdgeInsets.only(right: 14),
+            child: ClipOval(
+              child: _avatatHttp == ""
+                  ? Image.asset(
+                      'assets/images/mine/img_my_avatar.png',
+                      height: 66,
+                      width: 66,
+                    )
+                  : FadeInImage.assetNetwork(
+                      placeholder: 'assets/images/mine/img_my_avatar.png',
+                      image: CommonUtils.splicingUrl(_avatatHttp),
+                      width: 66,
+                      height: 66,
+                      fit: BoxFit.cover,
+                      fadeInDuration: TimeUtils.fadeInDuration(),
+                      fadeOutDuration: TimeUtils.fadeOutDuration(),
+                      imageErrorBuilder: (context, error, stackTrace) {
+                        return Image.asset(
+                          "assets/images/mine/img_my_avatar.png",
+                          height: 66,
+                          width: 66,
+                        );
+                      }),
             ),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Jack",
+                _nickName,
                 style: TextStyle(
                   fontSize: 28,
                   color: ColorConstant.TextMainBlack,
@@ -134,7 +204,7 @@ class _MyInfoPageState extends State<MyInfoPage> {
                 ),
               ),
               Text(
-                "世界那么大，我想去看看。",
+                _introduction == "" ? "暂无简介" : _introduction,
                 style: TextStyle(
                   fontSize: 15,
                   color: ColorConstant.TextThreeColor,
@@ -178,10 +248,38 @@ class _MyInfoPageState extends State<MyInfoPage> {
                     )),
                 Positioned(
                   right: 22,
-                  child: Image(
-                    image: AssetImage("assets/images/mine/img_my_avatar.png"),
-                    height: 45,
-                    width: 45,
+                  child:
+                      // Image(
+                      //   image: AssetImage("assets/images/mine/img_my_avatar.png"),
+                      //   height: 45,
+                      //   width: 45,
+                      // ),
+                      Container(
+                    margin: EdgeInsets.only(right: 14),
+                    child: ClipOval(
+                      child: _avatatHttp == ""
+                          ? Image.asset(
+                              'assets/images/mine/img_my_avatar.png',
+                              height: 45,
+                              width: 45,
+                            )
+                          : FadeInImage.assetNetwork(
+                              placeholder:
+                                  'assets/images/mine/img_my_avatar.png',
+                              image: CommonUtils.splicingUrl(_avatatHttp),
+                              width: 45,
+                              height: 45,
+                              fit: BoxFit.cover,
+                              fadeInDuration: TimeUtils.fadeInDuration(),
+                              fadeOutDuration: TimeUtils.fadeOutDuration(),
+                              imageErrorBuilder: (context, error, stackTrace) {
+                                return Image.asset(
+                                  "assets/images/mine/img_my_avatar.png",
+                                  height: 45,
+                                  width: 45,
+                                );
+                              }),
+                    ),
                   ),
                 ),
                 Positioned(
@@ -215,7 +313,7 @@ class _MyInfoPageState extends State<MyInfoPage> {
                   right: 22,
                   top: 12,
                   child: Text(
-                    "Jack",
+                    _nickName,
                     style: TextStyle(
                       fontSize: 16,
                       color: ColorConstant.TextThreeColor,
@@ -256,54 +354,54 @@ class _MyInfoPageState extends State<MyInfoPage> {
                           VisualDensity(horizontal: -4, vertical: -4),
                       onChanged: (value) {
                         setState(() {
-                          sexType=value;
+                          sexType = value;
                         });
                       },
                     ),
                     GestureDetector(
                       onTap: () {
                         setState(() {
-                          sexType=1;
+                          sexType = 1;
                         });
                       },
                       child: Container(
                           margin: EdgeInsets.only(right: 15), child: Text("男")),
                     ),
                     Radio(
-                      value: 2,
+                      value: -1,
                       groupValue: sexType,
                       visualDensity:
                           VisualDensity(horizontal: -4, vertical: -4),
                       onChanged: (value) {
                         setState(() {
-                          sexType=value;
+                          sexType = value;
                         });
                       },
                     ),
                     GestureDetector(
                       onTap: () {
                         setState(() {
-                          sexType=2;
+                          sexType = -1;
                         });
                       },
                       child: Container(
                           margin: EdgeInsets.only(right: 15), child: Text("女")),
                     ),
                     Radio(
-                      value: 3,
+                      value: 0,
                       groupValue: sexType,
                       visualDensity:
                           VisualDensity(horizontal: -4, vertical: -4),
                       onChanged: (value) {
                         setState(() {
-                          sexType=value;
+                          sexType = value;
                         });
                       },
                     ),
                     GestureDetector(
                       onTap: () {
                         setState(() {
-                          sexType=3;
+                          sexType = 0;
                         });
                       },
                       child: Text("保密"),
@@ -357,23 +455,170 @@ class _MyInfoPageState extends State<MyInfoPage> {
   }
 
   ///点击事件
-  _onTapEvent(index) {
+  _onTapEvent(index) async {
     switch (index) {
       case 1: //返回
-        Navigator.pop(context);
+        Navigator.pop(context, null);
         break;
       case 2: //头像
-        UiUitls.showToast("头像");
+        _pickImage();
         break;
       case 3: //用户名称
-        NavigatorUtil.push(context, MyEditorPage());
+        final result = await Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => MyEditorPage(
+                      nikeName: _nickName,
+                    )));
+        if (result != "") {
+          print(result);
+          _nickName = result;
+        } else {}
+        setState(() {});
         break;
       case 4: //简介
-        UiUitls.showToast("简介");
+        final result = await Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => MyIntroductionPage(
+                      introduction: _introduction,
+                    )));
+        if (result != "") {
+          print(result);
+          _introduction = result;
+        } else {}
+        setState(() {});
         break;
-      case 5: //保存
-        UiUitls.showToast("保存");
+      case 5: //保存r
+        modificationUserInfo();
         break;
     }
+  }
+
+//保存信息
+  modificationUserInfo() {
+    Map<String, dynamic> map = new HashMap();
+    map["nickname"] = _nickName;
+    map["gender"] = sexType;
+    map["avatar"] = _avatatHttp;
+    map["intro"] = _introduction;
+    EasyLoading.show(status: 'loading...');
+
+    HttpUtils.requestHttp(
+      ApiConstant.userInfo,
+      parameters: map,
+      method: HttpUtils.POST,
+      onSuccess: (data) {
+        print(data.toString());
+        getUserInfo();
+      },
+      onError: (code, error) {
+        EasyLoading.showError(error ?? "");
+      },
+    );
+  }
+
+  getUserInfo() {
+    HttpUtils.requestHttp(
+      ApiConstant.userInfo,
+      method: HttpUtils.GET,
+      onSuccess: (data) {
+        EasyLoading.showSuccess('保存成功');
+        UserInfoModel userInfoModel = UserInfoModel.fromJson(data);
+        widget.userInfo = userInfoModel;
+        var spUtils = SpUtils();
+        spUtils.setStorage(SpConstant.UserName, userInfoModel.nickname);
+        spUtils.setStorage(SpConstant.UserAvatar, userInfoModel.avatar);
+        Navigator.pop(context, widget.userInfo);
+      },
+      onError: (code, error) {
+        EasyLoading.showError(error ?? "");
+        print(error);
+      },
+    );
+  }
+
+  Future getImage(bool isTakePhoto) async {
+    Navigator.pop(context);
+    try {
+      final picker = ImagePicker();
+
+      var image = await picker.getImage(
+          source: isTakePhoto ? ImageSource.camera : ImageSource.gallery);
+
+      if (image == null) {
+        return;
+      } else {
+        print("成功了");
+
+        cropImage(File(image.path));
+      }
+    } catch (e) {
+      print("模拟器不支持相机！");
+    }
+  }
+
+  void cropImage(File originalImage) async {
+    File result = await Navigator.push(context,
+        MaterialPageRoute(builder: (context) => CropImageRoute(originalImage)));
+
+    if (result == null) {
+      print('上传失败');
+    } else {
+      getUserAvatar(result);
+
+      setState(() {});
+    }
+  }
+
+  _pickImage() {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) => Container(
+              height: 160,
+              child: Column(
+                children: <Widget>[
+                  _takePhotoItem('拍照', true),
+                  _takePhotoItem('从相册选择', false),
+                ],
+              ),
+            ));
+  }
+
+  _takePhotoItem(String title, bool isTakePhoto) {
+    print(isTakePhoto);
+    return GestureDetector(
+      child: ListTile(
+        leading: Icon(
+          isTakePhoto ? Icons.camera_alt : Icons.photo_library,
+        ),
+        title: Text(title),
+        onTap: () => getImage(isTakePhoto),
+      ),
+    );
+  }
+
+  getUserAvatar(File file) async {
+    String path = file.path;
+    var name = path.substring(path.lastIndexOf("/") + 1, path.length);
+    FormData formData = FormData.fromMap({
+      //文件信息
+      "file": await MultipartFile.fromFile(path, filename: name)
+    });
+
+    HttpUtils.requestHttp(
+      ApiConstant.userAvatar,
+      parameters: formData,
+      method: HttpUtils.POST,
+      onSuccess: (data) {
+        EasyLoading.showSuccess('上传成功');
+        _avatatHttp = data["url"];
+        setState(() {});
+      },
+      onError: (code, error) {
+        EasyLoading.showError(error ?? "");
+        print(error);
+      },
+    );
   }
 }

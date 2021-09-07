@@ -8,6 +8,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/login/set_passwoed.dart';
@@ -15,6 +16,7 @@ import 'package:zgene/pages/my/my_new_phone.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/phonetextFild_input.dart';
 import 'package:zgene/util/isChina_phone.dart';
+import 'package:zgene/util/sp_utils.dart';
 
 class ChangePhonePage extends BaseWidget {
   @override
@@ -38,6 +40,7 @@ class _ChangePhonePageState extends BaseWidgetState<ChangePhonePage> {
   bool _isAvailableGetVCode = true; //是否可以获取验证码，默认为`false`
   String _phoneErrorText = null;
   String _phoneText = "";
+  String _verifyText = "";
 
   /// 倒计时的计时器。
   Timer _timer;
@@ -218,6 +221,8 @@ class _ChangePhonePageState extends BaseWidgetState<ChangePhonePage> {
                     } else {
                       isVFCodeSuccess = false;
                     }
+                    _verifyText = value;
+
                     setState(() {});
                   },
                   keyboardType: TextInputType.numberWithOptions(decimal: true),
@@ -410,6 +415,37 @@ class _ChangePhonePageState extends BaseWidgetState<ChangePhonePage> {
   }
 
   void selectNext() {
-    NavigatorUtil.push(context, MyNewPhonePage());
+    var number = _phoneText.replaceAll(new RegExp(r"\s+\b|\b\s"), "");
+    if (!isPhoneUtils.isChinaPhoneLegal(number)) {
+      _phoneErrorText = "请填写正确格式的手机号！";
+      setState(() {});
+      return;
+    } else {
+      _phoneErrorText = null;
+      setState(() {});
+    }
+    Map<String, dynamic> map = new HashMap();
+    map["mobile"] = number;
+    map["code"] = _verifyText;
+    EasyLoading.show(status: 'loading...');
+
+    HttpUtils.requestHttp(
+      ApiConstant.loginApp_phone,
+      parameters: map,
+      method: HttpUtils.POST,
+      onSuccess: (data) async {
+        EasyLoading.dismiss();
+        var spUtils = SpUtils();
+        spUtils.setStorage(SpConstant.Token, data["token"]);
+        spUtils.setStorage(SpConstant.IsLogin, true);
+        spUtils.setStorage(SpConstant.Uid, data["uid"]);
+        HttpUtils.clear();
+
+        NavigatorUtil.push(context, MyNewPhonePage());
+      },
+      onError: (code, error) {
+        EasyLoading.showError(error ?? "");
+      },
+    );
   }
 }

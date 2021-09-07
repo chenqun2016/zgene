@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
@@ -12,22 +13,20 @@ import 'package:zgene/util/ui_uitls.dart';
 
 ///我的消息列表
 class MyMessagePage extends StatefulWidget {
-
   @override
   _MyMessagePageState createState() => _MyMessagePageState();
-
 }
 
-class _MyMessagePageState extends State<MyMessagePage>{
+class _MyMessagePageState extends State<MyMessagePage> {
   int errorCode = 0; //0.正常 1.暂无数据 2.错误 3.没有网络
   List list = [];
   List tempList = [];
   int page = 1;
 
-
   @override
   void initState() {
     super.initState();
+    getHttp(9);
   }
 
   @override
@@ -51,14 +50,14 @@ class _MyMessagePageState extends State<MyMessagePage>{
   Widget get emptyView {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Container(
-        height: 40,
-        margin: EdgeInsets.only(top: 48),
+        height: 40.h,
+        margin: EdgeInsets.only(top: 48.h),
         width: double.infinity,
         child: Stack(
           alignment: Alignment.center,
           children: [
             Positioned(
-              width: 40,
+              width: 40.h,
               left: 0,
               child: GestureDetector(
                 onTap: () {
@@ -66,9 +65,9 @@ class _MyMessagePageState extends State<MyMessagePage>{
                 },
                 behavior: HitTestBehavior.opaque,
                 child: Image(
-                  image: AssetImage("assets/images/mine/icon_back.png"),
-                  height: 40,
-                  width: 40,
+                  image: AssetImage("assets/images/icon_base_backArrow.png"),
+                  height: 40.h,
+                  width: 40.h,
                 ),
               ),
             ),
@@ -85,61 +84,92 @@ class _MyMessagePageState extends State<MyMessagePage>{
           ],
         ),
       ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            margin: EdgeInsets.only(right: 46),
-            child: Column(
+      Container(
+        margin: EdgeInsets.only(top: 17.h),
+        decoration: new BoxDecoration(
+          color: ColorConstant.WhiteColorB2,
+          borderRadius: BorderRadius.all(Radius.circular(20.h)),
+          //设置四周边框
+          border: new Border.all(width: 1, color: ColorConstant.WhiteColor),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              margin: EdgeInsets.only(right: 46.h),
+              child: Column(
+                children: [
+                  Image(
+                    image:
+                        AssetImage("assets/images/mine/icon_message_news.png"),
+                    height: 82.h,
+                    width: 82.h,
+                  ),
+                  Text(
+                    "公告",
+                    style: TextStyle(
+                        fontSize: 13, color: ColorConstant.TextMainBlack),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(bottom: 17.h),
+                    child: Text(
+                      "⏤",
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          color: ColorConstant.TextMainBlack),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Column(
               children: [
                 Image(
-                  image: AssetImage("assets/images/mine/icon_message_news.png"),
-                  height: 82,
-                  width: 82,
+                  image:
+                      AssetImage("assets/images/mine/icon_message_notice.png"),
+                  height: 82.h,
+                  width: 82.h,
                 ),
                 Text(
-                  "公告",
+                  "通知",
                   style: TextStyle(
                       fontSize: 13, color: ColorConstant.TextMainBlack),
                 ),
+                Container(
+                  margin: EdgeInsets.only(bottom: 17.h),
+                  child: Text(
+                    "⏤",
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: ColorConstant.TextMainBlack),
+                  ),
+                ),
               ],
             ),
-          ),
-          Column(
-            children: [
-              Image(
-                image: AssetImage("assets/images/mine/icon_message_notice.png"),
-                height: 82,
-                width: 82,
-              ),
-              Text(
-                "通知",
-                style:
-                    TextStyle(fontSize: 13, color: ColorConstant.TextMainBlack),
-              ),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
       errorCode != 0
           ? UiUitls.getErrorPage(
-          context: context,
-          type: errorCode,
-          height: MediaQuery.of(context).size.height - 215,
-          onClick: () {
-            // if (lastTime == null) {
-            //   lastTime = DateTime.now();
-            //   page = 1;
-            //   getHttp();
-            // } else {
-            //   //可以点击
-            //   if (TimeUtils.intervalClick(lastTime, 2)) {
-            //     lastTime = DateTime.now();
-            //     page = 1;
-            //     getHttp();
-            //   }
-            // }
-          })
+              context: context,
+              type: errorCode,
+              height: MediaQuery.of(context).size.height - 215,
+              onClick: () {
+                // if (lastTime == null) {
+                //   lastTime = DateTime.now();
+                //   page = 1;
+                //   getHttp();
+                // } else {
+                //   //可以点击
+                //   if (TimeUtils.intervalClick(lastTime, 2)) {
+                //     lastTime = DateTime.now();
+                //     page = 1;
+                //     getHttp();
+                //   }
+                // }
+              })
           : _listView,
     ]);
   }
@@ -185,10 +215,11 @@ class _MyMessagePageState extends State<MyMessagePage>{
   ///列表
   Widget get _listView {
     return Container(
-      margin: EdgeInsets.only(top: 30),
+      margin: EdgeInsets.only(top: 16),
+      height: MediaQuery.of(context).size.height - 270.h,
       child: ListView.builder(
-        itemCount: 3,
-        shrinkWrap: true,
+        itemCount: 4,
+        // shrinkWrap: true,
         padding: EdgeInsets.all(0),
         physics: ScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
@@ -269,7 +300,7 @@ class _MyMessagePageState extends State<MyMessagePage>{
   }
 
   ///获取消息列表
-  getHttp() async {
+  getHttp(int type) async {
     bool isNetWorkAvailable = await CommonUtils.isNetWorkAvailable();
     if (!isNetWorkAvailable) {
       // if (page == 1 && list.length == 0) {
@@ -281,6 +312,7 @@ class _MyMessagePageState extends State<MyMessagePage>{
     }
     Map<String, dynamic> map = new HashMap();
     map["page"] = page;
+    map["type"] = type;
     map["page_size"] = CommonConstant.PAGE_SIZE;
 
     HttpUtils.requestHttp(
@@ -288,10 +320,9 @@ class _MyMessagePageState extends State<MyMessagePage>{
       parameters: map,
       method: HttpUtils.GET,
       onSuccess: (result) async {
-
+        print(result);
       },
-      onError: (code, error) {
-      },
+      onError: (code, error) {},
     );
   }
 }

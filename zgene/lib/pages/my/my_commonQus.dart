@@ -1,9 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/models/content_model.dart';
+import 'package:zgene/navigator/navigator_util.dart';
+import 'package:zgene/pages/home/home_getHttp.dart';
 import 'package:zgene/util/base_widget.dart';
+import 'package:zgene/util/screen_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
+import 'package:zgene/widget/base_web.dart';
 
 class CommonQusListPage extends BaseWidget {
   @override
@@ -18,6 +24,7 @@ class _CommonQusListPageState extends BaseWidgetState<CommonQusListPage> {
   int page = 1;
   int errorCode = 0; //0.正常 1.暂无数据 2.错误 3.没有网络
   var textStyle;
+  List contentList = [];
 
   @override
   void initState() {
@@ -31,6 +38,14 @@ class _CommonQusListPageState extends BaseWidgetState<CommonQusListPage> {
       color: Color(0xFF112950),
       fontWeight: FontWeight.w500,
     );
+    HomeGetHttp(3, (result) {
+      print(result);
+      ContentModel contentModel = ContentModel.fromJson(result);
+      contentList.clear();
+      setState(() {
+        contentList = contentModel.archives;
+      });
+    });
   }
 
   @override
@@ -71,33 +86,42 @@ class _CommonQusListPageState extends BaseWidgetState<CommonQusListPage> {
       width: double.infinity,
       child: ListView.builder(
         // controller: listeningController,
-        itemCount: 5,
+        itemCount: contentList.length,
         shrinkWrap: true,
         padding: EdgeInsets.all(0),
         physics: ScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
-          return getItem();
+          return getItem(index);
         },
       ),
     );
   }
 
-  Widget getItem() {
+  Widget getItem(int index) {
+    Archives content = contentList[index];
     return Container(
       margin: EdgeInsets.fromLTRB(16.w, 20.h, 16.w, 20.h),
       child: GestureDetector(
         onTap: () {
-          // _onTapEvent(6);
+          var link = ApiConstant.getH5DetailUrl(content.id.toString());
+          print(link);
+          NavigatorUtil.push(
+              context,
+              BaseWebView(
+                url: link,
+                title: content.title,
+              ));
         },
         behavior: HitTestBehavior.opaque,
         child: Stack(
           children: [
             Container(
-                width: double.infinity,
+                width: ScreenUtils.screenW(context) - 82.w,
                 height: 20,
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "顺丰快递员拒绝收件?",
+                  content.title,
+                  overflow: TextOverflow.ellipsis,
                   style: textStyle,
                 )),
             Positioned(

@@ -4,9 +4,11 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
+import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/login/change_Password.dart';
 import 'package:zgene/util/base_widget.dart';
+import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 
 import 'my_address_list.dart';
@@ -37,8 +39,9 @@ class _contantUsPageState extends BaseWidgetState<contantUsPage> {
   @override
   Widget viewPageBody(BuildContext context) {
     return Container(
+      margin: EdgeInsets.only(top: 18.h),
       width: double.infinity,
-      height: MediaQuery.of(context).size.height - 100,
+      height: MediaQuery.of(context).size.height - 100.h,
       child: Stack(
         children: [
           Column(
@@ -47,7 +50,7 @@ class _contantUsPageState extends BaseWidgetState<contantUsPage> {
             ],
           ),
           Positioned(
-            bottom: 40.h,
+            bottom: 29.h,
             left: 16.w,
             right: 16.w,
             // height: 55,
@@ -109,7 +112,9 @@ class _contantUsPageState extends BaseWidgetState<contantUsPage> {
                   Container(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        "1256019395",
+                        SpUtils()
+                            .getStorageDefault(SpConstant.appKefuQq, "")
+                            .toString(),
                         style: TextStyle(
                           fontSize: 16.sp,
                           color: ColorConstant.MainBlueColor,
@@ -138,7 +143,9 @@ class _contantUsPageState extends BaseWidgetState<contantUsPage> {
                 Container(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      "周一至周五10:00~18:00",
+                      SpUtils()
+                          .getStorageDefault(SpConstant.appServiceTime, "")
+                          .toString(),
                       style: TextStyle(
                         fontSize: 16.sp,
                         color: ColorConstant.Text_5E6F88,

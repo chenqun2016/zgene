@@ -24,6 +24,14 @@ class SpConstant {
   static const String appReceivePhone = "app_receive_phone";
   //回寄付费方式
   static const String appReceivePtype = "app_receive_ptype";
+  //关于我们文案
+  static const String appAboutusDescription = "app_aboutus_description";
+  //应用最新版本
+  static const String appLatestVersion = "app_latest_version";
+  //应用客服qq
+  static const String appKefuQq = "app_kefu_qq";
+  //应用客服服务时间
+  static const String appServiceTime = "app_service_time";
   //--End:Z基因项目相关配置接口
   //token
   static const String Token = "token";
@@ -35,6 +43,8 @@ class SpConstant {
   static const String UserName = "userName";
   //用户头像
   static const String UserAvatar = "userAvatar";
+  //用户手机号
+  static const String UserMobile = "mobile";
   //用户金币
   static const String UserCoins = "userCoins";
   //是否是第一次打开

@@ -398,7 +398,7 @@ class _BindPhoneLoginPageState extends BaseWidgetState<BindPhoneLoginPage> {
     EasyLoading.show(status: 'loading...');
 
     HttpUtils.requestHttp(
-      ApiConstant.loginApp_phone,
+      ApiConstant.bindAppPhone,
       parameters: map,
       method: HttpUtils.POST,
       onSuccess: (data) async {

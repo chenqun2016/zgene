@@ -4,15 +4,15 @@ import 'package:zgene/models/userInfo_model.dart';
 import 'package:zgene/util/ui_uitls.dart';
 
 ///编辑姓名
-class MyEditorPage extends StatefulWidget {
-  String nikeName = "";
-  MyEditorPage({Key key, this.nikeName}) : super(key: key);
+class MyIntroductionPage extends StatefulWidget {
+  String introduction = "";
+  MyIntroductionPage({Key key, this.introduction}) : super(key: key);
   @override
-  _MyEditorPageState createState() => _MyEditorPageState();
+  _MyIntroductionPageState createState() => _MyIntroductionPageState();
 }
 
-class _MyEditorPageState extends State<MyEditorPage> {
-  String _nickName = "";
+class _MyIntroductionPageState extends State<MyIntroductionPage> {
+  String _introduction = "";
   TextEditingController textEditingController = new TextEditingController();
 
   @override
@@ -55,7 +55,7 @@ class _MyEditorPageState extends State<MyEditorPage> {
                   ),
                   Container(
                     child: Text(
-                      "修改用户名称",
+                      "修改简介",
                       style: TextStyle(
                         color: ColorConstant.TextMainBlack,
                         fontWeight: FontWeight.w500,
@@ -106,12 +106,13 @@ class _MyEditorPageState extends State<MyEditorPage> {
 
                         // controller: textEditingController,
                         onChanged: (value) {
-                          _nickName = value;
+                          _introduction = value;
                           // setState(() {});
                         },
                         decoration: InputDecoration(
-                          hintText:
-                              widget.nikeName != null ? widget.nikeName : "",
+                          hintText: widget.introduction != null
+                              ? widget.introduction
+                              : "",
                           border: InputBorder.none,
                           isCollapsed: true,
                           hintStyle: TextStyle(
@@ -159,10 +160,10 @@ class _MyEditorPageState extends State<MyEditorPage> {
   _onTapEvent(index) {
     switch (index) {
       case 1: //返回
-        Navigator.pop(context, _nickName);
+        Navigator.pop(context, _introduction);
         break;
       case 2: //完成
-        Navigator.pop(context, _nickName);
+        Navigator.pop(context, _introduction);
         break;
     }
   }

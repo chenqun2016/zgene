@@ -11,6 +11,7 @@ import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/widget/my_stepper.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 class BindCollectorPage extends BaseWidget {
   @override
@@ -455,54 +456,68 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
   Widget get _bindstep1 {
     return Column(
       children: [
-        Container(
-          margin: EdgeInsets.only(top: 0),
-          padding: EdgeInsets.only(top: 0, bottom: 20),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(
-              Radius.circular(20),
+        GestureDetector(
+          onTap: () async{
+            print("点击扫码");
+            try {
+              String barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+                  "#ff6666",
+                  "取消",
+                  true,
+                  ScanMode.BARCODE);
+            } on Exception {
+              UiUitls.showToast("手机不支持扫码");
+            }
+          },
+          child: Container(
+            margin: EdgeInsets.only(top: 0),
+            padding: EdgeInsets.only(top: 0, bottom: 20),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(
+                Radius.circular(20),
+              ),
             ),
-          ),
-          child: Column(
-            children: [
-              Image.asset(
-                "assets/images/home/icon_saoma.png",
-                height: 110,
-                width: 110,
-              ),
-              Text(
-                "扫一扫采集器上的条形码",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: ColorConstant.TextMainBlack,
+            child: Column(
+              children: [
+                Image.asset(
+                  "assets/images/home/icon_saoma.png",
+                  height: 110,
+                  width: 110,
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 10, bottom: 10),
-                child: Text(
-                  "如无法扫码可以手动输入采集器编号",
+                Text(
+                  "扫一扫采集器上的条形码",
                   style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: ColorConstant.Text_5E6F88,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: ColorConstant.TextMainBlack,
                   ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
-                child: Divider(
-                  height: 1,
-                  color: ColorConstant.Divider,
+                Padding(
+                  padding: EdgeInsets.only(top: 10, bottom: 10),
+                  child: Text(
+                    "如无法扫码可以手动输入采集器编号",
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: ColorConstant.Text_5E6F88,
+                    ),
+                  ),
                 ),
-              ),
-              Image.asset(
-                "assets/images/home/img_shili.png",
-                height: 65,
-                width: 149,
-              )
-            ],
+                Padding(
+                  padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
+                  child: Divider(
+                    height: 1,
+                    color: ColorConstant.Divider,
+                  ),
+                ),
+                Image.asset(
+                  "assets/images/home/img_shili.png",
+                  height: 65,
+                  width: 149,
+                )
+              ],
+            ),
           ),
         ),
         Container(

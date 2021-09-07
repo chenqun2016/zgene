@@ -40,7 +40,7 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
   List _billHint = [
     ["备注留言（选填）", null, null],
     ["请填写收票人电子邮箱", null, null],
-    ["请填写单位名称", "请填写纳税人识别码", "请填写收票人电子邮箱"]
+    ["请填写收票人电子邮箱", "请填写单位名称", "请填写纳税人识别码"]
   ];
 
   TextEditingController _nameController = new TextEditingController();
@@ -52,15 +52,39 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
   TextEditingController _message2Controller = new TextEditingController();
   TextEditingController _message3Controller = new TextEditingController();
 
+  bool _canClick = false;
+
   // GlobalKey _formKey = new GlobalKey<FormState>();
   // ScrollController _controller = new ScrollController();
   //
   // @override
   // void dispose() {
-  //   //为了避免内存泄露，需要调用_controller.dispose
   //   _controller.dispose();
   //   super.dispose();
   // }
+
+  bool _getCanClick() {
+    return _phoneController.text.isNotEmpty &&
+        _nameController.text.isNotEmpty &&
+        _areaController.text.isNotEmpty &&
+        _cityController.text.isNotEmpty &&
+        (fapiao == 2
+            ? (_messageController.text.isNotEmpty &&
+                _message2Controller.text.isNotEmpty &&
+                _message3Controller.text.isNotEmpty)
+            : fapiao == 1
+                ? _messageController.text.isNotEmpty
+                : true);
+  }
+
+  void _checkCanClick() {
+    var canClick = _getCanClick();
+    if (_canClick != canClick) {
+      setState(() {
+        _canClick = canClick;
+      });
+    }
+  }
 
   @override
   void pageWidgetInitState() {
@@ -143,9 +167,13 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
                   ),
                   color: ColorConstant.WhiteColor,
                   onPressed: () {
+                    if (fapiao == 0) {
+                      return;
+                    }
                     setState(() {
                       fapiao = 0;
                     });
+                    _checkCanClick();
                   },
                   child: Text("不需要发票",
                       style: TextStyle(
@@ -169,9 +197,13 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
                   ),
                   color: ColorConstant.WhiteColor,
                   onPressed: () {
+                    if (fapiao == 1) {
+                      return;
+                    }
                     setState(() {
                       fapiao = 1;
                     });
+                    _checkCanClick();
                   },
                   child: Text("个人",
                       style: TextStyle(
@@ -195,9 +227,13 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
                   ),
                   color: ColorConstant.WhiteColor,
                   onPressed: () {
+                    if (fapiao == 2) {
+                      return;
+                    }
                     setState(() {
                       fapiao = 2;
                     });
+                    _checkCanClick();
                   },
                   child: Text("公司",
                       style: TextStyle(
@@ -241,7 +277,9 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
         ),
         TextField(
             controller: _messageController,
-            onChanged: (str) {},
+            onChanged: (str) {
+              _checkCanClick();
+            },
             keyboardType: TextInputType.multiline,
             textAlign: TextAlign.left,
             style: TextStyle(
@@ -278,7 +316,9 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
             padding: EdgeInsets.only(top: 8, bottom: 8),
             child: TextField(
                 controller: _message2Controller,
-                onChanged: (str) {},
+                onChanged: (str) {
+                  _checkCanClick();
+                },
                 keyboardType: TextInputType.multiline,
                 textAlign: TextAlign.left,
                 style: TextStyle(
@@ -314,7 +354,9 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
         if (null != hint3)
           TextField(
               controller: _message3Controller,
-              onChanged: (str) {},
+              onChanged: (str) {
+                _checkCanClick();
+              },
               keyboardType: TextInputType.multiline,
               textAlign: TextAlign.left,
               style: TextStyle(
@@ -545,7 +587,9 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
               // validator: (v) {
               //   return v.trim().length > 0 ? null : "";
               // },
-              onChanged: (str) {},
+              onChanged: (str) {
+                _checkCanClick();
+              },
               keyboardType: TextInputType.multiline,
               maxLines: 1,
               textAlign: TextAlign.left,
@@ -586,7 +630,9 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
               // validator: (v) {
               //   return v.trim().length > 0 ? null : "";
               // },
-              onChanged: (str) {},
+              onChanged: (str) {
+                _checkCanClick();
+              },
               keyboardType: TextInputType.multiline,
               maxLines: 1,
               textAlign: TextAlign.left,
@@ -626,6 +672,9 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
               // validator: (v) {
               //   return v.trim().length > 0 ? null : "";
               // },
+              onChanged: (str) {
+                _checkCanClick();
+              },
               onTap: () {
                 Pickers.showAddressPicker(
                   context,
@@ -693,7 +742,9 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
               //   return v.trim().length > 0 ? null : "";
               // },
               onTap: onTextTab,
-              onChanged: (str) {},
+              onChanged: (str) {
+                _checkCanClick();
+              },
               keyboardType: TextInputType.multiline,
               textAlign: TextAlign.left,
               style: TextStyle(
@@ -879,17 +930,7 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
                     borderRadius: BorderRadius.circular(40)),
                 color: ColorConstant.TextMainColor,
                 disabledColor: ColorConstant.Text_B2BAC6,
-                onPressed: _phoneController.text.isNotEmpty &&
-                        _nameController.text.isNotEmpty &&
-                        _areaController.text.isNotEmpty &&
-                        _cityController.text.isNotEmpty &&
-                        (fapiao == 2
-                            ? (_messageController.text.isNotEmpty &&
-                                _message2Controller.text.isNotEmpty &&
-                                _message3Controller.text.isNotEmpty)
-                            : fapiao == 1
-                                ? _messageController.text.isNotEmpty
-                                : true)
+                onPressed: _canClick
                     ? () {
                         doPay();
                       }
@@ -927,6 +968,21 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
     map['address'] = _areaController.text.toString();
     map['pay_type'] = isWeixinPay ? 2 : 1;
 
+    Map<String, dynamic> mapBill = new HashMap();
+    mapBill['type'] = (fapiao + 1).toString();
+    if (fapiao == 0) {
+      mapBill['remark'] = _messageController.text.toString();
+    }
+    if (fapiao == 1) {
+      mapBill['email'] = _messageController.text.toString();
+    }
+    if (fapiao == 2) {
+      mapBill['email'] = _messageController.text.toString();
+      mapBill['company'] = _message2Controller.text.toString();
+      mapBill['numbers'] = _message3Controller.text.toString();
+    }
+    map['bill'] = mapBill;
+
     HttpUtils.requestHttp(
       ApiConstant.ordering,
       parameters: map,
@@ -935,7 +991,7 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
         EasyLoading.dismiss();
 
         log("ordering result==${result}");
-        if(isWeixinPay){
+        if (isWeixinPay) {
           payWithWeChat(
             appId: result['appid'],
             partnerId: result['partnerid'],
@@ -950,20 +1006,16 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
           weChatResponseEventHandler.listen((event) async {
             print(event.errCode);
             // 支付成功
-            if (event.errCode == 0) {
-            }
+            if (event.errCode == 0) {}
             // 关闭弹窗
           });
-        }else{
+        } else {
           var aliPay = await tobias.aliPay(result['pay_param']);
           log("aliPay result==${aliPay}");
 
           // 支付成功
-          if('9000' == aliPay['resultStatus']){
-
-          }
+          if ('9000' == aliPay['resultStatus']) {}
         }
-
       },
       onError: (code, error) {
         EasyLoading.showError(error);

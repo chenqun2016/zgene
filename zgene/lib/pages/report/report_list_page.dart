@@ -27,6 +27,7 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
   var canFixedHeadShow = false;
   ReportDesModel reportDesModel;
   List list = [];
+  Archive _archive;
 
   @override
   void pageWidgetInitState() {
@@ -53,19 +54,24 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
         });
       }
     });
-    var json = jsonDecode(widget._archives.description);
-    reportDesModel = ReportDesModel.fromJson(json);
 
     ArchiveGetHttp(widget._archives.id, (result) {
       ArchiveDesModel model = ArchiveDesModel.fromJson(result);
       list.clear();
       setState(() {
         list = model.addon.archives;
+        _archive = model.archive;
+
+        var json = jsonDecode(_archive.description);
+        reportDesModel = ReportDesModel.fromJson(json);
       });
     });
   }
 
   Widget viewPageBody(BuildContext context) {
+    if (null == _archive) {
+      return Text("");
+    }
     return Stack(
       children: [
         SingleChildScrollView(
@@ -80,12 +86,12 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
           ),
         ),
         _buildfixedHeader(),
-        Positioned(left: 15, right: 15, bottom: 30, child: _buy)
+        Positioned(left: 15, right: 15, bottom: 30, child: _buy(context))
       ],
     );
   }
 
-  Widget get _buy {
+  Widget _buy(context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -107,7 +113,8 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
           disabledColor: Colors.white,
           color: ColorConstant.TextMainColor,
           onPressed: () {
-            UiUitls.showToast("立即购买");
+            CommonUtils.toUrl(context: context, url: CommonUtils.URL_BUY);
+            Navigator.pop(context);
           },
           child: Text("立即购买",
               style: TextStyle(
@@ -224,6 +231,15 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
       );
 
   Widget _buildSliverItem(context, archive, index) {
+    ReportDesModel model;
+    try {
+      if (archive.description.isNotEmpty) {
+        var json = jsonDecode(archive.description);
+        model = ReportDesModel.fromJson(json);
+      }
+    } catch (e) {
+      print(e);
+    }
     return GestureDetector(
       onTap: () {
         CommonUtils.toUrl(
@@ -245,21 +261,27 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
                       fontSize: 15),
                 ),
               ),
-              Image.asset(
-                "assets/images/report/img_qiang.png",
-                width: 22,
-                height: 22,
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 6, right: 28),
-                child: Text(
-                  "弱",
-                  style: TextStyle(
-                      color: ColorConstant.Text_8E9AB,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16),
+              if (null != model &&
+                  null != model.items &&
+                  model.items.length > 0)
+                Image.asset(
+                  _getAssetIcon(model.items[0].color),
+                  width: 22,
+                  height: 22,
                 ),
-              ),
+              if (null != model &&
+                  null != model.items &&
+                  model.items.length > 0)
+                Padding(
+                  padding: EdgeInsets.only(left: 6, right: 28),
+                  child: Text(
+                    model.items[0].title,
+                    style: TextStyle(
+                        color: ColorConstant.Text_8E9AB,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16),
+                  ),
+                ),
               Image.asset(
                 "assets/images/mine/icon_my_name_right.png",
                 width: 22,
@@ -272,6 +294,18 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
     );
   }
 
+  String _getAssetIcon(String color) {
+    if ("green" == color) {
+      return "assets/images/report/img_zhong.png";
+    }
+    if ("blue" == color) {
+      return "assets/images/report/img_qiang.png";
+    }
+    if ("red" == color) {
+      return "assets/images/report/img_luo.png";
+    }
+  }
+
   Widget _buildSliverAppBar() {
     return Stack(
       children: [
@@ -280,8 +314,7 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
           height: 168,
           decoration: BoxDecoration(
               image: DecorationImage(
-            image: NetworkImage(
-                CommonUtils.splicingUrl(widget._archives.imageUrl)),
+            image: NetworkImage(CommonUtils.splicingUrl(_archive.imageUrl)),
             fit: BoxFit.fill,
           )),
           padding: EdgeInsets.fromLTRB(30, 22, 0, 0),
@@ -310,16 +343,16 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          widget._archives.title,
+          _archive.title,
           style: TextStyle(
               fontWeight: FontWeight.bold, color: Colors.white, fontSize: 28),
         ),
         Text(
-          widget._archives.keywords,
+          _archive.keywords,
           style: TextStyle(
               fontWeight: FontWeight.w500, color: Colors.white, fontSize: 14),
         ),
-        if (null != reportDesModel.items)
+        if (null != reportDesModel && null != reportDesModel.items)
           Row(
             children: reportDesModel.items.map((e) => _titletip(e)).toList(),
           )
@@ -378,36 +411,5 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
         Color(0xFFFE4343),
       ]);
     }
-  }
-}
-
-class _SliverDelegate extends SliverPersistentHeaderDelegate {
-  _SliverDelegate({
-    @required this.minHeight,
-    @required this.maxHeight,
-    @required this.child,
-  });
-
-  final double minHeight; //最小高度
-  final double maxHeight; //最大高度
-  final Widget child; //孩子
-
-  @override
-  double get minExtent => minHeight;
-
-  @override
-  double get maxExtent => max(maxHeight, minHeight);
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return new SizedBox.expand(child: child);
-  }
-
-  @override //是否需要重建
-  bool shouldRebuild(_SliverDelegate oldDelegate) {
-    return maxHeight != oldDelegate.maxHeight ||
-        minHeight != oldDelegate.minHeight ||
-        child != oldDelegate.child;
   }
 }

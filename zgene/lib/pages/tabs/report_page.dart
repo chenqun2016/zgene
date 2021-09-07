@@ -13,6 +13,7 @@ import 'package:zgene/models/category_model.dart';
 import 'package:zgene/models/content_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/home/home_getHttp.dart';
+import 'package:zgene/pages/my/my_report_page.dart';
 import 'package:zgene/pages/report/report_list_page.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,14 +31,6 @@ class ReportPage extends BaseWidget {
 
 class _ReportPageState extends BaseWidgetState<ReportPage> {
   List<Categories> categories = [];
-  var lists = [
-    [1, 2, 3, 4],
-    [1, 2, 3, 4],
-    [1, 2, 3, 4],
-    [1, 2, 3, 4],
-    [1, 2, 3, 4],
-  ];
-  var banners = ["1", "2", "3"];
   ScrollController _controller = new ScrollController();
 
   ///0 : 女    1：男
@@ -45,6 +38,9 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
 
   //顶部渐变
   double appBarAlphas = 0;
+
+  bool hasReport = false;
+  var cache = HashMap<String, ContentModel>();
 
   @override
   void dispose() {
@@ -79,8 +75,6 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
       }
     });
   }
-
-  var cache = HashMap<String, ContentModel>();
 
   Future<dynamic> _getReportItem(id) async {
     try {
@@ -152,7 +146,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
               children: [
                 Padding(
                   padding:
-                      EdgeInsets.only(left: 15, top: 24, right: 15, bottom: 8),
+                      EdgeInsets.only(left: 15, top: 24, right: 15, bottom: 10),
                   child: Text(
                     snapshot.data.archives[0].category.categoryName,
                     style: TextStyle(
@@ -167,7 +161,6 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
                   height: 128,
                   child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      padding: EdgeInsets.fromLTRB(0, 15, 16, 0),
                       physics: BouncingScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: snapshot.data.archives.length,
@@ -186,31 +179,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
                           // ),
                           child: Container(
                             width: 256,
-                            padding: EdgeInsets.fromLTRB(16, 16, 90, 15),
                             decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: FadeInImage.assetNetwork(
-                                    placeholder:
-                                        'assets/images/home/img_default2.png',
-                                    image:
-                                        CommonUtils.splicingUrl(bean.imageUrl),
-                                    width: 76,
-                                    height: 76,
-                                    fadeInDuration: TimeUtils.fadeInDuration(),
-                                    fadeOutDuration:
-                                        TimeUtils.fadeOutDuration(),
-                                    fit: BoxFit.cover,
-                                    imageErrorBuilder:
-                                        (context, error, stackTrace) {
-                                      return Image.asset(
-                                        'assets/images/home/img_default2.png',
-                                        width: 76,
-                                        height: 76,
-                                        fit: BoxFit.fill,
-                                      );
-                                    }).image,
-                                fit: BoxFit.cover,
-                              ),
                               borderRadius: BorderRadius.all(
                                 Radius.circular(20),
                               ),
@@ -222,28 +191,24 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
                               //     image: NetworkImage("assets/images/banner.png"))
                             ),
                             margin: EdgeInsets.only(left: 16),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                    child: Text(
-                                  bean.title,
-                                  maxLines: 2,
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white,
-                                      fontSize: 16),
-                                )),
-                                Text(
-                                  bean.keywords,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white,
-                                      fontSize: 13),
-                                ),
-                              ],
-                            ),
+                            child: FadeInImage.assetNetwork(
+                                placeholder:
+                                    'assets/images/home/img_default2.png',
+                                width: 256,
+                                height: 128,
+                                image: CommonUtils.splicingUrl(bean.imageUrl),
+                                fadeInDuration: TimeUtils.fadeInDuration(),
+                                fadeOutDuration: TimeUtils.fadeOutDuration(),
+                                fit: BoxFit.cover,
+                                imageErrorBuilder:
+                                    (context, error, stackTrace) {
+                                  return Image.asset(
+                                    'assets/images/home/img_default2.png',
+                                    width: 256,
+                                    height: 128,
+                                    fit: BoxFit.fill,
+                                  );
+                                }),
                           ),
                         );
                       }),
@@ -361,7 +326,11 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
   Widget get _tip {
     return GestureDetector(
       onTap: () {
-        UiUitls.showToast("报告");
+        if (hasReport) {
+          NavigatorUtil.push(context, MyReportPage());
+        } else {
+          CommonUtils.toUrl(context: context, url: CommonUtils.URL_BUY);
+        }
       },
       child: Container(
         width: double.infinity,
@@ -378,7 +347,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
                   fontWeight: FontWeight.w500),
             ),
             Text(
-              " 去购买>>",
+              hasReport ? " 查看报告>>" : " 去购买>>",
               style: TextStyle(
                   fontSize: 13,
                   color: ColorConstant.bg_EA4335,

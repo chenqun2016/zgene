@@ -15,7 +15,7 @@ import 'package:zgene/widget/base_web.dart';
 class CommonUtils {
   ///拼接图片和视频路径
   static String splicingUrl(String url) {
-    if (url.isEmpty) {
+    if (null == url || url.isEmpty) {
       return "";
     }
     return CommonConstant.BASE_API + url;
@@ -108,15 +108,17 @@ class CommonUtils {
     return _eventBus;
   }
 
+  static const String URL_BUY = "/buy";
+  static const String URL_MY =  "/my";
   ///公共跳转链接
   static toUrl({context, url, type}) {
     var eventBus = getInstance();
 
-    if (url == "/buy") {
+    if (url == URL_BUY) {
       //购买
       //跳到购买
       eventBus.fire(MsgEvent(100, 1));
-    } else if (url == "/my") {
+    } else if (url == URL_MY) {
       //我的
       //跳到我的
       eventBus.fire(MsgEvent(100, 3));

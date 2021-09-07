@@ -27,6 +27,7 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
   var canFixedHeadShow = false;
   ReportDesModel reportDesModel;
   List list = [];
+  Archive _archive;
 
   @override
   void pageWidgetInitState() {
@@ -53,19 +54,24 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
         });
       }
     });
-    var json = jsonDecode(widget._archives.description);
-    reportDesModel = ReportDesModel.fromJson(json);
 
     ArchiveGetHttp(widget._archives.id, (result) {
       ArchiveDesModel model = ArchiveDesModel.fromJson(result);
       list.clear();
       setState(() {
         list = model.addon.archives;
+        _archive = model.archive;
+
+        var json = jsonDecode(_archive.description);
+        reportDesModel = ReportDesModel.fromJson(json);
       });
     });
   }
 
   Widget viewPageBody(BuildContext context) {
+    if (null == _archive) {
+      return Text("");
+    }
     return Stack(
       children: [
         SingleChildScrollView(
@@ -80,12 +86,12 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
           ),
         ),
         _buildfixedHeader(),
-        Positioned(left: 15, right: 15, bottom: 30, child: _buy)
+        Positioned(left: 15, right: 15, bottom: 30, child: _buy(context))
       ],
     );
   }
 
-  Widget get _buy {
+  Widget _buy(context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -107,7 +113,8 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
           disabledColor: Colors.white,
           color: ColorConstant.TextMainColor,
           onPressed: () {
-            UiUitls.showToast("立即购买");
+            CommonUtils.toUrl(context: context, url: CommonUtils.URL_BUY);
+            Navigator.pop(context);
           },
           child: Text("立即购买",
               style: TextStyle(
@@ -224,9 +231,15 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
       );
 
   Widget _buildSliverItem(context, archive, index) {
-    var json = jsonDecode(archive.description);
-    ReportDesModel model = ReportDesModel.fromJson(json);
-
+    ReportDesModel model;
+    try {
+      if (archive.description.isNotEmpty) {
+        var json = jsonDecode(archive.description);
+        model = ReportDesModel.fromJson(json);
+      }
+    } catch (e) {
+      print(e);
+    }
     return GestureDetector(
       onTap: () {
         CommonUtils.toUrl(
@@ -301,8 +314,7 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
           height: 168,
           decoration: BoxDecoration(
               image: DecorationImage(
-            image: NetworkImage(
-                CommonUtils.splicingUrl(widget._archives.imageUrl)),
+            image: NetworkImage(CommonUtils.splicingUrl(_archive.imageUrl)),
             fit: BoxFit.fill,
           )),
           padding: EdgeInsets.fromLTRB(30, 22, 0, 0),
@@ -331,16 +343,16 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          widget._archives.title,
+          _archive.title,
           style: TextStyle(
               fontWeight: FontWeight.bold, color: Colors.white, fontSize: 28),
         ),
         Text(
-          widget._archives.keywords,
+          _archive.keywords,
           style: TextStyle(
               fontWeight: FontWeight.w500, color: Colors.white, fontSize: 14),
         ),
-        if (null != reportDesModel.items)
+        if (null != reportDesModel && null != reportDesModel.items)
           Row(
             children: reportDesModel.items.map((e) => _titletip(e)).toList(),
           )

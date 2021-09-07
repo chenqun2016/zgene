@@ -6,6 +6,7 @@ import 'package:zgene/pages/login/main_login.dart';
 import 'package:zgene/pages/my/my_info_page.dart';
 import 'package:zgene/pages/my/my_message_list.dart';
 import 'package:zgene/pages/my/my_order_list.dart';
+import 'package:zgene/pages/my/my_report_page.dart';
 import 'package:zgene/pages/my/my_set.dart';
 import 'package:zgene/pages/my/sendBack_acquisition.dart';
 import 'package:zgene/util/ui_uitls.dart';
@@ -470,7 +471,7 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
         UiUitls.showToast("产品购买");
         break;
       case 7: //我的报告
-        UiUitls.showToast("我的报告");
+        NavigatorUtil.push(context, MyReportPage());
         break;
       case 8: //设置
         NavigatorUtil.push(context, MySetPage());

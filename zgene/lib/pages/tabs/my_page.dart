@@ -1,96 +1,166 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:zgene/constant/api_constant.dart';
+import 'package:zgene/constant/app_notification.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/constant/sp_constant.dart';
+import 'package:zgene/http/http_utils.dart';
+import 'package:zgene/models/userInfo_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/bindcollector/bind_collector_page.dart';
 import 'package:zgene/pages/login/main_login.dart';
+import 'package:zgene/pages/my/my_about_us.dart';
+import 'package:zgene/pages/my/my_commonQus.dart';
+import 'package:zgene/pages/my/my_contant_us.dart';
 import 'package:zgene/pages/my/my_info_page.dart';
 import 'package:zgene/pages/my/my_message_list.dart';
 import 'package:zgene/pages/my/my_order_list.dart';
 import 'package:zgene/pages/my/my_report_page.dart';
 import 'package:zgene/pages/my/my_set.dart';
 import 'package:zgene/pages/my/sendBack_acquisition.dart';
+import 'package:zgene/util/base_widget.dart';
+import 'package:zgene/util/common_utils.dart';
+import 'package:zgene/util/notification_utils.dart';
+import 'package:zgene/util/sp_utils.dart';
+import 'package:zgene/util/time_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 
-///我的
-class MyPage extends StatefulWidget {
+class MyPage extends BaseWidget {
   @override
-  _MyPageState createState() => _MyPageState();
+  BaseWidgetState getState() {
+    return _MyPageState();
+  }
 }
 
-class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
+class _MyPageState extends BaseWidgetState<MyPage> {
   @override
-  bool get wantKeepAlive => true;
+  void pageWidgetInitState() {
+    super.pageWidgetInitState();
+    showHead = false;
+    // isShowBack = false;
+    getHttp();
+    setWantKeepAlive = true;
+    backImgPath = "assets/images/mine/img_bg_my.png";
+    NotificationCenter.instance.addObserver(NotificationName.GetUserInfo,
+        (object) {
+      if (object != null) {
+        setData();
+      } else {
+        getHttp();
+      }
+    });
+  }
+
+  var spUtils = SpUtils();
+  String avatarImg = "";
+  String userName = "";
+  UserInfoModel userInfo = UserInfoModel();
+
+  getHttp() {
+    // EasyLoading.show(status: 'loading...');
+    // Map<String, dynamic> map = new HashMap();
+    HttpUtils.requestHttp(
+      ApiConstant.userInfo,
+      // parameters: map,
+      method: HttpUtils.GET,
+      onSuccess: (data) {
+        EasyLoading.dismiss();
+        UserInfoModel userInfoModel = UserInfoModel.fromJson(data);
+        userInfo = userInfoModel;
+
+        spUtils.setStorage(SpConstant.UserName, userInfo.nickname);
+        spUtils.setStorage(SpConstant.UserAvatar, userInfo.avatar);
+        setData();
+      },
+      onError: (code, error) {
+        EasyLoading.showError(error ?? "");
+        print(error);
+      },
+    );
+  }
+
+  setData() {
+    userName = spUtils.getStorageDefault(SpConstant.UserName, "").toString();
+    avatarImg = spUtils.getStorageDefault(SpConstant.UserAvatar, "").toString();
+    setState(() {});
+  }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          width: double.infinity,
-          padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/images/mine/img_bg_my.png"),
-              fit: BoxFit.cover,
+  void dispose() {
+    super.dispose();
+    print("注销了");
+
+    NotificationCenter.instance
+        .removeNotification(NotificationName.GetUserInfo);
+  }
+
+// assets/images/mine/img_bg_my.png
+  @override
+  Widget viewPageBody(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+      // decoration: BoxDecoration(
+      //   image: DecorationImage(
+      //     image: AssetImage("assets/images/mine/img_bg_my.png"),
+      //     fit: BoxFit.cover,
+      //   ),
+      // ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          GestureDetector(
+            onTap: () {
+              _onTapEvent(1);
+            },
+            behavior: HitTestBehavior.opaque,
+            child: Container(
+              margin: EdgeInsets.fromLTRB(0, 45, 0, 0),
+              child: Stack(children: [
+                Image(
+                  image: AssetImage("assets/images/mine/icon_my_message.png"),
+                  height: 42,
+                  width: 42,
+                ),
+                Positioned(
+                    right: 6,
+                    top: 6,
+                    child: Container(
+                      width: 16,
+                      height: 16,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          color: Color(0XFFF72937),
+                          borderRadius: BorderRadius.circular(15)),
+                      child: Text(
+                        "44",
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: ColorConstant.WhiteColor,
+                        ),
+                      ),
+                    )),
+              ]),
+              alignment: Alignment.topRight,
             ),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  _onTapEvent(1);
-                },
-                behavior: HitTestBehavior.opaque,
-                child: Container(
-                  margin: EdgeInsets.fromLTRB(0, 45, 0, 0),
-                  child: Stack(children: [
-                    Image(
-                      image:
-                          AssetImage("assets/images/mine/icon_my_message.png"),
-                      height: 42,
-                      width: 42,
-                    ),
-                    Positioned(
-                        right: 6,
-                        top: 6,
-                        child: Container(
-                          width: 16,
-                          height: 16,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              color: Color(0XFFF72937),
-                              borderRadius: BorderRadius.circular(15)),
-                          child: Text(
-                            "44",
-                            style: TextStyle(
-                              fontSize: 11,
-                              color: ColorConstant.WhiteColor,
-                            ),
-                          ),
-                        )),
-                  ]),
-                  alignment: Alignment.topRight,
-                ),
+          _getMyInfo(),
+          Visibility(
+            visible: true,
+            child: Container(
+              margin: EdgeInsets.only(bottom: 15),
+              child: Image(
+                image: AssetImage("assets/images/mine/img_my_banner.png"),
+                height: 80,
+                width: double.infinity,
               ),
-              _getMyInfo(),
-              Visibility(
-                visible: true,
-                child: Container(
-                  margin: EdgeInsets.only(bottom: 15),
-                  child: Image(
-                    image: AssetImage("assets/images/mine/img_my_banner.png"),
-                    height: 80,
-                    width: double.infinity,
-                  ),
-                ),
-              ),
-              _getMyOrder(),
-              _getProductPurchase(),
-              _getSet(),
-            ],
+            ),
           ),
-        ),
+          _getMyOrder(),
+          _getProductPurchase(),
+          _getSet(),
+        ],
       ),
     );
   }
@@ -109,12 +179,38 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
             Row(
               mainAxisSize: MainAxisSize.max,
               children: [
+                //   Container(
+                //     margin: EdgeInsets.only(right: 14),
+                //     child: Image(
+                //       image: AssetImage("assets/images/mine/img_my_avatar.png"),
+                //       height: 66,
+                //       width: 66,
+                //     ),
+                //   ),
                 Container(
                   margin: EdgeInsets.only(right: 14),
-                  child: Image(
-                    image: AssetImage("assets/images/mine/img_my_avatar.png"),
-                    height: 66,
-                    width: 66,
+                  child: ClipOval(
+                    child: avatarImg == ""
+                        ? Image.asset(
+                            'assets/images/mine/img_my_avatar.png',
+                            height: 66,
+                            width: 66,
+                          )
+                        : FadeInImage.assetNetwork(
+                            placeholder: 'assets/images/mine/img_my_avatar.png',
+                            image: CommonUtils.splicingUrl(avatarImg),
+                            width: 66,
+                            height: 66,
+                            fit: BoxFit.cover,
+                            fadeInDuration: TimeUtils.fadeInDuration(),
+                            fadeOutDuration: TimeUtils.fadeOutDuration(),
+                            imageErrorBuilder: (context, error, stackTrace) {
+                              return Image.asset(
+                                "assets/images/mine/img_my_avatar.png",
+                                height: 66,
+                                width: 66,
+                              );
+                            }),
                   ),
                 ),
                 Column(
@@ -477,14 +573,13 @@ class _MyPageState extends State<MyPage> with AutomaticKeepAliveClientMixin {
         NavigatorUtil.push(context, MySetPage());
         break;
       case 9: //联系客服
-        UiUitls.showToast("联系客服");
+        NavigatorUtil.push(context, contantUsPage());
         break;
       case 10: //常见问题
-        UiUitls.showToast("常见问题");
+        NavigatorUtil.push(context, CommonQusListPage());
         break;
       case 11: //关于Z基因
-        UiUitls.showToast("关于Z基因");
-        NavigatorUtil.push(context, MainLoginPage());
+        NavigatorUtil.push(context, AboutUsPage());
         break;
     }
   }

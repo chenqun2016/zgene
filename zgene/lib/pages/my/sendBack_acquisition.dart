@@ -10,6 +10,7 @@ import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/pages/my/my_address_list.dart';
 import 'package:zgene/pages/my/show_selectPicker.dart';
 import 'package:zgene/util/base_widget.dart';
+import 'package:zgene/util/dia_log.dart';
 import 'package:zgene/util/screen_utils.dart';
 import 'package:flutter_pickers/pickers.dart';
 import 'package:zgene/util/isChina_phone.dart';
@@ -1015,8 +1016,18 @@ class _SendBackAcquisitionPageState
       parameters: map,
       method: HttpUtils.POST,
       onSuccess: (data) {
-        EasyLoading.showSuccess("预约成功");
-        Navigator.pop(context);
+        EasyLoading.dismiss();
+        showDialog(
+            context: context,
+            builder: (context) {
+              return MyDialog(
+                title: "您已成功预约",
+                img: "assets/images/mine/icon_mydialog_success.png",
+                tureText: "确认",
+              );
+            }).then((value) => {
+              if (value) {Navigator.pop(context)}
+            });
       },
       onError: (code, error) {
         EasyLoading.showError(error ?? "");

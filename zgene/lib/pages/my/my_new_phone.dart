@@ -7,24 +7,22 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/api_constant.dart';
-import 'package:zgene/constant/app_notification.dart';
 import 'package:zgene/constant/color_constant.dart';
-import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/http/http_utils.dart';
+import 'package:zgene/navigator/navigator_util.dart';
+import 'package:zgene/pages/login/set_passwoed.dart';
 import 'package:zgene/util/base_widget.dart';
-import 'package:zgene/util/notification_utils.dart';
 import 'package:zgene/util/phonetextFild_input.dart';
 import 'package:zgene/util/isChina_phone.dart';
-import 'package:zgene/util/sp_utils.dart';
 
-class BindPhoneLoginPage extends BaseWidget {
+class MyNewPhonePage extends BaseWidget {
   @override
   BaseWidgetState getState() {
-    return _BindPhoneLoginPageState();
+    return _MyNewPhonePageState();
   }
 }
 
-class _BindPhoneLoginPageState extends BaseWidgetState<BindPhoneLoginPage> {
+class _MyNewPhonePageState extends BaseWidgetState<MyNewPhonePage> {
   @override
   void pageWidgetInitState() {
     super.pageWidgetInitState();
@@ -39,7 +37,6 @@ class _BindPhoneLoginPageState extends BaseWidgetState<BindPhoneLoginPage> {
   bool _isAvailableGetVCode = true; //是否可以获取验证码，默认为`false`
   String _phoneErrorText = null;
   String _phoneText = "";
-  String _verifyText = "";
 
   /// 倒计时的计时器。
   Timer _timer;
@@ -87,7 +84,7 @@ class _BindPhoneLoginPageState extends BaseWidgetState<BindPhoneLoginPage> {
           Container(
             margin: EdgeInsets.only(top: 54.h, left: 25.w),
             child: Text(
-              "绑定手机号",
+              "输入新手机号",
               textAlign: TextAlign.left,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
@@ -99,13 +96,13 @@ class _BindPhoneLoginPageState extends BaseWidgetState<BindPhoneLoginPage> {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(left: 30.w, top: 5.h),
+            margin: EdgeInsets.only(left: 30.w, top: 10.h),
             child: Text(
-              "以便能为您提供更好的服务",
+              "您当前的手机号是 138****8088,\n更换后新手机号将作为新的登录账号。",
               textAlign: TextAlign.left,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                fontSize: 22.sp,
+                fontSize: 16.sp,
                 fontStyle: FontStyle.normal,
                 fontWeight: FontWeight.w400,
                 color: ColorConstant.TextMainBlack,
@@ -152,7 +149,7 @@ class _BindPhoneLoginPageState extends BaseWidgetState<BindPhoneLoginPage> {
                     color: ColorConstant.TextFildBlackColor), //输入文本的样式
                 decoration: InputDecoration(
                     errorText: _phoneErrorText,
-                    hintText: "请输入手机号",
+                    hintText: "请输入新的手机号",
                     //设置输入文本框的提示文字的样式
                     hintStyle: TextStyle(
                       color: ColorConstant.TextFildBlackColor,
@@ -220,8 +217,6 @@ class _BindPhoneLoginPageState extends BaseWidgetState<BindPhoneLoginPage> {
                     } else {
                       isVFCodeSuccess = false;
                     }
-                    _verifyText = value;
-
                     setState(() {});
                   },
                   keyboardType: TextInputType.numberWithOptions(decimal: true),
@@ -324,13 +319,13 @@ class _BindPhoneLoginPageState extends BaseWidgetState<BindPhoneLoginPage> {
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(40.h)))),
                   onPressed: () {
-                    loginIn();
+                    // selectNext();
                   },
                   child: Container(
                     child: Center(
                       child: Container(
                         child: Text(
-                          "绑定并登录",
+                          "完成",
                           textAlign: TextAlign.center,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -363,6 +358,8 @@ class _BindPhoneLoginPageState extends BaseWidgetState<BindPhoneLoginPage> {
       setState(() {});
     }
 
+    setState(() {});
+
     Map<String, dynamic> map = new HashMap();
     map["mobile"] = number;
 
@@ -375,44 +372,6 @@ class _BindPhoneLoginPageState extends BaseWidgetState<BindPhoneLoginPage> {
       onSuccess: (data) {
         EasyLoading.dismiss();
         _startTimer();
-      },
-      onError: (code, error) {
-        EasyLoading.showError(error ?? "");
-      },
-    );
-  }
-
-  void loginIn() {
-    var number = _phoneText.replaceAll(new RegExp(r"\s+\b|\b\s"), "");
-    if (!isPhoneUtils.isChinaPhoneLegal(number)) {
-      _phoneErrorText = "请填写正确格式的手机号！";
-      setState(() {});
-      return;
-    } else {
-      _phoneErrorText = null;
-      setState(() {});
-    }
-    Map<String, dynamic> map = new HashMap();
-    map["mobile"] = number;
-    map["code"] = _verifyText;
-    EasyLoading.show(status: 'loading...');
-
-    HttpUtils.requestHttp(
-      ApiConstant.loginApp_phone,
-      parameters: map,
-      method: HttpUtils.POST,
-      onSuccess: (data) async {
-        EasyLoading.showSuccess('登录成功');
-        var spUtils = SpUtils();
-        spUtils.setStorage(SpConstant.Token, data["token"]);
-        spUtils.setStorage(SpConstant.IsLogin, true);
-        spUtils.setStorage(SpConstant.Uid, data["uid"]);
-        HttpUtils.clear();
-
-        NotificationCenter.instance
-            .postNotification(NotificationName.GetUserInfo, null);
-
-        Navigator.popUntil(context, ModalRoute.withName('/'));
       },
       onError: (code, error) {
         EasyLoading.showError(error ?? "");
@@ -447,5 +406,9 @@ class _BindPhoneLoginPageState extends BaseWidgetState<BindPhoneLoginPage> {
     _cancelTimer();
     _timer = null;
     super.dispose();
+  }
+
+  void selectNext() {
+    NavigatorUtil.push(context, SetPasswordPage());
   }
 }

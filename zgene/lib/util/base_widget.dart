@@ -17,6 +17,8 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
   bool get wantKeepAlive => setWantKeepAlive;
   //页面是否保存
   bool setWantKeepAlive = false;
+  //是否显示返回btn
+  bool isShowBack = true;
   //页面是否纯list
   bool isListPage = false;
 // 系统自带appbar 的显示与否
@@ -80,7 +82,9 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
                 Positioned(
                     top: MediaQuery.of(context).padding.top,
                     left: 16.w,
-                    child: Container(height: 55.h, child: customHeaderBack())),
+                    child: Container(
+                        height: 55.h,
+                        child: isShowBack ? customHeaderBack() : null)),
                 Positioned(
                   left: 80.w,
                   right: 80.w,

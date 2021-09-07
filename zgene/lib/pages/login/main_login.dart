@@ -1,12 +1,23 @@
+import 'dart:collection';
+
 import 'package:flutter/gestures.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluwx/fluwx.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:zgene/constant/api_constant.dart';
+import 'package:zgene/constant/app_notification.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/constant/sp_constant.dart';
+import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/pages/login/bindPhone_login.dart';
 import 'package:zgene/pages/login/phone_login.dart';
 import 'package:zgene/util/base_widget.dart';
 
 import 'package:flutter/material.dart';
+import 'package:zgene/util/notification_utils.dart';
 import 'package:zgene/util/screen_utils.dart';
+import 'package:zgene/util/sp_utils.dart';
 
 class MainLoginPage extends BaseWidget {
   @override
@@ -21,6 +32,25 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
     super.pageWidgetInitState();
     showHead = true;
     backImgPath = "assets/images/login/icon_mainLogin_backImg.png";
+    weChatResponseEventHandler.distinct((a, b) => a == b).listen((res) {
+      if (res is WeChatAuthResponse) {
+        int errCode = res.errCode;
+        // MyLogUtil.d('微信登录返回值：ErrCode :$errCode  code:${res.code}');
+        if (errCode == 0) {
+          String code = res.code;
+          print('wxwxwxwxwxwxwx' + code);
+          //把微信登录返回的code传给后台，剩下的事就交给后台处理
+          wxLoginHttp(code);
+          // showToast("用户同意授权成功");
+        } else if (errCode == -4) {
+          // showToast("用户拒绝授权");
+          print('wxwxwxwxwxwxwx用户拒绝授权');
+        } else if (errCode == -2) {
+          // showToast("用户取消授权");
+          print('wxwxwxwxwxwxwx用户取消授权');
+        }
+      }
+    });
   }
 
   var isAgreePrivacy = false;
@@ -113,7 +143,8 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(28.h)))),
                   onPressed: () {
-                    toBindingPhone();
+                    // toBindingPhone();
+                    loginWX();
                   },
                   child: Container(
                     child: Row(
@@ -157,7 +188,8 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(28.h)))),
                   onPressed: () {
-                    toBindingPhone();
+                    LoginApple();
+                    // toBindingPhone();
                   },
                   child: Container(
                     child: Row(
@@ -284,6 +316,69 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
         ],
       ),
     ));
+  }
+
+  void loginWX() {
+    print("微信登录");
+    sendWeChatAuth(scope: "snsapi_userinfo", state: "sivms_state").then((data) {
+      setState(() {
+        print("拉取微信用户信息：" + data.toString());
+      });
+    }).catchError((e) {
+      print('weChatLogin  e  $e');
+    });
+  }
+
+  Future<void> LoginApple() async {
+    // SignInWithAppleButton(
+    //   onPressed: () async {
+
+    //   },
+    // );
+    final credential = await SignInWithApple.getAppleIDCredential(
+      scopes: [
+        AppleIDAuthorizationScopes.email,
+        AppleIDAuthorizationScopes.fullName,
+      ],
+    );
+
+    if (credential != null) {
+      debugPrint(
+          "facebook userInfo : userId=${credential.userIdentifier}   email=${credential.email}  giveName=${credential.givenName}   familyName=${credential.familyName}");
+    }
+  }
+
+  void wxLoginHttp(String code) {
+    Map<String, dynamic> map = new HashMap();
+    map["code"] = code;
+
+    EasyLoading.show(status: 'loading...');
+
+    HttpUtils.requestHttp(
+      ApiConstant.login_wx,
+      parameters: map,
+      method: HttpUtils.POST,
+      onSuccess: (data) {
+        EasyLoading.dismiss();
+        var spUtils = SpUtils();
+        spUtils.setStorage(SpConstant.Token, data["token"]);
+        spUtils.setStorage(SpConstant.IsLogin, true);
+
+        if (data["has_mobile"]) {
+          HttpUtils.clear();
+
+          NotificationCenter.instance
+              .postNotification(NotificationName.GetUserInfo, null);
+
+          Navigator.popUntil(context, ModalRoute.withName('/'));
+        } else {
+          toBindingPhone();
+        }
+      },
+      onError: (code, error) {
+        EasyLoading.showError(error ?? "");
+      },
+    );
   }
 
   void selectPhoneLogin() {

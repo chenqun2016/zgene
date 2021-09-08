@@ -282,11 +282,15 @@ class _GetVFCodeLoginPageState extends BaseWidgetState<GetVFCodeLoginPage> {
         spUtils.setStorage(SpConstant.Token, data["token"]);
         spUtils.setStorage(SpConstant.IsLogin, true);
         spUtils.setStorage(SpConstant.Uid, data["uid"]);
+        print(1111111399999);
+
         HttpUtils.clear();
+        print(222222399999);
 
         NotificationCenter.instance
             .postNotification(NotificationName.GetUserInfo, null);
 
+        print(3333399999);
         Navigator.popUntil(context, ModalRoute.withName('/'));
       },
       onError: (code, error) {

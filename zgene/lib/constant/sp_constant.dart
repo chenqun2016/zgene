@@ -45,6 +45,8 @@ class SpConstant {
   static const String UserAvatar = "userAvatar";
   //用户手机号
   static const String UserMobile = "mobile";
+  //是否绑定微信
+  static const String isBindWx = "isBindWx";
   //用户金币
   static const String UserCoins = "userCoins";
   //是否是第一次打开

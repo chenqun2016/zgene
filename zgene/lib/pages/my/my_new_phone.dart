@@ -103,7 +103,11 @@ class _MyNewPhonePageState extends BaseWidgetState<MyNewPhonePage> {
           Container(
             margin: EdgeInsets.only(left: 30.w, top: 10.h),
             child: Text(
-              "您当前的手机号是 138****8088,\n更换后新手机号将作为新的登录账号。",
+              "您当前的手机号是 " +
+                  SpUtils()
+                      .getStorageDefault(SpConstant.UserMobile, "")
+                      .toString() +
+                  ",\n更换后新手机号将作为新的登录账号。",
               textAlign: TextAlign.left,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
@@ -440,6 +444,7 @@ class _MyNewPhonePageState extends BaseWidgetState<MyNewPhonePage> {
         spUtils.setStorage(SpConstant.Token, data["token"]);
         spUtils.setStorage(SpConstant.IsLogin, true);
         spUtils.setStorage(SpConstant.Uid, data["uid"]);
+        spUtils.setStorage(SpConstant.UserMobile, number);
         HttpUtils.clear();
 
         NotificationCenter.instance

@@ -43,13 +43,20 @@ class ApiConstant {
 
   //获取验证码
   static const String loginSms = "/api/v1/login/sms";
-
+//获取验证码
+  static const String smscode = "/api/v1/user/smscode";
   //手机号登录
   static const String loginApp_phone = "/api/v1/user/login/app_phone";
+  //手机号登录
+  static const String user_sms_code = "/api/v1/user/sms/:code";
   //手机号绑定
   static const String bindAppPhone = "/api/v1/user/bind/mobile";
   //微信联合登录
   static const String login_wx = "/api/v1/user/login/wx";
+  //绑定微信
+  static const String bind_wx = "/api/v1/user/bind/wx";
+  //解绑微信
+  static const String unbind_wx = "/api/v1/user/unbind/wx";
   //苹果联合登录
   static const String login_apple = "/api/v1/user/login/apple";
   //隐私政策

@@ -412,9 +412,9 @@ class _selectTimePicker extends State<selectTimePicker> {
         _reporStrTime = dateTime.toString();
         _reporStrTime = dateTime.year.toString() +
             "-" +
-            dateTime.month.toString() +
+            changeFormat(dateTime.month.toString()) +
             "-" +
-            dateTime.day.toString() +
+            changeFormat(dateTime.day.toString()) +
             " " +
             dateTime.hour.toString() +
             ":" +
@@ -423,17 +423,17 @@ class _selectTimePicker extends State<selectTimePicker> {
         if (dateTime.day < dayCount) {
           _reporStrTime = dateTime.year.toString() +
               "-" +
-              dateTime.month.toString() +
+              changeFormat(dateTime.month.toString()) +
               "-" +
-              (dateTime.day + daySelectIndex).toString() +
+              changeFormat((dateTime.day + daySelectIndex).toString()) +
               " " +
               todayTimeData[timeSelectIndex].substring(0, 5);
         } else {
           _reporStrTime = dateTime.year.toString() +
               "-" +
-              (dateTime.month + daySelectIndex).toString() +
+              changeFormat((dateTime.month + daySelectIndex).toString()) +
               "-" +
-              "1 " +
+              "01 " +
               todayTimeData[timeSelectIndex].substring(0, 5);
         }
       }
@@ -441,19 +441,27 @@ class _selectTimePicker extends State<selectTimePicker> {
       if (dateTime.day < dayCount) {
         _reporStrTime = dateTime.year.toString() +
             "-" +
-            dateTime.month.toString() +
+            changeFormat(dateTime.month.toString()) +
             "-" +
-            (dateTime.day + daySelectIndex).toString() +
+            changeFormat((dateTime.day + daySelectIndex).toString()) +
             " " +
             otherTimeData[timeSelectIndex].substring(0, 5);
       } else {
         _reporStrTime = _reporStrTime = dateTime.year.toString() +
             "-" +
-            (dateTime.month + daySelectIndex).toString() +
+            changeFormat((dateTime.month + daySelectIndex).toString()) +
             "-" +
-            "1 " +
+            "01 " +
             otherTimeData[timeSelectIndex].substring(0, 5);
       }
+    }
+  }
+
+  static String changeFormat(String str) {
+    if (str.length == 1) {
+      return "0" + str;
+    } else {
+      return str;
     }
   }
 }

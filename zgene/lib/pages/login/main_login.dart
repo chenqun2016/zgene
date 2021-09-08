@@ -31,6 +31,7 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
   void pageWidgetInitState() {
     super.pageWidgetInitState();
     showHead = true;
+    setWantKeepAlive = true;
     backImgPath = "assets/images/login/icon_mainLogin_backImg.png";
     weChatResponseEventHandler.distinct((a, b) => a == b).listen((res) {
       if (res is WeChatAuthResponse) {
@@ -51,6 +52,12 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
         }
       }
     });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 
   var isAgreePrivacy = false;

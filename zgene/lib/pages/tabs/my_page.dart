@@ -151,6 +151,7 @@ class _MyPageState extends BaseWidgetState<MyPage> {
 
     NotificationCenter.instance
         .removeNotification(NotificationName.GetUserInfo);
+    eventBus.destroy();
   }
 
 // assets/images/mine/img_bg_my.png

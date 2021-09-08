@@ -81,7 +81,7 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("顺丰快递  $sfno}",
+                    Text("顺丰快递  ${sfno}",
                         style: TextStyle(
                           fontSize: 15,
                           color: Color(0xFF5E6F88),

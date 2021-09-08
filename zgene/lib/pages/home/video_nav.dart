@@ -94,13 +94,13 @@ class _VideoNavState extends State<VideoNav> {
             child: Row(
               children: [
                 Expanded(
-                  child: _item(context, 0),
+                  child: _item(context, 1),
                 ),
                 Container(
                   width: 10,
                 ),
                 Expanded(
-                  child: _item(context, 1),
+                  child: _item(context, 2),
                 )
               ],
             ),

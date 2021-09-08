@@ -49,6 +49,12 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
 
   ///顶部信息
   Widget _getTopInfo() {
+    var sfno;
+    if (widget._order.status == 20) {
+      sfno = widget._order.sfNo;
+    } else if (widget._order.status == 50) {
+      sfno = widget._order.reSfNo;
+    }
     return Container(
       margin: EdgeInsets.only(top: 30),
       child: Stack(children: [
@@ -72,26 +78,27 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
                         fontWeight: FontWeight.w500,
                       )),
                 ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("顺丰快递 SF78898587888 ",
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Color(0xFF5E6F88),
-                      )),
-                  GestureDetector(
-                    onTap: () {
-                      _onTapEvent(1);
-                    },
-                    child: Text("跟踪物流",
+              if (null != sfno)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("顺丰快递  $sfno}",
                         style: TextStyle(
                           fontSize: 15,
-                          color: Color(0xFF007AF7),
+                          color: Color(0xFF5E6F88),
                         )),
-                  ),
-                ],
-              )
+                    GestureDetector(
+                      onTap: () {
+                        _onTapEvent(1);
+                      },
+                      child: Text("跟踪物流",
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Color(0xFF007AF7),
+                          )),
+                    ),
+                  ],
+                )
             ],
           ),
         ),
@@ -107,7 +114,7 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
                     height: 116,
                     fadeInDuration: TimeUtils.fadeInDuration(),
                     fadeOutDuration: TimeUtils.fadeOutDuration(),
-                    fit: BoxFit.cover,
+                    fit: BoxFit.fill,
                     imageErrorBuilder: (context, error, stackTrace) {
                       return Image.asset(
                         'assets/images/home/img_default2.png',

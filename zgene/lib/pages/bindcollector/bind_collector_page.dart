@@ -118,11 +118,11 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
       stepperWidth: 240,
       showEditingIcon: false,
       currentStep: _position,
-      onStepTapped: (index) {
-        setState(() {
-          _position = index;
-        });
-      },
+      // onStepTapped: (index) {
+      //   setState(() {
+      //     _position = index;
+      //   });
+      // },
       // onStepContinue: () {
       //   setState(() {
       //     if (_position < 2) {

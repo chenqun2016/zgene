@@ -19,7 +19,6 @@ import 'package:zgene/util/base_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/time_utils.dart';
-import 'package:zgene/util/ui_uitls.dart';
 
 import 'home_page.dart';
 
@@ -40,7 +39,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
   double appBarAlphas = 0;
 
   bool hasReport = false;
-  var cache = HashMap<String, ContentModel>();
+  var cache = HashMap<int, dynamic>();
 
   @override
   void dispose() {
@@ -78,19 +77,16 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
 
   Future<dynamic> _getReportItem(id) async {
     try {
-      if (cache.containsKey(id)) {
-        return cache[id];
-      }
       Map<String, dynamic> map = new HashMap();
-      map['cid'] = id;
+      map['cid'] = id.toString();
       Dio dio = await HttpUtils.createInstance();
       Response response =
           await dio.get(ApiConstant.contentList, queryParameters: map);
       var responseString = json.decode(response.toString());
       var responseResult = BaseResponse.fromJson(responseString);
-      log('响应数据item：${id}//' + response.toString());
+      log('响应数据item：${id.toString()}//' + response.toString());
       ContentModel contentModel = ContentModel.fromJson(responseResult.result);
-      cache[id] = contentModel;
+      // cache[id] = contentModel;
       return contentModel;
     } catch (e) {
       print(e);
@@ -122,7 +118,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
           child: ListView(
             controller: _controller,
             shrinkWrap: true,
-            physics: BouncingScrollPhysics(),
+            // physics: BouncingScrollPhysics(),
             padding: EdgeInsets.fromLTRB(0, 0, 0, 100),
             children: categories.map((e) {
               return _items(e);
@@ -134,9 +130,18 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
     );
   }
 
+  int jingxuan = 15;
   Widget get _bottomBanner {
+    var fut;
+    if (cache.containsKey(jingxuan)) {
+      print("15");
+      fut = cache[jingxuan];
+    } else {
+      fut = _getReportItem(jingxuan);
+      cache[jingxuan] = fut;
+    }
     return FutureBuilder(
-      future: _getReportItem("15"),
+      future: fut,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.done &&
             snapshot.hasData) {
@@ -158,7 +163,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
                   ),
                 ),
                 SizedBox(
-                  height: 128,
+                  height: 128.h,
                   child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       physics: BouncingScrollPhysics(),
@@ -178,7 +183,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
                           //   fit: BoxFit.fill,
                           // ),
                           child: Container(
-                            width: 256,
+                            width: 256.w,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.all(
                                 Radius.circular(20),
@@ -194,18 +199,18 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
                             child: FadeInImage.assetNetwork(
                                 placeholder:
                                     'assets/images/home/img_default2.png',
-                                width: 256,
-                                height: 128,
+                                width: 256.w,
+                                height: 128.h,
                                 image: CommonUtils.splicingUrl(bean.imageUrl),
                                 fadeInDuration: TimeUtils.fadeInDuration(),
                                 fadeOutDuration: TimeUtils.fadeOutDuration(),
-                                fit: BoxFit.cover,
+                                fit: BoxFit.fill,
                                 imageErrorBuilder:
                                     (context, error, stackTrace) {
                                   return Image.asset(
                                     'assets/images/home/img_default2.png',
-                                    width: 256,
-                                    height: 128,
+                                    width: 256.w,
+                                    height: 128.h,
                                     fit: BoxFit.fill,
                                   );
                                 }),
@@ -223,6 +228,14 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
   }
 
   Widget _items(Categories category) {
+    var fut;
+    if (cache.containsKey(category.id)) {
+      print(category.id.toString());
+      fut = cache[category.id];
+    } else {
+      fut = _getReportItem(category.id);
+      cache[category.id] = fut;
+    }
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -240,7 +253,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
             ),
           ),
           FutureBuilder(
-            future: _getReportItem(category.id.toString()),
+            future: fut,
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.connectionState == ConnectionState.done &&
                   snapshot.hasData) {
@@ -290,7 +303,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
                 height: 76,
                 fadeInDuration: TimeUtils.fadeInDuration(),
                 fadeOutDuration: TimeUtils.fadeOutDuration(),
-                fit: BoxFit.cover,
+                fit: BoxFit.fill,
                 imageErrorBuilder: (context, error, stackTrace) {
                   return Image.asset(
                     'assets/images/home/img_default2.png',

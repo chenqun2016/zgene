@@ -85,6 +85,11 @@ class ApiConstant {
   //消息列表
   static const String orderReturn = "/api/v1/order/return";
 
+  ///********************************* 报告 *****************************///
+  //基因报告列表
+  static const String reports = "/api/v1/gene/reports";
+
+
   //H5地址，直接webview加载
   static String getH5DetailUrl(id) {
     return CommonConstant.BASE_API + "/archive/embed/$id";

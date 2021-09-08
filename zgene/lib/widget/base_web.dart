@@ -36,7 +36,7 @@ class _BaseWebViewState extends State<BaseWebView> {
     super.initState();
     _url = widget.url;
 
-   setCookie();
+    setCookie();
   }
 
   InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
@@ -54,6 +54,7 @@ class _BaseWebViewState extends State<BaseWebView> {
 
   @override
   Widget build(BuildContext context) {
+    print("ssssddd");
     return Container(
         padding: EdgeInsets.all(0),
         child: Scaffold(
@@ -88,41 +89,42 @@ class _BaseWebViewState extends State<BaseWebView> {
                     : Container(
                         height: 0,
                       ),
-                Expanded(
-                  // 官方代码
-                  child: PlatformUtils.isWeb
-                      ? EasyWebView(
-                          onLoaded: () {
-                            print('Loaded: $_url');
-                          },
-                          src: _uri,
-                          isHtml: false,
-                          isMarkdown: false,
-                          convertToWidgets: false,
-                          widgetsTextSelectable: false,
-                          key: key,
-                          webNavigationDelegate: (_) => false
-                              ? WebNavigationDecision.prevent
-                              : WebNavigationDecision.navigate,
-                          // width: 100,
-                          // height: 100,
-                        )
-                      : InAppWebView(
-                          initialOptions: options,
-                          initialUrlRequest:
-                              URLRequest(url: _uri),
+                if (null != _uri)
+                  Expanded(
+                    // 官方代码
+                    child: PlatformUtils.isWeb
+                        ? EasyWebView(
+                            onLoaded: () {
+                              print('Loaded: $_url');
+                            },
+                            src: _uri,
+                            isHtml: false,
+                            isMarkdown: false,
+                            convertToWidgets: false,
+                            widgetsTextSelectable: false,
+                            key: key,
+                            webNavigationDelegate: (_) => false
+                                ? WebNavigationDecision.prevent
+                                : WebNavigationDecision.navigate,
+                            // width: 100,
+                            // height: 100,
+                          )
+                        : InAppWebView(
+                            initialOptions: options,
+                            initialUrlRequest: URLRequest(url: _uri),
 
-                          // 加载进度变化事件.
-                          onProgressChanged: (InAppWebViewController controller,
-                              int progress) {
-                            if ((progress / 100) > 0.999) {
-                              setState(() {
-                                this._flag = false;
-                              });
-                            }
-                          },
-                        ),
-                )
+                            // 加载进度变化事件.
+                            onProgressChanged:
+                                (InAppWebViewController controller,
+                                    int progress) {
+                              if ((progress / 100) > 0.999) {
+                                setState(() {
+                                  this._flag = false;
+                                });
+                              }
+                            },
+                          ),
+                  )
               ],
             )));
   }
@@ -153,89 +155,19 @@ class _BaseWebViewState extends State<BaseWebView> {
   }
 
   var _uri;
-  void setCookie() async{
-    _uri = Uri.parse(_url);
+
+  void setCookie() async {
+    var uri1 = Uri.parse(_url);
     CookieManager cookieManager = CookieManager.instance();
     await cookieManager.setCookie(
-      url: _uri,
+      url: uri1,
       name: "jwt",
       value: SpUtils().getStorageDefault(SpConstant.Token, ""),
       isSecure: false,
     );
+    setState(() {
+      _uri = uri1;
+      print("sss");
+    });
   }
 }
-// import 'package:flutter/material.dart';
-// import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-// import 'package:zgene/util/platform_utils.dart';
-
-// class BaseWebView extends StatefulWidget {
-//   String url;
-//   String title;
-
-//   BaseWebView({Key key, this.url, this.title}) : super(key: key);
-
-//   @override
-//   _BaseWebViewState createState() => _BaseWebViewState();
-// }
-
-// class _BaseWebViewState extends State<BaseWebView> {
-//   // 是否显示加载动画
-//   bool _flag = PlatformUtils.isWeb ? false : true;
-//   // 是否显示加载动画
-
-//   @override
-//   void initState() {
-//     super.initState();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//         child: Scaffold(
-//             appBar: AppBar(
-//               title: Text(widget.title),
-//             ),
-//             body: Column(
-//               children: <Widget>[
-//                 this._flag ? _getMoreWidget() : Text(""),
-//                 Expanded(
-//                   // 官方代码
-//                   child: InAppWebView(
-//                     initialUrlRequest: URLRequest(url: Uri.parse(widget.url)),
-//                     // 加载进度变化事件
-//                     onProgressChanged:
-//                         (InAppWebViewController controller, int progress) {
-//                       if ((progress / 100) > 0.999) {
-//                         setState(() {
-//                           this._flag = false;
-//                         });
-//                       }
-//                     },
-//                   ),
-//                 )
-//               ],
-//             )));
-//   }
-
-//   // 加载状态
-//   Widget _getMoreWidget() {
-//     return Center(
-//       child: Padding(
-//         padding: EdgeInsets.all(10.0),
-//         child: Row(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           crossAxisAlignment: CrossAxisAlignment.center,
-//           children: <Widget>[
-//             Text(
-//               '加载中...',
-//               style: TextStyle(fontSize: 16.0),
-//             ),
-//             CircularProgressIndicator(
-//               strokeWidth: 1.0,
-//             )
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }

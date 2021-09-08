@@ -60,7 +60,10 @@ class _LocalNavState extends State<LocalNav> {
     Archives archives = goldList[index];
     return GestureDetector(
       onTap: () {
-        CommonUtils.toUrl(context: context,type: archives.linkType,url: archives.linkUrl);
+        print("1111111111111111111111111111111111");
+        print(archives.linkType);
+        CommonUtils.toUrl(
+            context: context, type: archives.linkType, url: archives.linkUrl);
         // if (0 == index) {
         //   NavigatorUtil.push(context, BindCollectorPage());
         // }

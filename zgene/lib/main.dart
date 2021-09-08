@@ -9,6 +9,7 @@ import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/setting_model.dart';
+import 'package:zgene/pages/home/article_detail.dart';
 import 'package:zgene/pages/home/video_nav.dart';
 import 'package:zgene/pages/my/my_about_us.dart';
 import 'package:zgene/pages/my/my_contant_us.dart';
@@ -146,7 +147,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       ],
       //注册路由表
       routes: {
-        "/article_detail": (context) => null, //文章详情
+        "/article_detail": (context) => ArticleDetailView(), //文章详情
         "/report": (context) => ReportPage(), //报告
         "/report_detail": (context) => null, //报告详情
         "/login": (context) => MainLoginPage(), //登录
@@ -158,7 +159,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         "/order_detail": (context) => OrderDetailPage(), //订单详情
         "/bind_collector": (context) => BindCollectorPage(), //绑定采集器
         "/back_collector": (context) => SendBackAcquisitionPage(), //回寄采集器
-        "/kefu" : (context) => contantUsPage(), //联系客服
+        "/kefu": (context) => contantUsPage(), //联系客服
         "/about": (context) => AboutUsPage(), //关于我们
       },
     ));

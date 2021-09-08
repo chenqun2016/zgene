@@ -20,6 +20,7 @@ import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/widget/restart_widget.dart';
 import 'configure_nonweb.dart' if (dart.library.html) 'configure_web.dart';
+import 'navigator/tab_navigator.dart';
 import 'pages/bindcollector/bind_collector_page.dart';
 import 'pages/bindcollector/bind_step_1.dart';
 import 'pages/bindcollector/bind_step_2.dart';
@@ -133,7 +134,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: SplashPage(),
+      home: TabNavigator(),
       builder: EasyLoading.init(),
       localizationsDelegates: [
         // 本地化的代理类

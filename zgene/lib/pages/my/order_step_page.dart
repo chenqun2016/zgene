@@ -21,11 +21,10 @@ import '../splash_page.dart';
 import 'sendBack_acquisition.dart';
 
 class OrderStepPage extends BaseWidget {
-  OrderListmodel _order;
+  OrderListmodel order;
 
-  OrderStepPage({order}) {
-    _order = order;
-  }
+  OrderStepPage({Key key, this.order}) : super(key: key);
+
 
   @override
   BaseWidgetState<BaseWidget> getState() {
@@ -54,13 +53,13 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
     isListPage = true;
 
     steps = stepMap.values.toList();
-    if (null != widget._order) {
-      if (widget._order.status < 10) {
+    if (null != widget.order) {
+      if (widget.order.status < 10) {
         _position = 0;
-      } else if (widget._order.status > 70) {
+      } else if (widget.order.status > 70) {
         _position = steps.length - 1;
       } else {
-        _position = stepMap.keys.toList().indexOf(widget._order.status);
+        _position = stepMap.keys.toList().indexOf(widget.order.status);
       }
     }
     super.pageWidgetInitState();
@@ -73,7 +72,7 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
 
   @override
   Widget viewPageBody(BuildContext context) {
-    if (null != widget._order) return _orderStepper(context);
+    if (null != widget.order) return _orderStepper(context);
   }
 
   _orderStepper(context) {
@@ -197,7 +196,7 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
     if (model.status == 10) {
       return GestureDetector(
         onTap: () {
-          NavigatorUtil.push(context, OrderDetailPage(order: widget._order));
+          NavigatorUtil.push(context, OrderDetailPage(order: widget.order));
         },
         child: Container(
           height: 50,
@@ -222,7 +221,7 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
       onPressed: _isButtomAchieve(model)
           ? () async {
               NavigatorUtil.orderStepNavigator(
-                  context, model.status, widget._order);
+                  context, model.status, widget.order);
             }
           : null,
       child: Text(model.title2,

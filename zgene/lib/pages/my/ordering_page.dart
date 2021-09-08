@@ -22,9 +22,7 @@ import 'my_address_list.dart';
 class OrderingPage extends BaseWidget {
   Archives product;
 
-  OrderingPage({Archives productDetail}) {
-    product = productDetail;
-  }
+  OrderingPage({Key key, this.product}) : super(key: key);
 
   @override
   BaseWidgetState<BaseWidget> getState() {

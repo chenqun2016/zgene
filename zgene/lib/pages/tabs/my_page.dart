@@ -45,7 +45,6 @@ class MyPage extends BaseWidget {
 }
 
 class _MyPageState extends BaseWidgetState<MyPage> {
-  StreamSubscription<selectMineEvent> _selectMineEvent;
   final eventBus = CommonUtils.getInstance();
   int count = 0;
 
@@ -59,11 +58,13 @@ class _MyPageState extends BaseWidgetState<MyPage> {
     backImgPath = "assets/images/mine/img_bg_my.png";
     NotificationCenter.instance.addObserver(NotificationName.GetUserInfo,
         (object) {
+      print("123123123123123123123123");
       if (object == null) {
         getHttp();
       }
       setData();
     });
+
     HomeGetHttp(18, (result) {
       ContentModel contentModel = ContentModel.fromJson(result);
       if (contentModel.archives.length > 0) {
@@ -100,6 +101,8 @@ class _MyPageState extends BaseWidgetState<MyPage> {
       // parameters: map,
       method: HttpUtils.GET,
       onSuccess: (data) {
+        print(333333333333333333);
+        print(data);
         EasyLoading.dismiss();
         UserInfoModel userInfoModel = UserInfoModel.fromJson(data);
         userInfo = userInfoModel;
@@ -148,7 +151,7 @@ class _MyPageState extends BaseWidgetState<MyPage> {
   @override
   void dispose() {
     super.dispose();
-
+    // print("个人中心");
     NotificationCenter.instance
         .removeNotification(NotificationName.GetUserInfo);
   }

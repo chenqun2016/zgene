@@ -10,3 +10,10 @@ class MsgEvent {
 class selectMineEvent {
   selectMineEvent();
 }
+
+///微信登录回调
+class WxEvent {
+  String code;
+
+  WxEvent(this.code);
+}

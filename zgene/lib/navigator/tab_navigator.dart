@@ -80,9 +80,9 @@ class _TabNavigatorState extends State<TabNavigator> {
                   setState(() {
                     _currentIndex = index;
                   });
-                  // if (index == 3) {
-                  //   eventBus.fire(selectMineEvent());
-                  // }
+                  if (index == 3) {
+                    eventBus.fire(selectMineEvent());
+                  }
                 },
                 type: BottomNavigationBarType.fixed,
                 items: [

@@ -1055,6 +1055,8 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
   }
 
   void _toOrder() {
-    NavigatorUtil.pushAndRemoveUntil(context, MyOrderListPage());
+    Future.delayed(Duration(seconds: 1), () {
+      NavigatorUtil.pushAndRemoveUntil(context, MyOrderListPage());
+    });
   }
 }

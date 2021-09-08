@@ -8,12 +8,16 @@ import 'package:fluwx/fluwx.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/http/http_utils.dart';
+import 'package:zgene/models/address_list_model.dart';
 import 'package:zgene/models/content_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/my/my_order_list.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:tobias/tobias.dart' as tobias;
+import 'package:zgene/util/ui_uitls.dart';
+
+import 'my_address_list.dart';
 
 class OrderingPage extends BaseWidget {
   Archives product;
@@ -572,10 +576,31 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
                         fontWeight: FontWeight.bold,
                         color: ColorConstant.TextMainBlack,
                       ))),
-              Image.asset(
-                "assets/images/buy/icon_tianjia.png",
-                height: 26,
-                width: 26,
+              GestureDetector(
+                onTap: () async {
+                  try {
+                    AddressListModel address = await NavigatorUtil.push(
+                        context,
+                        MyAddressListPage(
+                          isSelectFrom: true,
+                        ));
+                    if (null != address) {
+                      _nameController.text = address.rcvName;
+                      _phoneController.text = address.rcvPhone;
+                      _cityController.text =
+                          address.province + address.city + address.county;
+                      _areaController.text = address.address;
+                    }
+                  } catch (e) {
+                    print(e);
+                  }
+                },
+                child: Image.asset(
+                  "assets/images/buy/icon_tianjia.png",
+                  height: 26,
+                  width: 26,
+                  fit: BoxFit.fill,
+                ),
               ),
             ],
           ),

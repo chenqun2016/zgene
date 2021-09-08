@@ -264,7 +264,7 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
         NavigatorUtil.push(context, SendBackAcquisitionPage());
         break;
       case 60:
-         // CommonUtils.toUrl(context: context, url: CommonUtils.URL_REPORT);
+        CommonUtils.toUrl(context: context, url: CommonUtils.URL_REPORT);
         Navigator.popUntil(context, (route) => route.isFirst);
         break;
       case 70:

@@ -959,6 +959,7 @@ class _SendBackAcquisitionPageState
     showSelectPickerTool(context, (timeStr, reportStr) {
       sendBackTime = timeStr;
       reportTime = reportStr;
+      print(reportStr);
       setState(() {});
     });
   }

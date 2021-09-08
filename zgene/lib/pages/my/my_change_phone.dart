@@ -39,7 +39,8 @@ class _ChangePhonePageState extends BaseWidgetState<ChangePhonePage> {
   String _verifyStr = ' 获取验证码 ';
   bool _isAvailableGetVCode = true; //是否可以获取验证码，默认为`false`
   String _phoneErrorText = null;
-  String _phoneText = "";
+  String _phoneText =
+      SpUtils().getStorageDefault(SpConstant.UserMobile, "").toString();
   String _verifyText = "";
 
   /// 倒计时的计时器。
@@ -130,6 +131,7 @@ class _ChangePhonePageState extends BaseWidgetState<ChangePhonePage> {
             margin: EdgeInsets.only(top: 32.h, left: 24.w, right: 24.w),
             height: 56.h,
             child: TextField(
+                enabled: false,
                 focusNode: _phonefocusNode,
                 onChanged: (value) {
                   if (value.length >= 13) {
@@ -150,10 +152,13 @@ class _ChangePhonePageState extends BaseWidgetState<ChangePhonePage> {
                     fontSize: 16.sp,
                     fontStyle: FontStyle.normal,
                     fontWeight: FontWeight.w600,
-                    color: ColorConstant.TextFildBlackColor), //输入文本的样式
+                    color: ColorConstant.TextFildBlackColor),
+                //输入文本的样式
                 decoration: InputDecoration(
                     errorText: _phoneErrorText,
-                    hintText: "请输入手机号",
+                    hintText: SpUtils()
+                        .getStorageDefault(SpConstant.UserMobile, "")
+                        .toString(),
                     //设置输入文本框的提示文字的样式
                     hintStyle: TextStyle(
                       color: ColorConstant.TextFildBlackColor,
@@ -319,13 +324,13 @@ class _ChangePhonePageState extends BaseWidgetState<ChangePhonePage> {
                       side: MaterialStateProperty.all(BorderSide(
                           width: 0, color: ColorConstant.WhiteColor)),
                       backgroundColor: MaterialStateProperty.all(
-                          (isPhoneSuccess && isVFCodeSuccess)
+                          (isVFCodeSuccess)
                               ? ColorConstant.MainBlueColor
                               : ColorConstant.WhiteColor),
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(40.h)))),
                   onPressed: () {
-                    (isPhoneSuccess && isVFCodeSuccess) ? selectNext() : null;
+                    (isVFCodeSuccess) ? selectNext() : null;
                   },
                   child: Container(
                     child: Center(
@@ -338,7 +343,7 @@ class _ChangePhonePageState extends BaseWidgetState<ChangePhonePage> {
                             fontSize: 18.sp,
                             fontStyle: FontStyle.normal,
                             fontWeight: FontWeight.w600,
-                            color: (isPhoneSuccess && isVFCodeSuccess)
+                            color: (isVFCodeSuccess)
                                 ? ColorConstant.WhiteColor
                                 : ColorConstant.Text_8E9AB,
                           ),
@@ -353,28 +358,16 @@ class _ChangePhonePageState extends BaseWidgetState<ChangePhonePage> {
 
   //获取验证码
   void getVerifyCode() {
-    var number = _phoneText.replaceAll(new RegExp(r"\s+\b|\b\s"), "");
-
-    if (!isPhoneUtils.isChinaPhoneLegal(number)) {
-      _phoneErrorText = "请填写正确格式的手机号！";
-      setState(() {});
-      return;
-    } else {
-      _phoneErrorText = null;
-      setState(() {});
-    }
-
     setState(() {});
 
-    Map<String, dynamic> map = new HashMap();
-    map["mobile"] = number;
+    // Map<String, dynamic> map = new HashMap();
 
     EasyLoading.show(status: 'loading...');
 
     HttpUtils.requestHttp(
-      ApiConstant.loginSms,
-      parameters: map,
-      method: HttpUtils.POST,
+      ApiConstant.smscode,
+      // parameters: map,
+      method: HttpUtils.GET,
       onSuccess: (data) {
         EasyLoading.dismiss();
         _startTimer();
@@ -415,32 +408,14 @@ class _ChangePhonePageState extends BaseWidgetState<ChangePhonePage> {
   }
 
   void selectNext() {
-    var number = _phoneText.replaceAll(new RegExp(r"\s+\b|\b\s"), "");
-    if (!isPhoneUtils.isChinaPhoneLegal(number)) {
-      _phoneErrorText = "请填写正确格式的手机号！";
-      setState(() {});
-      return;
-    } else {
-      _phoneErrorText = null;
-      setState(() {});
-    }
     Map<String, dynamic> map = new HashMap();
-    map["mobile"] = number;
     map["code"] = _verifyText;
-    EasyLoading.show(status: 'loading...');
 
     HttpUtils.requestHttp(
-      ApiConstant.loginApp_phone,
+      ApiConstant.user_sms_code,
       parameters: map,
       method: HttpUtils.POST,
       onSuccess: (data) async {
-        EasyLoading.dismiss();
-        var spUtils = SpUtils();
-        spUtils.setStorage(SpConstant.Token, data["token"]);
-        spUtils.setStorage(SpConstant.IsLogin, true);
-        spUtils.setStorage(SpConstant.Uid, data["uid"]);
-        HttpUtils.clear();
-
         NavigatorUtil.push(context, MyNewPhonePage());
       },
       onError: (code, error) {

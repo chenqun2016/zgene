@@ -59,11 +59,10 @@ class _MyPageState extends BaseWidgetState<MyPage> {
     backImgPath = "assets/images/mine/img_bg_my.png";
     NotificationCenter.instance.addObserver(NotificationName.GetUserInfo,
         (object) {
-      if (object != null) {
-        setData();
-      } else {
+      if (object == null) {
         getHttp();
       }
+      setData();
     });
     HomeGetHttp(18, (result) {
       ContentModel contentModel = ContentModel.fromJson(result);
@@ -108,6 +107,8 @@ class _MyPageState extends BaseWidgetState<MyPage> {
         spUtils.setStorage(SpConstant.UserName, userInfo.nickname);
         spUtils.setStorage(SpConstant.UserAvatar, userInfo.avatar);
         spUtils.setStorage(SpConstant.UserMobile, userInfo.mobile);
+        spUtils.setStorage(SpConstant.isBindWx, userInfo.bindWx);
+
         setData();
       },
       onError: (code, error) {
@@ -125,10 +126,12 @@ class _MyPageState extends BaseWidgetState<MyPage> {
       // parameters: map,
       method: HttpUtils.GET,
       onSuccess: (result) {
-        setState(() {
-          count = result;
-        });
-        print(result);
+        if (result != null) {
+          setState(() {
+            count = result;
+          });
+          print(result);
+        }
       },
       onError: (code, error) {
         print(error);

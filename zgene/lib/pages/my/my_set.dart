@@ -1,11 +1,21 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:fluwx/fluwx.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:zgene/constant/api_constant.dart';
+import 'package:zgene/constant/app_notification.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
+import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/navigator/navigator_util.dart';
+import 'package:zgene/pages/login/bindPhone_login.dart';
 import 'package:zgene/pages/my/my_address_list.dart';
 import 'package:zgene/pages/my/my_change_phone.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/dia_log.dart';
+import 'package:zgene/util/notification_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 
@@ -32,6 +42,26 @@ class _MySetPageState extends BaseWidgetState<MySetPage> {
       color: Color(0xFF112950),
       fontWeight: FontWeight.w500,
     );
+
+    weChatResponseEventHandler.distinct((a, b) => a == b).listen((res) {
+      if (res is WeChatAuthResponse) {
+        int errCode = res.errCode;
+        // MyLogUtil.d('微信登录返回值：ErrCode :$errCode  code:${res.code}');
+        if (errCode == 0) {
+          String code = res.code;
+          print('wxwxwxwxwxwxwx' + code);
+          //把微信登录返回的code传给后台，剩下的事就交给后台处理
+          wxLoginHttp(code);
+          // showToast("用户同意授权成功");
+        } else if (errCode == -4) {
+          // showToast("用户拒绝授权");
+          print('wxwxwxwxwxwxwx用户拒绝授权');
+        } else if (errCode == -2) {
+          // showToast("用户取消授权");
+          print('wxwxwxwxwxwxwx用户取消授权');
+        }
+      }
+    });
   }
 
   @override
@@ -47,27 +77,27 @@ class _MySetPageState extends BaseWidgetState<MySetPage> {
               _getOtherSet(),
             ],
           ),
-          // Positioned(
-          //     bottom: 40,
-          //     left: 6,
-          //     right: 6,
-          //     height: 55,
-          //     child: RaisedButton(
-          //       color: ColorConstant.TextMainColor,
-          //       child: Text(
-          //         "退出登录",
-          //         style: TextStyle(
-          //           color: ColorConstant.WhiteColor,
-          //           fontSize: 18,
-          //           fontWeight: FontWeight.w500,
-          //         ),
-          //       ),
-          //       shape: RoundedRectangleBorder(
-          //           borderRadius: BorderRadius.circular(40.0)),
-          //       onPressed: () {
-          //         _onTapEvent(8);
-          //       },
-          //     )),
+          Positioned(
+              bottom: 40,
+              left: 24,
+              right: 24,
+              height: 55,
+              child: RaisedButton(
+                color: ColorConstant.WhiteColor,
+                child: Text(
+                  "退出登录",
+                  style: TextStyle(
+                    color: ColorConstant.TextMainColor,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(40.0)),
+                onPressed: () {
+                  _onTapEvent(8);
+                },
+              )),
         ],
       ),
     );
@@ -133,7 +163,9 @@ class _MySetPageState extends BaseWidgetState<MySetPage> {
                   right: 22,
                   top: 12,
                   child: Text(
-                    "绑定",
+                    SpUtils().getStorageDefault(SpConstant.isBindWx, false)
+                        ? "已绑定"
+                        : "去绑定",
                     style: TextStyle(
                       fontSize: 16,
                       color: ColorConstant.TextThreeColor,
@@ -331,18 +363,20 @@ class _MySetPageState extends BaseWidgetState<MySetPage> {
       //   UiUitls.showToast("用户名");
       //   break;
       case 2: //微信
-        showDialog(
-            context: context,
-            builder: (context) {
-              return MyDialog(
-                title: "确认解绑微信吗?",
-                img: "assets/images/mine/icon_set_ unbundling.png",
-                falseText: "取消",
-                tureText: "确认",
-              );
-            }).then((value) => {
-              if (value) {print("点击了确定")}
-            });
+        SpUtils().getStorageDefault(SpConstant.isBindWx, false)
+            ? showDialog(
+                context: context,
+                builder: (context) {
+                  return MyDialog(
+                    title: "确认解绑微信吗?",
+                    img: "assets/images/mine/icon_set_ unbundling.png",
+                    falseText: "取消",
+                    tureText: "确认",
+                  );
+                }).then((value) => {
+                  if (value) {unbindWX()}
+                })
+            : bindWX();
 
         break;
       case 3: //手机
@@ -361,8 +395,70 @@ class _MySetPageState extends BaseWidgetState<MySetPage> {
         NavigatorUtil.push(context, accountSecurityPage());
         break;
       case 8: //退出登录
-        UiUitls.showToast("退出登录");
+        //清除登录信息
+        var spUtils = SpUtils();
+        spUtils.setStorage(SpConstant.Token, "");
+        spUtils.setStorage(SpConstant.IsLogin, false);
+        spUtils.setStorage(SpConstant.Uid, 0);
+        spUtils.setStorage(SpConstant.UserMobile, 0);
+        //清除用户信息
+        spUtils.setStorage(SpConstant.UserName, "");
+        spUtils.setStorage(SpConstant.UserAvatar, "");
+        HttpUtils.clear();
+
+        EasyLoading.showSuccess('退出登录成功');
+        NotificationCenter.instance
+            .postNotification(NotificationName.GetUserInfo, null);
+        Navigator.pop(context);
+
         break;
     }
+  }
+
+  void bindWX() {
+    sendWeChatAuth(scope: "snsapi_userinfo", state: "sivms_state").then((data) {
+      setState(() {
+        print("拉取微信用户信息：" + data.toString());
+      });
+    }).catchError((e) {
+      print('weChatLogin  e  $e');
+    });
+  }
+
+  void wxLoginHttp(String code) {
+    Map<String, dynamic> map = new HashMap();
+    map["code"] = code;
+
+    EasyLoading.show(status: 'loading...');
+
+    HttpUtils.requestHttp(
+      ApiConstant.bind_wx,
+      parameters: map,
+      method: HttpUtils.POST,
+      onSuccess: (data) {
+        print(data);
+        EasyLoading.showSuccess("绑定成功");
+      },
+      onError: (code, error) {
+        print("cao");
+        EasyLoading.showError(error ?? "");
+      },
+    );
+  }
+
+  void unbindWX() {
+    EasyLoading.show(status: 'loading...');
+
+    HttpUtils.requestHttp(
+      ApiConstant.unbind_wx,
+      method: HttpUtils.POST,
+      onSuccess: (data) {
+        print(data);
+        EasyLoading.showSuccess("解绑成功");
+      },
+      onError: (code, error) {
+        EasyLoading.showError(error ?? "");
+      },
+    );
   }
 }

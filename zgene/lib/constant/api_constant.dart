@@ -5,16 +5,21 @@ class ApiConstant {
   ///********************************** 自媒体流 *****************************///
   //获取用户详情、修改用户信息
   static const String userInfo = "/api/v1/user/info";
+
   //内容列表
   static const String contentList = "/api/v1/archives";
   //分类列表
   static const String categories = "/api/v1/categories";
   //内容详情
   static const String contentDetail = "/api/v1/archive";
+//阅读全部消息
+  static const String readMessage = "/api/v1/user/notice/readall";
 
   ///********************************* 用户 *****************************///
   //隐私政策
   static const String privacy = "/privacy";
+  //获取未读消息数量
+  static const String userNoticeCount = "/api/v1/user/notice/count";
   //用户头像上传
   static const String userAvatar = "/api/v1/user/avatar";
 
@@ -43,9 +48,10 @@ class ApiConstant {
   static const String loginApp_phone = "/api/v1/user/login/app_phone";
   //手机号绑定
   static const String bindAppPhone = "/api/v1/user/bind/mobile";
-  //手机号登录
+  //微信联合登录
   static const String login_wx = "/api/v1/user/login/wx";
-
+  //苹果联合登录
+  static const String login_apple = "/api/v1/user/login/apple";
   //隐私政策
   static const String privacys = CommonConstant.BASE_API + ApiConstant.privacy;
 
@@ -59,7 +65,6 @@ class ApiConstant {
   ///********************************* 消息 *****************************///
   //消息列表
   static const String messageList = "/api/v1/user/notices";
-
 
   ///********************************* 订单 *****************************///
   //下单
@@ -82,8 +87,9 @@ class ApiConstant {
   static String getH5DetailUrl(id) {
     return CommonConstant.BASE_API + "/archive/embed/$id";
   }
+
   //获取顺丰物流H5地址
   static String getSFH5DetailUrl(id) {
-    return CommonConstant.BASE_API+"/user/sf?nu=$id";
+    return CommonConstant.BASE_API + "/user/sf?nu=$id";
   }
 }

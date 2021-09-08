@@ -17,6 +17,9 @@ import 'package:flutter_pickers/pickers.dart';
 import 'package:zgene/util/isChina_phone.dart';
 
 class SendBackAcquisitionPage extends BaseWidget {
+  int ordId;
+  SendBackAcquisitionPage({Key key, this.ordId}) : super(key: key);
+
   @override
   BaseWidgetState getState() {
     return _SendBackAcquisitionPageState();
@@ -956,6 +959,7 @@ class _SendBackAcquisitionPageState
     showSelectPickerTool(context, (timeStr, reportStr) {
       sendBackTime = timeStr;
       reportTime = reportStr;
+      print(reportStr);
       setState(() {});
     });
   }
@@ -1002,8 +1006,9 @@ class _SendBackAcquisitionPageState
   }
 
   void reporHttp() {
+    print(widget.ordId);
     Map<String, dynamic> map = new HashMap();
-    map["order_id"] = int.parse("1903391943425");
+    map["order_id"] = widget.ordId;
     map["rcv_name"] = _nameController.text;
     map["rcv_phone"] = _phoneController.text;
     map["province"] = initProvince;

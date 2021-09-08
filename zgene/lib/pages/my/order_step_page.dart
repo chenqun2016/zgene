@@ -154,7 +154,7 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
                     ? ColorConstant.TextMainBlack
                     : ColorConstant.Text_B2BAC6,
                 fontWeight: FontWeight.bold,
-                fontSize: 16,
+                fontSize: 14,
               ),
             )),
             getRightButton(model, context),
@@ -261,7 +261,9 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
         NavigatorUtil.push(context, BindCollectorPage());
         break;
       case 40:
-        NavigatorUtil.push(context, SendBackAcquisitionPage());
+        print(123);
+        NavigatorUtil.push(
+            context, SendBackAcquisitionPage(ordId: widget._order.id));
         break;
       case 60:
         CommonUtils.toUrl(context: context, url: CommonUtils.URL_REPORT);

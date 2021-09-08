@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:event_bus/event_bus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -5,8 +8,10 @@ import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/app_notification.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
+import 'package:zgene/event/event_bus.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/content_model.dart';
+import 'package:zgene/models/msg_event.dart';
 import 'package:zgene/models/userInfo_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/bindcollector/bind_collector_page.dart';
@@ -40,6 +45,10 @@ class MyPage extends BaseWidget {
 }
 
 class _MyPageState extends BaseWidgetState<MyPage> {
+  StreamSubscription<selectMineEvent> _selectMineEvent;
+  final eventBus = CommonUtils.getInstance();
+  int count = 0;
+
   @override
   void pageWidgetInitState() {
     super.pageWidgetInitState();
@@ -68,6 +77,10 @@ class _MyPageState extends BaseWidgetState<MyPage> {
         bannerTitle = "";
       }
       setState(() {});
+    });
+
+    eventBus.on<selectMineEvent>().listen((event) {
+      getNoticeCount();
     });
   }
 
@@ -99,6 +112,25 @@ class _MyPageState extends BaseWidgetState<MyPage> {
       },
       onError: (code, error) {
         EasyLoading.showError(error ?? "");
+        print(error);
+      },
+    );
+  }
+
+  getNoticeCount() {
+    // EasyLoading.show(status: 'loading...');
+    // Map<String, dynamic> map = new HashMap();
+    HttpUtils.requestHttp(
+      ApiConstant.userNoticeCount,
+      // parameters: map,
+      method: HttpUtils.GET,
+      onSuccess: (result) {
+        setState(() {
+          count = result;
+        });
+        print(result);
+      },
+      onError: (code, error) {
         print(error);
       },
     );
@@ -149,18 +181,21 @@ class _MyPageState extends BaseWidgetState<MyPage> {
                 Positioned(
                     right: 6,
                     top: 6,
-                    child: Container(
-                      width: 16,
-                      height: 16,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          color: Color(0XFFF72937),
-                          borderRadius: BorderRadius.circular(15)),
-                      child: Text(
-                        "44",
-                        style: TextStyle(
-                          fontSize: 11,
-                          color: ColorConstant.WhiteColor,
+                    child: Offstage(
+                      offstage: !(count > 0),
+                      child: Container(
+                        width: 16,
+                        height: 16,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            color: Color(0XFFF72937),
+                            borderRadius: BorderRadius.circular(15)),
+                        child: Text(
+                          count > 0 ? count.toString() : "",
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: ColorConstant.WhiteColor,
+                          ),
                         ),
                       ),
                     )),
@@ -642,7 +677,8 @@ class _MyPageState extends BaseWidgetState<MyPage> {
         NavigatorUtil.push(context, CommonQusListPage());
         break;
       case 11: //关于Z基因
-        NavigatorUtil.push(context, AboutZPage());
+        // NavigatorUtil.push(context, AboutZPage());
+        BaseLogin.login();
         break;
     }
   }

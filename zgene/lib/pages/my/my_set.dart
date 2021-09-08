@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/my/my_address_list.dart';
 import 'package:zgene/pages/my/my_change_phone.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/dia_log.dart';
+import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 
 import 'account_security.dart';
@@ -165,6 +167,19 @@ class _MySetPageState extends BaseWidgetState<MySetPage> {
                       "手机",
                       style: textStyle,
                     )),
+                Positioned(
+                  right: 22,
+                  top: 12,
+                  child: Text(
+                    SpUtils()
+                        .getStorageDefault(SpConstant.UserMobile, "")
+                        .toString(),
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: ColorConstant.TextThreeColor,
+                    ),
+                  ),
+                ),
                 Positioned(
                   right: 0,
                   top: 15,

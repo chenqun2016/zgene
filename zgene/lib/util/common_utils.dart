@@ -22,12 +22,13 @@ class CommonUtils {
     }
     return CommonConstant.BASE_API + url;
   }
+
   ///拼接图片路径
   static String splicingImageId(String id) {
     if (id.isEmpty) {
       return "";
     }
-    return CommonConstant.BASE_API +"/public/statics/img/"+ id + ".png";
+    return CommonConstant.BASE_API + "/public/statics/img/" + id + ".png";
   }
 
   ///判断网络是否可用
@@ -111,8 +112,9 @@ class CommonUtils {
   }
 
   static const String URL_BUY = "/buy";
-  static const String URL_MY =  "/my";
-  static const String URL_REPORT =  "/report";
+  static const String URL_MY = "/my";
+  static const String URL_REPORT = "/report";
+
   ///公共跳转链接
   static toUrl({context, url, type}) {
     print("url==$url+type==${type.toString()}");
@@ -152,8 +154,10 @@ class CommonUtils {
           Map<String, String> params = uri.queryParameters;
           var id = params['id'];
           if (id == null) {
+            print(123);
             Navigator.of(context).pushNamed(url);
           } else {
+            print(456);
             Navigator.of(context).pushNamed(url.split("?")[0], arguments: id);
           }
           break;
@@ -174,9 +178,8 @@ class CommonUtils {
 // OrderStatus9  int8 = 60 //待出报告
 // OrderStatus10 int8 = 70 //完成
 
-
-  static String getOrderType(int status){
-    switch(status){
+  static String getOrderType(int status) {
+    switch (status) {
       case -20:
         return "取消";
       case -10:
@@ -201,8 +204,8 @@ class CommonUtils {
     return "";
   }
 
-  static String getOrderStepType(int status){
-    switch(status){
+  static String getOrderStepType(int status) {
+    switch (status) {
       case 20:
         return "物流跟踪";
       case 30:

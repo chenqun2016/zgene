@@ -345,6 +345,9 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
     if (credential != null) {
       debugPrint(
           "facebook userInfo : userId=${credential.userIdentifier}   email=${credential.email}  giveName=${credential.givenName}   familyName=${credential.familyName}");
+
+      appleLoginHttp(credential.userIdentifier, credential.userIdentifier,
+          credential.givenName, credential.familyName);
     }
   }
 
@@ -356,6 +359,43 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
 
     HttpUtils.requestHttp(
       ApiConstant.login_wx,
+      parameters: map,
+      method: HttpUtils.POST,
+      onSuccess: (data) {
+        EasyLoading.dismiss();
+        var spUtils = SpUtils();
+        spUtils.setStorage(SpConstant.Token, data["token"]);
+        spUtils.setStorage(SpConstant.IsLogin, true);
+
+        if (data["has_mobile"]) {
+          HttpUtils.clear();
+
+          NotificationCenter.instance
+              .postNotification(NotificationName.GetUserInfo, null);
+
+          Navigator.popUntil(context, ModalRoute.withName('/'));
+        } else {
+          toBindingPhone();
+        }
+      },
+      onError: (code, error) {
+        EasyLoading.showError(error ?? "");
+      },
+    );
+  }
+
+  void appleLoginHttp(
+      String userId, String email, String giveName, String familyName) {
+    Map<String, dynamic> map = new HashMap();
+    map["userId"] = userId;
+    map["email"] = email;
+    map["giveName"] = giveName;
+    map["familyName"] = familyName;
+
+    EasyLoading.show(status: 'loading...');
+
+    HttpUtils.requestHttp(
+      ApiConstant.login_apple,
       parameters: map,
       method: HttpUtils.POST,
       onSuccess: (data) {

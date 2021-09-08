@@ -7,7 +7,10 @@ import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/http/http_utils.dart';
+import 'package:zgene/models/content_model.dart';
+import 'package:zgene/models/message_model.dart';
 import 'package:zgene/util/common_utils.dart';
+import 'package:zgene/util/date_utils.dart';
 import 'package:zgene/util/refresh_config_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 
@@ -21,12 +24,15 @@ class _MyMessagePageState extends State<MyMessagePage> {
   int errorCode = 0; //0.正常 1.暂无数据 2.错误 3.没有网络
   List list = [];
   List tempList = [];
+  int type = 9;
+
   int page = 1;
+  EasyRefreshController _controller;
 
   @override
   void initState() {
     super.initState();
-    getHttp(9);
+    _controller = EasyRefreshController();
   }
 
   @override
@@ -41,7 +47,37 @@ class _MyMessagePageState extends State<MyMessagePage> {
             fit: BoxFit.cover,
           ),
         ),
-        child: emptyView,
+        child: EasyRefresh(
+          // 是否开启控制结束加载
+          enableControlFinishLoad: false,
+          firstRefresh: true,
+          // 控制器
+          controller: _controller,
+          header: RefreshConfigUtils.classicalHeader(),
+          // 自定义顶部上啦加载
+          footer: RefreshConfigUtils.classicalFooter(),
+          child: emptyView,
+          //下拉刷新事件回调
+          onRefresh: () async {
+            page = 1;
+            // 获取数据
+            getHttp(type);
+            await Future.delayed(Duration(seconds: 1), () {
+              // 重置刷新状态 【没错，这里用的是resetLoadState】
+              // _controller.resetLoadState();
+            });
+          },
+          // 上拉加载事件回调
+          onLoad: () async {
+            await Future.delayed(Duration(seconds: 1), () {
+              // 获取数据
+              getHttp(type);
+              // 结束加载
+              _controller.finishLoad();
+              // _controller.finishLoad(noMore:true);
+            });
+          },
+        ),
       ),
     );
   }
@@ -95,25 +131,64 @@ class _MyMessagePageState extends State<MyMessagePage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              margin: EdgeInsets.only(right: 46.h),
+            InkWell(
+              onTap: () {
+                page = 1;
+                type = 9;
+                getHttp(type);
+              },
+              child: Container(
+                margin: EdgeInsets.only(right: 46.h),
+                child: Column(
+                  children: [
+                    Image(
+                      image: AssetImage(
+                          "assets/images/mine/icon_message_news.png"),
+                      height: 82.h,
+                      width: 82.h,
+                    ),
+                    Text(
+                      "公告",
+                      style: TextStyle(
+                          fontSize: 13, color: ColorConstant.TextMainBlack),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(bottom: 17.h),
+                      child: Text(
+                        type == 9 ? "⏤" : "",
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                            color: ColorConstant.TextMainBlack),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                page = 1;
+                type = 0;
+                getHttp(type);
+              },
               child: Column(
                 children: [
                   Image(
-                    image:
-                        AssetImage("assets/images/mine/icon_message_news.png"),
+                    image: AssetImage(
+                        "assets/images/mine/icon_message_notice.png"),
                     height: 82.h,
                     width: 82.h,
                   ),
                   Text(
-                    "公告",
+                    "通知",
                     style: TextStyle(
                         fontSize: 13, color: ColorConstant.TextMainBlack),
                   ),
                   Container(
                     margin: EdgeInsets.only(bottom: 17.h),
                     child: Text(
-                      "⏤",
+                      type == 0 ? "⏤" : "",
                       style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w700,
@@ -122,31 +197,6 @@ class _MyMessagePageState extends State<MyMessagePage> {
                   ),
                 ],
               ),
-            ),
-            Column(
-              children: [
-                Image(
-                  image:
-                      AssetImage("assets/images/mine/icon_message_notice.png"),
-                  height: 82.h,
-                  width: 82.h,
-                ),
-                Text(
-                  "通知",
-                  style: TextStyle(
-                      fontSize: 13, color: ColorConstant.TextMainBlack),
-                ),
-                Container(
-                  margin: EdgeInsets.only(bottom: 17.h),
-                  child: Text(
-                    "⏤",
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        color: ColorConstant.TextMainBlack),
-                  ),
-                ),
-              ],
             ),
           ],
         ),
@@ -218,11 +268,13 @@ class _MyMessagePageState extends State<MyMessagePage> {
       margin: EdgeInsets.only(top: 16),
       height: MediaQuery.of(context).size.height - 270.h,
       child: ListView.builder(
-        itemCount: 4,
-        // shrinkWrap: true,
+        itemCount: list.length,
+        shrinkWrap: true,
         padding: EdgeInsets.all(0),
         physics: ScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
+          var content = list[index].content;
+          print(index);
           return Container(
             width: double.infinity,
             alignment: Alignment.centerLeft,
@@ -243,7 +295,7 @@ class _MyMessagePageState extends State<MyMessagePage> {
                   child: Stack(
                     children: [
                       Positioned(
-                        child: Text("我是标题",
+                        child: Text(content.title,
                             style: TextStyle(
                               fontSize: 16,
                               color: ColorConstant.TextMainBlack,
@@ -254,7 +306,9 @@ class _MyMessagePageState extends State<MyMessagePage> {
                         right: 0,
                         top: 3,
                         child: Text(
-                          "2021.3.18",
+                          CusDateUtils.getFormatDataS(
+                              timeSamp: content.createdAt,
+                              format: "yyyy.MM.dd"),
                           style: TextStyle(
                             fontSize: 13,
                             color: Color(0xFF5E6F88),
@@ -273,7 +327,7 @@ class _MyMessagePageState extends State<MyMessagePage> {
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 15),
-                  child: Text("我就是内容内容我就是内容内容我就是内容内容我就是内容内容我就是内容内容",
+                  child: Text(content.content,
                       style: TextStyle(
                         fontSize: 13,
                         color: Color(0xFF5E6F88),
@@ -314,15 +368,78 @@ class _MyMessagePageState extends State<MyMessagePage> {
     map["page"] = page;
     map["type"] = type;
     map["page_size"] = CommonConstant.PAGE_SIZE;
+    print(map);
 
     HttpUtils.requestHttp(
       ApiConstant.messageList,
       parameters: map,
       method: HttpUtils.GET,
-      onSuccess: (result) async {
+      onSuccess: (result) {
         print(result);
+        List<MessageModel> tempList = result
+            .map((m) => new MessageModel.fromJson(m))
+            .toList()
+            .cast<MessageModel>();
+
+        //判断是不是暂无数据
+        if (tempList.length == 0 && page == 1 && list.length == 0) {
+          errorCode = 1;
+          _controller = null;
+          setState(() {});
+          return;
+        }
+
+        //设置正常状态
+        if (_controller == null) {
+          _controller = EasyRefreshController();
+        }
+        errorCode = 0;
+        if (page == 1) {
+          list.clear();
+          clearMessage();
+        }
+        page++;
+        int length = list.length;
+        list.insertAll(length, tempList);
+
+        if (tempList.length >= CommonConstant.PAGE_SIZE) {
+          _controller.finishLoad(noMore: false);
+          print("noMore:false");
+        } else {
+          _controller.finishLoad(noMore: true);
+          print("noMore:true");
+        }
+
+        setState(() {});
       },
-      onError: (code, error) {},
+      onError: (code, error) {
+        if (page == 1 && list.length == 0) {
+          errorCode = 2;
+          _controller = null;
+          setState(() {});
+        }
+      },
+    );
+  }
+
+  ///消除消息个数
+  clearMessage() async {
+    bool isNetWorkAvailable = await CommonUtils.isNetWorkAvailable();
+    if (!isNetWorkAvailable) {
+      return;
+    }
+    Map<String, dynamic> map = new HashMap();
+
+    HttpUtils.requestHttp(
+      ApiConstant.readMessage,
+      parameters: map,
+      method: HttpUtils.POST,
+      onSuccess: (result) {
+        // print(result.toString());
+      },
+      onError: (code, error) {
+        print(error);
+      },
     );
   }
 }

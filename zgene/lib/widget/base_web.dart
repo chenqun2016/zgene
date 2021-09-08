@@ -35,6 +35,8 @@ class _BaseWebViewState extends State<BaseWebView> {
   void initState() {
     super.initState();
     _url = widget.url;
+
+   setCookie();
   }
 
   InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
@@ -93,7 +95,7 @@ class _BaseWebViewState extends State<BaseWebView> {
                           onLoaded: () {
                             print('Loaded: $_url');
                           },
-                          src: _url,
+                          src: _uri,
                           isHtml: false,
                           isMarkdown: false,
                           convertToWidgets: false,
@@ -108,7 +110,7 @@ class _BaseWebViewState extends State<BaseWebView> {
                       : InAppWebView(
                           initialOptions: options,
                           initialUrlRequest:
-                              URLRequest(url: Uri.parse(widget.url)),
+                              URLRequest(url: _uri),
 
                           // 加载进度变化事件.
                           onProgressChanged: (InAppWebViewController controller,
@@ -147,6 +149,18 @@ class _BaseWebViewState extends State<BaseWebView> {
           ),
         ),
       ),
+    );
+  }
+
+  var _uri;
+  void setCookie() async{
+    _uri = Uri.parse(_url);
+    CookieManager cookieManager = CookieManager.instance();
+    await cookieManager.setCookie(
+      url: _uri,
+      name: "jwt",
+      value: SpUtils().getStorageDefault(SpConstant.Token, ""),
+      isSecure: true,
     );
   }
 }

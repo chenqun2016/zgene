@@ -8,6 +8,7 @@ class CusDateUtils {
   static const String PARAM_TIME_FORMAT_H_M_S = 'yyyy/MM/dd HH:mm:ss';
   static const String FORMAT_D_M_H_M_S = 'dd-MM HH:mm:ss';
   static const String PARAM_TIME_FORMAT_Y_M_D = 'yyyy-MM-dd';
+  static const String PARAM_TIME_FORMAT_H_M = 'yyyy-MM-dd HH:mm';
 
   ///将时间日期格式转化为时间戳
   ///2018年12月11日

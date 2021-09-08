@@ -154,7 +154,7 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
                     ? ColorConstant.TextMainBlack
                     : ColorConstant.Text_B2BAC6,
                 fontWeight: FontWeight.bold,
-                fontSize: 16,
+                fontSize: 14,
               ),
             )),
             getRightButton(model, context),

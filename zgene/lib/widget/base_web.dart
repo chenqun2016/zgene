@@ -160,7 +160,7 @@ class _BaseWebViewState extends State<BaseWebView> {
       url: _uri,
       name: "jwt",
       value: SpUtils().getStorageDefault(SpConstant.Token, ""),
-      isSecure: true,
+      isSecure: false,
     );
   }
 }

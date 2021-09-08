@@ -99,4 +99,9 @@ class ApiConstant {
   static String getSFH5DetailUrl(id) {
     return CommonConstant.BASE_API + "/user/sf?nu=$id";
   }
+
+  //获取pdf的H5地址
+  static String getPDFH5DetailUrl(id) {
+    return CommonConstant.BASE_API + "/user/pdf?cid=$id";
+  }
 }

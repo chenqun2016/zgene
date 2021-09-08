@@ -41,6 +41,7 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
           String code = res.code;
           print('wxwxwxwxwxwxwx' + code);
           //把微信登录返回的code传给后台，剩下的事就交给后台处理
+          print("+++++++++++++++++++++++++++++");
           wxLoginHttp(code);
           // showToast("用户同意授权成功");
         } else if (errCode == -4) {
@@ -150,7 +151,6 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(28.h)))),
                   onPressed: () {
-                    // toBindingPhone();
                     loginWX();
                   },
                   child: Container(
@@ -264,6 +264,11 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
                             fontWeight: FontWeight.w400,
                             color: ColorConstant.PromptGrayColor,
                           ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              isAgreePrivacy = !isAgreePrivacy;
+                              setState(() {});
+                            },
                           children: [
                         TextSpan(
                             text: "《隐私条款》",
@@ -326,6 +331,9 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
   }
 
   void loginWX() {
+    if (!isAgreePrivacy) {
+      return;
+    }
     print("微信登录");
     sendWeChatAuth(scope: "snsapi_userinfo", state: "sivms_state").then((data) {
       setState(() {
@@ -342,6 +350,9 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
 
     //   },
     // );
+    if (!isAgreePrivacy) {
+      return;
+    }
     final credential = await SignInWithApple.getAppleIDCredential(
       scopes: [
         AppleIDAuthorizationScopes.email,
@@ -359,6 +370,7 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
   }
 
   void wxLoginHttp(String code) {
+    print("======================================");
     Map<String, dynamic> map = new HashMap();
     map["code"] = code;
 
@@ -369,6 +381,7 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
       parameters: map,
       method: HttpUtils.POST,
       onSuccess: (data) {
+        print(data);
         EasyLoading.dismiss();
         var spUtils = SpUtils();
         spUtils.setStorage(SpConstant.Token, data["token"]);
@@ -386,6 +399,7 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
         }
       },
       onError: (code, error) {
+        print("-------------------------");
         EasyLoading.showError(error ?? "");
       },
     );

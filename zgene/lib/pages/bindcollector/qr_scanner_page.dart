@@ -82,7 +82,7 @@ class _QRViewExampleState extends State<QRViewExample> {
       this.controller = controller;
     });
     controller.scannedDataStream.first.then((scanData) {
-      Navigator.pop(context, scanData.code + scanData.format.toString());
+      Navigator.pop(context, scanData.code);
     }).catchError((error) => null);
   }
 

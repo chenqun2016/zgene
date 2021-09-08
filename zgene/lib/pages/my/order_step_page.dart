@@ -242,11 +242,16 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
   void onButtomClicked(context, model) {
     switch (model.status) {
       case 50:
+        NavigatorUtil.push(
+            context,
+            BaseWebView(
+              url: "https://zgene.divms.com/user/sf?nu=${widget._order.reSfNo}",
+            ));
+        break;
       case 20:
         NavigatorUtil.push(
             context,
             BaseWebView(
-              // url: 'https://zgene.divms.com/user/sf?nu=SF7444435400346',
               url: "https://zgene.divms.com/user/sf?nu=${widget._order.sfNo}",
             ));
         break;

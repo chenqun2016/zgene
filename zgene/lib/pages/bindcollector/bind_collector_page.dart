@@ -459,12 +459,7 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
         GestureDetector(
           onTap: () async {
             print("点击扫码");
-            // try {
-            //   String barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-            //       "#ff6666", "取消", true, ScanMode.BARCODE);
-            // } on Exception {
-            //   UiUitls.showToast("手机不支持扫码");
-            // }
+
           },
           child: Container(
             margin: EdgeInsets.only(top: 0),

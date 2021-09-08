@@ -285,7 +285,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
   Widget _item(Archives bean) {
     return GestureDetector(
       onTap: () {
-        NavigatorUtil.push(context, ReportListPage(bean));
+        NavigatorUtil.push(context, ReportListPage(archives: bean,));
       },
       child: Container(
         decoration: BoxDecoration(

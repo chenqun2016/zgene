@@ -222,7 +222,7 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
                 color: ColorConstant.TextMainColor,
                 onPressed: () {
                   NavigatorUtil.push(
-                      context, OrderingPage(productDetail: _productDetail));
+                      context, OrderingPage(product: _productDetail,));
                 },
                 child: Text("立即购买",
                     style: TextStyle(
@@ -311,7 +311,7 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
                         color: ColorConstant.TextMainColor,
                         onPressed: () {
                           NavigatorUtil.push(context,
-                              OrderingPage(productDetail: _productDetail));
+                              OrderingPage(product: _productDetail, ));
                         },
                         child: Text("立即购买",
                             style: TextStyle(

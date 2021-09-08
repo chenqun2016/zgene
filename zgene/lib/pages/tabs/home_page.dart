@@ -55,7 +55,7 @@ class _HomePageState extends BaseWidgetState<HomePage> {
       ContentModel contentModel = ContentModel.fromJson(result);
       bannerList.clear();
       setState(() {
-        bannerList=contentModel.archives;
+        bannerList = contentModel.archives;
       });
     });
     super.pageWidgetInitState();
@@ -141,11 +141,15 @@ class _HomePageState extends BaseWidgetState<HomePage> {
       child: Swiper(
         itemCount: bannerList.length,
         autoplay: true,
+        loop: false,
         itemBuilder: (BuildContext context, int index) {
           Archives archives = bannerList[index];
           return GestureDetector(
             onTap: () {
-              CommonUtils.toUrl(context: context,type: archives.linkType,url: archives.linkUrl);
+              CommonUtils.toUrl(
+                  context: context,
+                  type: archives.linkType,
+                  url: archives.linkUrl);
               // String model = bannerList[index];
               // NavigatorUtil.push();
             },
@@ -232,5 +236,4 @@ class _HomePageState extends BaseWidgetState<HomePage> {
       });
     }
   }
-
 }

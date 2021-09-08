@@ -15,11 +15,9 @@ import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/widget/base_web.dart';
 
 class ReportListPage extends BaseWidget {
-  var _archives;
+  var archives;
 
-  ReportListPage(bean) {
-    _archives = bean;
-  }
+  ReportListPage({Key key, this.archives}) : super(key: key);
 
   @override
   BaseWidgetState<BaseWidget> getState() => _ReportListPageState();
@@ -37,7 +35,7 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
 
     showBaseHead = false;
     showHead = true;
-    pageWidgetTitle = widget._archives.title;
+    pageWidgetTitle = widget.archives.title;
     isListPage = true;
     // backColor = Colors.red;
     backImgPath = "assets/images/mine/img_bg_my.png";
@@ -57,7 +55,7 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
       }
     });
 
-    ArchiveGetHttp(widget._archives.id, (result) {
+    ArchiveGetHttp(widget.archives.id, (result) {
       ArchiveDesModel model = ArchiveDesModel.fromJson(result);
       list.clear();
       setState(() {

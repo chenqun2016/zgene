@@ -353,7 +353,10 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
                         ),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16)),
-                        onPressed: () {},
+                        onPressed: () {
+                          NavigatorUtil.orderStepNavigator(
+                              context, bean.status, bean);
+                        },
                       ),
                     ),
                 ],

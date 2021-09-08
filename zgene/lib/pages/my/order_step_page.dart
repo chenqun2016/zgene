@@ -221,7 +221,8 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
       color: ColorConstant.TextMainColor,
       onPressed: _isButtomAchieve(model)
           ? () async {
-              onButtomClicked(context, model);
+              NavigatorUtil.orderStepNavigator(
+                  context, model.status, widget._order);
             }
           : null,
       child: Text(model.title2,
@@ -233,45 +234,5 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
                 : ColorConstant.Text_B2BAC6,
           )),
     );
-  }
-
-// //OrderStatus5  int8 = 20  //代签收
-// OrderStatus6  int8 = 30 //代绑定
-// OrderStatus7  int8 = 40 //待回寄
-// OrderStatus8  int8 = 50 //待检测
-// OrderStatus9  int8 = 60 //待出报告
-// OrderStatus10 int8 = 70 //完成
-  void onButtomClicked(context, model) {
-    switch (model.status) {
-      case 50:
-        NavigatorUtil.push(
-            context,
-            BaseWebView(
-              url: ApiConstant.getSFH5DetailUrl(widget._order.reSfNo),
-            ));
-        break;
-      case 20:
-        NavigatorUtil.push(
-            context,
-            BaseWebView(
-              url: ApiConstant.getSFH5DetailUrl(widget._order.sfNo),
-            ));
-        break;
-      case 30:
-        NavigatorUtil.push(context, BindCollectorPage());
-        break;
-      case 40:
-        print(123);
-        NavigatorUtil.push(
-            context, SendBackAcquisitionPage(ordId: widget._order.id));
-        break;
-      case 60:
-        CommonUtils.toUrl(context: context, url: CommonUtils.URL_REPORT);
-        Navigator.popUntil(context, (route) => route.isFirst);
-        break;
-      case 70:
-        NavigatorUtil.push(context, MyReportPage());
-        break;
-    }
   }
 }

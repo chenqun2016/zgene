@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/http/http_utils.dart';
+import 'package:zgene/models/my_report_list_page.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/my/my_pdf_viewer_page.dart';
 import 'package:zgene/util/base_widget.dart';
+import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/refresh_config_utils.dart';
 
 class MyReportPage extends BaseWidget {
@@ -24,8 +29,28 @@ class _MyReportPageState extends BaseWidgetState {
     _easyController = EasyRefreshController();
   }
 
-  Future<String> getData() async {
-    return Future.delayed(Duration(seconds: 2), () => "我是从互联网上获取的数据");
+  Future<void> getDatas() async {
+    bool isNetWorkAvailable = await CommonUtils.isNetWorkAvailable();
+    if (!isNetWorkAvailable) {
+      return;
+    }
+    EasyLoading.show(status: 'loading...');
+    HttpUtils.requestHttp(
+      ApiConstant.reports,
+      method: HttpUtils.GET,
+      onSuccess: (result) async {
+        EasyLoading.dismiss();
+        List l = result;
+        list.clear();
+        l.forEach((element) {
+          list.add(MyReportListPage.fromJson(element));
+        });
+        setState(() {});
+      },
+      onError: (code, error) {
+        EasyLoading.showError(error);
+      },
+    );
   }
 
   @override
@@ -44,8 +69,8 @@ class _MyReportPageState extends BaseWidgetState {
         // 是否开启控制结束加载
         enableControlFinishLoad: false,
         firstRefresh: true,
+        emptyWidget: list.length<=0? _emptyWidget:null,
         // 控制器
-        emptyWidget: _emptyWidget,
         controller: _easyController,
         header: RefreshConfigUtils.classicalHeader(),
         child: _listView,
@@ -53,7 +78,7 @@ class _MyReportPageState extends BaseWidgetState {
         onRefresh: () async {
           // page = 1;
           // // 获取数据
-          // getHttp();
+          getDatas();
           // await Future.delayed(Duration(seconds: 1), () {
           // 重置刷新状态 【没错，这里用的是resetLoadState】
           if (_easyController != null) {
@@ -92,17 +117,19 @@ class _MyReportPageState extends BaseWidgetState {
     return ListView.builder(
         itemCount: list.length,
         itemBuilder: (BuildContext context, int index) {
+          MyReportListPage bean = list[index];
           return Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(20)),
                 image: DecorationImage(
-                    image: AssetImage("assets/images/mine/img_my_banner.png"))),
+                    image: AssetImage("assets/images/report/icon_baogao1.png"))),
             margin: EdgeInsets.fromLTRB(15, 16, 15, 0),
             padding: EdgeInsets.fromLTRB(30, 26, 0, 24),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "张三",
+                  bean.targetName,
                   style: TextStyle(
                       fontSize: 26,
                       color: Colors.white,
@@ -127,7 +154,7 @@ class _MyReportPageState extends BaseWidgetState {
                   disabledColor: Colors.white,
                   color: Colors.white,
                   onPressed: () {
-                    NavigatorUtil.push(context, MyPdfViewerPage("model"));
+                    NavigatorUtil.push(context, MyPdfViewerPage(bean));
                   },
                   child: Text("查看报告",
                       style: TextStyle(

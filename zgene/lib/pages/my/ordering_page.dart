@@ -9,6 +9,8 @@ import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/content_model.dart';
+import 'package:zgene/navigator/navigator_util.dart';
+import 'package:zgene/pages/my/my_order_list.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:tobias/tobias.dart' as tobias;
@@ -449,7 +451,7 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
                             "assets/images/buy/icon_weixinpay.png",
                             height: 40,
                             width: 40,
-                            fit: BoxFit.cover,
+                            fit: BoxFit.fill,
                           ),
                           Divider(
                             height: 6,
@@ -508,7 +510,7 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
                             "assets/images/buy/icon_zhifubaopay.png",
                             height: 40,
                             width: 40,
-                            fit: BoxFit.cover,
+                            fit: BoxFit.fill,
                           ),
                           Divider(
                             height: 6,
@@ -1006,7 +1008,9 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
           weChatResponseEventHandler.listen((event) async {
             print(event.errCode);
             // 支付成功
-            if (event.errCode == 0) {}
+            if (event.errCode == 0) {
+              _toOrder();
+            }
             // 关闭弹窗
           });
         } else {
@@ -1014,12 +1018,18 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
           log("aliPay result==${aliPay}");
 
           // 支付成功
-          if ('9000' == aliPay['resultStatus']) {}
+          if ('9000' == aliPay['resultStatus']) {
+            _toOrder();
+          }
         }
       },
       onError: (code, error) {
         EasyLoading.showError(error);
       },
     );
+  }
+
+  void _toOrder() {
+    NavigatorUtil.pushAndRemoveUntil(context, MyOrderListPage());
   }
 }

@@ -80,7 +80,7 @@ class _LocalNavState extends State<LocalNav> {
               height: 80,
               fadeInDuration: TimeUtils.fadeInDuration(),
               fadeOutDuration: TimeUtils.fadeOutDuration(),
-              fit: BoxFit.cover,
+              fit: BoxFit.fill,
               imageErrorBuilder: (context, error, stackTrace) {
                 return Image.asset(
                   'assets/images/home/img_default2.png',

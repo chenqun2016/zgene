@@ -111,7 +111,7 @@ class _ExploreNavState extends State<ExploreNav> {
                   height: 90,
                   fadeInDuration: TimeUtils.fadeInDuration(),
                   fadeOutDuration: TimeUtils.fadeOutDuration(),
-                  fit: BoxFit.cover,
+                  fit: BoxFit.fill,
                   imageErrorBuilder: (context, error, stackTrace) {
                     return Image.asset(
                       'assets/images/home/img_default2.png',

@@ -201,7 +201,7 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
         },
         child: Container(
           height: 50,
-          width: 200,
+          width: 100,
           color: Colors.transparent,
           alignment: Alignment.centerRight,
           child: Image.asset(

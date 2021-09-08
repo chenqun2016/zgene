@@ -211,7 +211,7 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
                               width: 70,
                               height: 70,
                               alignment: Alignment.center,
-                              fit: BoxFit.cover,
+                              fit: BoxFit.fill,
                               fadeInDuration: TimeUtils.fadeInDuration(),
                               fadeOutDuration: TimeUtils.fadeOutDuration(),
                               imageErrorBuilder: (context, error, stackTrace) {
@@ -220,7 +220,7 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
                                   width: 70,
                                   height: 70,
                                   alignment: Alignment.center,
-                                  fit: BoxFit.cover,
+                                  fit: BoxFit.fill,
                                 );
                               }),
                         ),

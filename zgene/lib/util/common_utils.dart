@@ -115,6 +115,7 @@ class CommonUtils {
   static const String URL_REPORT =  "/report";
   ///公共跳转链接
   static toUrl({context, url, type}) {
+    print("url==$url+type==${type.toString()}");
     var eventBus = getInstance();
 
     if (url == URL_BUY) {

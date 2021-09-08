@@ -66,14 +66,20 @@ class ApiConstant {
   static const String ordering = "/api/v1/order/create";
   //绑定采集器
   static const String bindColector = "/api/v1/order/bind";
-  //H5地址，直接webview加载
-  static String getH5DetailUrl(id) {
-    return CommonConstant.BASE_API + "/archive/embed/$id";
-  }
+
   //订单列表
   static const String orderList = "/api/v1/order/list";
 
   //消息列表
   static const String orderReturn = "/api/v1/order/return";
 
+
+  //H5地址，直接webview加载
+  static String getH5DetailUrl(id) {
+    return CommonConstant.BASE_API + "/archive/embed/$id";
+  }
+  //获取顺丰物流H5地址
+  static String getSFH5DetailUrl(id) {
+    return CommonConstant.BASE_API+"/user/sf?nu=$id";
+  }
 }

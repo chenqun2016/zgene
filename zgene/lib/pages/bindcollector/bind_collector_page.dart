@@ -7,11 +7,12 @@ import 'package:flutter_pickers/pickers.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/http/http_utils.dart';
+import 'package:zgene/navigator/navigator_util.dart';
+import 'package:zgene/pages/bindcollector/qr_scanner_page.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/widget/my_stepper.dart';
-// import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 class BindCollectorPage extends BaseWidget {
   @override
@@ -67,7 +68,7 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
       child: Column(
         children: [
           // _titlebar(),
-          _stepper(),
+          _stepper(context),
         ],
       ),
     );
@@ -112,7 +113,7 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
     }
   }
 
-  _stepper() {
+  _stepper(context) {
     return EStepper(
       stepperWidth: 240,
       showEditingIcon: false,
@@ -142,7 +143,7 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
           bool isActive = s == _position;
           return EStep(
             state: _getState(s),
-            content: _getContent(s),
+            content: _getContent(s, context),
             isActive: isActive,
           );
         },
@@ -160,9 +161,9 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
     return EStepState.indexed;
   }
 
-  _getContent(int s) {
+  _getContent(int s, context) {
     if (0 == s) {
-      return _bindstep1;
+      return _bindstep1(context);
     }
     if (1 == s) {
       return _bindstep2;
@@ -453,13 +454,17 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
     );
   }
 
-  Widget get _bindstep1 {
+  Widget _bindstep1(context) {
     return Column(
       children: [
         GestureDetector(
           onTap: () async {
-            print("点击扫码");
-
+            try {
+              var code = await NavigatorUtil.push(context, QRViewExample());
+              _textEditingController.text = code;
+            } catch (e) {
+              print(e);
+            }
           },
           child: Container(
             margin: EdgeInsets.only(top: 0),

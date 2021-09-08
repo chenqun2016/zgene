@@ -158,7 +158,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         "/order_detail": (context) => OrderDetailPage(), //订单详情
         "/bind_collector": (context) => BindCollectorPage(), //绑定采集器
         "/back_collector": (context) => SendBackAcquisitionPage(), //回寄采集器
-        "/kefu": (context) => contantUsPage(), //联系客服
+        "/kefu" : (context) => contantUsPage(), //联系客服
         "/about": (context) => AboutUsPage(), //关于我们
       },
     ));

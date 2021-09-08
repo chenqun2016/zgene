@@ -2,7 +2,9 @@ import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/models/order_list_model.dart';
 import 'package:zgene/models/order_step_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
@@ -245,14 +247,14 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
         NavigatorUtil.push(
             context,
             BaseWebView(
-              url: "https://zgene.divms.com/user/sf?nu=${widget._order.reSfNo}",
+              url: ApiConstant.getSFH5DetailUrl(widget._order.reSfNo),
             ));
         break;
       case 20:
         NavigatorUtil.push(
             context,
             BaseWebView(
-              url: "https://zgene.divms.com/user/sf?nu=${widget._order.sfNo}",
+              url: ApiConstant.getSFH5DetailUrl(widget._order.sfNo),
             ));
         break;
       case 30:

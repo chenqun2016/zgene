@@ -5,6 +5,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/http/base_response.dart';
@@ -18,6 +19,7 @@ import 'package:zgene/pages/report/report_list_page.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/util/common_utils.dart';
+import 'package:zgene/util/refresh_config_utils.dart';
 import 'package:zgene/util/time_utils.dart';
 
 import 'home_page.dart';
@@ -31,7 +33,9 @@ class ReportPage extends BaseWidget {
 class _ReportPageState extends BaseWidgetState<ReportPage> {
   List<Categories> categories = [];
   ScrollController _controller = new ScrollController();
+  EasyRefreshController _easyController;
 
+  int jingxuan = 15;
   ///0 : 女    1：男
   var type = 0;
 
@@ -39,7 +43,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
   double appBarAlphas = 0;
 
   bool hasReport = false;
-  var cache = HashMap<int, dynamic>();
+  HashMap cache = HashMap<int, dynamic>();
 
   @override
   void dispose() {
@@ -56,12 +60,11 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
     setWantKeepAlive = true;
     backImgPath = "assets/images/home/bg_home.png";
 
+    _easyController = EasyRefreshController();
     //监听滚动事件，打印滚动位置
     _controller.addListener(() {
       _onScroll(_controller.offset);
     });
-    _getReport();
-    // _getJingXuanReport();
   }
 
   _getReport() {
@@ -115,22 +118,45 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
         _appBar,
         _tip,
         Expanded(
-          child: ListView(
-            controller: _controller,
-            shrinkWrap: true,
-            // physics: BouncingScrollPhysics(),
-            padding: EdgeInsets.fromLTRB(0, 0, 0, 100),
-            children: categories.map((e) {
-              return _items(e);
-            }).toList()
-              ..add(_bottomBanner),
+          child: EasyRefresh(
+            // 是否开启控制结束加载
+            enableControlFinishLoad: false,
+            firstRefresh: true,
+            // 控制器
+            bottomBouncing: false,
+            controller: _easyController,
+            header: RefreshConfigUtils.classicalHeader(),
+            child: ListView(
+              controller: _controller,
+              shrinkWrap: true,
+              // physics: BouncingScrollPhysics(),
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 100),
+              children: categories.map((e) {
+                return _items(e);
+              }).toList()
+                ..add(_bottomBanner),
+            ),
+            //下拉刷新事件回调
+            onRefresh: () async {
+              // page = 1;
+              // // 获取数据
+              cache.clear();
+              _getReport();
+              _getOwnerReport();
+              // await Future.delayed(Duration(seconds: 1), () {
+              // 重置刷新状态 【没错，这里用的是resetLoadState】
+              if (_easyController != null) {
+                _easyController.resetLoadState();
+              }
+              // });
+            },
           ),
         ),
       ]),
     );
   }
 
-  int jingxuan = 15;
+
   Widget get _bottomBanner {
     var fut;
     if (cache.containsKey(jingxuan)) {
@@ -285,7 +311,11 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
   Widget _item(Archives bean) {
     return GestureDetector(
       onTap: () {
-        NavigatorUtil.push(context, ReportListPage(archives: bean,));
+        NavigatorUtil.push(
+            context,
+            ReportListPage(
+              archives: bean,
+            ));
       },
       child: Container(
         decoration: BoxDecoration(
@@ -501,6 +531,21 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
             ],
           ),
         );
+      },
+    );
+  }
+
+  void _getOwnerReport() {
+    HttpUtils.requestHttp(
+      ApiConstant.reports,
+      method: HttpUtils.GET,
+      onSuccess: (result) async {
+        List l = result;
+        if (null != l && l.length > 0) {
+          setState(() {
+            hasReport = true;
+          });
+        }
       },
     );
   }

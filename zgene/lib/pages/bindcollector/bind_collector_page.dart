@@ -286,7 +286,7 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
                         isCollapsed: true,
                         hintStyle: TextStyle(
                           fontSize: 15,
-                          color: ColorConstant.Text_5E6F88,
+                          color: ColorConstant.Text_8E9AB,
                         ),
                       ),
                       style: TextStyle(

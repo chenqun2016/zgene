@@ -643,6 +643,7 @@ class _MyPageState extends BaseWidgetState<MyPage> {
         break;
       case 11: //关于Z基因
         NavigatorUtil.push(context, AboutZPage());
+        // BaseLogin.login();
         break;
     }
   }

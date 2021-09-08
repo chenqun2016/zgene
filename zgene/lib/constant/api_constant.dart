@@ -11,6 +11,8 @@ class ApiConstant {
   static const String categories = "/api/v1/categories";
   //内容详情
   static const String contentDetail = "/api/v1/archive";
+//阅读全部消息
+  static const String readMessage = "/api/v1/user/notice/readall";
 
   ///********************************* 用户 *****************************///
   //隐私政策

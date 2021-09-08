@@ -10,11 +10,13 @@ import 'package:zgene/constant/app_notification.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/http/http_utils.dart';
+import 'package:zgene/models/msg_event.dart';
 import 'package:zgene/pages/login/bindPhone_login.dart';
 import 'package:zgene/pages/login/phone_login.dart';
 import 'package:zgene/util/base_widget.dart';
 
 import 'package:flutter/material.dart';
+import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/notification_utils.dart';
 import 'package:zgene/util/screen_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
@@ -33,24 +35,12 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
     showHead = true;
     setWantKeepAlive = true;
     backImgPath = "assets/images/login/icon_mainLogin_backImg.png";
-    weChatResponseEventHandler.distinct((a, b) => a == b).listen((res) {
-      if (res is WeChatAuthResponse) {
-        int errCode = res.errCode;
-        // MyLogUtil.d('微信登录返回值：ErrCode :$errCode  code:${res.code}');
-        if (errCode == 0) {
-          String code = res.code;
-          print('wxwxwxwxwxwxwx' + code);
-          //把微信登录返回的code传给后台，剩下的事就交给后台处理
-          print("+++++++++++++++++++++++++++++");
-          wxLoginHttp(code);
-          // showToast("用户同意授权成功");
-        } else if (errCode == -4) {
-          // showToast("用户拒绝授权");
-          print('wxwxwxwxwxwxwx用户拒绝授权');
-        } else if (errCode == -2) {
-          // showToast("用户取消授权");
-          print('wxwxwxwxwxwxwx用户取消授权');
-        }
+
+    NotificationCenter.instance.addObserver(NotificationName.WxCode, (object) {
+      if (object != null) {
+        print(
+            "{{{{{{{{{{{{{{{{{{{{{{{{{000000000000000000000000}}}}}}}}}}}}}}}}}}}}}}}}}");
+        wxLoginHttp(object);
       }
     });
   }
@@ -59,6 +49,8 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
+    NotificationCenter.instance.removeNotification(NotificationName.WxCode);
+    print("登录销毁了");
   }
 
   var isAgreePrivacy = false;
@@ -370,7 +362,8 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
   }
 
   void wxLoginHttp(String code) {
-    print("======================================");
+    print(
+        "{{{{{{{{{{{{{{{{{{{{{{{{{8888888888888888888888888}}}}}}}}}}}}}}}}}}}}}}}}}");
     Map<String, dynamic> map = new HashMap();
     map["code"] = code;
 
@@ -381,6 +374,8 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
       parameters: map,
       method: HttpUtils.POST,
       onSuccess: (data) {
+        print(
+            "{{{{{{{{{{{{{{{{{{{{{{{{{+++++++++++++++++++}}}}}}}}}}}}}}}}}}}}}}}}}");
         print(data);
         EasyLoading.dismiss();
         var spUtils = SpUtils();
@@ -399,7 +394,8 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
         }
       },
       onError: (code, error) {
-        print("-------------------------");
+        print(
+            "{{{{{{{{{{{{{{{{{{{{{{{{{-------------------}}}}}}}}}}}}}}}}}}}}}}}}}");
         EasyLoading.showError(error ?? "");
       },
     );
@@ -420,6 +416,8 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
       parameters: map,
       method: HttpUtils.POST,
       onSuccess: (data) {
+        print("-------------------");
+        print(data);
         EasyLoading.dismiss();
         var spUtils = SpUtils();
         spUtils.setStorage(SpConstant.Token, data["token"]);

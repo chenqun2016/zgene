@@ -436,6 +436,7 @@ class _MySetPageState extends BaseWidgetState<MySetPage> {
       parameters: map,
       method: HttpUtils.POST,
       onSuccess: (data) {
+        print("--------------------");
         print(data);
         EasyLoading.showSuccess("绑定成功");
       },

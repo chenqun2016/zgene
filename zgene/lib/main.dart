@@ -16,10 +16,13 @@ import 'package:zgene/pages/my/my_contant_us.dart';
 import 'package:zgene/pages/splash_page.dart';
 import 'package:zgene/pages/tabs/report_page.dart';
 import 'package:zgene/util/common_utils.dart';
+import 'package:zgene/util/notification_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/widget/restart_widget.dart';
 import 'configure_nonweb.dart' if (dart.library.html) 'configure_web.dart';
+import 'constant/app_notification.dart';
+import 'models/msg_event.dart';
 import 'navigator/tab_navigator.dart';
 import 'pages/bindcollector/bind_collector_page.dart';
 import 'pages/bindcollector/bind_step_1.dart';
@@ -77,6 +80,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  final eventBus = CommonUtils.getInstance();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -89,6 +94,28 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         );
     _installFluwx();
     WidgetsBinding.instance.addObserver(this);
+    weChatResponseEventHandler.distinct((a, b) => a == b).listen((res) {
+      if (res is WeChatAuthResponse) {
+        int errCode = res.errCode;
+        // MyLogUtil.d('微信登录返回值：ErrCode :$errCode  code:${res.code}');
+        if (errCode == 0) {
+          String code = res.code;
+          print('wxwxwxwxwxwxwx' + code);
+          //把微信登录返回的code传给后台，剩下的事就交给后台处理
+          print("+++++++++++++++++++++++++++++");
+          NotificationCenter.instance
+              .postNotification(NotificationName.WxCode, code);
+          // wxLoginHttp(code);
+          // showToast("用户同意授权成功");
+        } else if (errCode == -4) {
+          // showToast("用户拒绝授权");
+          print('wxwxwxwxwxwxwx用户拒绝授权');
+        } else if (errCode == -2) {
+          // showToast("用户取消授权");
+          print('wxwxwxwxwxwxwx用户取消授权');
+        }
+      }
+    });
   }
 
   _installFluwx() async {

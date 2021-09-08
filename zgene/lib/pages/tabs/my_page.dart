@@ -7,6 +7,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/app_notification.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/event/event_bus.dart';
 import 'package:zgene/http/http_utils.dart';
@@ -65,6 +66,10 @@ class _MyPageState extends BaseWidgetState<MyPage> {
       setData();
     });
 
+    bus.on(CommonConstant.refreshMine, (event) {
+      getHttp();
+    });
+
     HomeGetHttp(18, (result) {
       ContentModel contentModel = ContentModel.fromJson(result);
       if (contentModel.archives.length > 0) {
@@ -116,6 +121,7 @@ class _MyPageState extends BaseWidgetState<MyPage> {
       },
       onError: (code, error) {
         EasyLoading.showError(error ?? "");
+        setData();
         print(error);
       },
     );
@@ -151,9 +157,11 @@ class _MyPageState extends BaseWidgetState<MyPage> {
   @override
   void dispose() {
     super.dispose();
-    // print("个人中心");
+    print("个人中心销毁");
     NotificationCenter.instance
         .removeNotification(NotificationName.GetUserInfo);
+    eventBus.destroy();
+    bus.off(CommonConstant.refreshMine);
   }
 
 // assets/images/mine/img_bg_my.png

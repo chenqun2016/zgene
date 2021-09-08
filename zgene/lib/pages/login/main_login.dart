@@ -8,7 +8,9 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/app_notification.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
+import 'package:zgene/event/event_bus.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/msg_event.dart';
 import 'package:zgene/pages/login/bindPhone_login.dart';
@@ -383,8 +385,9 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
           spUtils.setStorage(SpConstant.Token, data["token"]);
           spUtils.setStorage(SpConstant.IsLogin, true);
           HttpUtils.clear();
-          NotificationCenter.instance
-              .postNotification(NotificationName.GetUserInfo, null);
+          // NotificationCenter.instance
+          //     .postNotification(NotificationName.GetUserInfo, null);
+          bus.emit(CommonConstant.refreshMine);
 
           Navigator.popUntil(context, ModalRoute.withName('/'));
         } else {
@@ -424,9 +427,9 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
         if (data["has_mobile"]) {
           HttpUtils.clear();
 
-          NotificationCenter.instance
-              .postNotification(NotificationName.GetUserInfo, null);
-
+          // NotificationCenter.instance
+          //     .postNotification(NotificationName.GetUserInfo, null);
+          bus.emit(CommonConstant.refreshMine);
           Navigator.popUntil(context, ModalRoute.withName('/'));
         } else {
           toBindingPhone();

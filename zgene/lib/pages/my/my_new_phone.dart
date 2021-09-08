@@ -9,7 +9,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/app_notification.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
+import 'package:zgene/event/event_bus.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/login/set_passwoed.dart';
@@ -447,9 +449,9 @@ class _MyNewPhonePageState extends BaseWidgetState<MyNewPhonePage> {
         spUtils.setStorage(SpConstant.UserMobile, number);
         HttpUtils.clear();
 
-        NotificationCenter.instance
-            .postNotification(NotificationName.GetUserInfo, null);
-
+        // NotificationCenter.instance
+        //     .postNotification(NotificationName.GetUserInfo, null);
+        bus.emit(CommonConstant.refreshMine);
         Navigator.of(context)
           ..pop()
           ..pop();

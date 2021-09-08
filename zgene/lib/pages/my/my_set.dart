@@ -7,7 +7,9 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/app_notification.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
+import 'package:zgene/event/event_bus.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/login/bindPhone_login.dart';
@@ -404,11 +406,14 @@ class _MySetPageState extends BaseWidgetState<MySetPage> {
         //清除用户信息
         spUtils.setStorage(SpConstant.UserName, "");
         spUtils.setStorage(SpConstant.UserAvatar, "");
+        spUtils.setStorage(SpConstant.isBindWx, false);
+
         HttpUtils.clear();
 
         EasyLoading.showSuccess('退出登录成功');
-        NotificationCenter.instance
-            .postNotification(NotificationName.GetUserInfo, null);
+        // NotificationCenter.instance
+        //     .postNotification(NotificationName.GetUserInfo, null);
+        bus.emit(CommonConstant.refreshMine);
         Navigator.pop(context);
 
         break;

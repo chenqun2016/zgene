@@ -13,7 +13,8 @@ class CommonConstant {
 
   //iOSAppId
   static const String iOSAppId = "";
-
+  //iOSAppId
+  static const String refreshMine = "refreshMine";
   //主题颜色
   static int THEME_COLOR = 0xFF2E9CF9;
   //主题颜色渐变起始颜色

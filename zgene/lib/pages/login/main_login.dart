@@ -377,14 +377,12 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
         print(
             "{{{{{{{{{{{{{{{{{{{{{{{{{+++++++++++++++++++}}}}}}}}}}}}}}}}}}}}}}}}}");
         print(data);
-        EasyLoading.dismiss();
-        var spUtils = SpUtils();
-        spUtils.setStorage(SpConstant.Token, data["token"]);
-        spUtils.setStorage(SpConstant.IsLogin, true);
-
-        if (data["has_mobile"]) {
+        if (data["has_mobile"] == null) {
+          EasyLoading.showSuccess("登陆成功");
+          var spUtils = SpUtils();
+          spUtils.setStorage(SpConstant.Token, data["token"]);
+          spUtils.setStorage(SpConstant.IsLogin, true);
           HttpUtils.clear();
-
           NotificationCenter.instance
               .postNotification(NotificationName.GetUserInfo, null);
 

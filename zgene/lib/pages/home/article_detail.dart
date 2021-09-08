@@ -120,7 +120,6 @@ class _ArticleDetailViewState extends State<ArticleDetailView> {
                             _title = title;
                             setState(() {});
                           },
-
                           // 加载进度变化事件.
                           onProgressChanged: (InAppWebViewController controller,
                               int progress) {

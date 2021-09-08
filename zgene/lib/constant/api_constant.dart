@@ -48,9 +48,10 @@ class ApiConstant {
   static const String loginApp_phone = "/api/v1/user/login/app_phone";
   //手机号绑定
   static const String bindAppPhone = "/api/v1/user/bind/mobile";
-  //手机号登录
+  //微信联合登录
   static const String login_wx = "/api/v1/user/login/wx";
-
+  //苹果联合登录
+  static const String login_apple = "/api/v1/user/login/apple";
   //隐私政策
   static const String privacys = CommonConstant.BASE_API + ApiConstant.privacy;
 

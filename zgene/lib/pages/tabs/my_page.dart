@@ -677,8 +677,8 @@ class _MyPageState extends BaseWidgetState<MyPage> {
         NavigatorUtil.push(context, CommonQusListPage());
         break;
       case 11: //关于Z基因
-        NavigatorUtil.push(context, AboutZPage());
-        // BaseLogin.login();
+        // NavigatorUtil.push(context, AboutZPage());
+        BaseLogin.login();
         break;
     }
   }

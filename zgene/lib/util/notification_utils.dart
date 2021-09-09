@@ -33,7 +33,7 @@ class NotificationCenter {
   postNotification(String postName, dynamic object) {
     //检索Map是否含有postName
     if (postNameMap.containsKey(postName)) {
-      postNameMap[postName] = object;
+      postNameMap[postName]();
       getObject(postNameMap[postName]);
     }
   }

@@ -57,14 +57,6 @@ class _MyPageState extends BaseWidgetState<MyPage> {
     getHttp();
     setWantKeepAlive = true;
     backImgPath = "assets/images/mine/img_bg_my.png";
-    NotificationCenter.instance.addObserver(NotificationName.GetUserInfo,
-        (object) {
-      print("123123123123123123123123");
-      if (object == null) {
-        getHttp();
-      }
-      setData();
-    });
 
     bus.on(CommonConstant.refreshMine, (event) {
       getHttp();
@@ -99,6 +91,8 @@ class _MyPageState extends BaseWidgetState<MyPage> {
   UserInfoModel userInfo = UserInfoModel();
 
   getHttp() {
+    print("刷新页面");
+    print(spUtils.getStorageDefault(SpConstant.Token, ""));
     // EasyLoading.show(status: 'loading...');
     // Map<String, dynamic> map = new HashMap();
     HttpUtils.requestHttp(
@@ -121,7 +115,6 @@ class _MyPageState extends BaseWidgetState<MyPage> {
       onError: (code, error) {
         EasyLoading.showError(error ?? "");
         setData();
-        print(error);
       },
     );
   }

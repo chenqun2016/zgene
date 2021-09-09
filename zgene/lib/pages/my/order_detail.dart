@@ -27,7 +27,8 @@ class OrderDetailPage extends BaseWidget {
 }
 
 class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
-  String appAsalesRules = CommonConstant.defaultAppAsalesRules;
+  String appAsalesRules = SpUtils().getStorageDefault(
+      SpConstant.appAsalesRules, CommonConstant.defaultAppAsalesRules);
 
   @override
   void initState() {

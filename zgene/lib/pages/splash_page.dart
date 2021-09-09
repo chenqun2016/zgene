@@ -39,7 +39,7 @@ class _SplashPageState extends State<SplashPage> {
     if (isFirst) {
       WidgetsBinding.instance.addPostFrameCallback((callback) {
         ///显示协议弹窗
-        UiUitls.showAgreement(context, onAgree: () {
+        UiUitls.showAgreement2(context, onAgree: () {
           SpUtils().setStorage(SpConstant.SpIsFirst, false);
           isFirst = false;
           showSkip = true;

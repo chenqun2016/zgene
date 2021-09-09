@@ -191,7 +191,7 @@ class ShareUtils {
     }
 
     if (Platform.isAndroid) {
-      // message.imagePath = await _tempSaveTestImage();
+      message.imagePath = await _tempSaveTestImage();
     } else {
       File compressedFile = await FlutterNativeImage.compressImage(
           await _tempSaveTestImage(),

@@ -95,10 +95,9 @@ class _ArticleDetailViewState extends State<ArticleDetailView> {
                           "assets/images/home/icon_article_detail.png"),
                     ),
                     onPressed: () {
-                      print(CommonUtils.splicingUrl(CommonUtils.splicingUrl(
-                          SpUtils()
-                              .getStorageDefault(SpConstant.appShareIcon, "")
-                              .toString())));
+                      print(CommonUtils.splicingUrl(SpUtils()
+                          .getStorageDefault(SpConstant.appShareIcon, "")
+                          .toString()));
                       ShareUtils.showSheet(
                           context: context,
                           shareTitle: _title,

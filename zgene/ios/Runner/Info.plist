@@ -37,6 +37,18 @@
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
 			<string>alipay</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>alipay2021002156610854</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.jt.zgene</string>
+			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>

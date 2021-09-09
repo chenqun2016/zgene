@@ -163,8 +163,10 @@ class _contantUsPageState extends BaseWidgetState<contantUsPage> {
   _onTapEvent(index) {
     switch (index) {
       case 0:
-        Clipboard.setData(
-            ClipboardData(text: CommonConstant.App_Contact_Wx_Code));
+        Clipboard.setData(ClipboardData(
+            text: SpUtils()
+                .getStorageDefault(SpConstant.appKefuQq, "")
+                .toString()));
         EasyLoading.showSuccess('客服（QQ）复制成功');
         break;
       case 1:

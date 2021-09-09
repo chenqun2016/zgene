@@ -38,12 +38,11 @@ class _WebViewWidgetState extends State<BasePageWebView> {
       crossPlatform: InAppWebViewOptions(
         useShouldOverrideUrlLoading: true,
         mediaPlaybackRequiresUserGesture: false,
-        userAgent: "zgene",
+        userAgent: "Z-Gene",
       ),
       android: AndroidInAppWebViewOptions(
-        useHybridComposition: true,
-        cacheMode: AndroidCacheMode.LOAD_NO_CACHE
-      ),
+          useHybridComposition: true,
+          cacheMode: AndroidCacheMode.LOAD_NO_CACHE),
       ios: IOSInAppWebViewOptions(
         allowsInlineMediaPlayback: true,
       ));

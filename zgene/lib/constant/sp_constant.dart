@@ -32,6 +32,10 @@ class SpConstant {
   static const String appKefuQq = "app_kefu_qq";
   //应用客服服务时间
   static const String appServiceTime = "app_service_time";
+  //分享图片
+  static const String appShareIcon = "app_share_icon";
+  //分享图片
+  static const String appShareSubtitle = "app_share_subtitle";
   //--End:Z基因项目相关配置接口
   //token
   static const String Token = "token";

@@ -59,14 +59,14 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
       setState(() {
         list = model.addon.archives;
         _archive = model.archive;
-        try{
-          log("hahaha=="+_archive.description);
-          if(null != _archive.description && _archive.description.isNotEmpty){
-            var json =  jsonDecode(_archive.description);
+        try {
+          log("hahaha==" + _archive.description);
+          if (null != _archive.description && _archive.description.isNotEmpty) {
+            var json = jsonDecode(_archive.description);
             reportDesModel = ReportDesModel.fromJson(json);
           }
-        }catch(e){
-          print("exception=="+e.toString());
+        } catch (e) {
+          print("exception==" + e.toString());
         }
       });
     });
@@ -246,12 +246,14 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
     }
     return GestureDetector(
       onTap: () {
-        NavigatorUtil.push(
-            context,
-            BaseWebView(
-              url: ApiConstant.getH5DetailUrl(archive.id.toString()),
-              title: archive.title,
-            ));
+        if (index < 3) {
+          NavigatorUtil.push(
+              context,
+              BaseWebView(
+                url: ApiConstant.getH5DetailUrl(archive.id.toString()),
+                title: archive.title,
+              ));
+        }
       },
       child: Opacity(
         opacity: index < 3 ? 1 : 0.4,

@@ -422,7 +422,7 @@ class _MySetPageState extends BaseWidgetState<MySetPage> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    bus.off(CommonConstant.WxCode);
+    // bus.off(CommonConstant.WxCode);
   }
 
   void bindWX() {
@@ -449,6 +449,8 @@ class _MySetPageState extends BaseWidgetState<MySetPage> {
         print("--------------------");
         print(data);
         EasyLoading.showSuccess("绑定成功");
+        SpUtils().setStorage(SpConstant.isBindWx, true);
+        setState(() {});
       },
       onError: (code, error) {
         print("cao");
@@ -466,6 +468,8 @@ class _MySetPageState extends BaseWidgetState<MySetPage> {
       onSuccess: (data) {
         print(data);
         EasyLoading.showSuccess("解绑成功");
+        SpUtils().setStorage(SpConstant.isBindWx, false);
+        setState(() {});
       },
       onError: (code, error) {
         EasyLoading.showError(error ?? "");

@@ -108,11 +108,9 @@ class _ArticleDetailViewState extends State<ArticleDetailView> {
                               .toString(),
                           shareUrl: ApiConstant.getH5ShareUrl(id.toString()),
                           shareType: 1,
-                          shareImageUrl: CommonUtils.splicingUrl(
-                              CommonUtils.splicingUrl(SpUtils()
-                                  .getStorageDefault(
-                                      SpConstant.appShareIcon, "")
-                                  .toString())));
+                          shareImageUrl: CommonUtils.splicingUrl(SpUtils()
+                              .getStorageDefault(SpConstant.appShareIcon, "")
+                              .toString()));
                     }),
               ],
             ),

@@ -275,8 +275,8 @@ Future<void> getSetting() async {
           if (item.name == SpConstant.appShareIcon) {
             spUtils.setStorage(SpConstant.appShareIcon, item.value);
           }
-          if (item.name == SpConstant.appShareIcon) {
-            spUtils.setStorage(SpConstant.appShareIcon, item.value);
+          if (item.name == SpConstant.appShareSubtitle) {
+            spUtils.setStorage(SpConstant.appShareSubtitle, item.value);
           }
         }
       } catch (e) {

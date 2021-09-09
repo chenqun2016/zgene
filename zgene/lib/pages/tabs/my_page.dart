@@ -633,6 +633,11 @@ class _MyPageState extends BaseWidgetState<MyPage> {
     switch (index) {
       case 1: //消息
         NavigatorUtil.push(context, MyMessagePage());
+        final result = await Navigator.push(
+            context, MaterialPageRoute(builder: (context) => MyMessagePage()));
+        if (result != null) {
+          getNoticeCount();
+        }
         break;
       case 2: //个人信息
         // NavigatorUtil.push(context, MyInfoPage());
@@ -681,8 +686,8 @@ class _MyPageState extends BaseWidgetState<MyPage> {
         NavigatorUtil.push(context, CommonQusListPage());
         break;
       case 11: //关于Z基因
-        // NavigatorUtil.push(context, AboutZPage());
-        BaseLogin.login();
+        NavigatorUtil.push(context, AboutZPage());
+        // BaseLogin.login();
         break;
     }
   }

@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'dart:io';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -59,6 +60,7 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
   }
 
   var isAgreePrivacy = false;
+  var enterThe = false;
 
 //
   @override
@@ -135,204 +137,236 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
                       ],
                     ),
                   ))),
-          Container(
-              margin: EdgeInsets.only(top: 16.h),
-              width: 312.w,
-              height: 54.h,
-              child: OutlinedButton(
-                  style: ButtonStyle(
-                      side: MaterialStateProperty.all(BorderSide(
-                          width: 0, color: ColorConstant.WhiteColor)),
-                      backgroundColor:
-                          MaterialStateProperty.all(ColorConstant.WxGreenColor),
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(28.h)))),
-                  onPressed: () {
-                    loginWX();
-                  },
-                  child: Container(
-                    child: Row(
-                      children: [
-                        Expanded(child: Container()),
-                        Image(
-                          image: AssetImage(
-                              "assets/images/login/iocn_login_weixin.png"),
-                          height: 36.w,
-                          width: 36.w,
-                          fit: BoxFit.fill,
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(left: 11.w),
-                          child: Text(
-                            "微信号登录",
-                            textAlign: TextAlign.center,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: 16.sp,
-                              fontStyle: FontStyle.normal,
-                              fontWeight: FontWeight.w500,
-                              color: ColorConstant.WhiteColor,
+          Offstage(
+            offstage: !CommonConstant.Is_WeChat_Installed,
+            child: Container(
+                margin: EdgeInsets.only(top: 16.h),
+                width: 312.w,
+                height: 54.h,
+                child: OutlinedButton(
+                    style: ButtonStyle(
+                        side: MaterialStateProperty.all(BorderSide(
+                            width: 0, color: ColorConstant.WhiteColor)),
+                        backgroundColor: MaterialStateProperty.all(
+                            ColorConstant.WxGreenColor),
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(28.h)))),
+                    onPressed: () {
+                      loginWX();
+                    },
+                    child: Container(
+                      child: Row(
+                        children: [
+                          Expanded(child: Container()),
+                          Image(
+                            image: AssetImage(
+                                "assets/images/login/iocn_login_weixin.png"),
+                            height: 36.w,
+                            width: 36.w,
+                            fit: BoxFit.fill,
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(left: 11.w),
+                            child: Text(
+                              "微信号登录",
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.w500,
+                                color: ColorConstant.WhiteColor,
+                              ),
                             ),
                           ),
-                        ),
-                        Expanded(child: Container()),
-                      ],
-                    ),
-                  ))),
-          Container(
-              margin: EdgeInsets.only(top: 16.h),
-              width: 312.w,
-              height: 54.h,
-              child: OutlinedButton(
-                  style: ButtonStyle(
-                      side: MaterialStateProperty.all(BorderSide(
-                          width: 0, color: ColorConstant.WhiteColor)),
-                      backgroundColor: MaterialStateProperty.all(
-                          ColorConstant.AppleBlackColor),
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(28.h)))),
-                  onPressed: () {
-                    LoginApple();
-                    // toBindingPhone();
-                  },
-                  child: Container(
-                    child: Row(
-                      children: [
-                        Expanded(child: Container()),
-                        Image(
-                          image: AssetImage(
-                              "assets/images/login/iocn_login_apple.png"),
-                          height: 36.w,
-                          width: 36.w,
-                          fit: BoxFit.fill,
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(left: 11.w),
-                          child: Text(
-                            "Apple登录",
-                            textAlign: TextAlign.center,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: 16.sp,
-                              fontStyle: FontStyle.normal,
-                              fontWeight: FontWeight.w500,
-                              color: ColorConstant.WhiteColor,
+                          Expanded(child: Container()),
+                        ],
+                      ),
+                    ))),
+          ),
+          Offstage(
+            offstage: !(CommonConstant.Is_WeChat_Installed && Platform.isIOS),
+            child: Container(
+                margin: EdgeInsets.only(top: 16.h),
+                width: 312.w,
+                height: 54.h,
+                child: OutlinedButton(
+                    style: ButtonStyle(
+                        side: MaterialStateProperty.all(BorderSide(
+                            width: 0, color: ColorConstant.WhiteColor)),
+                        backgroundColor: MaterialStateProperty.all(
+                            ColorConstant.AppleBlackColor),
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(28.h)))),
+                    onPressed: () {
+                      LoginApple();
+                      // toBindingPhone();
+                    },
+                    child: Container(
+                      child: Row(
+                        children: [
+                          Expanded(child: Container()),
+                          Image(
+                            image: AssetImage(
+                                "assets/images/login/iocn_login_apple.png"),
+                            height: 36.w,
+                            width: 36.w,
+                            fit: BoxFit.fill,
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(left: 11.w),
+                            child: Text(
+                              "Apple登录",
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.w500,
+                                color: ColorConstant.WhiteColor,
+                              ),
                             ),
                           ),
-                        ),
-                        Expanded(child: Container()),
-                      ],
-                    ),
-                  ))),
+                          Expanded(child: Container()),
+                        ],
+                      ),
+                    ))),
+          ),
           Stack(children: [
             Container(
               margin: EdgeInsets.only(
-                top: 13.h,
+                top: 20.h,
               ),
-              child: Row(
+              child: Column(
                 children: [
-                  Expanded(child: Container()),
-                  Container(
-                      width: 12.w,
-                      height: 12.w,
-                      child: IconButton(
-                          padding: EdgeInsets.all(0),
-                          onPressed: () {
-                            isAgreePrivacy = !isAgreePrivacy;
-                            setState(() {});
-                          },
-                          icon: Image(
-                            image: !isAgreePrivacy
-                                ? AssetImage(
-                                    "assets/images/login/icon_login_circle.png")
-                                : AssetImage(
-                                    "assets/images/login/icon_login_agreeCircle.png"),
-                            height: 12.w,
-                            width: 12.w,
-                            fit: BoxFit.fill,
-                          ))),
-                  Container(
-                    padding: EdgeInsets.only(left: 4.w),
-                    child: RichText(
-                        text: TextSpan(
-                            text: "我已阅读Z基因",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontStyle: FontStyle.normal,
-                              fontWeight: FontWeight.w400,
-                              color: ColorConstant.PromptGrayColor,
-                            ),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
+                  Row(
+                    children: [
+                      Expanded(child: Container()),
+                      Container(
+                          width: 12.w,
+                          height: 12.w,
+                          child: IconButton(
+                              padding: EdgeInsets.all(0),
+                              onPressed: () {
                                 isAgreePrivacy = !isAgreePrivacy;
+                                if (isAgreePrivacy) {
+                                  enterThe = false;
+                                } else {
+                                  enterThe = true;
+                                }
                                 setState(() {});
                               },
-                            children: [
-                          TextSpan(
-                              text: "《隐私条款》",
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontStyle: FontStyle.normal,
-                                fontWeight: FontWeight.w400,
-                                color: ColorConstant.MainBlueColor,
-                                // decoration: TextDecoration.underline,
-                              ),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  print("点击隐私");
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => BaseWebView(
-                                                url: CommonConstant.privacy,
-                                                title: "隐私政策",
-                                              )));
-                                }),
-                          TextSpan(
-                              text: "和",
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontStyle: FontStyle.normal,
-                                fontWeight: FontWeight.w400,
-                                color: ColorConstant.PromptGrayColor,
-                              )),
-                          TextSpan(
-                              text: "《服务协议》",
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontStyle: FontStyle.normal,
-                                fontWeight: FontWeight.w400,
-                                color: ColorConstant.MainBlueColor,
-                                // decoration: TextDecoration.underline,
-                              ),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  print("点击服务");
+                              icon: Image(
+                                image: !isAgreePrivacy
+                                    ? AssetImage(
+                                        "assets/images/login/icon_login_circle.png")
+                                    : AssetImage(
+                                        "assets/images/login/icon_login_agreeCircle.png"),
+                                height: 12.w,
+                                width: 12.w,
+                                fit: BoxFit.fill,
+                              ))),
+                      Container(
+                        padding: EdgeInsets.only(left: 4.w),
+                        child: RichText(
+                            text: TextSpan(
+                                text: "我已阅读Z基因",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.w400,
+                                  color: ColorConstant.PromptGrayColor,
+                                ),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    isAgreePrivacy = !isAgreePrivacy;
+                                    if (isAgreePrivacy) {
+                                      enterThe = false;
+                                    } else {
+                                      enterThe = true;
+                                    }
+                                    setState(() {});
+                                  },
+                                children: [
+                              TextSpan(
+                                  text: "《隐私条款》",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.w400,
+                                    color: ColorConstant.MainBlueColor,
+                                    // decoration: TextDecoration.underline,
+                                  ),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      print("点击隐私");
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => BaseWebView(
+                                                    url: CommonConstant.privacy,
+                                                    title: "隐私政策",
+                                                  )));
+                                    }),
+                              TextSpan(
+                                  text: "和",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.w400,
+                                    color: ColorConstant.PromptGrayColor,
+                                  )),
+                              TextSpan(
+                                  text: "《服务协议》",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.w400,
+                                    color: ColorConstant.MainBlueColor,
+                                    // decoration: TextDecoration.underline,
+                                  ),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      print("点击服务");
 
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => BaseWebView(
-                                                url: CommonConstant.agreement,
-                                                title: "服务协议",
-                                              )));
-                                }),
-                        ])),
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => BaseWebView(
+                                                    url: CommonConstant
+                                                        .agreement,
+                                                    title: "服务协议",
+                                                  )));
+                                    }),
+                            ])),
+                      ),
+                      Expanded(child: Container()),
+                    ],
                   ),
-                  Expanded(child: Container()),
+                  Container(
+                    height: 20.h,
+                  )
                 ],
               ),
             ),
             Positioned(
                 left: 10.w,
-                child: InkWell(
+                child: InkResponse(
+                  highlightColor: Colors.transparent,
+                  radius: 0.0,
                   onTap: () {
                     isAgreePrivacy = !isAgreePrivacy;
+                    if (isAgreePrivacy) {
+                      enterThe = false;
+                    } else {
+                      enterThe = true;
+                    }
+
                     setState(() {});
                   },
                   child: Container(
                     width: 100.w,
-                    height: 50.h,
+                    height: 100.h,
                     // decoration: new BoxDecoration(
                     //   color: ColorConstant.WhiteColorB2,
                     //   borderRadius: BorderRadius.all(Radius.circular(20.h)),
@@ -343,6 +377,24 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
                   ),
                 ))
           ]),
+          Offstage(
+            offstage: !enterThe,
+            child: Row(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(left: 60.w, top: 0),
+                  child: Text(
+                    "请确认已阅读Z基因隐私条款",
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: ColorConstant.MainRed,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )
         ],
       ),
     ));
@@ -350,8 +402,13 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
 
   void loginWX() {
     if (!isAgreePrivacy) {
+      enterThe = true;
+      setState(() {});
+
       return;
     }
+    enterThe = false;
+    setState(() {});
     sendWeChatAuth(scope: "snsapi_userinfo", state: "sivms_state").then((data) {
       setState(() {
         print("拉取微信用户信息：" + data.toString());
@@ -368,8 +425,12 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
     //   },
     // );
     if (!isAgreePrivacy) {
+      enterThe = true;
+      setState(() {});
       return;
     }
+    enterThe = false;
+    setState(() {});
     final credential = await SignInWithApple.getAppleIDCredential(
       scopes: [
         AppleIDAuthorizationScopes.email,
@@ -455,16 +516,26 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
 
   void selectPhoneLogin() {
     if (!isAgreePrivacy) {
+      enterThe = true;
+      setState(() {});
+
       return;
     }
+    enterThe = false;
+    setState(() {});
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => PhoneLoginPage()));
   }
 
   void toBindingPhone() {
     if (!isAgreePrivacy) {
+      enterThe = true;
+      setState(() {});
+
       return;
     }
+    enterThe = false;
+    setState(() {});
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => BindPhoneLoginPage()));
   }

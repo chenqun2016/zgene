@@ -59,7 +59,11 @@ class _MyPageState extends BaseWidgetState<MyPage> {
     backImgPath = "assets/images/mine/img_bg_my.png";
 
     bus.on(CommonConstant.refreshMine, (event) {
-      getHttp();
+      if (event == 1) {
+        setData();
+      } else {
+        getHttp();
+      }
     });
 
     HomeGetHttp(18, (result) {
@@ -670,7 +674,7 @@ class _MyPageState extends BaseWidgetState<MyPage> {
 
         break;
       case 6: //产品购买
-        CommonUtils.toUrl(context: context,url: CommonUtils.URL_BUY);
+        CommonUtils.toUrl(context: context, url: CommonUtils.URL_BUY);
         break;
       case 7: //我的报告
         NavigatorUtil.push(context, MyReportPage());

@@ -411,7 +411,7 @@ class _MySetPageState extends BaseWidgetState<MySetPage> {
         EasyLoading.showSuccess('退出登录成功');
         // NotificationCenter.instance
         //     .postNotification(NotificationName.GetUserInfo, null);
-        bus.emit(CommonConstant.refreshMine);
+        bus.emit(CommonConstant.refreshMine, 1);
         Navigator.pop(context);
 
         break;
@@ -422,7 +422,7 @@ class _MySetPageState extends BaseWidgetState<MySetPage> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    // bus.off(CommonConstant.WxCode);
+    bus.off(CommonConstant.WxCode);
   }
 
   void bindWX() {
@@ -453,7 +453,6 @@ class _MySetPageState extends BaseWidgetState<MySetPage> {
         setState(() {});
       },
       onError: (code, error) {
-        print("cao");
         EasyLoading.showError(error ?? "");
       },
     );

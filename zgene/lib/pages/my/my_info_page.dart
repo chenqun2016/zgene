@@ -470,7 +470,7 @@ class _MyInfoPageState extends State<MyInfoPage> {
                 builder: (context) => MyEditorPage(
                       nikeName: _nickName,
                     )));
-        if (result != "") {
+        if (result != null) {
           print(result);
           _nickName = result;
         } else {}
@@ -483,7 +483,7 @@ class _MyInfoPageState extends State<MyInfoPage> {
                 builder: (context) => MyIntroductionPage(
                       introduction: _introduction,
                     )));
-        if (result != "") {
+        if (result != null) {
           print(result);
           _introduction = result;
         } else {}

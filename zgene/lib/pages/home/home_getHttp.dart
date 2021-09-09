@@ -13,7 +13,6 @@ Future<void> HomeGetHttp(int type, _CallBack callback) async {
   if (!isNetWorkAvailable) {
     return;
   }
-  EasyLoading.show(status: 'loading...');
 
   Map<String, dynamic> map = new HashMap();
   map['cid'] =
@@ -23,7 +22,6 @@ Future<void> HomeGetHttp(int type, _CallBack callback) async {
     parameters: map,
     method: HttpUtils.GET,
     onSuccess: (result) async {
-      EasyLoading.dismiss();
       if (callback != null) {
         callback(result);
       }
@@ -33,6 +31,7 @@ Future<void> HomeGetHttp(int type, _CallBack callback) async {
     },
   );
 }
+
 Future<void> CategoriesGetHttp(int type, _CallBack callback) async {
   bool isNetWorkAvailable = await CommonUtils.isNetWorkAvailable();
   if (!isNetWorkAvailable) {
@@ -41,8 +40,7 @@ Future<void> CategoriesGetHttp(int type, _CallBack callback) async {
   EasyLoading.show(status: 'loading...');
 
   Map<String, dynamic> map = new HashMap();
-  map['parent_cid'] =
-      type; //ID 6:示例报告（男） 7:示例报告（女）
+  map['parent_cid'] = type; //ID 6:示例报告（男） 7:示例报告（女）
   HttpUtils.requestHttp(
     ApiConstant.categories,
     parameters: map,
@@ -66,9 +64,8 @@ Future<void> ArchiveGetHttp(int id, _CallBack callback) async {
   }
   EasyLoading.show(status: 'loading...');
 
-
   HttpUtils.requestHttp(
-    ApiConstant.contentDetail+"/${id}",
+    ApiConstant.contentDetail + "/${id}",
     method: HttpUtils.GET,
     onSuccess: (result) async {
       EasyLoading.dismiss();
@@ -81,4 +78,3 @@ Future<void> ArchiveGetHttp(int id, _CallBack callback) async {
     },
   );
 }
-

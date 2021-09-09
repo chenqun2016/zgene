@@ -41,5 +41,20 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-    </application>
+
+       <activity
+           android:name=".wxapi.WXEntryActivity"
+           android:theme="@android:style/Theme.Translucent.NoTitleBar"
+           android:exported="true" />
+       <provider
+           android:name="androidx.core.content.FileProvider"
+           android:authorities="${applicationId}.JSharefileprovider"
+           android:exported="false"
+           android:grantUriPermissions="true">
+           <meta-data
+               android:name="android.support.FILE_PROVIDER_PATHS"
+               android:resource="@xml/jshare_file_provider_paths"
+             />
+       </provider>
+   </application>
 </manifest>

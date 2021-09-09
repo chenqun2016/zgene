@@ -69,7 +69,8 @@ class _VideoPageState extends State<VideoPage> {
       child: Stack(
         children: [
           Container(
-            margin: EdgeInsets.only(top: 80, bottom: 80),
+            alignment: Alignment.center,
+            margin: EdgeInsets.only(top: 70, bottom: 60),
             child: _chewieController != null &&
                     _chewieController.videoPlayerController.value.isInitialized
                 ? Chewie(
@@ -98,7 +99,7 @@ class _VideoPageState extends State<VideoPage> {
   /// 配置页面头部返回
   Widget customHeaderBack() {
     return Container(
-      margin: EdgeInsets.only(top: 20),
+      margin: EdgeInsets.only(top: 20,left: 10),
       child: IconButton(
           onPressed: () {
             Navigator.pop(context);

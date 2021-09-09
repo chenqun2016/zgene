@@ -63,8 +63,7 @@ class _WebViewWidgetState extends State<BasePageWebView> {
 
             initialOptions: options,
             initialUrlRequest: URLRequest(
-                url: Uri.parse(_url),
-                headers: {"Referer ": CommonConstant.BASE_API}),
+                url: Uri.parse(_url),),
 
             onLoadError: (controller, url, code, message) {
               print("url==$url // code==$code  // message==$message");
@@ -90,8 +89,7 @@ class _WebViewWidgetState extends State<BasePageWebView> {
 
               controller.loadUrl(
                   urlRequest: URLRequest(
-                      url: Uri.parse(_url),
-                      headers: {"Referer ": CommonConstant.BASE_API}));
+                      url: Uri.parse(_url),));
             },
             onLoadStart: (controller, url) async {
               if (!(url.toString().startsWith("http:") ||

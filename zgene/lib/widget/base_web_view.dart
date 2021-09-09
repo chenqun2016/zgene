@@ -42,6 +42,7 @@ class _WebViewWidgetState extends State<BasePageWebView> {
       ),
       android: AndroidInAppWebViewOptions(
         useHybridComposition: true,
+        cacheMode: AndroidCacheMode.LOAD_NO_CACHE
       ),
       ios: IOSInAppWebViewOptions(
         allowsInlineMediaPlayback: true,

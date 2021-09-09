@@ -207,6 +207,7 @@ class UiUitls {
 
   static showAgreement2(context, {onAgree, onCancel}) {
     showModalBottomSheet(
+      isDismissible: false,
       isScrollControlled: true,
       barrierColor: ColorConstant.AppleBlack99Color,
       backgroundColor: Colors.white,

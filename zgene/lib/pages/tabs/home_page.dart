@@ -142,6 +142,8 @@ class _HomePageState extends BaseWidgetState<HomePage> {
         itemCount: bannerList.length,
         autoplay: true,
         loop: false,
+        itemWidth: double.infinity,
+        itemHeight: 168,
         itemBuilder: (BuildContext context, int index) {
           Archives archives = bannerList[index];
           return GestureDetector(
@@ -157,25 +159,20 @@ class _HomePageState extends BaseWidgetState<HomePage> {
             //   bannerList[index],
             //   fit: BoxFit.fill,
             // ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(0),
-              child: FadeInImage.assetNetwork(
-                  placeholder: 'assets/images/home/img_default2.png',
-                  image: CommonUtils.splicingUrl(archives.imageUrl),
-                  width: double.infinity,
-                  height: 168,
-                  fadeInDuration: TimeUtils.fadeInDuration(),
-                  fadeOutDuration: TimeUtils.fadeOutDuration(),
-                  fit: BoxFit.cover,
-                  imageErrorBuilder: (context, error, stackTrace) {
-                    return Image.asset(
-                      'assets/images/home/img_default2.png',
-                      width: double.infinity,
-                      height: 168,
-                      fit: BoxFit.fill,
-                    );
-                  }),
-            ),
+            child: FadeInImage.assetNetwork(
+                placeholder: 'assets/images/home/img_default2.png',
+                image: CommonUtils.splicingUrl(archives.imageUrl),
+                fadeInDuration: TimeUtils.fadeInDuration(),
+                fadeOutDuration: TimeUtils.fadeOutDuration(),
+                fit: BoxFit.fill,
+                imageErrorBuilder: (context, error, stackTrace) {
+                  return Image.asset(
+                    'assets/images/home/img_default2.png',
+                    width: double.infinity,
+                    height: 168,
+                    fit: BoxFit.fill,
+                  );
+                }),
             // child: Image.asset(
             //   "assets/images/banner.png",
             //   height: 168,

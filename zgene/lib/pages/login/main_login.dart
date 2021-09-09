@@ -82,7 +82,7 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
           ),
           Container(
             child: Text(
-              "欢迎登陆Z基因",
+              "欢迎登录Z基因",
               textAlign: TextAlign.center,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(

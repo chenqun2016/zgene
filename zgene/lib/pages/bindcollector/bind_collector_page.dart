@@ -4,6 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_pickers/pickers.dart';
+import 'package:flutter_pickers/time_picker/model/pduration.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
@@ -374,6 +375,7 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
                 onTap: () async {
                   Pickers.showDatePicker(
                     context,
+                    maxDate: PDuration.now(),
                     onConfirm: (p) {
                       setState(() {
                         birthText = "${p.year}-${p.month}-${p.day}";

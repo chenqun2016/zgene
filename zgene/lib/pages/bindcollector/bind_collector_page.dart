@@ -6,12 +6,15 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_pickers/pickers.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/bindcollector/qr_scanner_page.dart';
+import 'package:zgene/pages/my/my_contant_us.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
+import 'package:zgene/widget/base_web.dart';
 import 'package:zgene/widget/my_stepper.dart';
 
 class BindCollectorPage extends BaseWidget {
@@ -58,6 +61,12 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
     _textEditingController.dispose();
     _nameEditingController.dispose();
     super.dispose();
+  }
+
+  @override
+  Future rightBtnTap(BuildContext context) {
+    CommonUtils.toCollectionGuide(context);
+    return super.rightBtnTap(context);
   }
 
   @override
@@ -181,8 +190,9 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
           Stack(
             children: [
               Container(
+                width: double.infinity,
                 margin: EdgeInsets.only(top: 30),
-                padding: EdgeInsets.only(top: 90),
+                padding: EdgeInsets.only(top: 90,bottom: 40),
                 decoration: BoxDecoration(
                   color: Colors.white70,
                   borderRadius: BorderRadius.all(
@@ -190,6 +200,7 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
                   ),
                 ),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
                       "恭喜 ${_nameEditingController.text.toString()} 绑定成功！",
@@ -199,23 +210,23 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
                         color: ColorConstant.TextMainBlack,
                       ),
                     ),
-                    Container(
-                      alignment: Alignment.topCenter,
-                      padding: EdgeInsets.only(top: 20, bottom: 40),
-                      child: Text.rich(TextSpan(children: [
-                        TextSpan(
-                          text: "如果取样完成,可点击此处直接",
-                          style: TextStyle(
-                              color: ColorConstant.Text_5E6F88, fontSize: 14),
-                        ),
-                        TextSpan(
-                          text: "《预约上门取件》",
-                          style: TextStyle(
-                              color: ColorConstant.TextMainColor, fontSize: 14),
-                          recognizer: TapGestureRecognizer()..onTap = () {},
-                        ),
-                      ])),
-                    ),
+                    // Container(
+                    //   alignment: Alignment.topCenter,
+                    //   padding: EdgeInsets.only(top: 20, bottom: 40),
+                    //   child: Text.rich(TextSpan(children: [
+                    //     TextSpan(
+                    //       text: "如果取样完成,可点击此处直接",
+                    //       style: TextStyle(
+                    //           color: ColorConstant.Text_5E6F88, fontSize: 14),
+                    //     ),
+                    //     TextSpan(
+                    //       text: "《预约上门取件》",
+                    //       style: TextStyle(
+                    //           color: ColorConstant.TextMainColor, fontSize: 14),
+                    //       recognizer: TapGestureRecognizer()..onTap = () {},
+                    //     ),
+                    //   ])),
+                    // ),
                   ],
                 ),
               ),
@@ -239,6 +250,7 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
               color: ColorConstant.TextMainColor,
               onPressed: () {
                 //绑定成功
+                CommonUtils.toCollectionGuide(context,pop: true);
               },
               child: Text(_getBottomText(_position),
                   style: TextStyle(
@@ -411,7 +423,15 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
                   text: "《隐私政策》",
                   style: TextStyle(
                       color: ColorConstant.TextMainColor, fontSize: 14),
-                  recognizer: TapGestureRecognizer()..onTap = () {},
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () {
+                      NavigatorUtil.push(
+                          context,
+                          BaseWebView(
+                            title: "《隐私政策》",
+                            url: CommonConstant.privacy,
+                          ));
+                    },
                 ),
               ])),
         ),
@@ -581,7 +601,7 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
                   TextStyle(color: ColorConstant.TextMainColor, fontSize: 14),
               recognizer: TapGestureRecognizer()
                 ..onTap = () {
-                  UiUitls.showToast("联系客服");
+                  NavigatorUtil.push(context, contantUsPage());
                 },
             ),
           ])),

@@ -161,7 +161,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: TabNavigator(),
+      home: SplashPage(),
       builder: EasyLoading.init(),
       localizationsDelegates: [
         // 本地化的代理类

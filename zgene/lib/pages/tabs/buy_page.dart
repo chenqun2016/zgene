@@ -138,7 +138,7 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
     return ClipRect(
       child: Container(
         width: 343,
-        height:172 ,
+        height: 172,
         alignment: Alignment.topCenter,
         child: FadeInImage.assetNetwork(
             placeholder: 'assets/images/home/img_default2.png',
@@ -222,7 +222,10 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
                 color: ColorConstant.TextMainColor,
                 onPressed: () {
                   NavigatorUtil.push(
-                      context, OrderingPage(product: _productDetail,));
+                      context,
+                      OrderingPage(
+                        product: _productDetail,
+                      ));
                 },
                 child: Text("立即购买",
                     style: TextStyle(
@@ -298,29 +301,26 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
                   child: Container(
                     height: 55.h,
                     alignment: Alignment.center,
-                    child: GestureDetector(
-                      onTap: () {
-                        UiUitls.showToast("立即购买");
+                    child: MaterialButton(
+                      minWidth: 76.w,
+                      height: 28.h,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25)),
+                      color: ColorConstant.TextMainColor,
+                      onPressed: () {
+                        NavigatorUtil.push(
+                            context,
+                            OrderingPage(
+                              product: _productDetail,
+                            ));
                       },
-                      child: MaterialButton(
-                        minWidth: 76.w,
-                        height: 28.h,
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25)),
-                        color: ColorConstant.TextMainColor,
-                        onPressed: () {
-                          // NavigatorUtil.push(context,
-                          //     OrderingPage(product: _productDetail, ));
-                          UiUitls.showAgreement2(context,onAgree: (){},onCancel: (){});
-                        },
-                        child: Text("立即购买",
-                            style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            )),
-                      ),
+                      child: Text("立即购买",
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          )),
                     ),
                   ))
           ],

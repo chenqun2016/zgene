@@ -5,10 +5,12 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
+import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/login/change_Password.dart';
 import 'package:zgene/pages/my/my_about_us.dart';
 import 'package:zgene/util/base_widget.dart';
+import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/widget/base_web.dart';
 
@@ -33,6 +35,13 @@ class _AboutZPageState extends BaseWidgetState<AboutZPage> {
       color: Color(0xFF112950),
       fontWeight: FontWeight.w500,
     );
+//
+    if (SpUtils().getStorageDefault(SpConstant.appLatestVersion, "") ==
+        CommonConstant.AppVer) {
+      isNew = false;
+    } else {
+      isNew = true;
+    }
   }
 
   var textStyle;
@@ -186,7 +195,7 @@ class _AboutZPageState extends BaseWidgetState<AboutZPage> {
                       Container(
                         margin: EdgeInsets.only(right: 8.w),
                         child: Text(
-                          "版本号：V1.0",
+                          "版本号：V" + CommonConstant.AppVer,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: 14.sp,

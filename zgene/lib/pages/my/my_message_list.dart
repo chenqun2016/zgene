@@ -275,65 +275,73 @@ class _MyMessagePageState extends State<MyMessagePage> {
         itemBuilder: (BuildContext context, int index) {
           var content = list[index].content;
           print(index);
-          return Container(
-            width: double.infinity,
-            alignment: Alignment.centerLeft,
-            margin: EdgeInsets.only(bottom: 10),
-            padding: EdgeInsets.fromLTRB(15, 18, 15, 18),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(
-                Radius.circular(20),
+          return InkWell(
+            onTap: () {
+              CommonUtils.toUrl(
+                  context: context,
+                  type: content.linkType,
+                  url: content.linkUrl);
+            },
+            child: Container(
+              width: double.infinity,
+              alignment: Alignment.centerLeft,
+              margin: EdgeInsets.only(bottom: 10),
+              padding: EdgeInsets.fromLTRB(15, 18, 15, 18),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(20),
+                ),
               ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Container(
-                  margin: EdgeInsets.only(bottom: 15),
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        child: Text(content.title,
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: ColorConstant.TextMainBlack,
-                              fontWeight: FontWeight.w500,
-                            )),
-                      ),
-                      Positioned(
-                        right: 0,
-                        top: 3,
-                        child: Text(
-                          CusDateUtils.getFormatDataS(
-                              timeSamp: content.createdAt,
-                              format: "yyyy.MM.dd"),
-                          style: TextStyle(
-                            fontSize: 13,
-                            color: Color(0xFF5E6F88),
-                          ),
-                          textAlign: TextAlign.center,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(bottom: 15),
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          child: Text(content.title,
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: ColorConstant.TextMainBlack,
+                                fontWeight: FontWeight.w500,
+                              )),
                         ),
-                      ),
-                    ],
+                        Positioned(
+                          right: 0,
+                          top: 3,
+                          child: Text(
+                            CusDateUtils.getFormatDataS(
+                                timeSamp: content.createdAt,
+                                format: "yyyy.MM.dd"),
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: Color(0xFF5E6F88),
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                Divider(
-                  height: 1.0,
-                  indent: 0,
-                  endIndent: 0,
-                  color: ColorConstant.LineMainColor,
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 15),
-                  child: Text(content.content,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: Color(0xFF5E6F88),
-                      )),
-                ),
-              ],
+                  Divider(
+                    height: 1.0,
+                    indent: 0,
+                    endIndent: 0,
+                    color: ColorConstant.LineMainColor,
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 15),
+                    child: Text(content.content,
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Color(0xFF5E6F88),
+                        )),
+                  ),
+                ],
+              ),
             ),
           );
         },

@@ -22,6 +22,7 @@ import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/widget/restart_widget.dart';
 import 'configure_nonweb.dart' if (dart.library.html) 'configure_web.dart';
 import 'constant/app_notification.dart';
+import 'event/event_bus.dart';
 import 'models/msg_event.dart';
 import 'navigator/tab_navigator.dart';
 import 'pages/bindcollector/bind_collector_page.dart';
@@ -103,8 +104,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           print('wxwxwxwxwxwxwx' + code);
           //把微信登录返回的code传给后台，剩下的事就交给后台处理
           print("+++++++++++++++++++++++++++++");
-          NotificationCenter.instance
-              .postNotification(NotificationName.WxCode, code);
+          // NotificationCenter.instance
+          //     .postNotification(NotificationName.WxCode, code);
+          bus.emit(CommonConstant.WxCode, code);
           // wxLoginHttp(code);
           // showToast("用户同意授权成功");
         } else if (errCode == -4) {
@@ -150,6 +152,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+    bus.off(CommonConstant.WxCode);
   }
 
   @override

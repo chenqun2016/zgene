@@ -39,10 +39,14 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
     setWantKeepAlive = true;
     backImgPath = "assets/images/login/icon_mainLogin_backImg.png";
 
-    NotificationCenter.instance.addObserver(NotificationName.WxCode, (object) {
-      if (object != null) {
-        wxLoginHttp(object);
-      }
+    // NotificationCenter.instance.addObserver(NotificationName.WxCode, (object) {
+    //   if (object != null) {
+    //     wxLoginHttp(object);
+    //     print("{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}}");
+    //   }
+    // });
+    bus.on(CommonConstant.WxCode, (arg) {
+      wxLoginHttp(arg);
     });
   }
 
@@ -51,6 +55,7 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
     // TODO: implement dispose
     super.dispose();
     NotificationCenter.instance.removeNotification(NotificationName.WxCode);
+    bus.off(CommonConstant.WxCode);
   }
 
   var isAgreePrivacy = false;
@@ -404,7 +409,7 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
 
           Navigator.popUntil(context, ModalRoute.withName('/'));
         } else {
-          EasyLoading.dismiss;
+          EasyLoading.dismiss();
           toBindingPhone();
         }
       },

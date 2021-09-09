@@ -81,6 +81,17 @@ class _BindPhoneLoginPageState extends BaseWidgetState<BindPhoneLoginPage> {
   }
 
   @override
+  Future myBackClick() {
+    var spUtils = SpUtils();
+    spUtils.setStorage(SpConstant.Token, "");
+    spUtils.setStorage(SpConstant.IsLogin, false);
+    spUtils.setStorage(SpConstant.Uid, 0);
+    //清除用户信息
+    // TODO: implement myBackClick
+    return super.myBackClick();
+  }
+
+  @override
   Widget viewPageBody(BuildContext context) {
     return Container(
       child: Column(

@@ -676,7 +676,11 @@ class _MyPageState extends BaseWidgetState<MyPage> {
         NavigatorUtil.push(context, MyReportPage());
         break;
       case 8: //设置
-        NavigatorUtil.push(context, MySetPage());
+        if (spUtils.getStorageDefault(SpConstant.IsLogin, false)) {
+          NavigatorUtil.push(context, MySetPage());
+        } else {
+          BaseLogin.login();
+        }
         break;
       case 9: //联系客服
         NavigatorUtil.push(context, contantUsPage());

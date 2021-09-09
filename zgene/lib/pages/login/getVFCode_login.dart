@@ -284,13 +284,13 @@ class _GetVFCodeLoginPageState extends BaseWidgetState<GetVFCodeLoginPage> {
         spUtils.setStorage(SpConstant.Token, data["token"]);
         spUtils.setStorage(SpConstant.IsLogin, true);
         spUtils.setStorage(SpConstant.Uid, data["uid"]);
-
         HttpUtils.clear();
-
+        print("登陆成功");
+        print(spUtils.getStorageDefault(SpConstant.Token, ""));
         // NotificationCenter.instance
         //     .postNotification(NotificationName.GetUserInfo, null);
+        Navigator.of(context).popUntil((route) => route.isFirst);
         bus.emit(CommonConstant.refreshMine);
-        Navigator.popUntil(context, ModalRoute.withName('/'));
       },
       onError: (code, error) {
         EasyLoading.showError(error ?? "");

@@ -438,7 +438,7 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
           HttpUtils.clear();
 
           bus.emit(CommonConstant.refreshMine);
-          Navigator.popUntil(context, ModalRoute.withName('/'));
+          Navigator.of(context).popUntil((route) => route.isFirst);
         } else {
           toBindingPhone();
         }

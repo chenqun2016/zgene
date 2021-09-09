@@ -99,6 +99,7 @@ class HttpUtils {
 
   /// 清空 dio 对象
   static clear() {
+    print("清空dio");
     _dio = null;
   }
 

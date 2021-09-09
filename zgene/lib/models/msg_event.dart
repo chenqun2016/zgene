@@ -17,3 +17,8 @@ class WxEvent {
 
   WxEvent(this.code);
 }
+
+///点击个人中心事件
+class resultMineEvent {
+  resultMineEvent();
+}

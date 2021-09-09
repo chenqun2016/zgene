@@ -3,10 +3,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
+import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/platform_utils.dart';
+import 'package:zgene/util/share_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:easy_web_view/easy_web_view.dart';
 import 'package:zgene/util/platform_utils.dart';
@@ -82,6 +85,30 @@ class _BaseWebViewState extends State<BaseWebView> {
                     fontWeight: FontWeight.w500,
                     color: ColorConstant.MainBlack),
               ),
+              actions: <Widget>[
+                IconButton(
+                    icon: Image(
+                      image: AssetImage(
+                          "assets/images/home/icon_article_detail.png"),
+                    ),
+                    onPressed: () {
+                      print(CommonUtils.splicingUrl(SpUtils()
+                          .getStorageDefault(SpConstant.appShareIcon, "")
+                          .toString()));
+                      ShareUtils.showSheet(
+                          context: context,
+                          shareTitle: widget.title,
+                          shareContent: SpUtils()
+                              .getStorageDefault(
+                                  SpConstant.appShareSubtitle, "")
+                              .toString(),
+                          shareUrl: _uri,
+                          shareType: 1,
+                          shareImageUrl: CommonUtils.splicingUrl(SpUtils()
+                              .getStorageDefault(SpConstant.appShareIcon, "")
+                              .toString()));
+                    }),
+              ],
             ),
             body: Column(
               children: <Widget>[

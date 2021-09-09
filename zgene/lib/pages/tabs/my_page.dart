@@ -232,7 +232,7 @@ class _MyPageState extends BaseWidgetState<MyPage> {
                       image: CommonUtils.splicingUrl(bannerImg),
                       height: 80,
                       width: double.infinity,
-                      fit: BoxFit.cover,
+                      fit: BoxFit.fill,
                       fadeInDuration: TimeUtils.fadeInDuration(),
                       fadeOutDuration: TimeUtils.fadeOutDuration(),
                       imageErrorBuilder: (context, error, stackTrace) {

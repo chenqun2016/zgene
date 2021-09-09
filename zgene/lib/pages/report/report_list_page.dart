@@ -1,17 +1,15 @@
 import 'dart:convert';
-import 'dart:math';
+import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/models/archive_des_model.dart';
-import 'package:zgene/models/content_model.dart';
 import 'package:zgene/models/report_des_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/home/home_getHttp.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
-import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/widget/base_web.dart';
 
 class ReportListPage extends BaseWidget {
@@ -61,9 +59,15 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
       setState(() {
         list = model.addon.archives;
         _archive = model.archive;
-
-        var json = jsonDecode(_archive.description);
-        reportDesModel = ReportDesModel.fromJson(json);
+        try{
+          log("hahaha=="+_archive.description);
+          if(null != _archive.description && _archive.description.isNotEmpty){
+            var json =  jsonDecode(_archive.description);
+            reportDesModel = ReportDesModel.fromJson(json);
+          }
+        }catch(e){
+          print("exception=="+e.toString());
+        }
       });
     });
   }

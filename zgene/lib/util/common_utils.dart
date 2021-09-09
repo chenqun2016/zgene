@@ -115,6 +115,14 @@ class CommonUtils {
   static const String URL_MY = "/my";
   static const String URL_REPORT = "/report";
 
+  ///跳转采集引导页
+  static toCollectionGuide(BuildContext context,{bool pop}){
+    if(null != pop && pop){
+      Navigator.of(context).popAndPushNamed("/article_detail", arguments: "9528267533900");
+    }else{
+      Navigator.of(context).pushNamed("/article_detail", arguments: "9528267533900");
+    }
+  }
   ///公共跳转链接
   static toUrl({context, url, type}) {
     print("url==$url+type==${type.toString()}");

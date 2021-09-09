@@ -39,6 +39,11 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true
+
+        ndk {
+            // 设置支持的SO库架构
+            abiFilters 'armeabi-v7a'
+        }
     }
 
     signingConfigs {
@@ -61,11 +66,11 @@ android {
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.release
             //开启混淆
-            minifyEnabled false
+            minifyEnabled true
             //开启资源压缩
-            shrinkResources false
+            shrinkResources true
             //开启zip对齐
-            zipAlignEnabled false
+            zipAlignEnabled true
         }
     }
 }

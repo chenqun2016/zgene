@@ -49,13 +49,14 @@ class NavigatorUtil {
         break;
       case 40:
         print(123);
-        NavigatorUtil.push(
-            context,
-            SendBackAcquisitionPage(
-                ordId: _order.id,
-                ordName: _order.collectorInfo.targetName,
-                ordNum: _order.collectorInfo.serialNum));
-
+        if(null != _order.collectorInfo){
+          NavigatorUtil.push(
+              context,
+              SendBackAcquisitionPage(
+                  ordId: _order.id,
+                  ordName: _order.collectorInfo.targetName,
+                  ordNum: _order.collectorInfo.serialNum));
+        }
         break;
       case 60:
         CommonUtils.toUrl(context: context, url: CommonUtils.URL_REPORT);

@@ -79,7 +79,9 @@ class OrderListmodel {
         sfNo: json["sf_no"],
         reSfNo: json["re_sf_no"],
         remark: json["remark"],
-        collectorInfo: CollectorInfo.fromJson(json["collector_info"]),
+        collectorInfo: json["collector_info"] != null
+            ? CollectorInfo.fromJson(json["collector_info"])
+            : CollectorInfo(),
         billInfo: BillInfo.fromJson(json["bill_info"]),
         prodInfo: ProdInfo.fromJson(json["prod_info"]),
         revAddress: RevAddress.fromJson(json["rev_address"]),

@@ -191,8 +191,8 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
       height: 88,
       margin: EdgeInsets.only(top: marginHeight),
       decoration: BoxDecoration(
-        color: Color.fromARGB(trans < 150 ? 150 : trans, 255, 255, 255),
-        // color: Colors.white,
+        // color: Color.fromARGB(trans < 150 ? 150 : trans, 255, 255, 255),
+        color: Colors.white,
         border: Border.all(
           color: Colors.white,
           width: 1,

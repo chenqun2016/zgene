@@ -68,7 +68,8 @@ class _VideoPageState extends State<VideoPage> {
       color: Colors.black,
       child: Stack(
         children: [
-          Center(
+          Container(
+            margin: EdgeInsets.only(top: 80, bottom: 80),
             child: _chewieController != null &&
                     _chewieController.videoPlayerController.value.isInitialized
                 ? Chewie(
@@ -87,9 +88,27 @@ class _VideoPageState extends State<VideoPage> {
                       ),
                     ],
                   ),
-          )
+          ),
+          customHeaderBack(),
         ],
       ),
+    );
+  }
+
+  /// 配置页面头部返回
+  Widget customHeaderBack() {
+    return Container(
+      margin: EdgeInsets.only(top: 20),
+      child: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Image(
+            image: AssetImage("assets/images/icon_base_backArrow.png"),
+            // height: 40.w,
+            // width: 40.w,
+            fit: BoxFit.fill,
+          )),
     );
   }
 }

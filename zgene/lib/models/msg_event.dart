@@ -2,8 +2,8 @@
 class MsgEvent {
   int type;
   dynamic msg;
-
-  MsgEvent(this.type, this.msg);
+  dynamic arg;
+  MsgEvent(this.type, this.msg ,{this.arg});
 }
 
 ///点击个人中心事件

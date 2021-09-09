@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/event/event_bus.dart';
 import 'package:zgene/http/base_response.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/category_model.dart';
@@ -26,6 +27,12 @@ import 'home_page.dart';
 
 ///首页报告
 class ReportPage extends BaseWidget {
+  String id;
+
+  ReportPage({Key key, this.id}) : super(key: key) {
+    print("ReportPage super  ");
+  }
+
   @override
   BaseWidgetState<BaseWidget> getState() => _ReportPageState();
 }
@@ -36,8 +43,9 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
   EasyRefreshController _easyController;
 
   int jingxuan = 15;
-  ///0 : 女    1：男
-  var type = 0;
+
+  ///7 : 女    6：男
+  var type = 7;
 
   //顶部渐变
   double appBarAlphas = 0;
@@ -47,12 +55,28 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
 
   @override
   void dispose() {
+    bus.off("ReportPage");
     _controller.dispose();
     super.dispose();
   }
 
   @override
   void pageWidgetInitState() {
+    if (null != widget.id) {
+      type = int.parse(widget.id);
+    }
+    bus.on("ReportPage", (arg) {
+      if (null != arg) {
+        int argType = int.parse(arg);
+        if (type != argType) {
+          setState(() {
+            type = argType;
+            _getReport();
+          });
+        }
+      }
+    });
+
     super.pageWidgetInitState();
     showBaseHead = false;
     showHead = false;
@@ -68,7 +92,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
   }
 
   _getReport() {
-    CategoriesGetHttp(type == 0 ? 7 : 6, (result) {
+    CategoriesGetHttp(type, (result) {
       var categoryModel = CategoryModel.fromJson(result);
       if (null != categoryModel) {
         setState(() {
@@ -155,7 +179,6 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
       ]),
     );
   }
-
 
   Widget get _bottomBanner {
     var fut;
@@ -314,7 +337,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
         NavigatorUtil.push(
             context,
             ReportListPage(
-              id:bean.id,
+              id: bean.id,
             ));
       },
       child: Container(
@@ -383,7 +406,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "此示例报告[标准/${type == 0 ? "女" : "男"}]，请以真实检测数据为准。",
+              "此示例报告[标准/${type == 7 ? "女" : "男"}]，请以真实检测数据为准。",
               style: TextStyle(
                   fontSize: 13,
                   color: ColorConstant.TextMainColor,
@@ -478,9 +501,9 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
               ),
               GestureDetector(
                 onTap: () {
-                  if (type == 0) {
+                  if (type == 7) {
                     setState(() {
-                      type = 1;
+                      type = 6;
                     });
                     _getReport();
                   }
@@ -507,9 +530,9 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
               ),
               GestureDetector(
                 onTap: () {
-                  if (type == 1) {
+                  if (type == 6) {
                     setState(() {
-                      type = 0;
+                      type = 7;
                     });
                     _getReport();
                   }

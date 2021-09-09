@@ -379,10 +379,10 @@ class _MySetPageState extends BaseWidgetState<MySetPage> {
         NavigatorUtil.push(context, MyAddressListPage());
         break;
       case 5: //推送设置
-        UiUitls.showToast("推送设置");
+        // UiUitls.showToast("推送设置");
         break;
       case 6: //隐私政策
-        UiUitls.showToast("隐私政策");
+        // UiUitls.showToast("隐私政策");
         Navigator.push(
             context,
             MaterialPageRoute(

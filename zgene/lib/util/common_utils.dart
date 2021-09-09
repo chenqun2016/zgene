@@ -116,29 +116,35 @@ class CommonUtils {
   static const String URL_REPORT = "/report";
 
   ///跳转采集引导页
-  static toCollectionGuide(BuildContext context,{bool pop}){
-    if(null != pop && pop){
-      Navigator.of(context).popAndPushNamed("/article_detail", arguments: "9528267533900");
-    }else{
-      Navigator.of(context).pushNamed("/article_detail", arguments: "9528267533900");
+  static toCollectionGuide(BuildContext context, {bool pop}) {
+    if (null != pop && pop) {
+      Navigator.of(context)
+          .popAndPushNamed("/article_detail", arguments: "9528267533900");
+    } else {
+      Navigator.of(context)
+          .pushNamed("/article_detail", arguments: "9528267533900");
     }
   }
+
   ///公共跳转链接
-  static toUrl({context, url, type}) {
+  static toUrl({context, String url, type}) {
     print("url==$url+type==${type.toString()}");
     var eventBus = getInstance();
 
-    if (url == URL_BUY) {
+    if (url.contains(URL_BUY)) {
       //购买
       //跳到购买
       eventBus.fire(MsgEvent(100, 1));
-    } else if (url == URL_MY) {
+    } else if (url.contains(URL_MY)) {
       //我的
       //跳到我的
       eventBus.fire(MsgEvent(100, 3));
-    } else if (url == URL_REPORT) {
+    } else if (url.contains(URL_REPORT)) {
       //报告
-      eventBus.fire(MsgEvent(100, 2));
+      var uri = Uri.dataFromString(url);
+      Map<String, String> params = uri.queryParameters;
+      var id = params['id'];
+      eventBus.fire(MsgEvent(100, 2,arg: id));
     } else if (url.contains('/webview')) {
       //跳转浏览器
       var uri = Uri.dataFromString(url);

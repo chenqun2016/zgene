@@ -131,15 +131,15 @@ class CommonUtils {
     print("url==$url+type==${type.toString()}");
     var eventBus = getInstance();
 
-    if (url.contains(URL_BUY)) {
+    if (url == URL_BUY) {
       //购买
       //跳到购买
       eventBus.fire(MsgEvent(100, 1));
-    } else if (url.contains(URL_MY)) {
+    } else if (url == URL_MY) {
       //我的
       //跳到我的
       eventBus.fire(MsgEvent(100, 3));
-    } else if (url.contains(URL_REPORT)) {
+    } else if (url.contains(URL_REPORT) && !url.contains("_")) {
       //报告
       var uri = Uri.dataFromString(url);
       Map<String, String> params = uri.queryParameters;

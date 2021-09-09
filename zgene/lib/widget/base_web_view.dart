@@ -62,6 +62,7 @@ class _WebViewWidgetState extends State<BasePageWebView> {
             // initialUrl: widget.url,
 
             initialOptions: options,
+
             initialUrlRequest: URLRequest(
                 url: Uri.parse(_url),),
 

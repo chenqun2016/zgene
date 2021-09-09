@@ -58,7 +58,8 @@ class _VideoNavState extends State<VideoNav> {
               margin: EdgeInsets.only(top: 15, left: 15, right: 15),
               child: GestureDetector(
                 onTap: () {
-                  NavigatorUtil.push(context, VideoPage());
+                  NavigatorUtil.push(
+                      context, VideoPage(linkUrl: aloneList[0].linkUrl));
                 },
                 child: PhysicalModel(
                   color: Colors.transparent,
@@ -67,8 +68,7 @@ class _VideoNavState extends State<VideoNav> {
                   child: FadeInImage.assetNetwork(
                       placeholder: 'assets/images/home/img_default2.png',
                       image: CommonUtils.splicingUrl(aloneList[0].imageUrl),
-                      width: 90,
-                      height: 90,
+                      height: 168,
                       fadeInDuration: TimeUtils.fadeInDuration(),
                       fadeOutDuration: TimeUtils.fadeOutDuration(),
                       fit: BoxFit.fill,

@@ -7,8 +7,9 @@ class VideoPage extends StatefulWidget {
   const VideoPage({
     Key key,
     this.title = 'Chewie Demo',
+    this.linkUrl,
   }) : super(key: key);
-
+  final String linkUrl;
   final String title;
 
   @override
@@ -26,7 +27,10 @@ class _VideoPageState extends State<VideoPage> {
   void initState() {
     super.initState();
     _platform = defaultTargetPlatform;
-    initializePlayer();
+    if (null != widget.linkUrl && widget.linkUrl.isNotEmpty) {
+      initializePlayer();
+    }
+    print("linkUrl==" + widget.linkUrl);
   }
 
   @override
@@ -37,8 +41,7 @@ class _VideoPageState extends State<VideoPage> {
   }
 
   Future<void> initializePlayer() async {
-    _videoPlayerController1 = VideoPlayerController.network(
-        'https://zgene.divms.com/public/statics/video/z-gene.mp4');
+    _videoPlayerController1 = VideoPlayerController.network(widget.linkUrl);
 
     await _videoPlayerController1.initialize();
     _Controller();

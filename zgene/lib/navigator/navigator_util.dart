@@ -11,15 +11,16 @@ import 'package:zgene/widget/base_web.dart';
 class NavigatorUtil {
   ///跳转到指定页面
   static Future<dynamic> push(BuildContext context, Widget page) {
-    return Navigator.push(context, MaterialPageRoute(builder: (context) => page));
+    return Navigator.push(
+        context, MaterialPageRoute(builder: (context) => page));
   }
 
   static Future<dynamic> pushAndRemoveUntil(BuildContext context, Widget page) {
-    return Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => page),(route)=>route.isFirst);
+    return Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => page),
+        (route) => route.isFirst);
   }
-
-
-
 
 // //OrderStatus5  int8 = 20  //代签收
 // OrderStatus6  int8 = 30 //代绑定
@@ -27,7 +28,7 @@ class NavigatorUtil {
 // OrderStatus8  int8 = 50 //待检测
 // OrderStatus9  int8 = 60 //待出报告
 // OrderStatus10 int8 = 70 //完成
-  static void orderStepNavigator(context, status,_order) {
+  static void orderStepNavigator(context, status, _order) {
     switch (status) {
       case 50:
         NavigatorUtil.push(
@@ -49,7 +50,12 @@ class NavigatorUtil {
       case 40:
         print(123);
         NavigatorUtil.push(
-            context, SendBackAcquisitionPage(ordId: _order.id));
+            context,
+            SendBackAcquisitionPage(
+                ordId: _order.id,
+                ordName: _order.collectorInfo.targetName,
+                ordNum: _order.collectorInfo.serialNum));
+
         break;
       case 60:
         CommonUtils.toUrl(context: context, url: CommonUtils.URL_REPORT);

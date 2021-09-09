@@ -11,6 +11,7 @@ import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/pages/my/my_address_list.dart';
 import 'package:zgene/pages/my/show_selectPicker.dart';
 import 'package:zgene/util/base_widget.dart';
+import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/dia_log.dart';
 import 'package:zgene/util/screen_utils.dart';
 import 'package:flutter_pickers/pickers.dart';
@@ -18,7 +19,11 @@ import 'package:zgene/util/isChina_phone.dart';
 
 class SendBackAcquisitionPage extends BaseWidget {
   int ordId;
-  SendBackAcquisitionPage({Key key, this.ordId}) : super(key: key);
+  String ordName;
+  String ordNum;
+
+  SendBackAcquisitionPage({Key key, this.ordId, this.ordName, this.ordNum})
+      : super(key: key);
 
   @override
   BaseWidgetState getState() {
@@ -179,7 +184,7 @@ class _SendBackAcquisitionPageState
               Container(
                 margin: EdgeInsets.only(top: 20.h, left: 12.w),
                 child: Text(
-                  "姓名：张三",
+                  "姓名：" + widget.ordName,
                   textAlign: TextAlign.left,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -205,7 +210,7 @@ class _SendBackAcquisitionPageState
               Container(
                 margin: EdgeInsets.only(top: 15.h, left: 12.w),
                 child: Text(
-                  "采集样本编号：58554585",
+                  "采集样本编号：" + widget.ordNum,
                   textAlign: TextAlign.left,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -1045,6 +1050,6 @@ class _SendBackAcquisitionPageState
 
   @override
   Future rightBtnTap(BuildContext context) {
-    print(123);
+    CommonUtils.toCollectionGuide(context);
   }
 }

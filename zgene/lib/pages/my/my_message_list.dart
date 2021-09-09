@@ -345,7 +345,7 @@ class _MyMessagePageState extends State<MyMessagePage> {
   _onTapEvent(index) {
     switch (index) {
       case 1: //返回
-        Navigator.pop(context);
+        Navigator.pop(context, 1);
         break;
       case 2: //完成
         UiUitls.showToast("完成");

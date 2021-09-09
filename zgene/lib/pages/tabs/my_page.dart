@@ -671,7 +671,7 @@ class _MyPageState extends BaseWidgetState<MyPage> {
 
         break;
       case 6: //产品购买
-        UiUitls.showToast("产品购买");
+        CommonUtils.toUrl(context: context,url: CommonUtils.URL_BUY);
         break;
       case 7: //我的报告
         NavigatorUtil.push(context, MyReportPage());

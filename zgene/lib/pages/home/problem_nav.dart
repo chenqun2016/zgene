@@ -16,9 +16,10 @@ class ProblemNav extends StatefulWidget {
   _ProblemNavState createState() => _ProblemNavState();
 }
 
-class _ProblemNavState extends State<ProblemNav> {
+class _ProblemNavState extends State<ProblemNav> with AutomaticKeepAliveClientMixin{
   // List<String> contents = ["关于基因检测。？", "基因检测的原理是什么？", "对用户隐私安全有什么保护措施？"];
-
+  @override
+  bool get wantKeepAlive => true;
   List contentList = [];
 
   @override

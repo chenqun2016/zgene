@@ -17,7 +17,10 @@ class VideoNav extends StatefulWidget {
   _VideoNavState createState() => _VideoNavState();
 }
 
-class _VideoNavState extends State<VideoNav> {
+class _VideoNavState extends State<VideoNav> with AutomaticKeepAliveClientMixin{
+  @override
+  bool get wantKeepAlive => true;
+
   List aloneList = [];
 
   @override

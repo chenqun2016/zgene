@@ -397,15 +397,15 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
       parameters: map,
       method: HttpUtils.POST,
       onSuccess: (data) {
+        var spUtils = SpUtils();
+        spUtils.setStorage(SpConstant.Token, data["token"]);
+        spUtils.setStorage(SpConstant.IsLogin, true);
+        HttpUtils.clear();
+        // NotificationCenter.instance
+        //     .postNotification(NotificationName.GetUserInfo, null);
+        bus.emit(CommonConstant.refreshMine);
         if (data["has_mobile"] == null) {
           EasyLoading.showSuccess("登陆成功");
-          var spUtils = SpUtils();
-          spUtils.setStorage(SpConstant.Token, data["token"]);
-          spUtils.setStorage(SpConstant.IsLogin, true);
-          HttpUtils.clear();
-          // NotificationCenter.instance
-          //     .postNotification(NotificationName.GetUserInfo, null);
-          bus.emit(CommonConstant.refreshMine);
 
           Navigator.popUntil(context, ModalRoute.withName('/'));
         } else {
@@ -434,14 +434,12 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
       parameters: map,
       method: HttpUtils.POST,
       onSuccess: (data) {
+        var spUtils = SpUtils();
+        spUtils.setStorage(SpConstant.Token, data["token"]);
+        spUtils.setStorage(SpConstant.IsLogin, true);
+        HttpUtils.clear();
         if (data["has_mobile"] == null) {
           EasyLoading.showSuccess("登陆成功");
-
-          var spUtils = SpUtils();
-          spUtils.setStorage(SpConstant.Token, data["token"]);
-          spUtils.setStorage(SpConstant.IsLogin, true);
-          HttpUtils.clear();
-
           bus.emit(CommonConstant.refreshMine);
           Navigator.of(context).popUntil((route) => route.isFirst);
         } else {

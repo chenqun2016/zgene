@@ -11,6 +11,8 @@ import 'package:zgene/util/screen_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/widget/base_web.dart';
 
+import 'my_contant_us.dart';
+
 class CommonQusListPage extends BaseWidget {
   @override
   BaseWidgetState getState() {
@@ -46,6 +48,13 @@ class _CommonQusListPageState extends BaseWidgetState<CommonQusListPage> {
         contentList = contentModel.archives;
       });
     });
+  }
+
+  @override
+  Future rightBtnTap(BuildContext context) {
+    // TODO: implement rightBtnTap
+    NavigatorUtil.push(context, contantUsPage());
+    return super.rightBtnTap(context);
   }
 
   @override

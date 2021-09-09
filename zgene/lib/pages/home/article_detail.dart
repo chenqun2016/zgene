@@ -45,6 +45,7 @@ class _ArticleDetailViewState extends State<ArticleDetailView> {
 
   InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
       crossPlatform: InAppWebViewOptions(
+        supportZoom: false,
         useShouldOverrideUrlLoading: true,
         mediaPlaybackRequiresUserGesture: false,
         userAgent: "Z-Gene",

@@ -7,7 +7,9 @@ import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
+import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/platform_utils.dart';
+import 'package:zgene/util/share_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:easy_web_view/easy_web_view.dart';
 import 'package:zgene/util/platform_utils.dart';
@@ -45,7 +47,7 @@ class _ArticleDetailViewState extends State<ArticleDetailView> {
       crossPlatform: InAppWebViewOptions(
         useShouldOverrideUrlLoading: true,
         mediaPlaybackRequiresUserGesture: false,
-        userAgent: "zgene",
+        userAgent: "Z-Gene",
       ),
       android: AndroidInAppWebViewOptions(
         useHybridComposition: true,
@@ -85,6 +87,33 @@ class _ArticleDetailViewState extends State<ArticleDetailView> {
                     fontWeight: FontWeight.w500,
                     color: ColorConstant.MainBlack),
               ),
+              actions: <Widget>[
+                IconButton(
+                    icon: Image(
+                      image: AssetImage(
+                          "assets/images/home/icon_article_detail.png"),
+                    ),
+                    onPressed: () {
+                      print(CommonUtils.splicingUrl(CommonUtils.splicingUrl(
+                          SpUtils()
+                              .getStorageDefault(SpConstant.appShareIcon, "")
+                              .toString())));
+                      ShareUtils.showSheet(
+                          context: context,
+                          shareTitle: _title,
+                          shareContent: SpUtils()
+                              .getStorageDefault(
+                                  SpConstant.appShareSubtitle, "")
+                              .toString(),
+                          shareUrl: ApiConstant.getH5ShareUrl(id.toString()),
+                          shareType: 1,
+                          shareImageUrl: CommonUtils.splicingUrl(
+                              CommonUtils.splicingUrl(SpUtils()
+                                  .getStorageDefault(
+                                      SpConstant.appShareIcon, "")
+                                  .toString())));
+                    }),
+              ],
             ),
             body: Column(
               children: <Widget>[

@@ -89,10 +89,14 @@ class ApiConstant {
   //基因报告列表
   static const String reports = "/api/v1/gene/reports";
 
-
   //H5地址，直接webview加载
   static String getH5DetailUrl(id) {
     return CommonConstant.BASE_API + "/archive/embed/$id";
+  }
+
+  //H5地址，直接webview加载
+  static String getH5ShareUrl(id) {
+    return CommonConstant.BASE_API + "/archive/share/$id";
   }
 
   //获取顺丰物流H5地址

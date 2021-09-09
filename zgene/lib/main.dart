@@ -51,6 +51,7 @@ import 'pages/my/sendBack_acquisition.dart';
 import 'pages/my/show_selectPicker.dart';
 import 'pages/report/report_list_page.dart';
 import 'pages/tabs/buy_page.dart';
+import 'package:jshare_flutter_plugin/jshare_flutter_plugin.dart';
 
 void main() async {
   configureApp();
@@ -270,6 +271,12 @@ Future<void> getSetting() async {
           }
           if (item.name == SpConstant.appServiceTime) {
             spUtils.setStorage(SpConstant.appServiceTime, item.value);
+          }
+          if (item.name == SpConstant.appShareIcon) {
+            spUtils.setStorage(SpConstant.appShareIcon, item.value);
+          }
+          if (item.name == SpConstant.appShareIcon) {
+            spUtils.setStorage(SpConstant.appShareIcon, item.value);
           }
         }
       } catch (e) {

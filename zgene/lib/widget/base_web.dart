@@ -43,7 +43,7 @@ class _BaseWebViewState extends State<BaseWebView> {
       crossPlatform: InAppWebViewOptions(
         useShouldOverrideUrlLoading: true,
         mediaPlaybackRequiresUserGesture: false,
-        userAgent: "zgene",
+        userAgent: "Z-Gene",
       ),
       android: AndroidInAppWebViewOptions(
         useHybridComposition: true,

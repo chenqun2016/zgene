@@ -79,10 +79,18 @@ class OrderListmodel {
         sfNo: json["sf_no"],
         reSfNo: json["re_sf_no"],
         remark: json["remark"],
-        collectorInfo: CollectorInfo.fromJson(json["collector_info"]),
-        billInfo: BillInfo.fromJson(json["bill_info"]),
-        prodInfo: ProdInfo.fromJson(json["prod_info"]),
-        revAddress: RevAddress.fromJson(json["rev_address"]),
+        collectorInfo: json["collector_info"] != null
+            ? CollectorInfo.fromJson(json["collector_info"])
+            : null,
+        billInfo: json["bill_info"] != null
+            ? BillInfo.fromJson(json["bill_info"])
+            : null,
+        prodInfo: json["prod_info"] != null
+            ? ProdInfo.fromJson(json["prod_info"])
+            : null,
+        revAddress: json["rev_address"] != null
+            ? RevAddress.fromJson(json["rev_address"])
+            : null,
         sendAddress: json["send_address"],
       );
 

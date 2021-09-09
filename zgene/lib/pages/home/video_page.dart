@@ -38,7 +38,7 @@ class _VideoPageState extends State<VideoPage> {
 
   Future<void> initializePlayer() async {
     _videoPlayerController1 = VideoPlayerController.network(
-        'https://assets.mixkit.co/videos/preview/mixkit-daytime-city-traffic-aerial-view-56-large.mp4');
+        'https://zgene.divms.com/public/statics/video/z-gene.mp4');
 
     await _videoPlayerController1.initialize();
     _Controller();

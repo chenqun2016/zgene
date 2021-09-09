@@ -106,7 +106,6 @@ class _MyPageState extends BaseWidgetState<MyPage> {
       // parameters: map,
       method: HttpUtils.GET,
       onSuccess: (data) {
-        print(333333333333333333);
         print(data);
         EasyLoading.dismiss();
         UserInfoModel userInfoModel = UserInfoModel.fromJson(data);
@@ -157,7 +156,6 @@ class _MyPageState extends BaseWidgetState<MyPage> {
   @override
   void dispose() {
     super.dispose();
-    print("个人中心销毁");
     NotificationCenter.instance
         .removeNotification(NotificationName.GetUserInfo);
     eventBus.destroy();

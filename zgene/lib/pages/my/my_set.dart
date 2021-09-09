@@ -20,6 +20,7 @@ import 'package:zgene/util/dia_log.dart';
 import 'package:zgene/util/notification_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
+import 'package:zgene/widget/base_web.dart';
 
 import 'account_security.dart';
 
@@ -44,24 +45,11 @@ class _MySetPageState extends BaseWidgetState<MySetPage> {
       color: Color(0xFF112950),
       fontWeight: FontWeight.w500,
     );
-
-    weChatResponseEventHandler.distinct((a, b) => a == b).listen((res) {
-      if (res is WeChatAuthResponse) {
-        int errCode = res.errCode;
-        // MyLogUtil.d('微信登录返回值：ErrCode :$errCode  code:${res.code}');
-        if (errCode == 0) {
-          String code = res.code;
-          print('wxwxwxwxwxwxwx' + code);
-          //把微信登录返回的code传给后台，剩下的事就交给后台处理
-          wxLoginHttp(code);
-          // showToast("用户同意授权成功");
-        } else if (errCode == -4) {
-          // showToast("用户拒绝授权");
-          print('wxwxwxwxwxwxwx用户拒绝授权');
-        } else if (errCode == -2) {
-          // showToast("用户取消授权");
-          print('wxwxwxwxwxwxwx用户取消授权');
-        }
+    NotificationCenter.instance.addObserver(NotificationName.WxCode, (object) {
+      if (object != null) {
+        print(
+            "{{{{{{{{{{{{{{{{{{{{{{{{{000000000000000000000000}}}}}}}}}}}}}}}}}}}}}}}}}");
+        wxLoginHttp(object);
       }
     });
   }
@@ -272,33 +260,33 @@ class _MySetPageState extends BaseWidgetState<MySetPage> {
       ),
       child: Column(
         children: [
-          GestureDetector(
-            onTap: () {
-              _onTapEvent(5);
-            },
-            behavior: HitTestBehavior.opaque,
-            child: Stack(
-              children: [
-                Container(
-                    width: double.infinity,
-                    height: 45,
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "推送设置",
-                      style: textStyle,
-                    )),
-                Positioned(
-                  right: 0,
-                  top: 15,
-                  child: Image(
-                    image: AssetImage("assets/images/mine/icon_my_right.png"),
-                    height: 16,
-                    width: 16,
-                  ),
-                ),
-              ],
-            ),
-          ),
+          // GestureDetector(
+          //   onTap: () {
+          //     _onTapEvent(5);
+          //   },
+          //   behavior: HitTestBehavior.opaque,
+          //   child: Stack(
+          //     children: [
+          //       Container(
+          //           width: double.infinity,
+          //           height: 45,
+          //           alignment: Alignment.centerLeft,
+          //           child: Text(
+          //             "推送设置",
+          //             style: textStyle,
+          //           )),
+          //       Positioned(
+          //         right: 0,
+          //         top: 15,
+          //         child: Image(
+          //           image: AssetImage("assets/images/mine/icon_my_right.png"),
+          //           height: 16,
+          //           width: 16,
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
           GestureDetector(
             onTap: () {
               _onTapEvent(6);
@@ -392,6 +380,13 @@ class _MySetPageState extends BaseWidgetState<MySetPage> {
         break;
       case 6: //隐私政策
         UiUitls.showToast("隐私政策");
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => BaseWebView(
+                      url: CommonConstant.privacy,
+                      title: "隐私政策",
+                    )));
         break;
       case 7: //账号安全
         NavigatorUtil.push(context, accountSecurityPage());

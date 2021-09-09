@@ -102,7 +102,7 @@ class _BaseWebViewState extends State<BaseWebView> {
                               .getStorageDefault(
                                   SpConstant.appShareSubtitle, "")
                               .toString(),
-                          shareUrl: _uri,
+                          shareUrl: _uri.toString(),
                           shareType: 1,
                           shareImageUrl: CommonUtils.splicingUrl(SpUtils()
                               .getStorageDefault(SpConstant.appShareIcon, "")

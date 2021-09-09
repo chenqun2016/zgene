@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
@@ -14,6 +15,7 @@ import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/my/my_editor_name.dart';
 import 'package:zgene/pages/my/my_introduction.dart';
 import 'package:zgene/util/common_utils.dart';
+import 'package:zgene/util/screen_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/time_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
@@ -203,11 +205,15 @@ class _MyInfoPageState extends State<MyInfoPage> {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              Text(
-                _introduction == "" ? "暂无简介" : _introduction,
-                style: TextStyle(
-                  fontSize: 15,
-                  color: ColorConstant.TextThreeColor,
+              Container(
+                width: ScreenUtils.screenW(context) - 180.w,
+                child: Text(
+                  _introduction == "" ? "暂无简介" : _introduction,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: ColorConstant.TextThreeColor,
+                  ),
                 ),
               )
             ],

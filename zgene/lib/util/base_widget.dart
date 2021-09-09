@@ -180,7 +180,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
             image: AssetImage(customRightBtnImg),
             height: 40.w,
             width: 40.w,
-            fit: BoxFit.fill,
+            fit: BoxFit.contain,
           ));
     } else {
       return Container();

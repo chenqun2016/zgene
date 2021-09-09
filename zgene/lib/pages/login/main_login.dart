@@ -22,6 +22,7 @@ import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/notification_utils.dart';
 import 'package:zgene/util/screen_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
+import 'package:zgene/widget/base_web.dart';
 
 class MainLoginPage extends BaseWidget {
   @override
@@ -40,8 +41,6 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
 
     NotificationCenter.instance.addObserver(NotificationName.WxCode, (object) {
       if (object != null) {
-        print(
-            "{{{{{{{{{{{{{{{{{{{{{{{{{000000000000000000000000}}}}}}}}}}}}}}}}}}}}}}}}}");
         wxLoginHttp(object);
       }
     });
@@ -52,7 +51,6 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
     // TODO: implement dispose
     super.dispose();
     NotificationCenter.instance.removeNotification(NotificationName.WxCode);
-    print("登录销毁了");
   }
 
   var isAgreePrivacy = false;
@@ -221,104 +219,125 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
                       ],
                     ),
                   ))),
-          Container(
-            margin: EdgeInsets.only(
-              top: 13.h,
-            ),
-            child: Row(
-              children: [
-                Expanded(child: Container()),
-                Container(
-                    width: 12.w,
-                    height: 12.w,
-                    child: IconButton(
-                        padding: EdgeInsets.all(0),
-                        onPressed: () {
-                          isAgreePrivacy = !isAgreePrivacy;
-                          setState(() {});
-                        },
-                        icon: Image(
-                          image: !isAgreePrivacy
-                              ? AssetImage(
-                                  "assets/images/login/icon_login_circle.png")
-                              : AssetImage(
-                                  "assets/images/login/icon_login_agreeCircle.png"),
-                          height: 12.w,
-                          width: 12.w,
-                          fit: BoxFit.fill,
-                        ))),
-                Container(
-                  padding: EdgeInsets.only(left: 4.w),
-                  child: RichText(
-                      text: TextSpan(
-                          text: "我已阅读Z基因",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.w400,
-                            color: ColorConstant.PromptGrayColor,
-                          ),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              isAgreePrivacy = !isAgreePrivacy;
-                              setState(() {});
-                            },
-                          children: [
-                        TextSpan(
-                            text: "《隐私条款》",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontStyle: FontStyle.normal,
-                              fontWeight: FontWeight.w400,
-                              color: ColorConstant.MainBlueColor,
-                              // decoration: TextDecoration.underline,
-                            ),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                print("点击隐私");
-                                // Navigator.push(
-                                //     context,
-                                //     MaterialPageRoute(
-                                //         builder: (context) => myBaseWebView(
-                                //               url: CommonConstant.agreement,
-                                //               title: "用户协议",
-                                //             )));
-                              }),
-                        TextSpan(
-                            text: "和",
+          Stack(children: [
+            Container(
+              margin: EdgeInsets.only(
+                top: 13.h,
+              ),
+              child: Row(
+                children: [
+                  Expanded(child: Container()),
+                  Container(
+                      width: 12.w,
+                      height: 12.w,
+                      child: IconButton(
+                          padding: EdgeInsets.all(0),
+                          onPressed: () {
+                            isAgreePrivacy = !isAgreePrivacy;
+                            setState(() {});
+                          },
+                          icon: Image(
+                            image: !isAgreePrivacy
+                                ? AssetImage(
+                                    "assets/images/login/icon_login_circle.png")
+                                : AssetImage(
+                                    "assets/images/login/icon_login_agreeCircle.png"),
+                            height: 12.w,
+                            width: 12.w,
+                            fit: BoxFit.fill,
+                          ))),
+                  Container(
+                    padding: EdgeInsets.only(left: 4.w),
+                    child: RichText(
+                        text: TextSpan(
+                            text: "我已阅读Z基因",
                             style: TextStyle(
                               fontSize: 14,
                               fontStyle: FontStyle.normal,
                               fontWeight: FontWeight.w400,
                               color: ColorConstant.PromptGrayColor,
-                            )),
-                        TextSpan(
-                            text: "《服务协议》",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontStyle: FontStyle.normal,
-                              fontWeight: FontWeight.w400,
-                              color: ColorConstant.MainBlueColor,
-                              // decoration: TextDecoration.underline,
                             ),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-                                print("点击服务");
+                                isAgreePrivacy = !isAgreePrivacy;
+                                setState(() {});
+                              },
+                            children: [
+                          TextSpan(
+                              text: "《隐私条款》",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.w400,
+                                color: ColorConstant.MainBlueColor,
+                                // decoration: TextDecoration.underline,
+                              ),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  print("点击隐私");
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => BaseWebView(
+                                                url: CommonConstant.privacy,
+                                                title: "隐私政策",
+                                              )));
+                                }),
+                          TextSpan(
+                              text: "和",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.w400,
+                                color: ColorConstant.PromptGrayColor,
+                              )),
+                          TextSpan(
+                              text: "《服务协议》",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.w400,
+                                color: ColorConstant.MainBlueColor,
+                                // decoration: TextDecoration.underline,
+                              ),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  print("点击服务");
 
-                                // Navigator.push(
-                                //     context,
-                                //     MaterialPageRoute(
-                                //         builder: (context) => myBaseWebView(
-                                //               url: CommonConstant.privacy,
-                                //               title: "隐私政策",
-                                //             )));
-                              }),
-                      ])),
-                ),
-                Expanded(child: Container()),
-              ],
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => BaseWebView(
+                                                url: CommonConstant.agreement,
+                                                title: "服务协议",
+                                              )));
+                                }),
+                        ])),
+                  ),
+                  Expanded(child: Container()),
+                ],
+              ),
             ),
-          ),
+            Positioned(
+                left: 10.w,
+                child: InkWell(
+                  onTap: () {
+                    isAgreePrivacy = !isAgreePrivacy;
+                    setState(() {});
+                  },
+                  child: Container(
+                    width: 100.w,
+                    height: 50.h,
+                    // decoration: new BoxDecoration(
+                    //   color: ColorConstant.WhiteColorB2,
+                    //   borderRadius: BorderRadius.all(Radius.circular(20.h)),
+                    //   //设置四周边框
+                    //   border: new Border.all(
+                    //       width: 1, color: ColorConstant.WhiteColor),
+                    // ),
+                  ),
+                ))
+          ]),
         ],
       ),
     ));
@@ -328,7 +347,6 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
     if (!isAgreePrivacy) {
       return;
     }
-    print("微信登录");
     sendWeChatAuth(scope: "snsapi_userinfo", state: "sivms_state").then((data) {
       setState(() {
         print("拉取微信用户信息：" + data.toString());
@@ -364,8 +382,6 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
   }
 
   void wxLoginHttp(String code) {
-    print(
-        "{{{{{{{{{{{{{{{{{{{{{{{{{8888888888888888888888888}}}}}}}}}}}}}}}}}}}}}}}}}");
     Map<String, dynamic> map = new HashMap();
     map["code"] = code;
 
@@ -376,9 +392,6 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
       parameters: map,
       method: HttpUtils.POST,
       onSuccess: (data) {
-        print(
-            "{{{{{{{{{{{{{{{{{{{{{{{{{+++++++++++++++++++}}}}}}}}}}}}}}}}}}}}}}}}}");
-        print(data);
         if (data["has_mobile"] == null) {
           EasyLoading.showSuccess("登陆成功");
           var spUtils = SpUtils();
@@ -391,12 +404,11 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
 
           Navigator.popUntil(context, ModalRoute.withName('/'));
         } else {
+          EasyLoading.dismiss;
           toBindingPhone();
         }
       },
       onError: (code, error) {
-        print(
-            "{{{{{{{{{{{{{{{{{{{{{{{{{-------------------}}}}}}}}}}}}}}}}}}}}}}}}}");
         EasyLoading.showError(error ?? "");
       },
     );
@@ -417,18 +429,14 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
       parameters: map,
       method: HttpUtils.POST,
       onSuccess: (data) {
-        print("-------------------");
-        print(data);
-        EasyLoading.dismiss();
-        var spUtils = SpUtils();
-        spUtils.setStorage(SpConstant.Token, data["token"]);
-        spUtils.setStorage(SpConstant.IsLogin, true);
+        if (data["has_mobile"] == null) {
+          EasyLoading.showSuccess("登陆成功");
 
-        if (data["has_mobile"]) {
+          var spUtils = SpUtils();
+          spUtils.setStorage(SpConstant.Token, data["token"]);
+          spUtils.setStorage(SpConstant.IsLogin, true);
           HttpUtils.clear();
 
-          // NotificationCenter.instance
-          //     .postNotification(NotificationName.GetUserInfo, null);
           bus.emit(CommonConstant.refreshMine);
           Navigator.popUntil(context, ModalRoute.withName('/'));
         } else {
@@ -436,6 +444,7 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
         }
       },
       onError: (code, error) {
+        EasyLoading.dismiss();
         EasyLoading.showError(error ?? "");
       },
     );

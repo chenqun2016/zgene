@@ -4,7 +4,10 @@ class CommonConstant {
   // static const String BASE_API = "http://192.168.110.70:8998";
   //APP名称
   static const String AppName = "Z基因";
-
+//隐私政策
+  static const String privacy = BASE_API + "/privacy";
+  //用户协议
+  static const String agreement = BASE_API + "/agreement";
   //APP版本号
   static const String AppVersion = "1.0.0";
 

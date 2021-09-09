@@ -588,6 +588,7 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
                       _cityController.text =
                           address.province + address.city + address.county;
                       _areaController.text = address.address;
+                      _checkCanClick();
                     }
                   } catch (e) {
                     print(e);

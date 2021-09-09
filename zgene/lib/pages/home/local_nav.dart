@@ -14,7 +14,11 @@ class LocalNav extends StatefulWidget {
   _LocalNavState createState() => _LocalNavState();
 }
 
-class _LocalNavState extends State<LocalNav> {
+class _LocalNavState extends State<LocalNav> with AutomaticKeepAliveClientMixin{
+
+  @override
+  bool get wantKeepAlive => true;
+
   List goldList = [];
 
   @override

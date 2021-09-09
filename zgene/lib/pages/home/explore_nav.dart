@@ -11,8 +11,9 @@ class ExploreNav extends StatefulWidget {
   _ExploreNavState createState() => _ExploreNavState();
 }
 
-class _ExploreNavState extends State<ExploreNav> {
-
+class _ExploreNavState extends State<ExploreNav> with AutomaticKeepAliveClientMixin{
+  @override
+  bool get wantKeepAlive => true;
   List tourList=[];
 
   @override

@@ -20,6 +20,8 @@ class CommonConstant {
   static const String refreshMine = "refreshMine";
   //iOSAppId
   static const String WxCode = "WxCode";
+  static const String WxCodeSet = "WxCodeSet";
+
   //主题颜色
   static int THEME_COLOR = 0xFF2E9CF9;
   //主题颜色渐变起始颜色

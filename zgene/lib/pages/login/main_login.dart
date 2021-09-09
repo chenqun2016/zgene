@@ -55,7 +55,7 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
     // TODO: implement dispose
     super.dispose();
     NotificationCenter.instance.removeNotification(NotificationName.WxCode);
-    bus.off(CommonConstant.WxCode);
+    // bus.off(CommonConstant.WxCode);
   }
 
   var isAgreePrivacy = false;

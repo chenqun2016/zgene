@@ -632,7 +632,6 @@ class _MyPageState extends BaseWidgetState<MyPage> {
   _onTapEvent(index) async {
     switch (index) {
       case 1: //消息
-        NavigatorUtil.push(context, MyMessagePage());
         final result = await Navigator.push(
             context, MaterialPageRoute(builder: (context) => MyMessagePage()));
         if (result != null) {

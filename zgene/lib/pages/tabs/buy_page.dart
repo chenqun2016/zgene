@@ -310,8 +310,9 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
                             borderRadius: BorderRadius.circular(25)),
                         color: ColorConstant.TextMainColor,
                         onPressed: () {
-                          NavigatorUtil.push(context,
-                              OrderingPage(product: _productDetail, ));
+                          // NavigatorUtil.push(context,
+                          //     OrderingPage(product: _productDetail, ));
+                          UiUitls.showAgreement2(context,onAgree: (){},onCancel: (){});
                         },
                         child: Text("立即购买",
                             style: TextStyle(

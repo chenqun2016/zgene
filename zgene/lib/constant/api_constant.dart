@@ -60,11 +60,11 @@ class ApiConstant {
   //苹果联合登录
   static const String login_apple = "/api/v1/user/login/apple";
   //隐私政策
-  static const String privacys = CommonConstant.BASE_API + ApiConstant.privacy;
+  // static const String privacys = CommonConstant.BASE_API + ApiConstant.privacy;
 
   //用户协议
-  static const String agreements =
-      CommonConstant.BASE_API + ApiConstant.agreement;
+  // static const String agreements =
+  //     CommonConstant.BASE_API + ApiConstant.agreement;
 
   //用户协议
   static const String payLinks = CommonConstant.BASE_API + ApiConstant.payLink;

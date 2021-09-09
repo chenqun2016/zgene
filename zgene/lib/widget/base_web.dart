@@ -157,17 +157,24 @@ class _BaseWebViewState extends State<BaseWebView> {
   var _uri;
 
   void setCookie() async {
-    var uri1 = Uri.parse(_url);
-    CookieManager cookieManager = CookieManager.instance();
-    await cookieManager.setCookie(
-      url: uri1,
-      name: "jwt",
-      value: SpUtils().getStorageDefault(SpConstant.Token, ""),
-      isSecure: false,
-    );
-    setState(() {
-      _uri = uri1;
-      print("sss");
-    });
+    try {
+      String token = SpUtils().getStorageDefault(SpConstant.Token, "");
+      var uri1 = Uri.parse(_url);
+      if (null != token && token.isNotEmpty) {
+        CookieManager cookieManager = CookieManager.instance();
+        await cookieManager.setCookie(
+          url: uri1,
+          name: "jwt",
+          value: token,
+          isSecure: false,
+        );
+      }
+      setState(() {
+        _uri = uri1;
+        print("sss");
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 }

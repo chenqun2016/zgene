@@ -36,6 +36,7 @@ class _WebViewWidgetState extends State<BasePageWebView> {
 
   InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
       crossPlatform: InAppWebViewOptions(
+        supportZoom: false,
         useShouldOverrideUrlLoading: true,
         mediaPlaybackRequiresUserGesture: false,
         userAgent: "Z-Gene",

@@ -67,7 +67,7 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
 
   @override
   rightBtnTap(BuildContext context) {
-    UiUitls.showToast("采集引导");
+    CommonUtils.toCollectionGuide(context);
   }
 
   @override

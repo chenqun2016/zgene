@@ -1,19 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/constant/common_constant.dart';
+import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/models/order_list_model.dart';
+import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/date_utils.dart';
+import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/time_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
+
+import 'my_contant_us.dart';
 
 ///订单详情
 class OrderDetailPage extends BaseWidget {
   OrderListmodel order;
 
   OrderDetailPage({Key key, this.order}) : super(key: key);
-
 
   @override
   BaseWidgetState getState() {
@@ -22,6 +27,8 @@ class OrderDetailPage extends BaseWidget {
 }
 
 class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
+  String appAsalesRules = CommonConstant.defaultAppAsalesRules;
+
   @override
   void initState() {
     super.initState();
@@ -405,10 +412,11 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
   _onTapEvent(index) {
     switch (index) {
       case 1: //跟踪物流
-        UiUitls.showToast("跟踪物流");
+        NavigatorUtil.orderStepNavigator(
+            context, widget.order.status, widget.order);
         break;
       case 2: //联系客服
-        UiUitls.showToast("联系客服");
+        NavigatorUtil.push(context, contantUsPage());
         break;
       case 3: //售后规则
         _showRule();
@@ -419,68 +427,71 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
   ///规则的展示
   _showRule() {
     showModalBottomSheet(
+      isScrollControlled: true,
       barrierColor: ColorConstant.AppleBlack99Color,
+      backgroundColor: Colors.transparent,
       context: context,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20), topRight: Radius.circular(20))),
       builder: (ctx) {
-        return Container(
-          height: 419,
-          width: double.infinity,
-          decoration: BoxDecoration(
-              color: ColorConstant.WhiteColor,
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20), topRight: Radius.circular(20))),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Stack(
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  color: ColorConstant.WhiteColor,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20))),
+              child: Column(
                 children: [
-                  Container(
-                    margin: EdgeInsets.only(top: 21, left: 16),
-                    height: 25,
-                    width: double.infinity,
-                    child: Text(
-                      "售后规则：",
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.w500,
-                        color: ColorConstant.TextSecondColor,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    right: 11,
-                    top: 18,
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(5),
-                        child: Image(
-                          image:
-                              AssetImage("assets/images/mine/icon_quxiao.png"),
-                          height: 18,
-                          width: 18,
+                  Stack(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(top: 21, left: 16),
+                        height: 25,
+                        width: double.infinity,
+                        child: Text(
+                          "售后规则：",
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.w500,
+                            color: ColorConstant.TextSecondColor,
+                          ),
                         ),
                       ),
+                      Positioned(
+                        right: 11,
+                        top: 18,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(5),
+                            child: Image(
+                              image: AssetImage(
+                                  "assets/images/mine/icon_quxiao.png"),
+                              height: 18,
+                              width: 18,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Scrollbar(
+                    // 显示进度条
+                    child: SingleChildScrollView(
+                      padding: EdgeInsets.all(16.0),
+                      child: Expanded(child: Text(appAsalesRules)),
                     ),
                   ),
                 ],
               ),
-              Scrollbar(
-                // 显示进度条
-                child: SingleChildScrollView(
-                  padding: EdgeInsets.all(16.0),
-                  child: Expanded(child: Text("发送到发撒旦法撒打发斯蒂芬仿阿萨德发送到会计法" * 10)),
-                ),
-              ),
-            ],
-          ),
+            )
+          ],
         );
       },
     );

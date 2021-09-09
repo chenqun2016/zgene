@@ -370,7 +370,7 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
 
   @override
   rightBtnTap(BuildContext context) {
-    UiUitls.showToast("dddddd");
+    CommonUtils.toCollectionGuide(context);
   }
 
   ///点击事件

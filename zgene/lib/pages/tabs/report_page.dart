@@ -314,7 +314,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
         NavigatorUtil.push(
             context,
             ReportListPage(
-              archives: bean,
+              id:bean.id,
             ));
       },
       child: Container(

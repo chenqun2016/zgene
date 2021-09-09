@@ -13,9 +13,9 @@ import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/widget/base_web.dart';
 
 class ReportListPage extends BaseWidget {
-  var archives;
+  final int id;
 
-  ReportListPage({Key key, this.archives}) : super(key: key);
+  ReportListPage({Key key, this.id}) : super(key: key);
 
   @override
   BaseWidgetState<BaseWidget> getState() => _ReportListPageState();
@@ -26,14 +26,15 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
   ReportDesModel reportDesModel;
   List list = [];
   Archive _archive;
+  int id;
 
   @override
   void pageWidgetInitState() {
     super.pageWidgetInitState();
+    id = widget.id;
 
     showBaseHead = false;
     showHead = true;
-    pageWidgetTitle = widget.archives.title;
     isListPage = true;
     // backColor = Colors.red;
     backImgPath = "assets/images/mine/img_bg_my.png";
@@ -52,14 +53,25 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
         });
       }
     });
+  }
 
-    ArchiveGetHttp(widget.archives.id, (result) {
+  bool hasDatas = false;
+
+  _getDatas() {
+    String arg = ModalRoute.of(context).settings.arguments;
+    if (null != arg) {
+      id = int.parse(arg);
+    }
+
+    ArchiveGetHttp(id, (result) {
       ArchiveDesModel model = ArchiveDesModel.fromJson(result);
       list.clear();
       setState(() {
         list = model.addon.archives;
         _archive = model.archive;
         try {
+          pageWidgetTitle = _archive.title;
+
           log("hahaha==" + _archive.description);
           if (null != _archive.description && _archive.description.isNotEmpty) {
             var json = jsonDecode(_archive.description);
@@ -73,6 +85,11 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
   }
 
   Widget viewPageBody(BuildContext context) {
+    if (!hasDatas) {
+      hasDatas = true;
+      _getDatas();
+    }
+
     if (null == _archive) {
       return Text("");
     }

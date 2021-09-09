@@ -181,7 +181,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       routes: {
         "/article_detail": (context) => ArticleDetailView(), //文章详情
         "/report": (context) => ReportPage(), //报告
-        "/report_detail": (context) => null, //报告详情
+        "/report_detail": (context) => ReportListPage(), //报告详情
         "/login": (context) => MainLoginPage(), //登录
         "/my_message": (context) => MyMessagePage(), //消息
         "/my_address": (context) => MyAddressListPage(), //我的地址

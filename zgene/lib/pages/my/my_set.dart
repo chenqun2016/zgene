@@ -45,12 +45,15 @@ class _MySetPageState extends BaseWidgetState<MySetPage> {
       color: Color(0xFF112950),
       fontWeight: FontWeight.w500,
     );
-    NotificationCenter.instance.addObserver(NotificationName.WxCode, (object) {
-      if (object != null) {
-        print(
-            "{{{{{{{{{{{{{{{{{{{{{{{{{000000000000000000000000}}}}}}}}}}}}}}}}}}}}}}}}}");
-        wxLoginHttp(object);
-      }
+    // NotificationCenter.instance.addObserver(NotificationName.WxCode, (object) {
+    //   if (object != null) {
+    //     print(
+    //         "{{{{{{{{{{{{{{{{{{{{{{{{{000000000000000000000000}}}}}}}}}}}}}}}}}}}}}}}}}");
+    //     wxLoginHttp(object);
+    //   }
+    // });
+    bus.on(CommonConstant.WxCode, (arg) {
+      wxLoginHttp(arg);
     });
   }
 
@@ -413,6 +416,13 @@ class _MySetPageState extends BaseWidgetState<MySetPage> {
 
         break;
     }
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    bus.off(CommonConstant.WxCode);
   }
 
   void bindWX() {

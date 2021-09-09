@@ -149,8 +149,7 @@ class _MyPageState extends BaseWidgetState<MyPage> {
   @override
   void dispose() {
     super.dispose();
-    NotificationCenter.instance
-        .removeNotification(NotificationName.GetUserInfo);
+
     eventBus.destroy();
     bus.off(CommonConstant.refreshMine);
   }

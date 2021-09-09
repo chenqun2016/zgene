@@ -39,10 +39,14 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
     setWantKeepAlive = true;
     backImgPath = "assets/images/login/icon_mainLogin_backImg.png";
 
-    NotificationCenter.instance.addObserver(NotificationName.WxCode, (object) {
-      if (object != null) {
-        wxLoginHttp(object);
-      }
+    // NotificationCenter.instance.addObserver(NotificationName.WxCode, (object) {
+    //   if (object != null) {
+    //     wxLoginHttp(object);
+    //     print("{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}}");
+    //   }
+    // });
+    bus.on(CommonConstant.WxCode, (arg) {
+      wxLoginHttp(arg);
     });
   }
 
@@ -51,6 +55,7 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
     // TODO: implement dispose
     super.dispose();
     NotificationCenter.instance.removeNotification(NotificationName.WxCode);
+    bus.off(CommonConstant.WxCode);
   }
 
   var isAgreePrivacy = false;
@@ -392,19 +397,19 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
       parameters: map,
       method: HttpUtils.POST,
       onSuccess: (data) {
+        var spUtils = SpUtils();
+        spUtils.setStorage(SpConstant.Token, data["token"]);
+        spUtils.setStorage(SpConstant.IsLogin, true);
+        HttpUtils.clear();
+        // NotificationCenter.instance
+        //     .postNotification(NotificationName.GetUserInfo, null);
+        bus.emit(CommonConstant.refreshMine);
         if (data["has_mobile"] == null) {
           EasyLoading.showSuccess("登陆成功");
-          var spUtils = SpUtils();
-          spUtils.setStorage(SpConstant.Token, data["token"]);
-          spUtils.setStorage(SpConstant.IsLogin, true);
-          HttpUtils.clear();
-          // NotificationCenter.instance
-          //     .postNotification(NotificationName.GetUserInfo, null);
-          bus.emit(CommonConstant.refreshMine);
 
           Navigator.popUntil(context, ModalRoute.withName('/'));
         } else {
-          EasyLoading.dismiss;
+          EasyLoading.dismiss();
           toBindingPhone();
         }
       },
@@ -429,14 +434,12 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
       parameters: map,
       method: HttpUtils.POST,
       onSuccess: (data) {
+        var spUtils = SpUtils();
+        spUtils.setStorage(SpConstant.Token, data["token"]);
+        spUtils.setStorage(SpConstant.IsLogin, true);
+        HttpUtils.clear();
         if (data["has_mobile"] == null) {
           EasyLoading.showSuccess("登陆成功");
-
-          var spUtils = SpUtils();
-          spUtils.setStorage(SpConstant.Token, data["token"]);
-          spUtils.setStorage(SpConstant.IsLogin, true);
-          HttpUtils.clear();
-
           bus.emit(CommonConstant.refreshMine);
           Navigator.of(context).popUntil((route) => route.isFirst);
         } else {

@@ -9,7 +9,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/app_notification.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
+import 'package:zgene/event/event_bus.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/notification_utils.dart';
@@ -409,8 +411,7 @@ class _BindPhoneLoginPageState extends BaseWidgetState<BindPhoneLoginPage> {
         spUtils.setStorage(SpConstant.Uid, data["uid"]);
         HttpUtils.clear();
 
-        NotificationCenter.instance
-            .postNotification(NotificationName.GetUserInfo, null);
+        bus.emit(CommonConstant.refreshMine);
 
         Navigator.popUntil(context, ModalRoute.withName('/'));
       },

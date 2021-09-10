@@ -9,4 +9,9 @@ class ConfigConstant {
 
   //Ios universalLink
   static String universalLink = "https://www.divms.com/";
+
+  //android包名
+  static const String AndroidAppId = "com.divms.app";
+  //iOSAppId
+  static const String iOSAppId = "1521631889";
 }

@@ -9,7 +9,8 @@ import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/platform_utils.dart';
-import 'package:zgene/util/share_utils.dart';
+import 'package:zgene/util/share_utils.dart'
+    if (dart.library.html) 'package:zgene/util/share_utils_web.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:easy_web_view/easy_web_view.dart';
 import 'package:zgene/util/platform_utils.dart';
@@ -30,7 +31,6 @@ class _BaseWebViewState extends State<BaseWebView> {
   bool _flag = PlatformUtils.isWeb ? false : true;
 
   // final Map arguments;
-
   String _url = "";
   static ValueKey key = ValueKey('key_0');
 
@@ -38,8 +38,10 @@ class _BaseWebViewState extends State<BaseWebView> {
   void initState() {
     super.initState();
     _url = widget.url;
-
-    setCookie();
+    // Web不需要设定cookie
+    if (!PlatformUtils.isWeb) {
+      setCookie();
+    }
   }
 
   InAppWebViewGroupOptions options = InAppWebViewGroupOptions(

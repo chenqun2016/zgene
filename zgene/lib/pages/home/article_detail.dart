@@ -9,7 +9,8 @@ import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/platform_utils.dart';
-import 'package:zgene/util/share_utils.dart';
+import 'package:zgene/util/share_utils.dart'
+    if (dart.library.html) 'package:zgene/util/share_utils_web.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:easy_web_view/easy_web_view.dart';
 import 'package:zgene/util/platform_utils.dart';
@@ -61,7 +62,10 @@ class _ArticleDetailViewState extends State<ArticleDetailView> {
   Widget build(BuildContext context) {
     var id = ModalRoute.of(context).settings.arguments;
     _url = ApiConstant.getH5DetailUrl(id.toString());
-    setCookie();
+    // Web不需要设定cookie
+    if (!PlatformUtils.isWeb) {
+      setCookie();
+    }
     return Container(
         padding: EdgeInsets.all(0),
         child: Scaffold(

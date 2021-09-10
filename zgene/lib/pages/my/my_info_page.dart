@@ -197,16 +197,20 @@ class _MyInfoPageState extends State<MyInfoPage> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                _nickName,
-                style: TextStyle(
-                  fontSize: 28,
-                  color: ColorConstant.TextMainBlack,
-                  fontWeight: FontWeight.w500,
+              Container(
+                width: ScreenUtils.screenW(context) - 190.w,
+                child: Text(
+                  _nickName,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 28,
+                    color: ColorConstant.TextMainBlack,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
               Container(
-                width: ScreenUtils.screenW(context) - 180.w,
+                width: ScreenUtils.screenW(context) - 190.w,
                 child: Text(
                   _introduction == "" ? "暂无简介" : _introduction,
                   overflow: TextOverflow.ellipsis,
@@ -318,11 +322,15 @@ class _MyInfoPageState extends State<MyInfoPage> {
                 Positioned(
                   right: 22,
                   top: 12,
-                  child: Text(
-                    _nickName,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: ColorConstant.TextThreeColor,
+                  child: Container(
+                    width: ScreenUtils.screenW(context) - 190.w,
+                    child: Text(
+                      _nickName,
+                      style: TextStyle(
+                        overflow: TextOverflow.ellipsis,
+                        fontSize: 16,
+                        color: ColorConstant.TextThreeColor,
+                      ),
                     ),
                   ),
                 ),

@@ -15,6 +15,10 @@ class NavigatorUtil {
         context, MaterialPageRoute(builder: (context) => page));
   }
 
+  static Future<dynamic> popAndPushNamed(BuildContext context, String name) {
+    return Navigator.popAndPushNamed(context, name);
+  }
+
   static Future<dynamic> pushAndRemoveUntil(BuildContext context, Widget page) {
     return Navigator.pushAndRemoveUntil(
         context,

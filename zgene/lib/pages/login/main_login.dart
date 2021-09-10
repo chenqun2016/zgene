@@ -289,7 +289,7 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
                                   },
                                 children: [
                               TextSpan(
-                                  text: "《隐私条款》",
+                                  text: "隐私政策",
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontStyle: FontStyle.normal,
@@ -317,7 +317,7 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
                                     color: ColorConstant.PromptGrayColor,
                                   )),
                               TextSpan(
-                                  text: "《服务协议》",
+                                  text: "《用户协议》",
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontStyle: FontStyle.normal,
@@ -335,7 +335,7 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
                                               builder: (context) => BaseWebView(
                                                     url: CommonConstant
                                                         .agreement,
-                                                    title: "服务协议",
+                                                    title: "用户协议",
                                                   )));
                                     }),
                             ])),
@@ -384,7 +384,7 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
                 Container(
                   margin: EdgeInsets.only(left: 60.w, top: 0),
                   child: Text(
-                    "请确认已阅读Z基因隐私条款",
+                    "请确认已阅读Z基因隐私政策",
                     textAlign: TextAlign.start,
                     style: TextStyle(
                       fontSize: 14,

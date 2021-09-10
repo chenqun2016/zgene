@@ -240,7 +240,7 @@ class _AboutZPageState extends BaseWidgetState<AboutZPage> {
       case 1:
         NavigatorUtil.push(context, AboutUsPage());
         break;
-      case 3:
+      case 2:
         if (isNew)
           LaunchReview.launch(
             androidAppId: ConfigConstant.AndroidAppId,

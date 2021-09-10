@@ -159,7 +159,7 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
   }
 
   _getTitleContent(model, context) {
-    return Container(
+    return Container(   
       alignment: Alignment.centerLeft,
       padding: EdgeInsets.only(left: 15, top: 10, right: 15, bottom: 10),
       decoration: BoxDecoration(

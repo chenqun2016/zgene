@@ -469,6 +469,7 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
           Navigator.popUntil(context, ModalRoute.withName('/'));
         } else {
           EasyLoading.dismiss();
+          spUtils.setStorage(SpConstant.IsLogin, false);
           toBindingPhone();
         }
       },
@@ -502,6 +503,8 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
           bus.emit(CommonConstant.refreshMine);
           Navigator.of(context).popUntil((route) => route.isFirst);
         } else {
+          EasyLoading.dismiss();
+          spUtils.setStorage(SpConstant.IsLogin, false);
           toBindingPhone();
         }
       },

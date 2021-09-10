@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:launch_review/launch_review.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
+import 'package:zgene/constant/config_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/login/change_Password.dart';
@@ -237,6 +239,13 @@ class _AboutZPageState extends BaseWidgetState<AboutZPage> {
         break;
       case 1:
         NavigatorUtil.push(context, AboutUsPage());
+        break;
+      case 2:
+        if (isNew)
+          LaunchReview.launch(
+            androidAppId: ConfigConstant.AndroidAppId,
+            iOSAppId: ConfigConstant.iOSAppId,
+          );
         break;
     }
   }

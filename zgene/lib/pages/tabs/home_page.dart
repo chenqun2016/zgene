@@ -53,13 +53,7 @@ class _HomePageState extends BaseWidgetState<HomePage> {
     _controller.addListener(() {
       _onScroll(_controller.offset);
     });
-    HomeGetHttp(10, (result) {
-      ContentModel contentModel = ContentModel.fromJson(result);
-      bannerList.clear();
-      setState(() {
-        bannerList = contentModel.archives;
-      });
-    });
+
     super.pageWidgetInitState();
   }
 
@@ -89,7 +83,7 @@ class _HomePageState extends BaseWidgetState<HomePage> {
               // page = 1;
               // // 获取数据
               // getHttp();
-              bus.emit(CommonConstant.HomeRefush);
+              getHttp();
               // await Future.delayed(Duration(seconds: 1), () {
               // 重置刷新状态 【没错，这里用的是resetLoadState】
               if (_easyController != null) {
@@ -105,6 +99,17 @@ class _HomePageState extends BaseWidgetState<HomePage> {
         _appBar
       ],
     );
+  }
+
+  getHttp() {
+    HomeGetHttp(10, (result) {
+      ContentModel contentModel = ContentModel.fromJson(result);
+      bannerList.clear();
+      setState(() {
+        bannerList = contentModel.archives;
+      });
+    });
+    bus.emit(CommonConstant.HomeRefush);
   }
 
   Widget get _listView {

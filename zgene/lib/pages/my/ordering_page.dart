@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_pickers/pickers.dart';
 import 'package:fluwx/fluwx.dart';
@@ -659,19 +660,22 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
               onChanged: (str) {
                 _checkCanClick();
               },
-              keyboardType: TextInputType.multiline,
+              keyboardType: TextInputType.numberWithOptions(decimal: true),
               maxLines: 1,
               textAlign: TextAlign.left,
               style: TextStyle(
                   fontWeight: FontWeight.w600,
                   color: ColorConstant.TextMainBlack,
                   fontSize: 15),
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp("[0-9]")),
+                LengthLimitingTextInputFormatter(11) ],
               decoration: InputDecoration(
                 disabledBorder: _textLineBorder,
                 focusedBorder: _textLineBorder,
                 enabledBorder: _textLineBorder,
-                errorBorder: _textLineBorder,
-                focusedErrorBorder: _textLineBorder,
+                errorBorder: _textLineBorderError,
+                focusedErrorBorder: _textLineBorderError,
                 border: _textLineBorder,
                 contentPadding: EdgeInsets.fromLTRB(15, 12, 0, 12),
                 isCollapsed: true,
@@ -822,6 +826,15 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
       borderSide: BorderSide(
         width: 1,
         color: Colors.transparent,
+      ),
+    );
+  }
+  OutlineInputBorder get _textLineBorderError {
+    return OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8),
+      borderSide: BorderSide(
+        width: 1,
+        color: Colors.red,
       ),
     );
   }

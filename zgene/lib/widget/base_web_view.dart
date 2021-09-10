@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/util/platform_utils.dart';
 
 ///封装的WebView
 class BasePageWebView extends StatefulWidget {
@@ -25,7 +26,7 @@ class _WebViewWidgetState extends State<BasePageWebView> {
   void initState() {
     super.initState();
     _url = widget.url;
-    if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
+    if (PlatformUtils.isAndroid) WebView.platform = SurfaceAndroidWebView();
   }
 
   @override

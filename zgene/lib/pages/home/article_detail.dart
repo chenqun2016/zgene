@@ -131,7 +131,7 @@ class _ArticleDetailViewState extends State<ArticleDetailView> {
                           onLoaded: () {
                             print('Loaded: $_url');
                           },
-                          src: _uri,
+                          src: _url,
                           isHtml: false,
                           isMarkdown: false,
                           convertToWidgets: false,

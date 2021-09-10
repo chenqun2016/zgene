@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/event/event_bus.dart';
 import 'package:zgene/http/base_response.dart';
 import 'package:zgene/http/http_utils.dart';
@@ -21,6 +22,7 @@ import 'package:zgene/util/base_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/refresh_config_utils.dart';
+import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/time_utils.dart';
 
 import 'home_page.dart';
@@ -559,17 +561,18 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
   }
 
   void _getOwnerReport() {
-    HttpUtils.requestHttp(
-      ApiConstant.reports,
-      method: HttpUtils.GET,
-      onSuccess: (result) async {
-        List l = result;
-        if (null != l && l.length > 0) {
-          setState(() {
-            hasReport = true;
-          });
-        }
-      },
-    );
+    if (SpUtils().getStorageDefault(SpConstant.IsLogin, false))
+      HttpUtils.requestHttp(
+        ApiConstant.reports,
+        method: HttpUtils.GET,
+        onSuccess: (result) async {
+          List l = result;
+          if (null != l && l.length > 0) {
+            setState(() {
+              hasReport = true;
+            });
+          }
+        },
+      );
   }
 }

@@ -33,27 +33,56 @@ class _QRViewExampleState extends State<QRViewExample> {
         children: [
           _buildQrView(context),
           Container(
-            alignment: Alignment.topRight,
-            margin: EdgeInsets.only(top: 38, right: 20),
-            child: GestureDetector(
-              onTap: () async {
-                await controller?.toggleFlash();
-                setState(() {});
-              },
-              child: FutureBuilder(
-                future: controller?.getFlashStatus(),
-                builder: (context, snapshot) {
-                  return Icon(
-                    Icons.flash_on,
-                    color: snapshot.data ? Colors.blue : Colors.white,
-                    size: 25,
-                  );
-                },
-              ),
+            width: MediaQuery.of(context).size.width,
+            margin: EdgeInsets.only(left: 20, top: 38, right: 20),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                customHeaderBack(),
+                Expanded(child: Divider()),
+                GestureDetector(
+                  onTap: () async {
+                    if (null != controller) {
+                      await controller.toggleFlash();
+                      setState(() {});
+                    }
+                  },
+                  child: FutureBuilder(
+                    future: controller != null
+                        ? controller.getFlashStatus()
+                        : Future.value(false),
+                    builder: (context, snapshot) {
+                      return Icon(
+                        Icons.flash_on,
+                        color: snapshot.data == null
+                            ? Colors.white
+                            : (snapshot.data ? Colors.blue : Colors.white),
+                        size: 25,
+                      );
+                    },
+                  ),
+                )
+              ],
             ),
           )
         ],
       ),
+    );
+  }
+
+  /// 配置页面头部返回
+  Widget customHeaderBack() {
+    return Container(
+      child: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Image(
+            image: AssetImage("assets/images/icon_base_backArrow.png"),
+            // height: 40.w,
+            // width: 40.w,
+            fit: BoxFit.fill,
+          )),
     );
   }
 

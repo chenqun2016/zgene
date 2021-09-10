@@ -193,7 +193,7 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
               Container(
                 width: double.infinity,
                 margin: EdgeInsets.only(top: 30),
-                padding: EdgeInsets.only(top: 90,bottom: 40),
+                padding: EdgeInsets.only(top: 90, bottom: 40),
                 decoration: BoxDecoration(
                   color: Colors.white70,
                   borderRadius: BorderRadius.all(
@@ -251,7 +251,7 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
               color: ColorConstant.TextMainColor,
               onPressed: () {
                 //绑定成功
-                CommonUtils.toCollectionGuide(context,pop: true);
+                CommonUtils.toCollectionGuide(context, pop: true);
               },
               child: Text(_getBottomText(_position),
                   style: TextStyle(
@@ -476,14 +476,23 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
     );
   }
 
+  bool canStep1Next = false;
+
   Widget _bindstep1(context) {
     return Column(
       children: [
         GestureDetector(
           onTap: () async {
             try {
-              var code = await NavigatorUtil.push(context, QRViewExample());
-              _textEditingController.text = code;
+              String code = await NavigatorUtil.push(context, QRViewExample());
+              if(null != code && code.isNotEmpty){
+                _textEditingController.text = code;
+                Future.delayed(Duration(milliseconds: 500), () {
+                  setState(() {
+                    _position++;
+                  });
+                });
+              }
             } catch (e) {
               print(e);
             }
@@ -578,7 +587,13 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
                     fontWeight: FontWeight.w500,
                     color: ColorConstant.TextMainBlack,
                   ),
-                  onChanged: (str) {},
+                  onChanged: (str) {
+                    if (canStep1Next != str.isNotEmpty) {
+                      setState(() {
+                        canStep1Next = str.isNotEmpty;
+                      });
+                    }
+                  },
                   onSubmitted: (value) {
                     // _onTapEvent(2);
                   },
@@ -617,7 +632,7 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
             minWidth: double.infinity,
             disabledColor: Colors.white,
             color: ColorConstant.TextMainColor,
-            onPressed: _textEditingController.text.isNotEmpty
+            onPressed: canStep1Next
                 ? () {
                     setState(() {
                       _position++;

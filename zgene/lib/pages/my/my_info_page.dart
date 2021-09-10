@@ -326,8 +326,8 @@ class _MyInfoPageState extends State<MyInfoPage> {
                     width: ScreenUtils.screenW(context) - 190.w,
                     child: Text(
                       _nickName,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        overflow: TextOverflow.ellipsis,
                         fontSize: 16,
                         color: ColorConstant.TextThreeColor,
                       ),

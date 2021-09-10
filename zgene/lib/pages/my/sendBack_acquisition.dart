@@ -305,7 +305,7 @@ class _SendBackAcquisitionPageState
               Container(
                 margin: EdgeInsets.only(top: 12.h, left: 12.w, right: 16.w),
                 height: 40.h,
-                width: ScreenUtils.screenW(context) - 98.w,
+                width: ScreenUtils.screenW(context) - 99.w,
                 child: TextField(
                     onChanged: (value) {},
                     controller: _nameController,
@@ -366,7 +366,7 @@ class _SendBackAcquisitionPageState
               Container(
                 margin: EdgeInsets.only(top: 12.h, left: 12.w, right: 16.w),
                 height: 40.h,
-                width: ScreenUtils.screenW(context) - 98.w,
+                width: ScreenUtils.screenW(context) - 99.w,
                 child: TextField(
                     onChanged: (value) {},
                     controller: _phoneController,
@@ -428,7 +428,7 @@ class _SendBackAcquisitionPageState
                 Container(
                   margin: EdgeInsets.only(top: 12.h, left: 12.w, right: 16.w),
                   height: 40.h,
-                  width: ScreenUtils.screenW(context) - 98.w,
+                  width: ScreenUtils.screenW(context) - 99.w,
                   child: TextField(
                       enableInteractiveSelection: false,
                       onTap: () {
@@ -597,7 +597,7 @@ class _SendBackAcquisitionPageState
                 Container(
                   margin: EdgeInsets.only(top: 12.h, left: 12.w, right: 16.w),
                   height: 40.h,
-                  width: ScreenUtils.screenW(context) - 98.w,
+                  width: ScreenUtils.screenW(context) - 99.w,
                   child: TextField(
                       enableInteractiveSelection: false,
                       onTap: () {
@@ -759,7 +759,7 @@ class _SendBackAcquisitionPageState
                       Container(
                         margin: EdgeInsets.only(top: 19.h, right: 16.w),
                         height: 22.h,
-                        width: ScreenUtils.screenW(context) - 178.w,
+                        width: ScreenUtils.screenW(context) - 179.w,
                         child: Text(
                           CommonConstant.appReceiveName,
                           overflow: TextOverflow.ellipsis,
@@ -793,7 +793,7 @@ class _SendBackAcquisitionPageState
                       Container(
                         margin: EdgeInsets.only(right: 16.w),
                         height: 22.h,
-                        width: ScreenUtils.screenW(context) - 178.w,
+                        width: ScreenUtils.screenW(context) - 179.w,
                         child: Text(
                           CommonConstant.appReceivePhone,
                           overflow: TextOverflow.ellipsis,
@@ -819,7 +819,7 @@ class _SendBackAcquisitionPageState
                                   fontWeight: FontWeight.w400,
                                   color: ColorConstant.TextThreeColor,
                                 ),
-                                maxWidth: ScreenUtils.screenW(context) - 178.w)
+                                maxWidth: ScreenUtils.screenW(context) - 179.w)
                             .height
                             .h,
                         width: 80.w,
@@ -844,10 +844,10 @@ class _SendBackAcquisitionPageState
                                   fontWeight: FontWeight.w400,
                                   color: ColorConstant.TextThreeColor,
                                 ),
-                                maxWidth: ScreenUtils.screenW(context) - 178.w)
+                                maxWidth: ScreenUtils.screenW(context) - 179.w)
                             .height
                             .h,
-                        width: ScreenUtils.screenW(context) - 178.w,
+                        width: ScreenUtils.screenW(context) - 179.w,
                         child: Text(
                           sendBackText,
                           overflow: TextOverflow.visible,
@@ -883,7 +883,7 @@ class _SendBackAcquisitionPageState
                         margin: EdgeInsets.only(
                             top: 10.h, right: 16.w, bottom: 15.h),
                         height: 22.h,
-                        width: ScreenUtils.screenW(context) - 178.w,
+                        width: ScreenUtils.screenW(context) - 179.w,
                         child: Text(
                           CommonConstant.appReceivePtype,
                           overflow: TextOverflow.ellipsis,

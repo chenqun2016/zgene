@@ -3,6 +3,8 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/constant/common_constant.dart';
+import 'package:zgene/event/event_bus.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/content_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
@@ -17,7 +19,8 @@ class VideoNav extends StatefulWidget {
   _VideoNavState createState() => _VideoNavState();
 }
 
-class _VideoNavState extends State<VideoNav> with AutomaticKeepAliveClientMixin{
+class _VideoNavState extends State<VideoNav>
+    with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
@@ -26,6 +29,12 @@ class _VideoNavState extends State<VideoNav> with AutomaticKeepAliveClientMixin{
   @override
   void initState() {
     super.initState();
+    bus.on(CommonConstant.HomeRefush, (arg) {
+      getHttp();
+    });
+  }
+
+  getHttp() {
     HomeGetHttp(12, (result) {
       ContentModel contentModel = ContentModel.fromJson(result);
       aloneList.clear();
@@ -33,6 +42,13 @@ class _VideoNavState extends State<VideoNav> with AutomaticKeepAliveClientMixin{
         aloneList = contentModel.archives;
       });
     });
+  }
+
+  @override
+  void dispose() {
+    //为了避免内存泄露，需要调用_controller.dispose
+    super.dispose();
+    bus.off(CommonConstant.HomeRefush);
   }
 
   @override

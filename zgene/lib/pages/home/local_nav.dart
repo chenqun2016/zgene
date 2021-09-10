@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/constant/common_constant.dart';
+import 'package:zgene/event/event_bus.dart';
 import 'package:zgene/models/content_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/bindcollector/bind_collector_page.dart';
@@ -14,8 +16,8 @@ class LocalNav extends StatefulWidget {
   _LocalNavState createState() => _LocalNavState();
 }
 
-class _LocalNavState extends State<LocalNav> with AutomaticKeepAliveClientMixin{
-
+class _LocalNavState extends State<LocalNav>
+    with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
@@ -24,6 +26,12 @@ class _LocalNavState extends State<LocalNav> with AutomaticKeepAliveClientMixin{
   @override
   void initState() {
     super.initState();
+    bus.on(CommonConstant.HomeRefush, (arg) {
+      getHttp();
+    });
+  }
+
+  getHttp() {
     HomeGetHttp(9, (result) {
       ContentModel contentModel = ContentModel.fromJson(result);
       goldList.clear();
@@ -31,6 +39,13 @@ class _LocalNavState extends State<LocalNav> with AutomaticKeepAliveClientMixin{
         goldList = contentModel.archives;
       });
     });
+  }
+
+  @override
+  void dispose() {
+    //为了避免内存泄露，需要调用_controller.dispose
+    super.dispose();
+    bus.off(CommonConstant.HomeRefush);
   }
 
   @override

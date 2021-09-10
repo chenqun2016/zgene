@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_pickers/pickers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -86,6 +87,7 @@ class AddAddressPageState extends BaseWidgetState<AddAddressPage> {
                       fontWeight: FontWeight.w600,
                       color: ColorConstant.TextMainBlack,
                       fontSize: 15),
+                  inputFormatters: [LengthLimitingTextInputFormatter(20)],
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     enabledBorder: UnderlineInputBorder(
@@ -122,6 +124,10 @@ class AddAddressPageState extends BaseWidgetState<AddAddressPage> {
                       fontWeight: FontWeight.w600,
                       color: ColorConstant.TextMainBlack,
                       fontSize: 15),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp("[0-9]")),
+                    LengthLimitingTextInputFormatter(11)
+                  ],
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     enabledBorder: UnderlineInputBorder(
@@ -224,6 +230,7 @@ class AddAddressPageState extends BaseWidgetState<AddAddressPage> {
                       fontWeight: FontWeight.w600,
                       color: ColorConstant.TextMainBlack,
                       fontSize: 15),
+                  inputFormatters: [LengthLimitingTextInputFormatter(100)],
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.fromLTRB(15, 25, 0, 25),
@@ -305,8 +312,16 @@ class AddAddressPageState extends BaseWidgetState<AddAddressPage> {
     if (!isNetWorkAvailable) {
       return;
     }
+    if (_nameController.text.length > 20) {
+      EasyLoading.showError("收货人姓名请不要超过20字！");
+      return;
+    }
     if (!isPhoneUtils.isChinaPhoneLegal(_phoneController.text)) {
       EasyLoading.showError("请填写正确格式的手机号！");
+      return;
+    }
+    if (_areaController.text.length > 100) {
+      EasyLoading.showError("收货人地址请不要超过100字！");
       return;
     }
 

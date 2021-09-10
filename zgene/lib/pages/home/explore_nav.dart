@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/constant/common_constant.dart';
+import 'package:zgene/event/event_bus.dart';
 import 'package:zgene/models/content_model.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/time_utils.dart';
@@ -11,21 +13,32 @@ class ExploreNav extends StatefulWidget {
   _ExploreNavState createState() => _ExploreNavState();
 }
 
-class _ExploreNavState extends State<ExploreNav> with AutomaticKeepAliveClientMixin{
-  @override
-  bool get wantKeepAlive => true;
-  List tourList=[];
+class _ExploreNavState extends State<ExploreNav> {
+  List tourList = [];
 
   @override
   void initState() {
     super.initState();
+    bus.on(CommonConstant.HomeRefush, (arg) {
+      getHttp();
+    });
+  }
+
+  getHttp() {
     HomeGetHttp(11, (result) {
       ContentModel contentModel = ContentModel.fromJson(result);
       tourList.clear();
       setState(() {
-        tourList=contentModel.archives;
+        tourList = contentModel.archives;
       });
     });
+  }
+
+  @override
+  void dispose() {
+    //为了避免内存泄露，需要调用_controller.dispose
+    super.dispose();
+    bus.off(CommonConstant.HomeRefush);
   }
 
   @override
@@ -63,8 +76,9 @@ class _ExploreNavState extends State<ExploreNav> with AutomaticKeepAliveClientMi
   Widget _item(position) {
     Archives archives = tourList[position];
     return GestureDetector(
-      onTap: (){
-        CommonUtils.toUrl(context: context,type: archives.linkType,url: archives.linkUrl);
+      onTap: () {
+        CommonUtils.toUrl(
+            context: context, type: archives.linkType, url: archives.linkUrl);
       },
       child: Container(
           margin: EdgeInsets.only(left: 16, top: 10),
@@ -125,5 +139,4 @@ class _ExploreNavState extends State<ExploreNav> with AutomaticKeepAliveClientMi
           )),
     );
   }
-
 }

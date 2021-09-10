@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/constant/common_constant.dart';
+import 'package:zgene/event/event_bus.dart';
 import 'package:zgene/models/content_model.dart';
 import 'package:zgene/pages/home/explore_nav.dart';
 import 'package:zgene/pages/home/home_getHttp.dart';
@@ -87,6 +89,7 @@ class _HomePageState extends BaseWidgetState<HomePage> {
               // page = 1;
               // // 获取数据
               // getHttp();
+              bus.emit(CommonConstant.HomeRefush);
               // await Future.delayed(Duration(seconds: 1), () {
               // 重置刷新状态 【没错，这里用的是resetLoadState】
               if (_easyController != null) {

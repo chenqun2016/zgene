@@ -1,4 +1,4 @@
 .PHONY: web
 
 web:
-	flutter build web --release
+	flutter build web --release --web-renderer html

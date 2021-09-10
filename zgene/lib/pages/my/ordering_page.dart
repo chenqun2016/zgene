@@ -626,6 +626,7 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
                   fontWeight: FontWeight.w600,
                   color: ColorConstant.TextMainBlack,
                   fontSize: 15),
+              // inputFormatters: [LengthLimitingTextInputFormatter(20)],
               decoration: InputDecoration(
                 disabledBorder: _textLineBorder,
                 focusedBorder: _textLineBorder,
@@ -785,6 +786,7 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
                   fontWeight: FontWeight.w600,
                   color: ColorConstant.TextMainBlack,
                   fontSize: 15),
+              // inputFormatters: [LengthLimitingTextInputFormatter(100)],
               decoration: InputDecoration(
                 disabledBorder: _textLineBorder,
                 focusedBorder: _textLineBorder,

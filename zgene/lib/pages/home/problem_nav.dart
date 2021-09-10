@@ -3,6 +3,8 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/constant/common_constant.dart';
+import 'package:zgene/event/event_bus.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/content_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
@@ -16,7 +18,8 @@ class ProblemNav extends StatefulWidget {
   _ProblemNavState createState() => _ProblemNavState();
 }
 
-class _ProblemNavState extends State<ProblemNav> with AutomaticKeepAliveClientMixin{
+class _ProblemNavState extends State<ProblemNav>
+    with AutomaticKeepAliveClientMixin {
   // List<String> contents = ["关于基因检测。？", "基因检测的原理是什么？", "对用户隐私安全有什么保护措施？"];
   @override
   bool get wantKeepAlive => true;
@@ -25,6 +28,12 @@ class _ProblemNavState extends State<ProblemNav> with AutomaticKeepAliveClientMi
   @override
   void initState() {
     super.initState();
+    bus.on(CommonConstant.HomeRefush, (arg) {
+      getHttp();
+    });
+  }
+
+  getHttp() {
     HomeGetHttp(3, (result) {
       print(result);
       ContentModel contentModel = ContentModel.fromJson(result);
@@ -33,6 +42,13 @@ class _ProblemNavState extends State<ProblemNav> with AutomaticKeepAliveClientMi
         contentList = contentModel.archives;
       });
     });
+  }
+
+  @override
+  void dispose() {
+    //为了避免内存泄露，需要调用_controller.dispose
+    super.dispose();
+    bus.off(CommonConstant.HomeRefush);
   }
 
   @override

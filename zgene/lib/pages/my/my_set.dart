@@ -292,6 +292,33 @@ class _MySetPageState extends BaseWidgetState<MySetPage> {
           // ),
           GestureDetector(
             onTap: () {
+              _onTapEvent(999);
+            },
+            behavior: HitTestBehavior.opaque,
+            child: Stack(
+              children: [
+                Container(
+                    width: double.infinity,
+                    height: 45,
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "基于DiVMS构建",
+                      style: textStyle,
+                    )),
+                Positioned(
+                  right: 0,
+                  top: 15,
+                  child: Image(
+                    image: AssetImage("assets/images/mine/icon_my_right.png"),
+                    height: 16,
+                    width: 16,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
               _onTapEvent(6);
             },
             behavior: HitTestBehavior.opaque,
@@ -389,6 +416,16 @@ class _MySetPageState extends BaseWidgetState<MySetPage> {
                 builder: (context) => BaseWebView(
                       url: CommonConstant.privacy,
                       title: "隐私政策",
+                    )));
+        break;
+      case 999: //基于DiVMS
+        // UiUitls.showToast("隐私政策");
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => BaseWebView(
+                      url: "https://www.divms.com",
+                      title: "DiVMS系统",
                     )));
         break;
       case 7: //账号安全

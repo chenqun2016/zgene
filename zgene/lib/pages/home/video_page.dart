@@ -99,7 +99,7 @@ class _VideoPageState extends State<VideoPage> {
   /// 配置页面头部返回
   Widget customHeaderBack() {
     return Container(
-      margin: EdgeInsets.only(top: 20,left: 10),
+      margin: EdgeInsets.only(top: 50, left: 10),
       child: IconButton(
           onPressed: () {
             Navigator.pop(context);

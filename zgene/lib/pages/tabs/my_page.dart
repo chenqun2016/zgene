@@ -4,6 +4,7 @@ import 'package:event_bus/event_bus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/app_notification.dart';
 import 'package:zgene/constant/color_constant.dart';
@@ -33,6 +34,7 @@ import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/login_base.dart';
 import 'package:zgene/util/notification_utils.dart';
+import 'package:zgene/util/screen_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/time_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
@@ -303,12 +305,16 @@ class _MyPageState extends BaseWidgetState<MyPage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      userName == "" ? "登录/注册" : userName,
-                      style: TextStyle(
-                        fontSize: 28,
-                        color: ColorConstant.TextMainBlack,
-                        fontWeight: FontWeight.w500,
+                    Container(
+                      width: ScreenUtils.screenW(context) - 130.w,
+                      child: Text(
+                        userName == "" ? "登录/注册" : userName,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 28,
+                          color: ColorConstant.TextMainBlack,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                     Text(

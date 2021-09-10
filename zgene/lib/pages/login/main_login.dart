@@ -287,7 +287,7 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
                                   },
                                 children: [
                               TextSpan(
-                                  text: "隐私政策",
+                                  text: "《隐私政策》",
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontStyle: FontStyle.normal,

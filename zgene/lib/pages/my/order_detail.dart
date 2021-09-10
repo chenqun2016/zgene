@@ -1,8 +1,13 @@
+import 'dart:collection';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
+import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/order_list_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/util/base_widget.dart';
@@ -37,12 +42,14 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
     backImgPath = "assets/images/mine/img_bg_my.png";
   }
 
+  var orderId = "";
+
   @override
   Widget viewPageBody(BuildContext context) {
     //获取路由传的参数
     var id = ModalRoute.of(context).settings.arguments;
     print(id);
-
+    orderId = id;
     if (null != widget.order)
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,6 +59,29 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
           _bottom(),
         ],
       );
+    getHttp();
+    return Container();
+  }
+
+  getHttp() {
+    // EasyLoading.show(status: 'loading...');
+    Map<String, dynamic> map = new HashMap();
+    map["order_id"] = orderId;
+    HttpUtils.requestHttp(
+      ApiConstant.orderDetail,
+      parameters: map,
+      method: HttpUtils.GET,
+      onSuccess: (data) {
+        print(data);
+        EasyLoading.dismiss();
+        OrderListmodel orderModel = OrderListmodel.fromJson(data);
+        widget.order = orderModel;
+        setState(() {});
+      },
+      onError: (code, error) {
+        EasyLoading.showError(error ?? "");
+      },
+    );
   }
 
   ///顶部信息

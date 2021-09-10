@@ -17,7 +17,7 @@ import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/widget/restart_widget.dart';
-import 'configure_nonweb.dart' if (dart.library.html) 'configure_web.dart';
+import 'configure.dart' if (dart.library.html) 'configure_web.dart';
 import 'event/event_bus.dart';
 import 'pages/bindcollector/bind_collector_page.dart';
 import 'pages/login/main_login.dart';

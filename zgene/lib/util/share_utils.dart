@@ -13,6 +13,7 @@ import 'package:jshare_flutter_plugin/jshare_flutter_plugin.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/config_constant.dart';
+import 'package:zgene/util/platform_utils.dart';
 
 ///分享
 class ShareUtils {
@@ -190,7 +191,7 @@ class ShareUtils {
       imageUrl = "assets/images/home/icon_main_logo.png";
     }
 
-    if (Platform.isAndroid) {
+    if (PlatformUtils.isAndroid) {
       message.imagePath = await _tempSaveTestImage();
     } else {
       File compressedFile = await FlutterNativeImage.compressImage(
@@ -199,7 +200,7 @@ class ShareUtils {
       message.imagePath = compressedFile.path;
     }
 
-    if (Platform.isIOS) {
+    if (PlatformUtils.isIOS) {
       //ios分享微信
       if (message.platform == JSharePlatform.wechatSession) {
         File compressedFile =

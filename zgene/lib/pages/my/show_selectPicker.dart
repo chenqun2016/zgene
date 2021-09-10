@@ -214,10 +214,19 @@ class _selectTimePicker extends State<selectTimePicker> {
                 itemBuilder: (BuildContext context, int index) {
                   return InkWell(
                     onTap: () {
-                      daySelectIndex = index;
-                      timeSelectIndex = 0;
-                      setState(() {});
-                      callBackTime();
+                      if (todayEnd) {
+                        if (index != 0) {
+                          daySelectIndex = index;
+                          timeSelectIndex = 0;
+                          setState(() {});
+                          callBackTime();
+                        }
+                      } else {
+                        daySelectIndex = index;
+                        timeSelectIndex = 0;
+                        setState(() {});
+                        callBackTime();
+                      }
                     },
                     child: Container(
                       decoration: new BoxDecoration(
@@ -354,13 +363,33 @@ class _selectTimePicker extends State<selectTimePicker> {
   }
 
   var week = [];
-
+  bool todayEnd = false;
   void screeningOverTime() {
     DateTime dateTime = DateTime.now();
 
+    var todayEndDate =
+        new DateTime(dateTime.year, dateTime.month, dateTime.day, 20, 30);
+    if (todayEndDate.millisecondsSinceEpoch < dateTime.millisecondsSinceEpoch) {
+      todayEnd = true;
+      daySelectIndex = 1;
+    } else {
+      todayEnd = false;
+      daySelectIndex = 0;
+    }
+
     for (var time in todayTimeData) {
+      var todayLastTime =
+          new DateTime(dateTime.year, dateTime.month, dateTime.day, 19, 30);
       if (time == "一小时内") {
-        todayTimeState += [false];
+        if (todayLastTime.millisecondsSinceEpoch <
+            dateTime.millisecondsSinceEpoch) {
+          todayTimeState += [true];
+          if (!todayEnd) {
+            timeSelectIndex = todayTimeData.length - 1;
+          }
+        } else {
+          todayTimeState += [false];
+        }
       } else {
         String endTime = time.substring(time.length - 5);
         DateTime currentTime = new DateTime(

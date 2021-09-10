@@ -1,5 +1,4 @@
 import 'dart:collection';
-import 'dart:io';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -13,15 +12,13 @@ import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/event/event_bus.dart';
 import 'package:zgene/http/http_utils.dart';
-import 'package:zgene/models/msg_event.dart';
 import 'package:zgene/pages/login/bindPhone_login.dart';
 import 'package:zgene/pages/login/phone_login.dart';
 import 'package:zgene/util/base_widget.dart';
 
 import 'package:flutter/material.dart';
-import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/notification_utils.dart';
-import 'package:zgene/util/screen_utils.dart';
+import 'package:zgene/util/platform_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/widget/base_web.dart';
 
@@ -185,7 +182,8 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
                     ))),
           ),
           Offstage(
-            offstage: !(CommonConstant.Is_WeChat_Installed && Platform.isIOS),
+            offstage:
+                !(CommonConstant.Is_WeChat_Installed && PlatformUtils.isIOS),
             child: Container(
                 margin: EdgeInsets.only(top: 16.h),
                 width: 312.w,
@@ -289,7 +287,7 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
                                   },
                                 children: [
                               TextSpan(
-                                  text: "《隐私条款》",
+                                  text: "隐私政策",
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontStyle: FontStyle.normal,
@@ -317,7 +315,7 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
                                     color: ColorConstant.PromptGrayColor,
                                   )),
                               TextSpan(
-                                  text: "《服务协议》",
+                                  text: "《用户协议》",
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontStyle: FontStyle.normal,
@@ -335,7 +333,7 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
                                               builder: (context) => BaseWebView(
                                                     url: CommonConstant
                                                         .agreement,
-                                                    title: "服务协议",
+                                                    title: "用户协议",
                                                   )));
                                     }),
                             ])),
@@ -384,7 +382,7 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
                 Container(
                   margin: EdgeInsets.only(left: 60.w, top: 0),
                   child: Text(
-                    "请确认已阅读Z基因隐私条款",
+                    "请确认已阅读Z基因隐私政策",
                     textAlign: TextAlign.start,
                     style: TextStyle(
                       fontSize: 14,

@@ -8,6 +8,7 @@ import 'package:flutter_pickers/pickers.dart';
 import 'package:fluwx/fluwx.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/address_list_model.dart';
 import 'package:zgene/models/content_model.dart';
@@ -617,6 +618,7 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
               onChanged: (str) {
                 _checkCanClick();
               },
+              inputFormatters: UiUitls.getInputFormatters(max: 20),
               keyboardType: TextInputType.multiline,
               maxLines: 1,
               textAlign: TextAlign.left,
@@ -669,7 +671,8 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
                   fontSize: 15),
               inputFormatters: [
                 FilteringTextInputFormatter.allow(RegExp("[0-9]")),
-                LengthLimitingTextInputFormatter(11) ],
+                LengthLimitingTextInputFormatter(11)
+              ],
               decoration: InputDecoration(
                 disabledBorder: _textLineBorder,
                 focusedBorder: _textLineBorder,
@@ -775,6 +778,7 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
               onChanged: (str) {
                 _checkCanClick();
               },
+              inputFormatters: UiUitls.getInputFormatters(),
               keyboardType: TextInputType.multiline,
               textAlign: TextAlign.left,
               style: TextStyle(
@@ -829,6 +833,7 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
       ),
     );
   }
+
   OutlineInputBorder get _textLineBorderError {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(8),

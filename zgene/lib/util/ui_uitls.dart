@@ -451,4 +451,13 @@ class UiUitls {
           );
         });
   }
+
+  ///输入文字校验
+  static List<TextInputFormatter> getInputFormatters({int max = 20}) {
+    return [
+      FilteringTextInputFormatter.allow(
+          RegExp("[a-zA-Z]|[\u4e00-\u9fa5]|[0-9]|，|,|。")),
+      LengthLimitingTextInputFormatter(max), //最大长度
+    ];
+  }
 }

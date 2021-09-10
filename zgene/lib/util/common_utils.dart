@@ -144,7 +144,7 @@ class CommonUtils {
       var uri = Uri.dataFromString(url);
       Map<String, String> params = uri.queryParameters;
       var id = params['id'];
-      eventBus.fire(MsgEvent(100, 2,arg: id));
+      eventBus.fire(MsgEvent(100, 2, arg: id));
     } else if (url.contains('/webview')) {
       //跳转浏览器
       var uri = Uri.dataFromString(url);

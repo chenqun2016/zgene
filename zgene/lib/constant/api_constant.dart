@@ -81,6 +81,8 @@ class ApiConstant {
 
   //订单列表
   static const String orderList = "/api/v1/order/list";
+  //订单详情
+  static const String orderDetail = "/api/v1/order/detail";
 
   //消息列表
   static const String orderReturn = "/api/v1/order/return";

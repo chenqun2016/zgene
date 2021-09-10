@@ -277,6 +277,7 @@ class _MyMessagePageState extends State<MyMessagePage> {
           print(index);
           return InkWell(
             onTap: () {
+              print(content.linkType.toString() + "111" + content.linkUrl);
               CommonUtils.toUrl(
                   context: context,
                   type: content.linkType,

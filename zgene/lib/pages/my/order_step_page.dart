@@ -100,7 +100,9 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
         print(data);
         OrderListmodel orderModel = OrderListmodel.fromJson(data);
         order = orderModel;
-        setState(() {});
+        setState(() {
+          _initCurrentPosition();
+        });
       },
       onError: (code, error) {},
     );
@@ -136,7 +138,10 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
       type: EStepperType.vertical,
       steps: steps.map(
         (s) {
-          bool isActive = steps.indexOf(s) == _position;
+          bool isActive = (steps.indexOf(s) == _position);
+          if (order.status < 0) {
+            isActive = false;
+          }
           return EStep(
             title: _getTitleContent(s, context),
             state: _getState(s),
@@ -159,7 +164,7 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
   }
 
   _getTitleContent(model, context) {
-    return Container(   
+    return Container(
       alignment: Alignment.centerLeft,
       padding: EdgeInsets.only(left: 15, top: 10, right: 15, bottom: 10),
       decoration: BoxDecoration(
@@ -180,7 +185,7 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
                 child: Text(
               model.title,
               style: TextStyle(
-                color: _isAchieve(model)
+                color: _isActive(model)
                     ? ColorConstant.TextMainBlack
                     : ColorConstant.Text_B2BAC6,
                 fontWeight: FontWeight.bold,
@@ -190,7 +195,7 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
             getRightButton(model, context),
           ]),
           //TODO 条件更换
-          if (model.status == 60 && _isButtomAchieve(model))
+          if (model.status == 60 && _isButtomActive(model))
             Container(
               alignment: Alignment.center,
               margin: EdgeInsets.only(top: 10),
@@ -215,20 +220,28 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
     );
   }
 
-  _isAchieve(model) {
+  _isActive(model) {
+    if (order.status < 0) {
+      return false;
+    }
     return steps.indexOf(model) <= _position;
   }
 
-  _isButtomAchieve(model) {
-    return steps.indexOf(model) == _position;
+  _isButtomActive(model) {
+    if (order.status < 0) {
+      return false;
+    }
+    return steps.indexOf(model) == _position && order.status > 0;
   }
 
   getRightButton(model, context) {
     if (model.status == 10) {
       return GestureDetector(
         onTap: () {
-          Navigator.of(context)
-              .pushNamed("/order_detail", arguments: order.id.toString());
+          _isButtomActive(model)
+              ? Navigator.of(context)
+                  .pushNamed("/order_detail", arguments: order.id.toString())
+              : null;
         },
         child: Container(
           height: 50,
@@ -250,7 +263,7 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(27)),
       disabledColor: Colors.white,
       color: ColorConstant.TextMainColor,
-      onPressed: _isButtomAchieve(model)
+      onPressed: _isButtomActive(model)
           ? () async {
               await NavigatorUtil.orderStepNavigator(
                   context, model.status, order);
@@ -261,7 +274,7 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w500,
-            color: _isButtomAchieve(model)
+            color: _isButtomActive(model)
                 ? Colors.white
                 : ColorConstant.Text_B2BAC6,
           )),

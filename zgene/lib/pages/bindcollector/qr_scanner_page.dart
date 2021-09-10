@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:zgene/util/ui_uitls.dart';
+import 'package:zgene/util/platform_utils.dart';
 
 class QRViewExample extends StatefulWidget {
   @override
@@ -19,7 +20,7 @@ class _QRViewExampleState extends State<QRViewExample> {
   @override
   void reassemble() {
     super.reassemble();
-    if (Platform.isAndroid) {
+    if (PlatformUtils.isAndroid) {
       controller.pauseCamera();
     }
     controller.resumeCamera();

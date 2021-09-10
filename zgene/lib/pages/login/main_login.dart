@@ -1,5 +1,4 @@
 import 'dart:collection';
-import 'dart:io';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -13,15 +12,13 @@ import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/event/event_bus.dart';
 import 'package:zgene/http/http_utils.dart';
-import 'package:zgene/models/msg_event.dart';
 import 'package:zgene/pages/login/bindPhone_login.dart';
 import 'package:zgene/pages/login/phone_login.dart';
 import 'package:zgene/util/base_widget.dart';
 
 import 'package:flutter/material.dart';
-import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/notification_utils.dart';
-import 'package:zgene/util/screen_utils.dart';
+import 'package:zgene/util/platform_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/widget/base_web.dart';
 
@@ -185,7 +182,8 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
                     ))),
           ),
           Offstage(
-            offstage: !(CommonConstant.Is_WeChat_Installed && Platform.isIOS),
+            offstage:
+                !(CommonConstant.Is_WeChat_Installed && PlatformUtils.isIOS),
             child: Container(
                 margin: EdgeInsets.only(top: 16.h),
                 width: 312.w,

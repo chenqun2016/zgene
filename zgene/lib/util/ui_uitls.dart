@@ -206,6 +206,7 @@ class UiUitls {
   }
 
   static showAgreement2(context, {onAgree, onCancel}) {
+    print(MediaQuery.of(context).size.height.toString());
     showModalBottomSheet(
       enableDrag: false,
       isDismissible: false,
@@ -240,12 +241,18 @@ class UiUitls {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Image.asset(
-                            "assets/images/logo.png",
-                            height: 144,
-                            width: 144,
-                            fit: BoxFit.fill,
-                          ),
+                          if (MediaQuery.of(context).size.height > 660)
+                            Image.asset(
+                              "assets/images/logo.png",
+                              height: 144,
+                              width: 144,
+                              fit: BoxFit.fill,
+                            ),
+                          if (MediaQuery.of(context).size.height <= 660)
+                            Divider(
+                              height: 20,
+                              color: Colors.transparent,
+                            ),
                           Text(
                             "欢迎使用Z基因",
                             style: TextStyle(
@@ -347,109 +354,6 @@ class UiUitls {
         );
       },
     );
-  }
-
-  ///显示协议
-  static showAgreement(context, {onAgree, onCancel}) {
-    showGeneralDialog(
-        context: context,
-        barrierDismissible: true,
-        barrierLabel: '',
-        transitionDuration: Duration(milliseconds: 200),
-        pageBuilder: (BuildContext context, Animation<double> animation,
-            Animation<double> secondaryAnimation) {
-          return Center(
-            child: Material(
-              child: Container(
-                height: MediaQuery.of(context).size.height * .4,
-                width: MediaQuery.of(context).size.width * .8,
-                child: Column(
-                  children: [
-                    Container(
-                      height: 45,
-                      alignment: Alignment.center,
-                      child: Text(
-                        '用户协议和隐私政策',
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Divider(
-                      height: 1,
-                    ),
-                    Expanded(
-                        child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SingleChildScrollView(
-                        child: PrivacyView(
-                          data: CommonConstant.Privacy_Text,
-                          keys: ['《用户协议》', '《隐私政策》'],
-                          keyStyle:
-                              TextStyle(color: ColorConstant.TextMainColor),
-                          onTapCallback: (String key) {
-                            if (key == '《用户协议》') {
-                              NavigatorUtil.push(
-                                  context,
-                                  BaseWebView(
-                                    url: CommonConstant.agreement,
-                                    title: "用户协议",
-                                  ));
-                            } else if (key == '《隐私政策》') {
-                              NavigatorUtil.push(
-                                  context,
-                                  BaseWebView(
-                                    url: CommonConstant.privacy,
-                                    title: "隐私政策",
-                                  ));
-                            }
-                          },
-                        ),
-                      ),
-                    )),
-                    Divider(
-                      height: 1,
-                    ),
-                    Container(
-                      height: 45,
-                      child: Row(
-                        children: [
-                          Expanded(
-                              child: GestureDetector(
-                            child: Container(
-                                alignment: Alignment.center,
-                                child: Text('不同意')),
-                            onTap: () {
-                              Navigator.of(context).pop();
-                              onCancel();
-                            },
-                          )),
-                          VerticalDivider(
-                            width: 1,
-                          ),
-                          Expanded(
-                              child: GestureDetector(
-                            child: Container(
-                                alignment: Alignment.center,
-                                color: Color(CommonConstant.THEME_COLOR),
-                                child: Text(
-                                  '同意',
-                                  style: TextStyle(
-                                      color: ColorConstant.WhiteColor),
-                                )),
-                            onTap: () {
-                              Navigator.of(context).pop();
-                              onAgree();
-                            },
-                          )),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        });
   }
 
   ///输入文字校验

@@ -28,15 +28,7 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
   int _position = 0;
   var orderId = "";
 
-  var stepMap = {
-    10: OrderStepModel("待发货", "", 10),
-    20: OrderStepModel("待签收", "物流跟踪", 20),
-    30: OrderStepModel("待绑定", "绑定采集器", 30),
-    40: OrderStepModel("待回寄", "立即回寄", 40),
-    50: OrderStepModel("待检测", "物流跟踪", 50),
-    60: OrderStepModel("待出报告", "查看示例报告", 60),
-    70: OrderStepModel("完成", "查看检测报告", 70),
-  };
+  Map stepMap = Map();
 
   @override
   void pageWidgetInitState() {
@@ -44,21 +36,30 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
     pageWidgetTitle = "订单流程";
     backImgPath = "assets/images/mine/img_bg_my.png";
     isListPage = true;
+
     _easyController = EasyRefreshController();
-    steps = stepMap.values.toList();
     _initCurrentPosition();
     super.pageWidgetInitState();
   }
 
   void _initCurrentPosition() {
     if (null != order) {
-      if (order.status < 10) {
+      if (order.status == -10) {
+        stepMap.addAll(CommonUtils.map);
         _position = 0;
-      } else if (order.status > 70) {
-        _position = steps.length - 1;
       } else {
-        _position = stepMap.keys.toList().indexOf(order.status);
+        stepMap.addAll(CommonUtils.map);
+        stepMap.remove(-10);
+        if (order.status < 10) {
+          _position = 0;
+        } else if (order.status > 70) {
+          _position = steps.length - 1;
+        } else {
+          _position = stepMap.keys.toList().indexOf(order.status);
+        }
       }
+      steps = stepMap.values.toList();
+      print("_initCurrentPosition/${order.status}/" + stepMap.toString());
     }
   }
 
@@ -100,9 +101,8 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
         print(data);
         OrderListmodel orderModel = OrderListmodel.fromJson(data);
         order = orderModel;
-        setState(() {
-          _initCurrentPosition();
-        });
+        _initCurrentPosition();
+        setState(() {});
       },
       onError: (code, error) {},
     );
@@ -221,41 +221,40 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
   }
 
   _isActive(model) {
-    if (order.status < 0) {
-      return false;
-    }
     return steps.indexOf(model) <= _position;
   }
 
   _isButtomActive(model) {
-    if (order.status < 0) {
-      return false;
-    }
-    return steps.indexOf(model) == _position && order.status > 0;
+    return steps.indexOf(model) == _position;
   }
 
   getRightButton(model, context) {
-    if (model.status == 10) {
-      return GestureDetector(
-        onTap: () {
-          _isButtomActive(model)
-              ? Navigator.of(context)
-                  .pushNamed("/order_detail", arguments: order.id.toString())
-              : null;
-        },
-        child: Container(
-          height: 50,
-          width: 100,
-          color: Colors.transparent,
-          alignment: Alignment.centerRight,
-          child: Image.asset(
-            "assets/images/home/icon_to.png",
+    if (model.status <= 10) {
+      if (_isButtomActive(model))
+        return GestureDetector(
+          onTap: () {
+            _isButtomActive(model)
+                ? Navigator.of(context)
+                    .pushNamed("/order_detail", arguments: order.id.toString())
+                : null;
+          },
+          child: Container(
             height: 50,
-            width: 16,
-            fit: BoxFit.fitWidth,
+            width: 100,
+            color: Colors.transparent,
+            alignment: Alignment.centerRight,
+            child: Image.asset(
+              "assets/images/home/icon_to.png",
+              height: 50,
+              width: 16,
+              fit: BoxFit.fitWidth,
+            ),
           ),
-        ),
-      );
+        );
+      else
+        return Container(
+          height: 50,
+        );
     }
     return MaterialButton(
       height: 39,

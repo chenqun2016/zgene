@@ -119,7 +119,7 @@ class _BaseWebViewState extends State<BaseWebView> {
                     : Container(
                         height: 0,
                       ),
-                if (null != _uri)
+                if (null != _url)
                   Expanded(
                     // 官方代码
                     child: PlatformUtils.isWeb
@@ -127,7 +127,7 @@ class _BaseWebViewState extends State<BaseWebView> {
                             onLoaded: () {
                               print('Loaded: $_url');
                             },
-                            src: _uri,
+                            src: _url,
                             isHtml: false,
                             isMarkdown: false,
                             convertToWidgets: false,
@@ -139,21 +139,23 @@ class _BaseWebViewState extends State<BaseWebView> {
                             // width: 100,
                             // height: 100,
                           )
-                        : InAppWebView(
-                            initialOptions: options,
-                            initialUrlRequest: URLRequest(url: _uri),
+                        : _uri == null
+                            ? Text("")
+                            : InAppWebView(
+                                initialOptions: options,
+                                initialUrlRequest: URLRequest(url: _uri),
 
-                            // 加载进度变化事件.
-                            onProgressChanged:
-                                (InAppWebViewController controller,
-                                    int progress) {
-                              if ((progress / 100) > 0.999) {
-                                setState(() {
-                                  this._flag = false;
-                                });
-                              }
-                            },
-                          ),
+                                // 加载进度变化事件.
+                                onProgressChanged:
+                                    (InAppWebViewController controller,
+                                        int progress) {
+                                  if ((progress / 100) > 0.999) {
+                                    setState(() {
+                                      this._flag = false;
+                                    });
+                                  }
+                                },
+                              ),
                   )
               ],
             )));

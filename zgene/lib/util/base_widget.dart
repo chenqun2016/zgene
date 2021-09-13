@@ -104,7 +104,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
                         style: TextStyle(
                           fontSize: 18.sp,
                           fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w600,
                           color: ColorConstant.TextMainBlack,
                         ),
                       ),

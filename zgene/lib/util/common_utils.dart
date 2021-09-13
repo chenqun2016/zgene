@@ -9,6 +9,7 @@ import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/models/msg_event.dart';
+import 'package:zgene/models/order_step_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/widget/base_web.dart';
@@ -235,4 +236,15 @@ class CommonUtils {
     }
     return "";
   }
+
+  static var map = {
+    -10: OrderStepModel("退款", "", -10),
+    10: OrderStepModel("待发货", "", 10),
+    20: OrderStepModel("待签收", "物流跟踪", 20),
+    30: OrderStepModel("待绑定", "绑定采集器", 30),
+    40: OrderStepModel("待回寄", "立即回寄", 40),
+    50: OrderStepModel("待检测", "物流跟踪", 50),
+    60: OrderStepModel("待出报告", "查看示例报告", 60),
+    70: OrderStepModel("完成", "查看检测报告", 70),
+  };
 }

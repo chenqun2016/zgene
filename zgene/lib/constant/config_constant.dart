@@ -1,7 +1,6 @@
 ///配置常量
 class ConfigConstant {
   static String jpushAppKey = "29b5893fb872d08ede259829";
-
   //微信appKey
   static String wxAppKey = "wx5efe242ed516d3c1";
   //微信Secret

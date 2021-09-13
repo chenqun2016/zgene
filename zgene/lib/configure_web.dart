@@ -4,7 +4,7 @@ import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/constant/sp_constant.dart';
 
 void configureApp() {
-  setUrlStrategy(PathUrlStrategy());
+  setUrlStrategy(HashUrlStrategy());
 }
 
 void webLogin() {

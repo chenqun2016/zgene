@@ -10,10 +10,10 @@ void configureApp() {
 void webLogin() {
   // 如果是web则需要进行一些js操作
   var res = js.context.callMethod('GetCookie', ['jwt']);
-  if (res != null && !res) {
+  // print("xxxxxrs = ${res}");
+  if (res != null) {
     var spUtils = SpUtils();
     spUtils.setStorage(SpConstant.Token, res);
     spUtils.setStorage(SpConstant.IsLogin, true);
-    // js.context.callMethod('alert', [res]);
   }
 }

@@ -253,7 +253,7 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
     return Container(
       color: Colors.white,
       width: double.infinity,
-      margin: EdgeInsets.only(top: 16, bottom: 100),
+      margin: EdgeInsets.only(top: 16, bottom: 56),
       child: BasePageWebView(
         url: ApiConstant.getH5DetailUrl(_productDetail.id.toString()),
       ),

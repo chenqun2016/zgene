@@ -52,6 +52,7 @@ class _MySetPageState extends BaseWidgetState<MySetPage> {
     //     wxLoginHttp(object);
     //   }
     // });
+    
     bus.on(CommonConstant.WxCode, (arg) {
       wxLoginHttp(arg);
     });

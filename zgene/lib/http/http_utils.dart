@@ -153,7 +153,6 @@ class HttpUtils {
     } catch (e) {}
     try {
       print(url);
-      url = "133333";
       Dio dio = await createInstance();
       Response response;
       switch (method) {

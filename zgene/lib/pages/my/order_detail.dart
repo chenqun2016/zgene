@@ -2,7 +2,6 @@ import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
@@ -15,16 +14,11 @@ import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/date_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/time_utils.dart';
-import 'package:zgene/util/ui_uitls.dart';
 
 import 'my_contant_us.dart';
 
 ///订单详情
 class OrderDetailPage extends BaseWidget {
-  OrderListmodel order;
-
-  OrderDetailPage({Key key, this.order}) : super(key: key);
-
   @override
   BaseWidgetState getState() {
     return _OrderDetailState();
@@ -42,15 +36,14 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
     backImgPath = "assets/images/mine/img_bg_my.png";
   }
 
+  OrderListmodel _model;
   var orderId = "";
 
   @override
   Widget viewPageBody(BuildContext context) {
     //获取路由传的参数
-    var id = ModalRoute.of(context).settings.arguments;
-    print(id);
-    orderId = id;
-    if (null != widget.order)
+    orderId = ModalRoute.of(context).settings.arguments;
+    if (null != _model)
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -64,7 +57,6 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
   }
 
   getHttp() {
-    // EasyLoading.show(status: 'loading...');
     Map<String, dynamic> map = new HashMap();
     map["order_id"] = orderId;
     HttpUtils.requestHttp(
@@ -73,13 +65,11 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
       method: HttpUtils.GET,
       onSuccess: (data) {
         print(data);
-        EasyLoading.dismiss();
         OrderListmodel orderModel = OrderListmodel.fromJson(data);
-        widget.order = orderModel;
+        _model = orderModel;
         setState(() {});
       },
       onError: (code, error) {
-        EasyLoading.showError(error ?? "");
       },
     );
   }
@@ -87,10 +77,10 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
   ///顶部信息
   Widget _getTopInfo() {
     var sfno;
-    if (widget.order.status == 20) {
-      sfno = widget.order.sfNo;
-    } else if (widget.order.status == 50) {
-      sfno = widget.order.reSfNo;
+    if (_model.status == 20) {
+      sfno = _model.sfNo;
+    } else if (_model.status == 50) {
+      sfno = _model.reSfNo;
     }
     return Container(
       margin: EdgeInsets.only(top: 30),
@@ -105,10 +95,10 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
           ),
           child: Column(
             children: [
-              if (null != widget.order.prodInfo)
+              if (null != _model.prodInfo)
                 Container(
                   margin: EdgeInsets.only(top: 90, bottom: 10),
-                  child: Text(widget.order.prodInfo.name,
+                  child: Text(_model.prodInfo.name,
                       style: TextStyle(
                         fontSize: 18,
                         color: Color(0xFF112950),
@@ -139,14 +129,13 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
             ],
           ),
         ),
-        if (null != widget.order.prodInfo)
+        if (null != _model.prodInfo)
           Positioned(
             child: Center(
               child: ClipOval(
                 child: FadeInImage.assetNetwork(
                     placeholder: 'assets/images/home/img_default2.png',
-                    image:
-                        CommonUtils.splicingUrl(widget.order.prodInfo.images),
+                    image: CommonUtils.splicingUrl(_model.prodInfo.images),
                     width: 116,
                     height: 116,
                     fadeInDuration: TimeUtils.fadeInDuration(),
@@ -201,7 +190,7 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
                   alignment: Alignment.topRight,
                   padding: EdgeInsets.only(left: 100, top: 16),
                   child: Text(
-                    widget.order.id.toString(),
+                    _model.id.toString(),
                     style: textStyleRight,
                     textAlign: TextAlign.right,
                   ),
@@ -218,7 +207,7 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
               ],
             ),
           ),
-          if (null != widget.order.prodInfo)
+          if (null != _model.prodInfo)
             GestureDetector(
               onTap: () {},
               behavior: HitTestBehavior.opaque,
@@ -229,7 +218,7 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
                     alignment: Alignment.topRight,
                     padding: EdgeInsets.only(left: 100, top: 16),
                     child: Text(
-                      widget.order.prodInfo.name,
+                      _model.prodInfo.name,
                       style: textStyleRight,
                       textAlign: TextAlign.right,
                     ),
@@ -246,7 +235,7 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
                 ],
               ),
             ),
-          if (null != widget.order.revAddress)
+          if (null != _model.revAddress)
             GestureDetector(
               onTap: () {},
               behavior: HitTestBehavior.opaque,
@@ -257,10 +246,10 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
                     alignment: Alignment.topRight,
                     padding: EdgeInsets.only(left: 100, top: 16),
                     child: Text(
-                      widget.order.revAddress.province +
-                          widget.order.revAddress.city +
-                          widget.order.revAddress.county +
-                          widget.order.revAddress.address,
+                      _model.revAddress.province +
+                          _model.revAddress.city +
+                          _model.revAddress.county +
+                          _model.revAddress.address,
                       style: textStyleRight,
                       textAlign: TextAlign.right,
                     ),
@@ -288,7 +277,7 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
                   padding: EdgeInsets.only(left: 100, top: 16),
                   child: Text(
                     CusDateUtils.getFormatDataS(
-                        timeSamp: widget.order.createdAt,
+                        timeSamp: _model.createdAt,
                         format: CusDateUtils.PARAM_TIME_FORMAT_H_M),
                     style: textStyleRight,
                     textAlign: TextAlign.right,
@@ -306,7 +295,7 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
               ],
             ),
           ),
-          if (null != widget.order.billInfo)
+          if (null != _model.billInfo)
             GestureDetector(
               onTap: () {},
               behavior: HitTestBehavior.opaque,
@@ -317,7 +306,7 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
                     alignment: Alignment.topRight,
                     padding: EdgeInsets.only(left: 100, top: 16),
                     child: Text(
-                      widget.order.billInfo.company,
+                      _model.billInfo.company,
                       style: textStyleRight,
                       textAlign: TextAlign.right,
                     ),
@@ -334,7 +323,7 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
                 ],
               ),
             ),
-          if (null != widget.order.billInfo)
+          if (null != _model.billInfo)
             GestureDetector(
               onTap: () {},
               behavior: HitTestBehavior.opaque,
@@ -345,7 +334,7 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
                     alignment: Alignment.topRight,
                     padding: EdgeInsets.only(left: 100, top: 16),
                     child: Text(
-                      widget.order.billInfo.numbers,
+                      _model.billInfo.numbers,
                       style: textStyleRight,
                       textAlign: TextAlign.right,
                     ),
@@ -362,7 +351,7 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
                 ],
               ),
             ),
-          if (null != widget.order.billInfo)
+          if (null != _model.billInfo)
             GestureDetector(
               onTap: () {},
               behavior: HitTestBehavior.opaque,
@@ -373,7 +362,7 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
                     alignment: Alignment.topRight,
                     padding: EdgeInsets.only(left: 100, top: 16),
                     child: Text(
-                      widget.order.billInfo.email,
+                      _model.billInfo.email,
                       style: textStyleRight,
                       textAlign: TextAlign.right,
                     ),
@@ -443,8 +432,7 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
   _onTapEvent(index) {
     switch (index) {
       case 1: //跟踪物流
-        NavigatorUtil.orderStepNavigator(
-            context, widget.order.status, widget.order);
+        NavigatorUtil.orderStepNavigator(context, _model.status, _model);
         break;
       case 2: //联系客服
         NavigatorUtil.push(context, contantUsPage());

@@ -199,7 +199,7 @@ class _ArticleDetailViewState extends State<ArticleDetailView> {
       url: _uri,
       name: "jwt",
       value: SpUtils().getStorageDefault(SpConstant.Token, ""),
-      isSecure: true,
+      isSecure: false,
     );
   }
 }

@@ -87,6 +87,9 @@ class ApiConstant {
   //消息列表
   static const String orderReturn = "/api/v1/order/return";
 
+  //获取订单当前状态
+  static const String orderStatus = "/api/v1/order/status";
+
   ///********************************* 报告 *****************************///
   //基因报告列表
   static const String reports = "/api/v1/gene/reports";

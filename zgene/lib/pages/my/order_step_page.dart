@@ -2,30 +2,19 @@ import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
-import 'package:zgene/constant/common_constant.dart';
+import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/order_list_model.dart';
 import 'package:zgene/models/order_step_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
-import 'package:zgene/pages/bindcollector/bind_collector_page.dart';
-import 'package:zgene/pages/my/my_report_page.dart';
-import 'package:zgene/pages/my/order_detail.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
-import 'package:zgene/util/ui_uitls.dart';
-import 'package:zgene/widget/base_web.dart';
+import 'package:zgene/util/refresh_config_utils.dart';
 import 'package:zgene/widget/my_stepper.dart';
 
-import '../splash_page.dart';
-import 'sendBack_acquisition.dart';
-
 class OrderStepPage extends BaseWidget {
-  OrderListmodel order;
-
-  OrderStepPage({Key key, this.order}) : super(key: key);
-
-
   @override
   BaseWidgetState<BaseWidget> getState() {
     return _OrderStepPageState();
@@ -33,8 +22,12 @@ class OrderStepPage extends BaseWidget {
 }
 
 class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
+  OrderListmodel order;
+  EasyRefreshController _easyController;
   List steps;
   int _position = 0;
+  var orderId = "";
+
   var stepMap = {
     10: OrderStepModel("待发货", "", 10),
     20: OrderStepModel("待签收", "物流跟踪", 20),
@@ -51,18 +44,22 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
     pageWidgetTitle = "订单流程";
     backImgPath = "assets/images/mine/img_bg_my.png";
     isListPage = true;
-
+    _easyController = EasyRefreshController();
     steps = stepMap.values.toList();
-    if (null != widget.order) {
-      if (widget.order.status < 10) {
+    _initCurrentPosition();
+    super.pageWidgetInitState();
+  }
+
+  void _initCurrentPosition() {
+    if (null != order) {
+      if (order.status < 10) {
         _position = 0;
-      } else if (widget.order.status > 70) {
+      } else if (order.status > 70) {
         _position = steps.length - 1;
       } else {
-        _position = stepMap.keys.toList().indexOf(widget.order.status);
+        _position = stepMap.keys.toList().indexOf(order.status);
       }
     }
-    super.pageWidgetInitState();
   }
 
   @override
@@ -72,7 +69,43 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
 
   @override
   Widget viewPageBody(BuildContext context) {
-    if (null != widget.order) return _orderStepper(context);
+    //获取路由传的参数
+    orderId = ModalRoute.of(context).settings.arguments;
+    return EasyRefresh(
+      // 是否开启控制结束加载
+      enableControlFinishLoad: false,
+      firstRefresh: true,
+      // 控制器
+      controller: _easyController,
+      header: RefreshConfigUtils.classicalHeader(),
+      child: order != null ? _orderStepper(context) : Text(""),
+      //下拉刷新事件回调
+      onRefresh: () async {
+        getHttp();
+        if (_easyController != null) {
+          _easyController.resetLoadState();
+        }
+      },
+    );
+  }
+
+  getHttp() async {
+    Map<String, dynamic> map = new HashMap();
+    map["order_id"] = orderId;
+    HttpUtils.requestHttp(
+      ApiConstant.orderDetail,
+      parameters: map,
+      method: HttpUtils.GET,
+      onSuccess: (data) {
+        print(data);
+        OrderListmodel orderModel = OrderListmodel.fromJson(data);
+        order = orderModel;
+        setState(() {
+          _initCurrentPosition();
+        });
+      },
+      onError: (code, error) {},
+    );
   }
 
   _orderStepper(context) {
@@ -105,7 +138,10 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
       type: EStepperType.vertical,
       steps: steps.map(
         (s) {
-          bool isActive = steps.indexOf(s) == _position;
+          bool isActive = (steps.indexOf(s) == _position);
+          if (order.status < 0) {
+            isActive = false;
+          }
           return EStep(
             title: _getTitleContent(s, context),
             state: _getState(s),
@@ -128,7 +164,7 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
   }
 
   _getTitleContent(model, context) {
-    return Container(   
+    return Container(
       alignment: Alignment.centerLeft,
       padding: EdgeInsets.only(left: 15, top: 10, right: 15, bottom: 10),
       decoration: BoxDecoration(
@@ -149,7 +185,7 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
                 child: Text(
               model.title,
               style: TextStyle(
-                color: _isAchieve(model)
+                color: _isActive(model)
                     ? ColorConstant.TextMainBlack
                     : ColorConstant.Text_B2BAC6,
                 fontWeight: FontWeight.bold,
@@ -159,7 +195,7 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
             getRightButton(model, context),
           ]),
           //TODO 条件更换
-          if (model.status == 60 && _isButtomAchieve(model))
+          if (model.status == 60 && _isButtomActive(model))
             Container(
               alignment: Alignment.center,
               margin: EdgeInsets.only(top: 10),
@@ -184,19 +220,28 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
     );
   }
 
-  _isAchieve(model) {
+  _isActive(model) {
+    if (order.status < 0) {
+      return false;
+    }
     return steps.indexOf(model) <= _position;
   }
 
-  _isButtomAchieve(model) {
-    return steps.indexOf(model) == _position;
+  _isButtomActive(model) {
+    if (order.status < 0) {
+      return false;
+    }
+    return steps.indexOf(model) == _position && order.status > 0;
   }
 
   getRightButton(model, context) {
     if (model.status == 10) {
       return GestureDetector(
         onTap: () {
-          NavigatorUtil.push(context, OrderDetailPage(order: widget.order));
+          _isButtomActive(model)
+              ? Navigator.of(context)
+                  .pushNamed("/order_detail", arguments: order.id.toString())
+              : null;
         },
         child: Container(
           height: 50,
@@ -218,17 +263,18 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(27)),
       disabledColor: Colors.white,
       color: ColorConstant.TextMainColor,
-      onPressed: _isButtomAchieve(model)
+      onPressed: _isButtomActive(model)
           ? () async {
-              NavigatorUtil.orderStepNavigator(
-                  context, model.status, widget.order);
+              await NavigatorUtil.orderStepNavigator(
+                  context, model.status, order);
+              getHttp();
             }
           : null,
       child: Text(model.title2,
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w500,
-            color: _isButtomAchieve(model)
+            color: _isButtomActive(model)
                 ? Colors.white
                 : ColorConstant.Text_B2BAC6,
           )),

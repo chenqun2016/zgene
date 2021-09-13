@@ -355,9 +355,12 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
                         ),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16)),
-                        onPressed: () {
-                          NavigatorUtil.orderStepNavigator(
+                        onPressed: () async {
+                          await NavigatorUtil.orderStepNavigator(
                               context, bean.status, bean);
+
+                          ///刷新状态
+                          getDatas();
                         },
                       ),
                     ),
@@ -376,11 +379,11 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
   }
 
   ///点击事件
-  _onTapEvent(OrderListmodel bean) {
-    NavigatorUtil.push(
-        context,
-        OrderStepPage(
-          order: bean,
-        ));
+  _onTapEvent(OrderListmodel bean) async {
+    await Navigator.of(context)
+        .pushNamed("/order_step_detail", arguments: bean.id.toString());
+
+    ///刷新状态
+    getDatas();
   }
 }

@@ -32,29 +32,26 @@ class NavigatorUtil {
 // OrderStatus8  int8 = 50 //待检测
 // OrderStatus9  int8 = 60 //待出报告
 // OrderStatus10 int8 = 70 //完成
-  static void orderStepNavigator(context, status, _order) {
+  static Future<dynamic> orderStepNavigator(context, status, _order) {
     switch (status) {
       case 50:
-        NavigatorUtil.push(
+        return NavigatorUtil.push(
             context,
             BaseWebView(
               url: ApiConstant.getSFH5DetailUrl(_order.reSfNo),
             ));
-        break;
       case 20:
-        NavigatorUtil.push(
+        return NavigatorUtil.push(
             context,
             BaseWebView(
               url: ApiConstant.getSFH5DetailUrl(_order.sfNo),
             ));
-        break;
       case 30:
-        NavigatorUtil.push(context, BindCollectorPage());
-        break;
+        return NavigatorUtil.push(context, BindCollectorPage());
       case 40:
         print(123);
-        if(null != _order.collectorInfo){
-          NavigatorUtil.push(
+        if (null != _order.collectorInfo) {
+          return NavigatorUtil.push(
               context,
               SendBackAcquisitionPage(
                   ordId: _order.id,
@@ -67,8 +64,8 @@ class NavigatorUtil {
         Navigator.popUntil(context, (route) => route.isFirst);
         break;
       case 70:
-        NavigatorUtil.push(context, MyReportPage());
-        break;
+        return NavigatorUtil.push(context, MyReportPage());
     }
+    return Future(() => 0);
   }
 }

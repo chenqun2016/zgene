@@ -268,7 +268,7 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
                         padding: EdgeInsets.only(left: 4.w),
                         child: RichText(
                             text: TextSpan(
-                                text: "我已阅读Z基因",
+                                text: "我已同意",
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontStyle: FontStyle.normal,
@@ -287,7 +287,7 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
                                   },
                                 children: [
                               TextSpan(
-                                  text: "《隐私政策》",
+                                  text: "《个人信息保护政策》",
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontStyle: FontStyle.normal,
@@ -303,7 +303,7 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
                                           MaterialPageRoute(
                                               builder: (context) => BaseWebView(
                                                     url: CommonConstant.privacy,
-                                                    title: "隐私政策",
+                                                    title: "个人信息保护政策",
                                                   )));
                                     }),
                               TextSpan(
@@ -380,9 +380,9 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
             child: Row(
               children: [
                 Container(
-                  margin: EdgeInsets.only(left: 60.w, top: 0),
+                  margin: EdgeInsets.only(left: 26.w, top: 0),
                   child: Text(
-                    "请确认已阅读Z基因隐私政策",
+                    "请先勾选同意《个人信息保护政策》《用户协议》",
                     textAlign: TextAlign.start,
                     style: TextStyle(
                       fontSize: 14,

@@ -241,11 +241,15 @@ class _AboutZPageState extends BaseWidgetState<AboutZPage> {
         NavigatorUtil.push(context, AboutUsPage());
         break;
       case 2:
-        if (isNew)
+        if (isNew) {
           LaunchReview.launch(
             androidAppId: ConfigConstant.AndroidAppId,
             iOSAppId: ConfigConstant.iOSAppId,
           );
+        } else {
+          EasyLoading.showSuccess("当前就是最新版本哦~");
+        }
+
         break;
     }
   }

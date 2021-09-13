@@ -119,7 +119,7 @@ class _BaseWebViewState extends State<BaseWebView> {
                     : Container(
                         height: 0,
                       ),
-                if (null != _uri)
+                if (null != _url)
                   Expanded(
                     // 官方代码
                     child: PlatformUtils.isWeb
@@ -127,7 +127,7 @@ class _BaseWebViewState extends State<BaseWebView> {
                             onLoaded: () {
                               print('Loaded: $_url');
                             },
-                            src: _uri,
+                            src: _url,
                             isHtml: false,
                             isMarkdown: false,
                             convertToWidgets: false,

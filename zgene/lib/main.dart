@@ -44,9 +44,10 @@ void main() async {
   UiUitls.setTransparentStatus();
 
   //设置手机竖屏
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp,DeviceOrientation.portraitDown])
       .then((_) {
     getSetting();
+    runApp(MyApp());
   });
 }
 
@@ -305,7 +306,7 @@ setConfiguration() {
   } catch (e) {
     print(e);
   }
-  runApp(MyApp());
+
 }
 
 class Global {

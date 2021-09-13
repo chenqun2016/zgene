@@ -5,6 +5,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/content_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
@@ -12,7 +13,9 @@ import 'package:zgene/pages/my/ordering_page.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/util/common_utils.dart';
+import 'package:zgene/util/login_base.dart';
 import 'package:zgene/util/refresh_config_utils.dart';
+import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/time_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/widget/base_web_view.dart';
@@ -221,6 +224,10 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
                     borderRadius: BorderRadius.circular(25)),
                 color: ColorConstant.TextMainColor,
                 onPressed: () {
+                  if (!SpUtils().getStorageDefault(SpConstant.IsLogin, false)) {
+                    BaseLogin.login();
+                    return;
+                  }
                   NavigatorUtil.push(
                       context,
                       OrderingPage(
@@ -309,6 +316,12 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
                           borderRadius: BorderRadius.circular(25)),
                       color: ColorConstant.TextMainColor,
                       onPressed: () {
+                        if (!SpUtils()
+                            .getStorageDefault(SpConstant.IsLogin, false)) {
+                          BaseLogin.login();
+                          return;
+                        }
+
                         NavigatorUtil.push(
                             context,
                             OrderingPage(

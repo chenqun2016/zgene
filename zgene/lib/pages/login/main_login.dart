@@ -466,7 +466,8 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
         if (data["has_mobile"] == null) {
           EasyLoading.showSuccess("登陆成功");
 
-          Navigator.popUntil(context, ModalRoute.withName('/'));
+          // Navigator.popUntil(context, ModalRoute.withName('/'));
+          Navigator.of(context).popUntil((route) => route.isFirst);
         } else {
           EasyLoading.dismiss();
           spUtils.setStorage(SpConstant.IsLogin, false);

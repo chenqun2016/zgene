@@ -50,6 +50,7 @@ class MyPage extends BaseWidget {
 class _MyPageState extends BaseWidgetState<MyPage> {
   final eventBus = CommonUtils.getInstance();
   int count = 0;
+  List bannerList = [];
 
   @override
   void pageWidgetInitState() {
@@ -72,14 +73,14 @@ class _MyPageState extends BaseWidgetState<MyPage> {
       ContentModel contentModel = ContentModel.fromJson(result);
       if (contentModel.archives.length > 0) {
         bannerImg = contentModel.archives[0].imageUrl;
-        bannerUrl = (contentModel.archives[0].id).toString();
-        bannerTitle = contentModel.archives[0].title;
       } else {
         bannerImg = "";
-        bannerUrl = "";
-        bannerTitle = "";
       }
-      setState(() {});
+      bannerList.clear();
+      setState(() {
+        bannerList = contentModel.archives;
+      });
+      // setState(() {});
     });
 
     eventBus.on<selectMineEvent>().listen((event) {
@@ -222,14 +223,19 @@ class _MyPageState extends BaseWidgetState<MyPage> {
             visible: bannerImg == "" ? false : true,
             child: InkWell(
               onTap: () {
-                var link = ApiConstant.getH5DetailUrl(bannerUrl);
-                print(link);
-                NavigatorUtil.push(
-                    context,
-                    BaseWebView(
-                      url: link,
-                      title: bannerTitle,
-                    ));
+                // var link = ApiConstant.getH5DetailUrl(bannerUrl);
+                // print(link);
+                // NavigatorUtil.push(
+                //     context,
+                //     BaseWebView(
+                //       url: link,
+                //       title: bannerTitle,
+                //     ));
+                if (bannerList.length > 0)
+                  CommonUtils.toUrl(
+                      context: context,
+                      type: bannerList[0].linkType,
+                      url: bannerList[0].linkUrl);
               },
               child: Container(
                   margin: EdgeInsets.only(bottom: 15),
@@ -321,13 +327,17 @@ class _MyPageState extends BaseWidgetState<MyPage> {
                         ),
                       ),
                     ),
-                    Text(
-                      spUtils.getStorageDefault(SpConstant.IsLogin, false)
-                          ? (userIntro == "" ? "欢迎来到Z基因研究中心" : userIntro)
-                          : "Z基因帮你解锁出厂设置",
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: ColorConstant.TextSecondColor,
+                    Container(
+                      width: ScreenUtils.screenW(context) - 130.w,
+                      child: Text(
+                        spUtils.getStorageDefault(SpConstant.IsLogin, false)
+                            ? (userIntro == "" ? "欢迎来到Z基因研究中心" : userIntro)
+                            : "Z基因帮你解锁出厂设置",
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: ColorConstant.TextSecondColor,
+                        ),
                       ),
                     )
                   ],
@@ -673,7 +683,11 @@ class _MyPageState extends BaseWidgetState<MyPage> {
         }
         break;
       case 3: //我的订单
-        NavigatorUtil.push(context, MyOrderListPage());
+        if (spUtils.getStorageDefault(SpConstant.IsLogin, false)) {
+          NavigatorUtil.push(context, MyOrderListPage());
+        } else {
+          BaseLogin.login();
+        }
         break;
       case 4: //绑定采集器
         NavigatorUtil.push(context, BindCollectorPage());
@@ -687,7 +701,11 @@ class _MyPageState extends BaseWidgetState<MyPage> {
         CommonUtils.toUrl(context: context, url: CommonUtils.URL_BUY);
         break;
       case 7: //我的报告
-        NavigatorUtil.push(context, MyReportPage());
+        if (spUtils.getStorageDefault(SpConstant.IsLogin, false)) {
+          NavigatorUtil.push(context, MyReportPage());
+        } else {
+          BaseLogin.login();
+        }
         break;
       case 8: //设置
         if (spUtils.getStorageDefault(SpConstant.IsLogin, false)) {

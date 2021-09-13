@@ -69,8 +69,7 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
         _model = orderModel;
         setState(() {});
       },
-      onError: (code, error) {
-      },
+      onError: (code, error) {},
     );
   }
 
@@ -249,8 +248,14 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
                       _model.revAddress.province +
                           _model.revAddress.city +
                           _model.revAddress.county +
-                          _model.revAddress.address,
+                          _model.revAddress.address +
+                          "," +
+                          _model.revAddress.rcvName +
+                          "," +
+                          _model.revAddress.rcvPhone,
                       style: textStyleRight,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.right,
                     ),
                   ),

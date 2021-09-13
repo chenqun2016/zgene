@@ -2,7 +2,7 @@ import 'package:zgene/constant/sp_constant.dart';
 
 ///app公共常量
 class CommonConstant {
-  static const String BASE_API = SpConstant.developApi;
+  static const String BASE_API = SpConstant.DevelopApi;
   // static const String BASE_API = "http://192.168.110.70:8998";
   //APP名称
   static const String AppName = "Z基因";

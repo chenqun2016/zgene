@@ -43,12 +43,6 @@ void main() async {
   //设置透明状态栏
   UiUitls.setTransparentStatus();
 
-  if (!PlatformUtils.isWeb) {
-    registerWxApi(
-        appId: CommonConstant.wxAppKey,
-        universalLink: CommonConstant.universalLink);
-  }
-
   //设置手机竖屏
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {

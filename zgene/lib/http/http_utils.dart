@@ -153,6 +153,7 @@ class HttpUtils {
     } catch (e) {}
     try {
       print(url);
+      url = "133333";
       Dio dio = await createInstance();
       Response response;
       switch (method) {
@@ -196,7 +197,8 @@ class HttpUtils {
       log('响应数据：' + response.toString());
     } catch (e) {
       print('请求出错：' + e.toString());
-      onError(0, e.toString());
+      EasyLoading.showError("网络开小差啦，请稍后重试");
+      // onError(0, e.toString());
     }
   }
 }

@@ -15,7 +15,7 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
-  bool isFirst = true;
+  bool isFirst = false;
   var container = TabNavigator();
   bool showSplash = false;
 
@@ -44,7 +44,7 @@ class _SplashPageState extends State<SplashPage> {
     return Stack(
       children: <Widget>[
         Offstage(
-          child: container,
+          child: isFirst ? Text("") : container,
           offstage: showSplash,
         ),
         Offstage(

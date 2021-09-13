@@ -91,6 +91,8 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
     _controller.addListener(() {
       _onScroll(_controller.offset);
     });
+    _getReport();
+    _getOwnerReport();
   }
 
   _getReport() {
@@ -144,39 +146,39 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
         _appBar,
         _tip,
         Expanded(
-          child: EasyRefresh(
-            // 是否开启控制结束加载
-            enableControlFinishLoad: false,
-            firstRefresh: true,
-            // 控制器
-            bottomBouncing: false,
-            controller: _easyController,
-            header: RefreshConfigUtils.classicalHeader(),
-            child: ListView(
-              controller: _controller,
-              shrinkWrap: true,
-              // physics: BouncingScrollPhysics(),
-              padding: EdgeInsets.fromLTRB(0, 0, 0, 100),
-              children: categories.map((e) {
-                return _items(e);
-              }).toList()
-                ..add(_bottomBanner),
-            ),
-            //下拉刷新事件回调
-            onRefresh: () async {
-              // page = 1;
-              // // 获取数据
-              cache.clear();
-              _getReport();
-              _getOwnerReport();
-              // await Future.delayed(Duration(seconds: 1), () {
-              // 重置刷新状态 【没错，这里用的是resetLoadState】
-              if (_easyController != null) {
-                _easyController.resetLoadState();
-              }
-              // });
-            },
+          // child: EasyRefresh(
+          //   // 是否开启控制结束加载
+          //   enableControlFinishLoad: false,
+          //   firstRefresh: true,
+          //   // 控制器
+          //   bottomBouncing: false,
+          //   controller: _easyController,
+          //   header: RefreshConfigUtils.classicalHeader(),
+          child: ListView(
+            controller: _controller,
+            shrinkWrap: true,
+            // physics: BouncingScrollPhysics(),
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 100),
+            children: categories.map((e) {
+              return _items(e);
+            }).toList()
+              ..add(_bottomBanner),
           ),
+          //   //下拉刷新事件回调
+          //   onRefresh: () async {
+          //     // page = 1;
+          //     // // 获取数据
+          //     cache.clear();
+          //     _getReport();
+          //     _getOwnerReport();
+          //     // await Future.delayed(Duration(seconds: 1), () {
+          //     // 重置刷新状态 【没错，这里用的是resetLoadState】
+          //     if (_easyController != null) {
+          //       _easyController.resetLoadState();
+          //     }
+          //     // });
+          //   },
+          // ),
         ),
       ]),
     );

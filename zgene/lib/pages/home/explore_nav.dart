@@ -19,9 +19,9 @@ class _ExploreNavState extends State<ExploreNav> {
   @override
   void initState() {
     super.initState();
-    bus.on(CommonConstant.HomeRefush, (arg) {
+    // bus.on(CommonConstant.HomeRefush, (arg) {
       getHttp();
-    });
+    // });
   }
 
   getHttp() {
@@ -38,7 +38,7 @@ class _ExploreNavState extends State<ExploreNav> {
   void dispose() {
     //为了避免内存泄露，需要调用_controller.dispose
     super.dispose();
-    bus.off(CommonConstant.HomeRefush);
+    // bus.off(CommonConstant.HomeRefush);
   }
 
   @override

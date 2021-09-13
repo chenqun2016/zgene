@@ -53,7 +53,7 @@ class _HomePageState extends BaseWidgetState<HomePage> {
     _controller.addListener(() {
       _onScroll(_controller.offset);
     });
-
+    getHttp();
     super.pageWidgetInitState();
   }
 
@@ -70,28 +70,28 @@ class _HomePageState extends BaseWidgetState<HomePage> {
       children: <Widget>[
         Padding(
           padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-          child: EasyRefresh(
-            // 是否开启控制结束加载
-            enableControlFinishLoad: false,
-            firstRefresh: true,
-            // 控制器
-            controller: _easyController,
-            header: RefreshConfigUtils.classicalHeader(),
+          // child: EasyRefresh(
+          //   // 是否开启控制结束加载
+          //   enableControlFinishLoad: false,
+          //   firstRefresh: true,
+          //   // 控制器
+          //   controller: _easyController,
+          //   header: RefreshConfigUtils.classicalHeader(),
             child: _listView,
-            //下拉刷新事件回调
-            onRefresh: () async {
-              // page = 1;
-              // // 获取数据
-              // getHttp();
-              getHttp();
-              // await Future.delayed(Duration(seconds: 1), () {
-              // 重置刷新状态 【没错，这里用的是resetLoadState】
-              if (_easyController != null) {
-                _easyController.resetLoadState();
-              }
-              // });
-            },
-          ),
+          //   //下拉刷新事件回调
+          //   onRefresh: () async {
+          //     // page = 1;
+          //     // // 获取数据
+          //     // getHttp();
+          //     getHttp();
+          //     // await Future.delayed(Duration(seconds: 1), () {
+          //     // 重置刷新状态 【没错，这里用的是resetLoadState】
+          //     if (_easyController != null) {
+          //       _easyController.resetLoadState();
+          //     }
+          //     // });
+          //   },
+          // ),
         ),
         // RefreshIndicator(
         //     onRefresh: _handleRefresh,
@@ -109,7 +109,7 @@ class _HomePageState extends BaseWidgetState<HomePage> {
         bannerList = contentModel.archives;
       });
     });
-    bus.emit(CommonConstant.HomeRefush);
+    // bus.emit(CommonConstant.HomeRefush);
   }
 
   Widget get _listView {

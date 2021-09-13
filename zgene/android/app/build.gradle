@@ -52,10 +52,7 @@ android {
         ]
 
 
-        // ndk {
-        //     // 设置支持的SO库架构
-        //     abiFilters 'armeabi-v7a'
-        // }
+
     }
 
     signingConfigs {
@@ -83,6 +80,11 @@ android {
             shrinkResources true
             //开启zip对齐
             zipAlignEnabled true
+
+            ndk {
+                // 设置支持的SO库架构
+                abiFilters 'armeabi-v7a'
+            }
         }
     }
 }

@@ -2,7 +2,7 @@
 
 class SpConstant {
   //生产环境
-  static const String ProductionApi = "hhttps://www.z-gene.cn";
+  static const String ProductionApi = "https://www.z-gene.cn";
   //开发环境
   static const String developApi = "https://zgene.divms.com";
   //短信服务状态

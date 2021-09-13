@@ -462,10 +462,9 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
         HttpUtils.clear();
         // NotificationCenter.instance
         //     .postNotification(NotificationName.GetUserInfo, null);
-        bus.emit(CommonConstant.refreshMine);
         if (data["has_mobile"] == null) {
           EasyLoading.showSuccess("登陆成功");
-
+          bus.emit(CommonConstant.refreshMine);
           // Navigator.popUntil(context, ModalRoute.withName('/'));
           Navigator.of(context).popUntil((route) => route.isFirst);
         } else {

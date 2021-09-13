@@ -47,6 +47,8 @@ class SpConstant {
   static const String UserName = "userName";
   //用户头像
   static const String UserAvatar = "userAvatar";
+  //用户头像
+  static const String userIntro = "userIntro";
   //用户手机号
   static const String UserMobile = "mobile";
   //是否绑定微信

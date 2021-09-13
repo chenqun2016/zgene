@@ -90,6 +90,8 @@ class _MyPageState extends BaseWidgetState<MyPage> {
   var spUtils = SpUtils();
   String avatarImg = "";
   String userName = "";
+  String userIntro = "";
+
   String bannerImg = "";
   String bannerUrl = "";
   String bannerTitle = "";
@@ -115,6 +117,7 @@ class _MyPageState extends BaseWidgetState<MyPage> {
         spUtils.setStorage(SpConstant.UserAvatar, userInfo.avatar);
         spUtils.setStorage(SpConstant.UserMobile, userInfo.mobile);
         spUtils.setStorage(SpConstant.isBindWx, userInfo.bindWx);
+        spUtils.setStorage(SpConstant.userIntro, userInfo.intro);
 
         setData();
       },
@@ -149,6 +152,7 @@ class _MyPageState extends BaseWidgetState<MyPage> {
   setData() {
     userName = spUtils.getStorageDefault(SpConstant.UserName, "").toString();
     avatarImg = spUtils.getStorageDefault(SpConstant.UserAvatar, "").toString();
+    userIntro = spUtils.getStorageDefault(SpConstant.userIntro, "").toString();
     setState(() {});
   }
 
@@ -319,7 +323,7 @@ class _MyPageState extends BaseWidgetState<MyPage> {
                     ),
                     Text(
                       spUtils.getStorageDefault(SpConstant.IsLogin, false)
-                          ? "欢迎来到Z基因研究中心"
+                          ? (userIntro == "" ? "欢迎来到Z基因研究中心" : userIntro)
                           : "Z基因帮你解锁出厂设置",
                       style: TextStyle(
                         fontSize: 15,

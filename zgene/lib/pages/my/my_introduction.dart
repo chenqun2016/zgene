@@ -16,6 +16,12 @@ class _MyIntroductionPageState extends State<MyIntroductionPage> {
   TextEditingController textEditingController = new TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    _introduction = widget.introduction;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(

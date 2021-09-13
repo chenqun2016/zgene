@@ -16,6 +16,12 @@ class _MyEditorPageState extends State<MyEditorPage> {
   TextEditingController textEditingController = new TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    _nickName = widget.nikeName;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(

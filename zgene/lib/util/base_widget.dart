@@ -31,6 +31,13 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
   String pageWidgetTitle = '';
 // 页面背景图片
   String backImgPath = '';
+  // 页面空态是否显示
+  bool nullImgIsHidden = true;
+  // 页面空图片
+  String nullImgPath = 'assets/images/icon_orderList_null.png';
+  // 页面空图片
+  String nullImgText = '暂无内容';
+  // 页面空图片
 // 页面背景颜色
   Color backColor = ColorConstant.BackMainColor;
   // 自定义顶部栏右上角文字按钮 传值为显示textButton
@@ -204,6 +211,35 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
         ));
   }
 
+  /// 配置页面头部返回
+  Widget customNullImg() {
+    return Container(
+      child: Column(
+        children: [
+          Image(
+            image: AssetImage(nullImgPath),
+            height: 140.w,
+            width: 166.w,
+            fit: BoxFit.fill,
+          ),
+          Container(
+            child: Text(
+              nullImgText,
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 18.sp,
+                fontStyle: FontStyle.normal,
+                fontWeight: FontWeight.w400,
+                color: ColorConstant.Text_8E9AB,
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
 // AppBar 的widget
   Widget _viewAppBar() {
     final _appbar = AppBar(
@@ -230,43 +266,58 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
         children: [
           viewCustomHeadBody(),
           Expanded(
-            child: Container(
-              height: MediaQuery.of(context).size.height -
-                  ((showBaseHead || showHead) ? 55.h : 0) -
-                  MediaQuery.of(context).padding.top,
-              child: CustomScrollView(
-                controller: listeningController,
-                slivers: [
-                  SliverToBoxAdapter(
-                    child: SingleChildScrollView(
-                      physics: BouncingScrollPhysics(),
-                      padding: EdgeInsets.all(0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [viewPageBody(context)],
+            child: Stack(children: [
+              Container(
+                height: MediaQuery.of(context).size.height -
+                    ((showBaseHead || showHead) ? 55.h : 0) -
+                    MediaQuery.of(context).padding.top,
+                child: CustomScrollView(
+                  controller: listeningController,
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: SingleChildScrollView(
+                        physics: BouncingScrollPhysics(),
+                        padding: EdgeInsets.all(0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [viewPageBody(context)],
+                        ),
                       ),
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
-            ),
+              Positioned(
+                  left: 105.w,
+                  right: 105.w,
+                  top: 218.h,
+                  child: Offstage(
+                      offstage: nullImgIsHidden, child: customNullImg()))
+            ]),
           ),
         ],
       );
     } else {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          viewCustomHeadBody(),
-          Expanded(
-              flex: 1,
-              child: Container(
-                  height: MediaQuery.of(context).size.height -
-                      ((showBaseHead || showHead) ? 55.h : 0) -
-                      MediaQuery.of(context).padding.top,
-                  child: viewPageBody(context)))
-        ],
-      );
+      return Stack(children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            viewCustomHeadBody(),
+            Expanded(
+                flex: 1,
+                child: Container(
+                    height: MediaQuery.of(context).size.height -
+                        ((showBaseHead || showHead) ? 55.h : 0) -
+                        MediaQuery.of(context).padding.top,
+                    child: viewPageBody(context)))
+          ],
+        ),
+        Positioned(
+            left: 105.w,
+            right: 105.w,
+            top: 218.h,
+            child: Offstage(offstage: nullImgIsHidden, child: customNullImg()))
+      ]);
     }
   }
 

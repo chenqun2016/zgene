@@ -12,6 +12,7 @@ import 'package:zgene/pages/home/article_detail.dart';
 import 'package:zgene/pages/my/my_about_us.dart';
 import 'package:zgene/pages/my/my_contant_us.dart';
 import 'package:zgene/pages/splash_page.dart';
+import 'package:zgene/pages/tabs/buy_page.dart';
 import 'package:zgene/pages/tabs/report_page.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
@@ -180,6 +181,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         "/back_collector": (context) => SendBackAcquisitionPage(), //回寄采集器
         "/kefu": (context) => contantUsPage(), //联系客服
         "/about": (context) => AboutUsPage(), //关于我们
+        "/buy": (context) => BuyPage(), //购买页面
       },
     ));
   }

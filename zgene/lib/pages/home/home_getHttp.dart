@@ -9,7 +9,6 @@ import 'package:zgene/util/ui_uitls.dart';
 typedef _CallBack = void Function(dynamic result);
 
 Future<void> HomeGetHttp(int type, _CallBack callback) async {
-  print("type==$type");
   bool isNetWorkAvailable = await CommonUtils.isNetWorkAvailable();
   if (!isNetWorkAvailable) {
     return;

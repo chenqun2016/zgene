@@ -44,6 +44,8 @@ class _MyAddressListPageState extends BaseWidgetState<MyAddressListPage> {
     backImgPath = "assets/images/mine/img_bg_my.png";
     customRightBtnText = "添加";
     isListPage = true;
+    nullImgText = "暂无地址";
+
     // getHttp();
   }
 
@@ -235,6 +237,11 @@ class _MyAddressListPageState extends BaseWidgetState<MyAddressListPage> {
             .cast<AddressListModel>();
         int length = list.length;
         list.insertAll(length, tempList);
+        if (tempList.length > 0) {
+          nullImgIsHidden = true;
+        } else {
+          nullImgIsHidden = false;
+        }
         setState(() {});
       },
       onError: (code, error) {

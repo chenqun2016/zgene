@@ -95,4 +95,7 @@ class CommonConstant {
 
   //isWeChatInstalled
   static bool Is_WeChat_Installed = false;
+
+  //isInWechatWeb 是否在微信
+  static bool isInWechatWeb = false;
 }

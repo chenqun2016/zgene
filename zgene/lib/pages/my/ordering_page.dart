@@ -17,7 +17,11 @@ import 'package:zgene/pages/my/my_order_list.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:tobias/tobias.dart' as tobias;
+import 'package:zgene/util/platform_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
+import 'package:zgene/configure.dart'
+    if (dart.library.html) 'package:zgene/configure_web.dart';
+import 'dart:convert';
 
 import 'my_address_list.dart';
 
@@ -483,65 +487,72 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
                   ],
                 ),
               ),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    isWeixinPay = false;
-                  });
-                },
-                child: Stack(
-                  children: [
-                    Container(
-                      height: 100,
+              PlatformUtils.isWeb &&
+                      CommonConstant.isInWechatWeb // 如果是微信内，只支持微信支付
+                  ? Container(
                       width: 100,
-                      alignment: Alignment.center,
-                      margin: EdgeInsets.only(top: 14, right: 5, left: 47),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: isWeixinPay
-                              ? ColorConstant.bg_D1D8E2
-                              : ColorConstant.TextMainColor,
-                          width: 1,
-                        ),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
-                        ),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                      height: 100,
+                    )
+                  : GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          isWeixinPay = false;
+                        });
+                      },
+                      child: Stack(
                         children: [
-                          Image.asset(
-                            "assets/images/buy/icon_zhifubaopay.png",
-                            height: 40,
-                            width: 40,
-                            fit: BoxFit.fill,
+                          Container(
+                            height: 100,
+                            width: 100,
+                            alignment: Alignment.center,
+                            margin:
+                                EdgeInsets.only(top: 14, right: 5, left: 47),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: isWeixinPay
+                                    ? ColorConstant.bg_D1D8E2
+                                    : ColorConstant.TextMainColor,
+                                width: 1,
+                              ),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
+                              ),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  "assets/images/buy/icon_zhifubaopay.png",
+                                  height: 40,
+                                  width: 40,
+                                  fit: BoxFit.fill,
+                                ),
+                                Divider(
+                                  height: 6,
+                                  color: Colors.transparent,
+                                ),
+                                Text("支付宝支付",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                      color: ColorConstant.TextMainBlack,
+                                    )),
+                              ],
+                            ),
                           ),
-                          Divider(
-                            height: 6,
-                            color: Colors.transparent,
-                          ),
-                          Text("支付宝支付",
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: ColorConstant.TextMainBlack,
-                              )),
+                          if (!isWeixinPay)
+                            Positioned(
+                              top: 9,
+                              right: 0,
+                              child: Image.asset(
+                                "assets/images/buy/img_ok.png",
+                                height: 20,
+                                width: 20,
+                              ),
+                            )
                         ],
                       ),
-                    ),
-                    if (!isWeixinPay)
-                      Positioned(
-                        top: 9,
-                        right: 0,
-                        child: Image.asset(
-                          "assets/images/buy/img_ok.png",
-                          height: 20,
-                          width: 20,
-                        ),
-                      )
-                  ],
-                ),
-              )
+                    )
             ],
           ),
         ],
@@ -1038,25 +1049,32 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
 
         log("ordering result==${result}");
         if (isWeixinPay) {
-          payWithWeChat(
-            appId: result['appid'],
-            partnerId: result['partnerid'],
-            prepayId: result['prepayid'],
-            packageValue: result['package'],
-            nonceStr: result['noncestr'],
-            timeStamp: result['timestamp'],
-            sign: result['sign'],
-          );
+          if (PlatformUtils.isWeb && CommonConstant.isInWechatWeb) {
+            // 微信服务号内支付
+            var parms = json.encode(result);
+            webWeixinPay(parms);
+          } else {
+            // APP内支付
+            payWithWeChat(
+              appId: result['appid'],
+              partnerId: result['partnerid'],
+              prepayId: result['prepayid'],
+              packageValue: result['package'],
+              nonceStr: result['noncestr'],
+              timeStamp: result['timestamp'],
+              sign: result['sign'],
+            );
 
-          // 监听支付结果
-          weChatResponseEventHandler.listen((event) async {
-            print(event.errCode);
-            // 支付成功
-            if (event.errCode == 0) {
-              _toOrder();
-            }
-            // 关闭弹窗
-          });
+            // 监听支付结果
+            weChatResponseEventHandler.listen((event) async {
+              print(event.errCode);
+              // 支付成功
+              if (event.errCode == 0) {
+                _toOrder();
+              }
+              // 关闭弹窗
+            });
+          }
         } else {
           var aliPay = await tobias.aliPay(result['pay_param']);
           log("aliPay result==${aliPay}");

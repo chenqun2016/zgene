@@ -38,7 +38,8 @@
   <link rel="stylesheet" type="text/css" href="splash/style.css">
 </head>
 
-<body style="position: fixed; inset: 0px; overflow: hidden; padding: 0px; margin: 0px; user-select: none; touch-action: none; font: 14px sans-serif; color: red;">
+<body
+  style="position: fixed; inset: 0px; overflow: hidden; padding: 0px; margin: 0px; user-select: none; touch-action: none; font: 14px sans-serif; color: red;">
   <!-- This script installs service_worker.js to provide PWA functionality to
        application. For more information, see:
        https://developers.google.com/web/fundamentals/primers/service-workers -->
@@ -49,6 +50,7 @@
   <script src="//cdn.jsdelivr.net/npm/jsqr@1.3.1/dist/jsQR.min.js"></script>
   <script src="//res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
   <script>
+    var inWechatWeb = false;
     // GetCookie 获取Cookie
     function GetCookie(name) {
       var nameEQ = name + "=";
@@ -60,7 +62,20 @@
       }
       return null;
     }
-    
+
+    var ua = navigator.userAgent.toLowerCase();
+    window.onload = function () {
+      if (ua.match(/MicroMessenger/i) == "micromessenger") {
+        inWechatWeb = true;
+      } else {
+        inWechatWeb = false;
+      }
+    };
+
+    function InWechatWeb() {
+      return inWechatWeb;
+    }
+
     var serviceWorkerVersion = null;
     var scriptLoaded = false;
     function loadMainDartJs() {
@@ -74,6 +89,12 @@
       document.body.append(scriptTag);
     }
 
+    var appId = "";
+    var timeStamp = "";
+    var nonceStr = "";
+    var package = "";
+    var signature = "";
+
     fetch('https://zgene.divms.com/wechat/js')
       .then(function (response) {
         return response.json();
@@ -81,15 +102,47 @@
       .then(function (data) {
         if (data.code === 0) {
           wx.config({
-            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
             appId: data.result.app_id, // 必填，公众号的唯一标识
             timestamp: data.result.timestamp, // 必填，生成签名的时间戳
             nonceStr: data.result.nonce_str, // 必填，生成签名的随机串
             signature: data.result.signature,// 必填，签名
-            jsApiList: [] // 必填，需要使用的JS接口列表
+            jsApiList: [
+              "chooseWXPay",
+            ] // 必填，需要使用的JS接口列表
+          });
+
+          wx.ready(function () {
+            console.log("wx.ready");
+          });
+
+          wx.error(function (res) {
+            console.log("wx.error", res);
           });
         }
       });
+
+
+    function WeixinPay(parms) {
+      let res = JSON.parse(parms);
+      console.log(res);
+
+      WeixinJSBridge.invoke(
+        'getBrandWCPayRequest', {
+        "appId": res["appid"],     //公众号ID，由商户传入     
+        "timeStamp": res["timestamp"],         //时间戳，自1970年以来的秒数     
+        "nonceStr": res["noncestr"], //随机串     
+        "package": res["package"],
+        "signType": "MD5",         //微信签名方式：     
+        "paySign": res["sign"] //微信签名 
+      },
+        function (res) {
+          if (res.err_msg == "get_brand_wcpay_request:ok") {
+            // 使用以上方式判断前端返回,微信团队郑重提示：
+            //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+          }
+        });
+    }
 
     if ('serviceWorker' in navigator) {
       // Service workers are supported. Use them.

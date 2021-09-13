@@ -324,6 +324,7 @@ class _MyInfoPageState extends State<MyInfoPage> {
                   top: 12,
                   child: Container(
                     width: ScreenUtils.screenW(context) - 190.w,
+                    alignment: Alignment.centerRight,
                     child: Text(
                       _nickName,
                       overflow: TextOverflow.ellipsis,
@@ -543,6 +544,7 @@ class _MyInfoPageState extends State<MyInfoPage> {
         var spUtils = SpUtils();
         spUtils.setStorage(SpConstant.UserName, userInfoModel.nickname);
         spUtils.setStorage(SpConstant.UserAvatar, userInfoModel.avatar);
+        spUtils.setStorage(SpConstant.userIntro, userInfoModel.intro);
         Navigator.pop(context, widget.userInfo);
       },
       onError: (code, error) {
@@ -568,7 +570,7 @@ class _MyInfoPageState extends State<MyInfoPage> {
         cropImage(File(image.path));
       }
     } catch (e) {
-      print("模拟器不支持相机！");
+      EasyLoading.showError("请先去设置打开相机或相册权限。");
     }
   }
 

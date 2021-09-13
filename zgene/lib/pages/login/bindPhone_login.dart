@@ -431,7 +431,8 @@ class _BindPhoneLoginPageState extends BaseWidgetState<BindPhoneLoginPage> {
 
         bus.emit(CommonConstant.refreshMine);
 
-        Navigator.popUntil(context, ModalRoute.withName('/'));
+        // Navigator.popUntil(context, ModalRoute.withName('/'));
+        Navigator.of(context).popUntil((route) => route.isFirst);
       },
       onError: (code, error) {
         EasyLoading.showError(error ?? "");

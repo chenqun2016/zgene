@@ -31,6 +31,8 @@ import 'pages/my/sendBack_acquisition.dart';
 import 'pages/report/report_list_page.dart';
 import 'package:zgene/util/platform_utils.dart';
 
+import 'dart:js' as js;
+
 void main() async {
   configureApp();
   //提前初始化flutter
@@ -102,6 +104,14 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           }
         }
       });
+    } else {
+      // 如果是web则需要进行一些js操作
+      var res = js.context.callMethod('GetCookie', ['jwt']);
+      if (!res) {
+        var spUtils = SpUtils();
+        spUtils.setStorage(SpConstant.Token, res);
+        spUtils.setStorage(SpConstant.IsLogin, true);
+      }
     }
   }
 

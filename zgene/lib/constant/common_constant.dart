@@ -1,6 +1,6 @@
 ///app公共常量
 class CommonConstant {
-  static const String BASE_API = "http://zgene.divms.com";
+  static const String BASE_API = "https://zgene.divms.com";
   // static const String BASE_API = "http://192.168.110.70:8998";
   //APP名称
   static const String AppName = "Z基因";

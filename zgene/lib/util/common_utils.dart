@@ -11,6 +11,7 @@ import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/models/msg_event.dart';
 import 'package:zgene/models/order_step_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
+import 'package:zgene/pages/home/video_page.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/widget/base_web.dart';
 
@@ -177,6 +178,7 @@ class CommonUtils {
           }
           break;
         case 3:
+          NavigatorUtil.push(context, VideoPage(linkUrl: url));
           break;
       }
     }

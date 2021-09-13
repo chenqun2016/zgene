@@ -40,6 +40,7 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
     backImgPath = "assets/images/mine/img_bg_my.png";
     customRightBtnText = "采集引导";
     isListPage = true;
+    nullImgText = "暂无订单";
   }
 
   Future<void> getDatas() async {
@@ -56,6 +57,11 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
         setState(() {
           list = result;
         });
+        if (list.length > 0) {
+          nullImgIsHidden = true;
+        } else {
+          nullImgIsHidden = false;
+        }
       },
       onError: (code, error) {
         EasyLoading.showError(error);

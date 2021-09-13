@@ -3,3 +3,5 @@ void configureApp() {
 }
 
 void webLogin() {}
+
+void webWeixinPay(parms) {}

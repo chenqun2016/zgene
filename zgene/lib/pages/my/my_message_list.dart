@@ -24,7 +24,7 @@ class _MyMessagePageState extends State<MyMessagePage> {
   int errorCode = 0; //0.正常 1.暂无数据 2.错误 3.没有网络
   List list = [];
   List tempList = [];
-  int type = 9;
+  int type = 0;
 
   int page = 1;
   EasyRefreshController _controller;
@@ -134,7 +134,7 @@ class _MyMessagePageState extends State<MyMessagePage> {
             InkWell(
               onTap: () {
                 page = 1;
-                type = 9;
+                type = 0;
                 getHttp(type);
               },
               child: Container(
@@ -143,19 +143,19 @@ class _MyMessagePageState extends State<MyMessagePage> {
                   children: [
                     Image(
                       image: AssetImage(
-                          "assets/images/mine/icon_message_news.png"),
+                          "assets/images/mine/icon_message_notice.png"),
                       height: 82.h,
                       width: 82.h,
                     ),
                     Text(
-                      "公告",
+                      "通知",
                       style: TextStyle(
                           fontSize: 13, color: ColorConstant.TextMainBlack),
                     ),
                     Container(
                       margin: EdgeInsets.only(bottom: 17.h),
                       child: Text(
-                        type == 9 ? "⏤" : "",
+                        type == 0 ? "⏤" : "",
                         style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w700,
@@ -169,26 +169,26 @@ class _MyMessagePageState extends State<MyMessagePage> {
             InkWell(
               onTap: () {
                 page = 1;
-                type = 0;
+                type = 9;
                 getHttp(type);
               },
               child: Column(
                 children: [
                   Image(
-                    image: AssetImage(
-                        "assets/images/mine/icon_message_notice.png"),
+                    image:
+                        AssetImage("assets/images/mine/icon_message_news.png"),
                     height: 82.h,
                     width: 82.h,
                   ),
                   Text(
-                    "通知",
+                    "公告",
                     style: TextStyle(
                         fontSize: 13, color: ColorConstant.TextMainBlack),
                   ),
                   Container(
                     margin: EdgeInsets.only(bottom: 17.h),
                     child: Text(
-                      type == 0 ? "⏤" : "",
+                      type == 9 ? "⏤" : "",
                       style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w700,

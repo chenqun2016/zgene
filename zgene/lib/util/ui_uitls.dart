@@ -271,7 +271,7 @@ class UiUitls {
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500),
                             data: CommonConstant.Privacy_Text,
-                            keys: ['《用户协议》', '《隐私政策》'],
+                            keys: ['《用户协议》', '《个人信息保护政策》'],
                             keyStyle: TextStyle(
                                 color: ColorConstant.TextMainColor,
                                 fontSize: 14,
@@ -284,12 +284,12 @@ class UiUitls {
                                       url: CommonConstant.agreement,
                                       title: "用户协议",
                                     ));
-                              } else if (key == '《隐私政策》') {
+                              } else if (key == '《个人信息保护政策》') {
                                 NavigatorUtil.push(
                                     context,
                                     BaseWebView(
                                       url: CommonConstant.privacy,
-                                      title: "隐私政策",
+                                      title: "个人信息保护政策",
                                     ));
                               }
                             },

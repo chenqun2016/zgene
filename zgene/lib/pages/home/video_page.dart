@@ -102,7 +102,11 @@ class _VideoPageState extends State<VideoPage> {
       margin: EdgeInsets.only(top: 35, left: 10),
       child: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            if(_chewieController.isFullScreen){
+              _chewieController.exitFullScreen();
+            }else{
+              Navigator.pop(context);
+            }
           },
           icon: Image(
             image: AssetImage("assets/images/icon_base_backArrow.png"),

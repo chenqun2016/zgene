@@ -1078,7 +1078,11 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
             });
           }
         } else {
+          print("!1111111111111111111");
+          print(await tobias.aliPay(result['pay_param']));
           var aliPay = await tobias.aliPay(result['pay_param']);
+          print("!222222222222222222");
+
           log("aliPay result==${aliPay}");
 
           // 支付成功

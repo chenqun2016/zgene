@@ -1039,6 +1039,9 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
       mapBill['numbers'] = _message3Controller.text.toString();
     }
     map['bill'] = mapBill;
+    if (PlatformUtils.isWeb && CommonConstant.isInWechatWeb) {
+      map['open_id'] = CommonConstant.wechatWebOpenID;
+    }
 
     HttpUtils.requestHttp(
       ApiConstant.ordering,

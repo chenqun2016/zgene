@@ -19,6 +19,8 @@ void webLogin() {
   }
   // 判断是否在微信Webview内
   CommonConstant.isInWechatWeb = js.context.callMethod('InWechatWeb');
+  CommonConstant.wechatWebOpenID =
+      js.context.callMethod('GetCookie', ['openid']);
 }
 
 void webWeixinPay(parms) {

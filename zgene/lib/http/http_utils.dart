@@ -185,9 +185,9 @@ class HttpUtils {
       print(responseResult.code);
       switch (code) {
         case _needLoginCode:
-          EasyLoading.dismiss();
+          // EasyLoading.dismiss();
           BaseLogin.login();
-          onError(code ?? 0, "请登录");
+          // onError(code ?? 0, "");
           return;
         default:
           break;

@@ -85,7 +85,7 @@ class _cancellationAccountPageState
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "感谢您对Z基因的信任：",
+            "感谢您对Z基因的信任!",
             textAlign: TextAlign.left,
             overflow: TextOverflow.visible,
             style: TextStyle(
@@ -98,7 +98,7 @@ class _cancellationAccountPageState
           Container(
             margin: EdgeInsets.only(top: 13.h),
             child: Text(
-              "感谢您对Z基因的信任！如果处于某些原因您要注销自己的账户，可以直接联系Z基因客服QQ。在您确认注销之前请务必充分考虑，注销操作一旦完成，Z基因将无法再次为您提供您的数据和信息。",
+              "如果处于某些原因您要注销自己的账户，可以直接联系Z基因客服QQ。在您确认注销之前请务必充分考虑，注销操作一旦完成，Z基因将无法再次为您提供您的数据和信息。",
               textAlign: TextAlign.left,
               overflow: TextOverflow.visible,
               style: TextStyle(

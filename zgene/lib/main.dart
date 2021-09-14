@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -15,6 +16,7 @@ import 'package:zgene/pages/my/my_contant_us.dart';
 import 'package:zgene/pages/splash_page.dart';
 import 'package:zgene/pages/tabs/buy_page.dart';
 import 'package:zgene/pages/tabs/report_page.dart';
+import 'package:zgene/util/chineseCupertino.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
@@ -151,15 +153,20 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       // home: TabNavigator(),
       home: SplashPage(),
       builder: EasyLoading.init(),
-      localizationsDelegates: [
-        // 本地化的代理类
+      localizationsDelegates: <LocalizationsDelegate<dynamic>>[
+        ChineseCupertinoLocalizations.delegate, // 自定义的delegate
+
+        DefaultCupertinoLocalizations.delegate, // 目前只包含英文
+
+        // 下面两个是Material widgets的delegate, 包含中文
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
       supportedLocales: [
-        const Locale('en', 'US'), // 美国英语
-        const Locale('zh', 'CN'), // 中文简体
-        //其它Locales
+        const Locale('en', 'US'), // English
+        const Locale('zh', 'Hans'), // China
+        const Locale('zh', ''), // China
+        // ... other locales the app supports
       ],
       //注册路由表
       routes: {

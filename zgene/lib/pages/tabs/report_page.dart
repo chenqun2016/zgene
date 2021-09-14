@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -249,24 +250,42 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
                               //     image: NetworkImage("assets/images/banner.png"))
                             ),
                             margin: EdgeInsets.only(left: 16),
-                            child: FadeInImage.assetNetwork(
-                                placeholder:
-                                    'assets/images/home/img_default2.png',
-                                width: 256.w,
-                                height: 128.h,
-                                image: CommonUtils.splicingUrl(bean.imageUrl),
-                                fadeInDuration: TimeUtils.fadeInDuration(),
-                                fadeOutDuration: TimeUtils.fadeOutDuration(),
-                                fit: BoxFit.fill,
-                                imageErrorBuilder:
-                                    (context, error, stackTrace) {
-                                  return Image.asset(
-                                    'assets/images/home/img_default2.png',
-                                    width: 256.w,
-                                    height: 128.h,
-                                    fit: BoxFit.fill,
-                                  );
-                                }),
+                            child: new CachedNetworkImage(
+                              width: 256.w,
+                              // 设置根据宽度计算高度
+                              height: 128.h,
+                              // 图片地址
+                              imageUrl: CommonUtils.splicingUrl(bean.imageUrl),
+                              // 填充方式为cover
+                              fit: BoxFit.fill,
+
+                              errorWidget: (context, url, error) =>
+                                  new Container(
+                                child: new Image.asset(
+                                  'assets/images/home/img_default2.png',
+                                  width: 256.w,
+                                  height: 128.h,
+                                ),
+                              ),
+                            ),
+                            //  FadeInImage.assetNetwork(
+                            //     placeholder:
+                            //         'assets/images/home/img_default2.png',
+                            //     width: 256.w,
+                            //     height: 128.h,
+                            //     image: CommonUtils.splicingUrl(bean.imageUrl),
+                            //     fadeInDuration: TimeUtils.fadeInDuration(),
+                            //     fadeOutDuration: TimeUtils.fadeOutDuration(),
+                            //     fit: BoxFit.fill,
+                            //     imageErrorBuilder:
+                            //         (context, error, stackTrace) {
+                            //       return Image.asset(
+                            //         'assets/images/home/img_default2.png',
+                            //         width: 256.w,
+                            //         height: 128.h,
+                            //         fit: BoxFit.fill,
+                            //       );
+                            //     }),
                           ),
                         );
                       }),
@@ -353,22 +372,39 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
         ),
         child: (Column(
           children: [
-            FadeInImage.assetNetwork(
-                placeholder: 'assets/images/home/img_default2.png',
-                image: CommonUtils.splicingImageId(bean.id.toString()),
-                width: 76,
-                height: 76,
-                fadeInDuration: TimeUtils.fadeInDuration(),
-                fadeOutDuration: TimeUtils.fadeOutDuration(),
-                fit: BoxFit.fill,
-                imageErrorBuilder: (context, error, stackTrace) {
-                  return Image.asset(
-                    'assets/images/home/img_default2.png',
-                    width: 76,
-                    height: 76,
-                    fit: BoxFit.fill,
-                  );
-                }),
+            new CachedNetworkImage(
+              width: 76,
+              // 设置根据宽度计算高度
+              height: 76,
+              // 图片地址
+              imageUrl: CommonUtils.splicingImageId(bean.id.toString()),
+              // 填充方式为cover
+              fit: BoxFit.fill,
+
+              errorWidget: (context, url, error) => new Container(
+                child: new Image.asset(
+                  'assets/images/home/img_default2.png',
+                  height: 76,
+                  width: 76,
+                ),
+              ),
+            ),
+            // FadeInImage.assetNetwork(
+            //     placeholder: 'assets/images/home/img_default2.png',
+            //     image: CommonUtils.splicingImageId(bean.id.toString()),
+            //     width: 76,
+            //     height: 76,
+            //     fadeInDuration: TimeUtils.fadeInDuration(),
+            //     fadeOutDuration: TimeUtils.fadeOutDuration(),
+            //     fit: BoxFit.fill,
+            //     imageErrorBuilder: (context, error, stackTrace) {
+            //       return Image.asset(
+            //         'assets/images/home/img_default2.png',
+            //         width: 76,
+            //         height: 76,
+            //         fit: BoxFit.fill,
+            //       );
+            //     }),
             Text(
               bean.title,
               style: TextStyle(

@@ -442,6 +442,8 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
 
       appleLoginHttp(credential.userIdentifier, credential.userIdentifier,
           credential.givenName, credential.familyName);
+    } else {
+      EasyLoading.showError("系统版本过低，无法获取Apple登录授权，请更换登录方式。");
     }
   }
 

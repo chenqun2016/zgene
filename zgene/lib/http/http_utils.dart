@@ -68,6 +68,11 @@ class HttpUtils {
         uid = spUtils.getStorageDefault(SpConstant.Uid, 0);
       }
 
+      var platform = "app";
+      if (CommonConstant.isInWechatWeb) {
+        platform = "gzh";
+      }
+
       /// 全局属性：请求前缀、连接超时时间、响应超时时间
       var options = BaseOptions(
           baseUrl: CommonConstant.BASE_API,
@@ -80,7 +85,7 @@ class HttpUtils {
             "os": os, //1: andriod, 2: apple, 3:windows
             "udid": udid, //设备唯一id
             "uid": uid, //用户ID	对于未登录的用户传0或者不传
-            "platform": "app", //平台
+            "platform": platform, //平台
             "appv": version, //app版本
             "vendor": vendor, //	厂商
             "model": model, //型号

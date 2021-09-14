@@ -71,10 +71,10 @@ class _MyMessagePageState extends State<MyMessagePage> {
           onLoad: () async {
             await Future.delayed(Duration(seconds: 1), () {
               // 获取数据
+
               getHttp(type);
               // 结束加载
-              _controller.finishLoad();
-              // _controller.finishLoad(noMore:true);
+              // _controller.finishLoad();
             });
           },
         ),
@@ -412,10 +412,13 @@ class _MyMessagePageState extends State<MyMessagePage> {
         list.insertAll(length, tempList);
 
         if (tempList.length >= CommonConstant.PAGE_SIZE) {
+          print("那里");
+
           _controller.finishLoad(noMore: false);
           print("noMore:false");
         } else {
           _controller.finishLoad(noMore: true);
+
           print("noMore:true");
         }
 

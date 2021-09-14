@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/http/http_utils.dart';
@@ -14,6 +15,7 @@ import 'package:zgene/pages/my/order_detail.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/refresh_config_utils.dart';
+import 'package:zgene/util/screen_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 
 ///我的地址列表
@@ -136,12 +138,18 @@ class _MyAddressListPageState extends BaseWidgetState<MyAddressListPage> {
           children: [
             Row(
               children: [
-                Text(
-                  content.rcvName,
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Color(0xFF112950),
-                    fontWeight: FontWeight.w500,
+                Container(
+                  constraints: BoxConstraints(
+                    maxWidth: ScreenUtils.screenW(context) - 165.w,
+                  ),
+                  child: Text(
+                    content.rcvName,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Color(0xFF112950),
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
                 Container(

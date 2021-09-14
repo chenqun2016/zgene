@@ -125,7 +125,6 @@
 
     function WeixinPay(parms) {
       let res = JSON.parse(parms);
-      console.log(res);
 
       WeixinJSBridge.invoke(
         'getBrandWCPayRequest', {

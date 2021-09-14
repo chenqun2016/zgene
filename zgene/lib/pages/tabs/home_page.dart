@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -77,7 +78,7 @@ class _HomePageState extends BaseWidgetState<HomePage> {
           //   // 控制器
           //   controller: _easyController,
           //   header: RefreshConfigUtils.classicalHeader(),
-            child: _listView,
+          child: _listView,
           //   //下拉刷新事件回调
           //   onRefresh: () async {
           //     // page = 1;
@@ -167,20 +168,37 @@ class _HomePageState extends BaseWidgetState<HomePage> {
             //   bannerList[index],
             //   fit: BoxFit.fill,
             // ),
-            child: FadeInImage.assetNetwork(
-                placeholder: 'assets/images/home/img_default2.png',
-                image: CommonUtils.splicingUrl(archives.imageUrl),
-                fadeInDuration: TimeUtils.fadeInDuration(),
-                fadeOutDuration: TimeUtils.fadeOutDuration(),
-                fit: BoxFit.fill,
-                imageErrorBuilder: (context, error, stackTrace) {
-                  return Image.asset(
-                    'assets/images/home/img_default2.png',
-                    width: double.infinity,
-                    height: 168,
-                    fit: BoxFit.fill,
-                  );
-                }),
+            child: new CachedNetworkImage(
+              width: double.infinity,
+              // 设置根据宽度计算高度
+              height: 168,
+              // 图片地址
+              imageUrl: CommonUtils.splicingUrl(archives.imageUrl),
+              // 填充方式为cover
+              fit: BoxFit.fill,
+
+              errorWidget: (context, url, error) => new Container(
+                child: new Image.asset(
+                  'assets/images/home/img_default2.png',
+                  height: 168,
+                  width: double.infinity,
+                ),
+              ),
+            ),
+            // FadeInImage.assetNetwork(
+            //     placeholder: 'assets/images/home/img_default2.png',
+            //     image: CommonUtils.splicingUrl(archives.imageUrl),
+            //     fadeInDuration: TimeUtils.fadeInDuration(),
+            //     fadeOutDuration: TimeUtils.fadeOutDuration(),
+            //     fit: BoxFit.fill,
+            //     imageErrorBuilder: (context, error, stackTrace) {
+            //       return Image.asset(
+            //         'assets/images/home/img_default2.png',
+            //         width: double.infinity,
+            //         height: 168,
+            //         fit: BoxFit.fill,
+            //       );
+            //     }),
             // child: Image.asset(
             //   "assets/images/banner.png",
             //   height: 168,

@@ -1,9 +1,13 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/models/content_model.dart';
 import 'package:zgene/pages/home/home_getHttp.dart';
 
 import 'package:zgene/util/common_utils.dart';
+import 'package:zgene/util/login_base.dart';
+import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/time_utils.dart';
 
 class MyoRderNav extends StatefulWidget {
@@ -58,27 +62,48 @@ class _MyoRderNavState extends State<MyoRderNav> {
     Archives archives = goldList[index];
     return GestureDetector(
       onTap: () {
-        CommonUtils.toUrl(
-            context: context, type: archives.linkType, url: archives.linkUrl);
+        if (SpUtils().getStorageDefault(SpConstant.IsLogin, false)) {
+          CommonUtils.toUrl(
+              context: context, type: archives.linkType, url: archives.linkUrl);
+        } else {
+          BaseLogin.login();
+        }
       },
       child: Column(
         children: <Widget>[
-          FadeInImage.assetNetwork(
-              placeholder: 'assets/images/home/img_default2.png',
-              image: CommonUtils.splicingUrl(archives.imageUrl),
-              width: 80,
-              height: 80,
-              fadeInDuration: TimeUtils.fadeInDuration(),
-              fadeOutDuration: TimeUtils.fadeOutDuration(),
-              fit: BoxFit.fill,
-              imageErrorBuilder: (context, error, stackTrace) {
-                return Image.asset(
-                  'assets/images/home/img_default2.png',
-                  width: 80,
-                  height: 80,
-                  fit: BoxFit.fill,
-                );
-              }),
+          new CachedNetworkImage(
+            width: 80,
+            // 设置根据宽度计算高度
+            height: 80,
+            // 图片地址
+            imageUrl: CommonUtils.splicingUrl(archives.imageUrl),
+            // 填充方式为cover
+            fit: BoxFit.fill,
+
+            errorWidget: (context, url, error) => new Container(
+              child: new Image.asset(
+                'assets/images/home/img_default2.png',
+                height: 80,
+                width: 80,
+              ),
+            ),
+          ),
+          // FadeInImage.assetNetwork(
+          //     placeholder: 'assets/images/home/img_default2.png',
+          //     image: CommonUtils.splicingUrl(archives.imageUrl),
+          //     width: 80,
+          //     height: 80,
+          //     fadeInDuration: TimeUtils.fadeInDuration(),
+          //     fadeOutDuration: TimeUtils.fadeOutDuration(),
+          //     fit: BoxFit.fill,
+          //     imageErrorBuilder: (context, error, stackTrace) {
+          //       return Image.asset(
+          //         'assets/images/home/img_default2.png',
+          //         width: 80,
+          //         height: 80,
+          //         fit: BoxFit.fill,
+          //       );
+          //     }),
           Text(
             archives.title,
             style: TextStyle(fontSize: 13, color: ColorConstant.TextMainBlack),

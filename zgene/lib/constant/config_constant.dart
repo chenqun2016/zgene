@@ -1,13 +1,13 @@
 ///配置常量
 class ConfigConstant {
-  static String jpushAppKey = "29b5893fb872d08ede259829";
+  static String jpushAppKey = "190887df88f6e5cb4dad5653";
   //微信appKey
-  static String wxAppKey = "wx5efe242ed516d3c1";
+  static String wxAppKey = "wx3ff0faf398eaa755";
   //微信Secret
-  static String wxAppSecret = "7f3690bc43022706a56a2aa492d29873";
+  static String wxAppSecret = "6231e9cf0c8406101b59168b97568a61";
 
   //Ios universalLink
-  static String universalLink = "https://www.divms.com/";
+  static String universalLink = "https://www.z-gene.cn/";
 
   //android包名
   static const String AndroidAppId = "com.divms.app";

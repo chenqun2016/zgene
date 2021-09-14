@@ -14,6 +14,7 @@ import 'package:zgene/pages/my/add_address_page.dart';
 import 'package:zgene/pages/my/order_detail.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
+import 'package:zgene/util/dia_log.dart';
 import 'package:zgene/util/refresh_config_utils.dart';
 import 'package:zgene/util/screen_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
@@ -77,7 +78,8 @@ class _MyAddressListPageState extends BaseWidgetState<MyAddressListPage> {
             firstRefresh: true,
             // 控制器
             controller: _controller,
-            header: RefreshConfigUtils.classicalHeader(),
+            header: BallPulseHeader(),
+
             child: _listView,
             //下拉刷新事件回调
             onRefresh: () async {
@@ -186,7 +188,18 @@ class _MyAddressListPageState extends BaseWidgetState<MyAddressListPage> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    addressDelete(index);
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return MyDialog(
+                            title: "确认删除该地址吗?",
+                            img: "assets/images/mine/icon_delete_address.png",
+                            falseText: "取消",
+                            tureText: "确认",
+                          );
+                        }).then((value) => {
+                          if (value) {addressDelete(index)}
+                        });
                   },
                   child: Container(
                     margin: EdgeInsets.only(top: 8),

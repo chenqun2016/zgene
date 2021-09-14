@@ -52,7 +52,7 @@ class _MySetPageState extends BaseWidgetState<MySetPage> {
     //     wxLoginHttp(object);
     //   }
     // });
-    
+
     bus.on(CommonConstant.WxCode, (arg) {
       wxLoginHttp(arg);
     });
@@ -291,33 +291,34 @@ class _MySetPageState extends BaseWidgetState<MySetPage> {
           //     ],
           //   ),
           // ),
-          GestureDetector(
-            onTap: () {
-              _onTapEvent(999);
-            },
-            behavior: HitTestBehavior.opaque,
-            child: Stack(
-              children: [
-                Container(
-                    width: double.infinity,
-                    height: 45,
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "基于DiVMS构建",
-                      style: textStyle,
-                    )),
-                Positioned(
-                  right: 0,
-                  top: 15,
-                  child: Image(
-                    image: AssetImage("assets/images/mine/icon_my_right.png"),
-                    height: 16,
-                    width: 16,
-                  ),
-                ),
-              ],
-            ),
-          ),
+          // 已付钱
+          // GestureDetector(
+          //   onTap: () {
+          //     _onTapEvent(999);
+          //   },
+          //   behavior: HitTestBehavior.opaque,
+          //   child: Stack(
+          //     children: [
+          //       Container(
+          //           width: double.infinity,
+          //           height: 45,
+          //           alignment: Alignment.centerLeft,
+          //           child: Text(
+          //             "基于DiVMS构建",
+          //             style: textStyle,
+          //           )),
+          //       Positioned(
+          //         right: 0,
+          //         top: 15,
+          //         child: Image(
+          //           image: AssetImage("assets/images/mine/icon_my_right.png"),
+          //           height: 16,
+          //           width: 16,
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
           GestureDetector(
             onTap: () {
               _onTapEvent(6);
@@ -330,7 +331,7 @@ class _MySetPageState extends BaseWidgetState<MySetPage> {
                     height: 45,
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      "隐私协议",
+                      "个人信息保护政策",
                       style: textStyle,
                     )),
                 Positioned(

@@ -43,10 +43,10 @@
   <!-- This script installs service_worker.js to provide PWA functionality to
        application. For more information, see:
        https://developers.google.com/web/fundamentals/primers/service-workers -->
-  <script src="js/vconsole.min.js"></script>
+  <!-- <script src="js/vconsole.min.js"></script>
   <script>
     const vConsole = new VConsole();
-  </script>
+  </script> -->
   <script src="//cdn.jsdelivr.net/npm/jsqr@1.3.1/dist/jsQR.min.js"></script>
   <script src="//res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
   <script>
@@ -76,6 +76,10 @@
       return inWechatWeb;
     }
 
+    function JumpLogin() {
+      location.href = "/wechat/login";
+    }
+
     var serviceWorkerVersion = null;
     var scriptLoaded = false;
     function loadMainDartJs() {
@@ -89,40 +93,6 @@
       document.body.append(scriptTag);
     }
 
-    var appId = "";
-    var timeStamp = "";
-    var nonceStr = "";
-    var package = "";
-    var signature = "";
-
-    fetch('https://zgene.divms.com/wechat/js')
-      .then(function (response) {
-        return response.json();
-      })
-      .then(function (data) {
-        if (data.code === 0) {
-          wx.config({
-            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-            appId: data.result.app_id, // 必填，公众号的唯一标识
-            timestamp: data.result.timestamp, // 必填，生成签名的时间戳
-            nonceStr: data.result.nonce_str, // 必填，生成签名的随机串
-            signature: data.result.signature,// 必填，签名
-            jsApiList: [
-              "chooseWXPay",
-            ] // 必填，需要使用的JS接口列表
-          });
-
-          wx.ready(function () {
-            console.log("wx.ready");
-          });
-
-          wx.error(function (res) {
-            console.log("wx.error", res);
-          });
-        }
-      });
-
-
     function WeixinPay(parms) {
       let res = JSON.parse(parms);
 
@@ -132,13 +102,15 @@
         "timeStamp": res["timestamp"],         //时间戳，自1970年以来的秒数     
         "nonceStr": res["noncestr"], //随机串     
         "package": res["package"],
-        "signType": "MD5",         //微信签名方式：     
+        "signType": "RSA",         //微信签名方式：     
         "paySign": res["sign"] //微信签名 
       },
         function (res) {
           if (res.err_msg == "get_brand_wcpay_request:ok") {
             // 使用以上方式判断前端返回,微信团队郑重提示：
             //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+            // alert("ok");
+            location.href = "/webapp/#/my_order";
           }
         });
     }

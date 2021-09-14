@@ -53,9 +53,9 @@ class _MyMessagePageState extends State<MyMessagePage> {
           firstRefresh: true,
           // 控制器
           controller: _controller,
-          header: RefreshConfigUtils.classicalHeader(),
+          header: BallPulseHeader(),
           // 自定义顶部上啦加载
-          footer: RefreshConfigUtils.classicalFooter(),
+          footer: BallPulseFooter(),
           child: emptyView,
           //下拉刷新事件回调
           onRefresh: () async {

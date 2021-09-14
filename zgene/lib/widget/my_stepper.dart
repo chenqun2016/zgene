@@ -310,7 +310,13 @@ class _StepperState extends State<EStepper> with TickerProviderStateMixin {
   @override
   void didUpdateWidget(EStepper oldWidget) {
     super.didUpdateWidget(oldWidget);
-    assert(widget.steps.length == oldWidget.steps.length);
+    if(widget.steps.length != oldWidget.steps.length){
+      _keys = List<GlobalKey>.generate(
+        widget.steps.length,
+            (int i) => GlobalKey(),
+      );
+    }
+
 
     for (int i = 0; i < oldWidget.steps.length; i += 1)
       _oldStates[i] = oldWidget.steps[i].state;
@@ -467,24 +473,24 @@ class _StepperState extends State<EStepper> with TickerProviderStateMixin {
   }
 
   Widget _buildIcon(int index) {
-    if (widget.steps[index].state != _oldStates[index]) {
-      return AnimatedCrossFade(
-        firstChild: _buildCircle(index, true),
-        secondChild: _buildTriangle(index, true),
-        firstCurve: const Interval(0.0, 0.6, curve: Curves.fastOutSlowIn),
-        secondCurve: const Interval(0.4, 1.0, curve: Curves.fastOutSlowIn),
-        sizeCurve: Curves.fastOutSlowIn,
-        crossFadeState: widget.steps[index].state == EStepState.error
-            ? CrossFadeState.showSecond
-            : CrossFadeState.showFirst,
-        duration: kThemeAnimationDuration,
-      );
-    } else {
+    // if (widget.steps[index].state != _oldStates[index]) {
+    //   return AnimatedCrossFade(
+    //     firstChild: _buildCircle(index, true),
+    //     secondChild: _buildTriangle(index, true),
+    //     firstCurve: const Interval(0.0, 0.6, curve: Curves.fastOutSlowIn),
+    //     secondCurve: const Interval(0.4, 1.0, curve: Curves.fastOutSlowIn),
+    //     sizeCurve: Curves.fastOutSlowIn,
+    //     crossFadeState: widget.steps[index].state == EStepState.error
+    //         ? CrossFadeState.showSecond
+    //         : CrossFadeState.showFirst,
+    //     duration: kThemeAnimationDuration,
+    //   );
+    // } else {
       if (widget.steps[index].state != EStepState.error)
         return _buildCircle(index, false);
       else
         return _buildTriangle(index, false);
-    }
+    // }
   }
 
   Widget _buildVerticalControls() {

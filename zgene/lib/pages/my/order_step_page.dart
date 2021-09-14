@@ -43,13 +43,16 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
   }
 
   void _initCurrentPosition() {
+    stepMap.clear();
     if (null != order) {
       if (order.status == -10) {
         stepMap.addAll(CommonUtils.map);
         _position = 0;
+        steps = stepMap.values.toList();
       } else {
         stepMap.addAll(CommonUtils.map);
         stepMap.remove(-10);
+        steps = stepMap.values.toList();
         if (order.status < 10) {
           _position = 0;
         } else if (order.status > 70) {
@@ -58,7 +61,7 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
           _position = stepMap.keys.toList().indexOf(order.status);
         }
       }
-      steps = stepMap.values.toList();
+
       print("_initCurrentPosition/${order.status}/" + stepMap.toString());
     }
   }

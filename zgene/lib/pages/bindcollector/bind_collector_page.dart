@@ -89,7 +89,6 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
     if (!isNetWorkAvailable) {
       return;
     }
-    EasyLoading.show(status: 'loading...');
 
     Map<String, dynamic> map = new HashMap();
     // map['order_id'] = id;
@@ -485,7 +484,7 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
           onTap: () async {
             try {
               String code = await NavigatorUtil.push(context, QRViewExample());
-              if(null != code && code.isNotEmpty){
+              if (null != code && code.isNotEmpty) {
                 _textEditingController.text = code;
                 Future.delayed(Duration(milliseconds: 500), () {
                   setState(() {

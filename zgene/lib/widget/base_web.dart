@@ -93,6 +93,7 @@ class _BaseWebViewState extends State<BaseWebView> {
                   },
                 ),
                 elevation: 0,
+                centerTitle: true,
                 title: Text(
                   widget.title ?? "",
                   textAlign: TextAlign.center,

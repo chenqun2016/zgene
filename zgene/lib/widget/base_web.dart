@@ -2,11 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
-import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/platform_utils.dart';
@@ -14,7 +10,6 @@ import 'package:zgene/util/share_utils.dart'
     if (dart.library.html) 'package:zgene/util/share_utils_web.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:easy_web_view/easy_web_view.dart';
-import 'package:zgene/util/platform_utils.dart';
 
 //基础webview
 class BaseWebView extends StatefulWidget {
@@ -98,7 +93,7 @@ class _BaseWebViewState extends State<BaseWebView> {
                   widget.title ?? "",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 18.sp,
+                    fontSize: 18,
                     fontStyle: FontStyle.normal,
                     fontWeight: FontWeight.w600,
                     color: ColorConstant.TextMainBlack,

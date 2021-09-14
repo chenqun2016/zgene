@@ -114,4 +114,7 @@ class CommonConstant {
   static const String ROUT_kefu = "/kefu";
   static const String ROUT_about = "/about";
   static const String ROUT_buy = "/buy";
+
+
+  static const String JWT = "jwt";
 }

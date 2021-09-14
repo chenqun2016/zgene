@@ -90,7 +90,7 @@ class _ArticleDetailViewState extends State<ArticleDetailView> {
                 style: TextStyle(
                     fontSize: 16,
                     fontStyle: FontStyle.normal,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w600,
                     color: ColorConstant.MainBlack),
               ),
               actions: <Widget>[
@@ -144,24 +144,28 @@ class _ArticleDetailViewState extends State<ArticleDetailView> {
                           // width: 100,
                           // height: 100,
                         )
-                      : InAppWebView(
-                          initialOptions: options,
-                          initialUrlRequest: URLRequest(url: _uri),
-                          onTitleChanged: (InAppWebViewController controller,
-                              String title) {
-                            _title = title;
-                            setState(() {});
-                          },
-                          // 加载进度变化事件.
-                          onProgressChanged: (InAppWebViewController controller,
-                              int progress) {
-                            if ((progress / 100) > 0.999) {
-                              setState(() {
-                                this._flag = false;
-                              });
-                            }
-                          },
-                        ),
+                      : _uri == null
+                          ? Text("")
+                          : InAppWebView(
+                              initialOptions: options,
+                              initialUrlRequest: URLRequest(url: _uri),
+                              onTitleChanged:
+                                  (InAppWebViewController controller,
+                                      String title) {
+                                _title = title;
+                                setState(() {});
+                              },
+                              // 加载进度变化事件.
+                              onProgressChanged:
+                                  (InAppWebViewController controller,
+                                      int progress) {
+                                if ((progress / 100) > 0.999) {
+                                  setState(() {
+                                    this._flag = false;
+                                  });
+                                }
+                              },
+                            ),
                 )
               ],
             )));
@@ -193,14 +197,34 @@ class _ArticleDetailViewState extends State<ArticleDetailView> {
   }
 
   var _uri;
+
   void setCookie() async {
-    _uri = Uri.parse(_url);
-    CookieManager cookieManager = CookieManager.instance();
-    await cookieManager.setCookie(
-      url: _uri,
-      name: "jwt",
-      value: SpUtils().getStorageDefault(SpConstant.Token, ""),
-      isSecure: false,
-    );
+    var uri1;
+    try {
+      String token = SpUtils().getStorageDefault(SpConstant.Token, "");
+      uri1 = Uri.parse(_url);
+      if (null != token && token.isNotEmpty) {
+        CookieManager cookieManager = CookieManager.instance();
+        Cookie cookie =
+            await cookieManager.getCookie(url: uri1, name: CommonConstant.JWT);
+        if (null != cookie &&
+            null != cookie.value &&
+            cookie.value.toString().isNotEmpty &&
+            cookie.value == token) {
+          await cookieManager.deleteCookie(url: uri1, name: CommonConstant.JWT);
+        }
+        await cookieManager.setCookie(
+          url: uri1,
+          name: CommonConstant.JWT,
+          value: token,
+          isSecure: false,
+        );
+      }
+    } catch (e) {
+      print("setCookie-error==" + e);
+    }
+    setState(() {
+      _uri = uri1;
+    });
   }
 }

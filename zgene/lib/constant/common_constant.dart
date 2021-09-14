@@ -117,4 +117,6 @@ class CommonConstant {
 
 
   static const String JWT = "jwt";
+
+  static const String BUS_BUYPAGE = "bus_buypage";
 }

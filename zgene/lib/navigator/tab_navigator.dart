@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/event/event_bus.dart';
 import 'package:zgene/models/msg_event.dart';
 import 'package:zgene/pages/tabs/buy_page.dart';
@@ -35,6 +36,9 @@ class _TabNavigatorState extends State<TabNavigator> {
           if (event.msg == 2) {
             reportpage.id = event.arg;
             bus.emit("ReportPage",event.arg);
+          }
+          if(event.msg == 1){
+            bus.emit(CommonConstant.BUS_BUYPAGE);
           }
           _controller.jumpToPage(event.msg);
           setState(() {

@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -177,21 +178,38 @@ class _MyInfoPageState extends State<MyInfoPage> {
                       height: 66,
                       width: 66,
                     )
-                  : FadeInImage.assetNetwork(
-                      placeholder: 'assets/images/mine/img_my_avatar.png',
-                      image: CommonUtils.splicingUrl(_avatatHttp),
+                  : new CachedNetworkImage(
                       width: 66,
+                      // 设置根据宽度计算高度
                       height: 66,
-                      fit: BoxFit.cover,
-                      fadeInDuration: TimeUtils.fadeInDuration(),
-                      fadeOutDuration: TimeUtils.fadeOutDuration(),
-                      imageErrorBuilder: (context, error, stackTrace) {
-                        return Image.asset(
-                          "assets/images/mine/img_my_avatar.png",
+                      // 图片地址
+                      imageUrl: CommonUtils.splicingUrl(_avatatHttp),
+                      // 填充方式为cover
+                      fit: BoxFit.fill,
+
+                      errorWidget: (context, url, error) => new Container(
+                        child: new Image.asset(
+                          'assets/images/mine/img_my_avatar.png',
                           height: 66,
                           width: 66,
-                        );
-                      }),
+                        ),
+                      ),
+                    ),
+              // FadeInImage.assetNetwork(
+              //     placeholder: 'assets/images/mine/img_my_avatar.png',
+              //     image: CommonUtils.splicingUrl(_avatatHttp),
+              //     width: 66,
+              //     height: 66,
+              //     fit: BoxFit.cover,
+              //     fadeInDuration: TimeUtils.fadeInDuration(),
+              //     fadeOutDuration: TimeUtils.fadeOutDuration(),
+              //     imageErrorBuilder: (context, error, stackTrace) {
+              //       return Image.asset(
+              //         "assets/images/mine/img_my_avatar.png",
+              //         height: 66,
+              //         width: 66,
+              //       );
+              //     }),
             ),
           ),
           Column(
@@ -273,22 +291,40 @@ class _MyInfoPageState extends State<MyInfoPage> {
                               height: 45,
                               width: 45,
                             )
-                          : FadeInImage.assetNetwork(
-                              placeholder:
-                                  'assets/images/mine/img_my_avatar.png',
-                              image: CommonUtils.splicingUrl(_avatatHttp),
+                          : new CachedNetworkImage(
                               width: 45,
+                              // 设置根据宽度计算高度
                               height: 45,
-                              fit: BoxFit.cover,
-                              fadeInDuration: TimeUtils.fadeInDuration(),
-                              fadeOutDuration: TimeUtils.fadeOutDuration(),
-                              imageErrorBuilder: (context, error, stackTrace) {
-                                return Image.asset(
-                                  "assets/images/mine/img_my_avatar.png",
+                              // 图片地址
+                              imageUrl: CommonUtils.splicingUrl(_avatatHttp),
+                              // 填充方式为cover
+                              fit: BoxFit.fill,
+
+                              errorWidget: (context, url, error) =>
+                                  new Container(
+                                child: new Image.asset(
+                                  'assets/images/mine/img_my_avatar.png',
                                   height: 45,
                                   width: 45,
-                                );
-                              }),
+                                ),
+                              ),
+                            ),
+                      // FadeInImage.assetNetwork(
+                      //     placeholder:
+                      //         'assets/images/mine/img_my_avatar.png',
+                      //     image: CommonUtils.splicingUrl(_avatatHttp),
+                      //     width: 45,
+                      //     height: 45,
+                      //     fit: BoxFit.cover,
+                      //     fadeInDuration: TimeUtils.fadeInDuration(),
+                      //     fadeOutDuration: TimeUtils.fadeOutDuration(),
+                      //     imageErrorBuilder: (context, error, stackTrace) {
+                      //       return Image.asset(
+                      //         "assets/images/mine/img_my_avatar.png",
+                      //         height: 45,
+                      //         width: 45,
+                      //       );
+                      //     }),
                     ),
                   ),
                 ),

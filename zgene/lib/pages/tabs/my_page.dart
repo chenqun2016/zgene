@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -239,21 +240,38 @@ class _MyPageState extends BaseWidgetState<MyPage> {
               },
               child: Container(
                   margin: EdgeInsets.only(bottom: 15),
-                  child: FadeInImage.assetNetwork(
-                      placeholder: 'assets/images/mine/icon_default_banner.png',
-                      image: CommonUtils.splicingUrl(bannerImg),
-                      height: 80,
-                      width: double.infinity,
-                      fit: BoxFit.fill,
-                      fadeInDuration: TimeUtils.fadeInDuration(),
-                      fadeOutDuration: TimeUtils.fadeOutDuration(),
-                      imageErrorBuilder: (context, error, stackTrace) {
-                        return Image.asset(
-                          "assets/images/mine/icon_default_banner.png",
-                          height: 80,
-                          width: double.infinity,
-                        );
-                      })),
+                  child: new CachedNetworkImage(
+                    width: double.infinity,
+                    // 设置根据宽度计算高度
+                    height: 80,
+                    // 图片地址
+                    imageUrl: CommonUtils.splicingUrl(bannerImg),
+                    // 填充方式为cover
+                    fit: BoxFit.fill,
+
+                    errorWidget: (context, url, error) => new Container(
+                      child: new Image.asset(
+                        'assets/images/mine/icon_default_banner.png',
+                        height: 80,
+                        width: double.infinity,
+                      ),
+                    ),
+                  )),
+              // FadeInImage.assetNetwork(
+              //     placeholder: 'assets/images/mine/icon_default_banner.png',
+              //     image: CommonUtils.splicingUrl(bannerImg),
+              //     height: 80,
+              //     width: double.infinity,
+              //     fit: BoxFit.fill,
+              //     fadeInDuration: TimeUtils.fadeInDuration(),
+              //     fadeOutDuration: TimeUtils.fadeOutDuration(),
+              //     imageErrorBuilder: (context, error, stackTrace) {
+              //       return Image.asset(
+              //         "assets/images/mine/icon_default_banner.png",
+              //         height: 80,
+              //         width: double.infinity,
+              //       );
+              //     })),
             ),
           ),
           MyoRderNav(),
@@ -295,21 +313,38 @@ class _MyPageState extends BaseWidgetState<MyPage> {
                             height: 66,
                             width: 66,
                           )
-                        : FadeInImage.assetNetwork(
-                            placeholder: 'assets/images/mine/img_my_avatar.png',
-                            image: CommonUtils.splicingUrl(avatarImg),
+                        : new CachedNetworkImage(
                             width: 66,
+                            // 设置根据宽度计算高度
                             height: 66,
-                            fit: BoxFit.cover,
-                            fadeInDuration: TimeUtils.fadeInDuration(),
-                            fadeOutDuration: TimeUtils.fadeOutDuration(),
-                            imageErrorBuilder: (context, error, stackTrace) {
-                              return Image.asset(
-                                "assets/images/mine/img_my_avatar.png",
+                            // 图片地址
+                            imageUrl: CommonUtils.splicingUrl(avatarImg),
+                            // 填充方式为cover
+                            fit: BoxFit.fill,
+
+                            errorWidget: (context, url, error) => new Container(
+                              child: new Image.asset(
+                                'assets/images/mine/img_my_avatar.png',
                                 height: 66,
                                 width: 66,
-                              );
-                            }),
+                              ),
+                            ),
+                          ),
+                    // FadeInImage.assetNetwork(
+                    //     placeholder: 'assets/images/mine/img_my_avatar.png',
+                    //     image: CommonUtils.splicingUrl(avatarImg),
+                    //     width: 66,
+                    //     height: 66,
+                    //     fit: BoxFit.cover,
+                    //     fadeInDuration: TimeUtils.fadeInDuration(),
+                    //     fadeOutDuration: TimeUtils.fadeOutDuration(),
+                    //     imageErrorBuilder: (context, error, stackTrace) {
+                    //       return Image.asset(
+                    //         "assets/images/mine/img_my_avatar.png",
+                    //         height: 66,
+                    //         width: 66,
+                    //       );
+                    //     }),
                   ),
                 ),
                 Column(

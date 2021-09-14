@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
@@ -103,7 +104,7 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
           //   // 控制器
           //   controller: _easyController,
           //   header: RefreshConfigUtils.classicalHeader(),
-            child: _listview,
+          child: _listview,
           //   //下拉刷新事件回调
           //   onRefresh: () async {
           //     // page = 1;
@@ -144,23 +145,40 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
         width: 343,
         height: 172,
         alignment: Alignment.topCenter,
-        child: FadeInImage.assetNetwork(
-            placeholder: 'assets/images/home/img_default2.png',
-            image: CommonUtils.splicingUrl(_productDetail.imageUrl),
-            width: 343,
-            height: 192,
-            fadeInDuration: TimeUtils.fadeInDuration(),
-            fadeOutDuration: TimeUtils.fadeOutDuration(),
-            fit: BoxFit.cover,
-            alignment: Alignment.topCenter,
-            imageErrorBuilder: (context, error, stackTrace) {
-              return Image.asset(
-                'assets/images/home/img_default2.png',
-                width: double.infinity,
-                height: 192,
-                fit: BoxFit.fill,
-              );
-            }),
+        child: new CachedNetworkImage(
+          width: 343,
+          // 设置根据宽度计算高度
+          height: 192,
+          // 图片地址
+          imageUrl: CommonUtils.splicingUrl(_productDetail.imageUrl),
+          // 填充方式为cover
+          fit: BoxFit.fill,
+
+          errorWidget: (context, url, error) => new Container(
+            child: new Image.asset(
+              'assets/images/home/img_default2.png',
+              height: 343,
+              width: 192,
+            ),
+          ),
+        ),
+        // FadeInImage.assetNetwork(
+        //     placeholder: 'assets/images/home/img_default2.png',
+        //     image: CommonUtils.splicingUrl(_productDetail.imageUrl),
+        //     width: 343,
+        //     height: 192,
+        //     fadeInDuration: TimeUtils.fadeInDuration(),
+        //     fadeOutDuration: TimeUtils.fadeOutDuration(),
+        //     fit: BoxFit.cover,
+        //     alignment: Alignment.topCenter,
+        //     imageErrorBuilder: (context, error, stackTrace) {
+        //       return Image.asset(
+        //         'assets/images/home/img_default2.png',
+        //         width: double.infinity,
+        //         height: 192,
+        //         fit: BoxFit.fill,
+        //       );
+        //     }),
       ),
     );
   }

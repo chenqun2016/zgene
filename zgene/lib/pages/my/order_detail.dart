@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/api_constant.dart';
@@ -132,22 +133,39 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
           Positioned(
             child: Center(
               child: ClipOval(
-                child: FadeInImage.assetNetwork(
-                    placeholder: 'assets/images/home/img_default2.png',
-                    image: CommonUtils.splicingUrl(_model.prodInfo.images),
-                    width: 116,
-                    height: 116,
-                    fadeInDuration: TimeUtils.fadeInDuration(),
-                    fadeOutDuration: TimeUtils.fadeOutDuration(),
-                    fit: BoxFit.fill,
-                    imageErrorBuilder: (context, error, stackTrace) {
-                      return Image.asset(
-                        'assets/images/home/img_default2.png',
-                        width: 116,
-                        height: 116,
-                        fit: BoxFit.fill,
-                      );
-                    }),
+                child: new CachedNetworkImage(
+                  width: 116,
+                  // 设置根据宽度计算高度
+                  height: 116,
+                  // 图片地址
+                  imageUrl: CommonUtils.splicingUrl(_model.prodInfo.images),
+                  // 填充方式为cover
+                  fit: BoxFit.fill,
+
+                  errorWidget: (context, url, error) => new Container(
+                    child: new Image.asset(
+                      'assets/images/home/img_default2.png',
+                      height: 116,
+                      width: 116,
+                    ),
+                  ),
+                ),
+                //  FadeInImage.assetNetwork(
+                //           placeholder: 'assets/images/home/img_default2.png',
+                //           image: CommonUtils.splicingUrl(_model.prodInfo.images),
+                //           width: 116,
+                //           height: 116,
+                //           fadeInDuration: TimeUtils.fadeInDuration(),
+                //           fadeOutDuration: TimeUtils.fadeOutDuration(),
+                //           fit: BoxFit.fill,
+                //           imageErrorBuilder: (context, error, stackTrace) {
+                //             return Image.asset(
+                //               'assets/images/home/img_default2.png',
+                //               width: 116,
+                //               height: 116,
+                //               fit: BoxFit.fill,
+                //             );
+                //           }),
               ),
             ),
           ),

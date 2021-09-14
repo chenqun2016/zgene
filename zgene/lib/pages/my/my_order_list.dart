@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -213,25 +214,43 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
                       if (null != bean.prodInfo)
                         ClipRRect(
                           borderRadius: BorderRadius.circular(20),
-                          child: FadeInImage.assetNetwork(
-                              placeholder: 'assets/images/banner.png',
-                              image:
-                                  CommonUtils.splicingUrl(bean.prodInfo.images),
-                              width: 70,
-                              height: 70,
-                              alignment: Alignment.center,
-                              fit: BoxFit.fill,
-                              fadeInDuration: TimeUtils.fadeInDuration(),
-                              fadeOutDuration: TimeUtils.fadeOutDuration(),
-                              imageErrorBuilder: (context, error, stackTrace) {
-                                return Image.asset(
-                                  'assets/images/banner.png',
-                                  width: 70,
-                                  height: 70,
-                                  alignment: Alignment.center,
-                                  fit: BoxFit.fill,
-                                );
-                              }),
+                          child: new CachedNetworkImage(
+                            width: 70,
+                            // 设置根据宽度计算高度
+                            height: 70,
+                            // 图片地址
+                            imageUrl:
+                                CommonUtils.splicingUrl(bean.prodInfo.images),
+                            // 填充方式为cover
+                            fit: BoxFit.fill,
+
+                            errorWidget: (context, url, error) => new Container(
+                              child: new Image.asset(
+                                'assets/images/banner.png',
+                                height: 70,
+                                width: 70,
+                              ),
+                            ),
+                          ),
+                          // FadeInImage.assetNetwork(
+                          //     placeholder: 'assets/images/banner.png',
+                          //     image:
+                          //         CommonUtils.splicingUrl(bean.prodInfo.images),
+                          //     width: 70,
+                          //     height: 70,
+                          //     alignment: Alignment.center,
+                          //     fit: BoxFit.fill,
+                          //     fadeInDuration: TimeUtils.fadeInDuration(),
+                          //     fadeOutDuration: TimeUtils.fadeOutDuration(),
+                          //     imageErrorBuilder: (context, error, stackTrace) {
+                          //       return Image.asset(
+                          //         'assets/images/banner.png',
+                          //         width: 70,
+                          //         height: 70,
+                          //         alignment: Alignment.center,
+                          //         fit: BoxFit.fill,
+                          //       );
+                          //     }),
                         ),
                       if (null != bean.prodInfo)
                         Column(
@@ -387,8 +406,8 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
 
   ///点击事件
   _onTapEvent(OrderListmodel bean) async {
-    await Navigator.of(context)
-        .pushNamed(CommonConstant.ROUT_order_step_detail, arguments: bean.id.toString());
+    await Navigator.of(context).pushNamed(CommonConstant.ROUT_order_step_detail,
+        arguments: bean.id.toString());
 
     ///刷新状态
     getDatas();

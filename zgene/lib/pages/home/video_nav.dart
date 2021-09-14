@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
@@ -30,7 +31,7 @@ class _VideoNavState extends State<VideoNav>
   void initState() {
     super.initState();
     // bus.on(CommonConstant.HomeRefush, (arg) {
-      getHttp();
+    getHttp();
     // });
   }
 
@@ -84,21 +85,38 @@ class _VideoNavState extends State<VideoNav>
                   color: Colors.transparent,
                   borderRadius: BorderRadius.circular(20),
                   clipBehavior: Clip.antiAlias,
-                  child: FadeInImage.assetNetwork(
-                      placeholder: 'assets/images/home/img_default2.png',
-                      image: CommonUtils.splicingUrl(aloneList[0].imageUrl),
-                      height: 168,
-                      fadeInDuration: TimeUtils.fadeInDuration(),
-                      fadeOutDuration: TimeUtils.fadeOutDuration(),
-                      fit: BoxFit.fill,
-                      imageErrorBuilder: (context, error, stackTrace) {
-                        return Image.asset(
-                          'assets/images/home/img_default2.png',
-                          width: 90,
-                          height: 90,
-                          fit: BoxFit.fill,
-                        );
-                      }),
+                  child: new CachedNetworkImage(
+                    // width: 80,
+                    // 设置根据宽度计算高度
+                    height: 169,
+                    // 图片地址
+                    imageUrl: CommonUtils.splicingUrl(aloneList[0].imageUrl),
+                    // 填充方式为cover
+                    fit: BoxFit.fill,
+
+                    errorWidget: (context, url, error) => new Container(
+                      child: new Image.asset(
+                        'assets/images/home/img_default2.png',
+                        height: 90,
+                        width: 90,
+                      ),
+                    ),
+                  ),
+                  //  FadeInImage.assetNetwork(
+                  //     placeholder: 'assets/images/home/img_default2.png',
+                  //     image: CommonUtils.splicingUrl(aloneList[0].imageUrl),
+                  //     height: 168,
+                  //     fadeInDuration: TimeUtils.fadeInDuration(),
+                  //     fadeOutDuration: TimeUtils.fadeOutDuration(),
+                  //     fit: BoxFit.fill,
+                  //     imageErrorBuilder: (context, error, stackTrace) {
+                  //       return Image.asset(
+                  //         'assets/images/home/img_default2.png',
+                  //         width: 90,
+                  //         height: 90,
+                  //         fit: BoxFit.fill,
+                  //       );
+                  //     }),
                   // Image.asset(
                   //   "assets/images/banner.png",
                   //   height: 168,

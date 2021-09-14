@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
@@ -27,7 +29,7 @@ class _LocalNavState extends State<LocalNav>
   void initState() {
     super.initState();
     // bus.on(CommonConstant.HomeRefush, (arg) {
-      getHttp();
+    getHttp();
     // });
   }
 
@@ -95,22 +97,39 @@ class _LocalNavState extends State<LocalNav>
       },
       child: Column(
         children: <Widget>[
-          FadeInImage.assetNetwork(
-              placeholder: 'assets/images/home/img_default2.png',
-              image: CommonUtils.splicingUrl(archives.imageUrl),
-              width: 80,
-              height: 80,
-              fadeInDuration: TimeUtils.fadeInDuration(),
-              fadeOutDuration: TimeUtils.fadeOutDuration(),
-              fit: BoxFit.fill,
-              imageErrorBuilder: (context, error, stackTrace) {
-                return Image.asset(
-                  'assets/images/home/img_default2.png',
-                  width: 80,
-                  height: 80,
-                  fit: BoxFit.fill,
-                );
-              }),
+          // FadeInImage.assetNetwork(
+          //     placeholder: 'assets/images/home/img_default2.png',
+          //     image: CommonUtils.splicingUrl(archives.imageUrl),
+          //     width: 80,
+          //     height: 80,
+          //     fadeInDuration: TimeUtils.fadeInDuration(),
+          //     fadeOutDuration: TimeUtils.fadeOutDuration(),
+          //     fit: BoxFit.fill,
+          //     imageErrorBuilder: (context, error, stackTrace) {
+          //       return Image.asset(
+          //         'assets/images/home/img_default2.png',
+          //         width: 80,
+          //         height: 80,
+          //         fit: BoxFit.fill,
+          //       );
+          //     }),
+          new CachedNetworkImage(
+            width: 80,
+            // 设置根据宽度计算高度
+            height: 80,
+            // 图片地址
+            imageUrl: CommonUtils.splicingUrl(archives.imageUrl),
+            // 填充方式为cover
+            fit: BoxFit.fill,
+
+            errorWidget: (context, url, error) => new Container(
+              child: new Image.asset(
+                'assets/images/home/img_default2.png',
+                height: 80,
+                width: 80,
+              ),
+            ),
+          ),
           Text(
             archives.title,
             style: TextStyle(fontSize: 13, color: ColorConstant.TextMainBlack),

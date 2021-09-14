@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:zgene/constant/color_constant.dart';
@@ -20,7 +21,7 @@ class _ExploreNavState extends State<ExploreNav> {
   void initState() {
     super.initState();
     // bus.on(CommonConstant.HomeRefush, (arg) {
-      getHttp();
+    getHttp();
     // });
   }
 
@@ -119,22 +120,39 @@ class _ExploreNavState extends State<ExploreNav> {
                   ],
                 ),
               ),
-              FadeInImage.assetNetwork(
-                  placeholder: 'assets/images/home/img_default2.png',
-                  image: CommonUtils.splicingUrl(archives.imageUrl),
-                  width: 90,
-                  height: 90,
-                  fadeInDuration: TimeUtils.fadeInDuration(),
-                  fadeOutDuration: TimeUtils.fadeOutDuration(),
-                  fit: BoxFit.fill,
-                  imageErrorBuilder: (context, error, stackTrace) {
-                    return Image.asset(
-                      'assets/images/home/img_default2.png',
-                      width: 90,
-                      height: 90,
-                      fit: BoxFit.fill,
-                    );
-                  }),
+              new CachedNetworkImage(
+                width: 90,
+                // 设置根据宽度计算高度
+                height: 90,
+                // 图片地址
+                imageUrl: CommonUtils.splicingUrl(archives.imageUrl),
+                // 填充方式为cover
+                fit: BoxFit.fill,
+
+                errorWidget: (context, url, error) => new Container(
+                  child: new Image.asset(
+                    'assets/images/home/img_default2.png',
+                    height: 90,
+                    width: 90,
+                  ),
+                ),
+              ),
+              // FadeInImage.assetNetwork(
+              //     placeholder: 'assets/images/home/img_default2.png',
+              //     image: CommonUtils.splicingUrl(archives.imageUrl),
+              //     width: 90,
+              //     height: 90,
+              //     fadeInDuration: TimeUtils.fadeInDuration(),
+              //     fadeOutDuration: TimeUtils.fadeOutDuration(),
+              //     fit: BoxFit.fill,
+              //     imageErrorBuilder: (context, error, stackTrace) {
+              //       return Image.asset(
+              //         'assets/images/home/img_default2.png',
+              //         width: 90,
+              //         height: 90,
+              //         fit: BoxFit.fill,
+              //       );
+              //     }),
             ],
           )),
     );

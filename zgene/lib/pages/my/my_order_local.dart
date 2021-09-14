@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
@@ -70,22 +71,39 @@ class _MyoRderNavState extends State<MyoRderNav> {
       },
       child: Column(
         children: <Widget>[
-          FadeInImage.assetNetwork(
-              placeholder: 'assets/images/home/img_default2.png',
-              image: CommonUtils.splicingUrl(archives.imageUrl),
-              width: 80,
-              height: 80,
-              fadeInDuration: TimeUtils.fadeInDuration(),
-              fadeOutDuration: TimeUtils.fadeOutDuration(),
-              fit: BoxFit.fill,
-              imageErrorBuilder: (context, error, stackTrace) {
-                return Image.asset(
-                  'assets/images/home/img_default2.png',
-                  width: 80,
-                  height: 80,
-                  fit: BoxFit.fill,
-                );
-              }),
+          new CachedNetworkImage(
+            width: 80,
+            // 设置根据宽度计算高度
+            height: 80,
+            // 图片地址
+            imageUrl: CommonUtils.splicingUrl(archives.imageUrl),
+            // 填充方式为cover
+            fit: BoxFit.fill,
+
+            errorWidget: (context, url, error) => new Container(
+              child: new Image.asset(
+                'assets/images/home/img_default2.png',
+                height: 80,
+                width: 80,
+              ),
+            ),
+          ),
+          // FadeInImage.assetNetwork(
+          //     placeholder: 'assets/images/home/img_default2.png',
+          //     image: CommonUtils.splicingUrl(archives.imageUrl),
+          //     width: 80,
+          //     height: 80,
+          //     fadeInDuration: TimeUtils.fadeInDuration(),
+          //     fadeOutDuration: TimeUtils.fadeOutDuration(),
+          //     fit: BoxFit.fill,
+          //     imageErrorBuilder: (context, error, stackTrace) {
+          //       return Image.asset(
+          //         'assets/images/home/img_default2.png',
+          //         width: 80,
+          //         height: 80,
+          //         fit: BoxFit.fill,
+          //       );
+          //     }),
           Text(
             archives.title,
             style: TextStyle(fontSize: 13, color: ColorConstant.TextMainBlack),

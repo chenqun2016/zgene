@@ -89,7 +89,6 @@ class _BindPhoneLoginPageState extends BaseWidgetState<BindPhoneLoginPage> {
     spUtils.setStorage(SpConstant.Uid, 0);
     spUtils.setStorage(SpConstant.UserAvatar, "");
     spUtils.setStorage(SpConstant.UserName, "");
-
     HttpUtils.clear();
     bus.emit(CommonConstant.refreshMine, 1);
 
@@ -465,5 +464,17 @@ class _BindPhoneLoginPageState extends BaseWidgetState<BindPhoneLoginPage> {
     _cancelTimer();
     _timer = null;
     super.dispose();
+
+    if (!SpUtils().getStorageDefault(SpConstant.IsLogin, false)) {
+      var spUtils = SpUtils();
+      spUtils.setStorage(SpConstant.Token, "");
+      spUtils.setStorage(SpConstant.IsLogin, false);
+      spUtils.setStorage(SpConstant.Uid, 0);
+      spUtils.setStorage(SpConstant.UserAvatar, "");
+      spUtils.setStorage(SpConstant.UserName, "");
+
+      HttpUtils.clear();
+      bus.emit(CommonConstant.refreshMine, 1);
+    }
   }
 }

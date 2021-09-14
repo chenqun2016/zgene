@@ -198,7 +198,7 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
                         shape: MaterialStateProperty.all(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(28.h)))),
                     onPressed: () {
-                      loginWXWeb();
+                      webWeixinLogin();
                     },
                     child: Container(
                       child: Row(
@@ -431,7 +431,7 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
                 Container(
                   margin: EdgeInsets.only(left: 26.w, top: 0),
                   child: Text(
-                    "请先勾选同意《个人信息保护政策》《用户协议》",
+                    "请先勾选同意《个人信息保护政策》和《用户协议》",
                     textAlign: TextAlign.start,
                     style: TextStyle(
                       fontSize: 14,
@@ -463,18 +463,6 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
     }).catchError((e) {
       print('weChatLogin  e  $e');
     });
-  }
-
-  void loginWXWeb() {
-    if (!isAgreePrivacy) {
-      enterThe = true;
-      setState(() {});
-
-      return;
-    }
-    enterThe = false;
-    setState(() {});
-    webWeixinLogin();
   }
 
   Future<void> LoginApple() async {

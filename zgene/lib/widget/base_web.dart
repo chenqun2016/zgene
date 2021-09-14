@@ -211,7 +211,7 @@ class _BaseWebViewState extends State<BaseWebView> {
     try {
       String token = SpUtils().getStorageDefault(SpConstant.Token, "");
       uri1 = Uri.parse(_url);
-      await CommonUtils.setCookie(uri1,token);
+      await CommonUtils.setCookie(uri1, token);
     } catch (e) {
       print("setCookie-error==" + e);
     }

@@ -26,3 +26,7 @@ void webLogin() {
 void webWeixinPay(parms) {
   js.context.callMethod('WeixinPay', [parms]);
 }
+
+void webWeixinLogin() {
+  js.context.callMethod('JumpLogin');
+}

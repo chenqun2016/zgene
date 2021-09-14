@@ -7,7 +7,9 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
+import 'package:zgene/event/event_bus.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/content_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
@@ -54,12 +56,20 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
       _onScroll(_controller.offset);
     });
     HomeGetHttp();
+    bus.on(CommonConstant.BUS_BUYPAGE, (arg) {
+      try{
+        _controller.animateTo(0,duration: Duration(milliseconds: 300), curve: Curves.linear);
+      }catch(e){
+        print(e);
+      }
+    });
   }
 
   @override
   void dispose() {
     //为了避免内存泄露，需要调用_controller.dispose
     _controller.dispose();
+    bus.off(CommonConstant.BUS_BUYPAGE);
     super.dispose();
   }
 

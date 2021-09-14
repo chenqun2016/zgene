@@ -118,7 +118,7 @@ class _CommonQusListPageState extends BaseWidgetState<CommonQusListPage> {
               context,
               BaseWebView(
                 url: link,
-                title: content.title,
+                title: "常见问题",
               ));
         },
         behavior: HitTestBehavior.opaque,

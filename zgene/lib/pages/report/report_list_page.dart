@@ -4,12 +4,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/constant/sp_constant.dart';
+import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/archive_des_model.dart';
 import 'package:zgene/models/report_des_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/home/home_getHttp.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
+import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/widget/base_web.dart';
 
@@ -54,6 +57,27 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
         });
       }
     });
+
+    _getOwnerReport();
+  }
+
+  bool hasReport = false;
+
+  void _getOwnerReport() {
+    if (SpUtils().getStorageDefault(SpConstant.IsLogin, false))
+      HttpUtils.requestHttp(
+        ApiConstant.reports,
+        method: HttpUtils.GET,
+        onSuccess: (result) async {
+          List l = result;
+          if (null != l && l.length > 0) {
+            setState(() {
+              print("hasReport");
+              hasReport = true;
+            });
+          }
+        },
+      );
   }
 
   bool hasDatas = false;
@@ -108,7 +132,8 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
           ),
         ),
         _buildfixedHeader(),
-        Positioned(left: 15, right: 15, bottom: 30, child: _buy(context))
+        if (!hasReport)
+          Positioned(left: 15, right: 15, bottom: 30, child: _buy(context))
       ],
     );
   }
@@ -271,7 +296,7 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
                 url: ApiConstant.getH5DetailUrl(archive.id.toString()),
                 title: archive.title,
               ));
-        }else{
+        } else {
           UiUitls.showToast("购买解锁我的更多报告");
         }
       },

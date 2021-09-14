@@ -224,7 +224,6 @@ class _BaseWebViewState extends State<BaseWebView> {
       }
       setState(() {
         _uri = uri1;
-        print("sss");
       });
     } catch (e) {
       print(e);

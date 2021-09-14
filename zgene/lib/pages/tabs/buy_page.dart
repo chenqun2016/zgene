@@ -289,7 +289,8 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
                   ? WebNavigationDecision.prevent
                   : WebNavigationDecision.navigate,
               // width: 300,
-              height: 3000,
+              height: MediaQuery.of(context).size.height,
+
             )
           : BasePageWebView(
               url: ApiConstant.getH5DetailUrl(_productDetail.id.toString()),

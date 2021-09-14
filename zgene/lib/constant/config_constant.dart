@@ -10,7 +10,7 @@ class ConfigConstant {
   static String universalLink = "https://www.z-gene.cn/";
 
   //android包名
-  static const String AndroidAppId = "com.divms.app";
+  static const String AndroidAppId = "com.jt.zgene";
   //iOSAppId
   static const String iOSAppId = "1521631889";
 }

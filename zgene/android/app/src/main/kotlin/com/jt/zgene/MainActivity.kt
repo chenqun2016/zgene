@@ -1,4 +1,4 @@
-package com.divms.app
+package com.jt.zgene
 
 import io.flutter.embedding.android.FlutterActivity
 

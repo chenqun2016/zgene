@@ -1,4 +1,4 @@
-package com.divms.app.wxapi;
+package com.jt.zgene.wxapi;
 
 import android.content.Intent;
 import android.os.Bundle;

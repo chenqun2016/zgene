@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:connectivity/connectivity.dart';
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zgene/constant/color_constant.dart';
@@ -265,4 +266,25 @@ class CommonUtils {
     60: OrderStepModel("待出报告", "查看示例报告", 60),
     70: OrderStepModel("完成", "查看检测报告", 70),
   };
+
+  static Future setCookie(uri1, String token) async {
+    if (null != token && token.isNotEmpty) {
+      CookieManager cookieManager = CookieManager.instance();
+      Cookie cookie =
+      await cookieManager.getCookie(url: uri1, name: CommonConstant.JWT);
+      if (null != cookie &&
+          null != cookie.value &&
+          cookie.value.toString().isNotEmpty &&
+          cookie.value != token) {
+        await cookieManager.deleteCookie(url: uri1, name: CommonConstant.JWT);
+      }
+      await cookieManager.setCookie(
+        url: uri1,
+        name: CommonConstant.JWT,
+        value: token,
+        isSecure: false,
+      );
+    }
+    return Future.value(1);
+  }
 }

@@ -48,6 +48,7 @@ class _BaseWebViewState extends State<BaseWebView> {
   InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
       crossPlatform: InAppWebViewOptions(
         supportZoom: false,
+        transparentBackground: true,
         useShouldOverrideUrlLoading: true,
         mediaPlaybackRequiresUserGesture: false,
         userAgent: "Z-Gene",

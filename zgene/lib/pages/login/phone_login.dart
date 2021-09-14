@@ -229,8 +229,6 @@ class _PhoneLoginPageState extends BaseWidgetState<PhoneLoginPage> {
     Map<String, dynamic> map = new HashMap();
     map["mobile"] = number;
 
-    EasyLoading.show(status: 'loading...');
-
     HttpUtils.requestHttp(
       ApiConstant.loginSms,
       parameters: map,

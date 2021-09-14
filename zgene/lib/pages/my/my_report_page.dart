@@ -34,7 +34,7 @@ class _MyReportPageState extends BaseWidgetState {
     if (!isNetWorkAvailable) {
       return;
     }
-    EasyLoading.show(status: 'loading...');
+
     HttpUtils.requestHttp(
       ApiConstant.reports,
       method: HttpUtils.GET,

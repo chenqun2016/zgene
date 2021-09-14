@@ -103,7 +103,7 @@ class _MyPageState extends BaseWidgetState<MyPage> {
   getHttp() {
     print("刷新页面");
     print(spUtils.getStorageDefault(SpConstant.Token, ""));
-    // EasyLoading.show(status: 'loading...');
+    //  ;
     // Map<String, dynamic> map = new HashMap();
     HttpUtils.requestHttp(
       ApiConstant.userInfo,
@@ -131,7 +131,7 @@ class _MyPageState extends BaseWidgetState<MyPage> {
   }
 
   getNoticeCount() {
-    // EasyLoading.show(status: 'loading...');
+    //  ;
     // Map<String, dynamic> map = new HashMap();
     HttpUtils.requestHttp(
       ApiConstant.userNoticeCount,

@@ -68,7 +68,6 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
     if (!isNetWorkAvailable) {
       return;
     }
-    EasyLoading.show(status: 'loading...');
 
     Map<String, dynamic> map = new HashMap();
     map['chid'] = 5;
@@ -107,7 +106,7 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
           //   // 控制器
           //   controller: _easyController,
           //   header: RefreshConfigUtils.classicalHeader(),
-          child: _listview,
+          child: PlatformUtils.isWeb ? _webcontain : _listview,
           //   //下拉刷新事件回调
           //   onRefresh: () async {
           //     // page = 1;
@@ -123,6 +122,38 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
           // ),
         ),
         _appBar
+      ],
+    );
+  }
+
+  Widget get _webcontain {
+    return Column(
+      children: [
+        _title,
+        if (null != _productDetail) _banner,
+        if (null != _productDetail) _products,
+        if (null != _productDetail)
+          Expanded(
+              child: Container(
+            color: Colors.white,
+            width: double.infinity,
+            margin: EdgeInsets.only(top: 16, bottom: 56),
+            child: EasyWebView(
+              onLoaded: () {},
+              src: ApiConstant.getH5DetailUrl(_productDetail.id.toString()),
+              key: key,
+              isHtml: false,
+              isMarkdown: false,
+              webAllowFullScreen: false,
+              convertToWidgets: false,
+              widgetsTextSelectable: false,
+              webNavigationDelegate: (_) => true
+                  ? WebNavigationDecision.prevent
+                  : WebNavigationDecision.navigate,
+              // width: 300,
+              // height: MediaQuery.of(context).size.height - 470,
+            ),
+          ))
       ],
     );
   }
@@ -275,26 +306,9 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
       color: Colors.white,
       width: double.infinity,
       margin: EdgeInsets.only(top: 16, bottom: 56),
-      child: PlatformUtils.isWeb
-          ? EasyWebView(
-              onLoaded: () {},
-              src: ApiConstant.getH5DetailUrl(_productDetail.id.toString()),
-              key: key,
-              isHtml: false,
-              isMarkdown: false,
-              webAllowFullScreen: false,
-              convertToWidgets: false,
-              widgetsTextSelectable: false,
-              webNavigationDelegate: (_) => true
-                  ? WebNavigationDecision.prevent
-                  : WebNavigationDecision.navigate,
-              // width: 300,
-              height: MediaQuery.of(context).size.height,
-
-            )
-          : BasePageWebView(
-              url: ApiConstant.getH5DetailUrl(_productDetail.id.toString()),
-            ),
+      child: BasePageWebView(
+        url: ApiConstant.getH5DetailUrl(_productDetail.id.toString()),
+      ),
     );
   }
 

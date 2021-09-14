@@ -50,7 +50,7 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
     if (!isNetWorkAvailable) {
       return;
     }
-    // EasyLoading.show(status: 'loading...');
+    //  ;
     HttpUtils.requestHttp(
       ApiConstant.orderList,
       method: HttpUtils.GET,
@@ -107,7 +107,7 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
               // 控制器
               controller: _controller,
               header: BallPulseHeader(),
-              // footer: BallPulseFooter(),
+              footer: BallPulseFooter(),
               child: _listView,
               //下拉刷新事件回调
               onRefresh: () async {
@@ -121,15 +121,15 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
                 // });
               },
               // 上拉加载事件回调
-              onLoad: () async {
-                // await Future.delayed(Duration(seconds: 1), () {
-                //   // 获取数据
-                //   getHttp();
-                // 结束加载
-                _controller.finishLoad();
-                // _controller.finishLoad(noMore:true);
-                // });
-              },
+              // onLoad: () async {
+              //   // await Future.delayed(Duration(seconds: 1), () {
+              //   //   // 获取数据
+              //   //   getHttp();
+              //   // 结束加载
+              //   _controller.finishLoad();
+              //   // _controller.finishLoad(noMore:true);
+              //   // });
+              // },
             ),
           );
   }

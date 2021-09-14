@@ -237,8 +237,6 @@ class _SetPasswordPageState extends BaseWidgetState<SetPasswordPage> {
     Map<String, dynamic> map = new HashMap();
     map["mobile"] = number;
 
-    EasyLoading.show(status: 'loading...');
-
     HttpUtils.requestHttp(
       ApiConstant.loginSms,
       parameters: map,

@@ -553,7 +553,6 @@ class _MyInfoPageState extends State<MyInfoPage> {
     map["gender"] = sexType;
     map["avatar"] = _avatatHttp;
     map["intro"] = _introduction;
-    EasyLoading.show(status: 'loading...');
 
     HttpUtils.requestHttp(
       ApiConstant.userInfo,

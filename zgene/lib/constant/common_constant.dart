@@ -3,7 +3,6 @@ import 'package:zgene/constant/sp_constant.dart';
 ///app公共常量
 class CommonConstant {
   static const String BASE_API = SpConstant.ProductionApi;
-  // static const String BASE_API = "http://192.168.110.70:8998";
   //APP名称
   static const String AppName = "Z基因";
 //APP名称
@@ -18,7 +17,7 @@ class CommonConstant {
   static const String AppVersion = "1.0.0";
 
   //android包名
-  static const String AndroidAppId = "com.jt.zgene";
+  // static const String AndroidAppId = "com.divms.app";
 
   //iOSAppId
   static const String iOSAppId = "";
@@ -88,10 +87,10 @@ class CommonConstant {
   static String appReceivePtype = "";
 
   //Ios universalLink
-  static String universalLink = "https://www.divms.com/";
+  // static String universalLink = "https://www.divms.com/";
 
   //微信appKey
-  static String wxAppKey = "wx3ff0faf398eaa755";
+  // static String wxAppKey = "wx5efe242ed516d3c1";
 
   //isWeChatInstalled
   static bool Is_WeChat_Installed = false;

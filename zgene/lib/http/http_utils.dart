@@ -148,6 +148,7 @@ class HttpUtils {
     Function(int code, String error) onError,
   }) async {
     ///定义请求参数
+    ///
     parameters = parameters ?? {};
     try {
       parameters.forEach((key, value) {
@@ -157,7 +158,6 @@ class HttpUtils {
       });
     } catch (e) {}
     try {
-      print(url);
       Dio dio = await createInstance();
       Response response;
       switch (method) {

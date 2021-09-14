@@ -21,6 +21,8 @@ import 'package:zgene/util/notification_utils.dart';
 import 'package:zgene/util/platform_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/widget/base_web.dart';
+import 'package:zgene/configure.dart'
+    if (dart.library.html) 'package:zgene/configure_web.dart';
 
 class MainLoginPage extends BaseWidget {
   @override
@@ -150,6 +152,53 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
                             borderRadius: BorderRadius.circular(28.h)))),
                     onPressed: () {
                       loginWX();
+                    },
+                    child: Container(
+                      child: Row(
+                        children: [
+                          Expanded(child: Container()),
+                          Image(
+                            image: AssetImage(
+                                "assets/images/login/iocn_login_weixin.png"),
+                            height: 36.w,
+                            width: 36.w,
+                            fit: BoxFit.fill,
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(left: 11.w),
+                            child: Text(
+                              "微信号登录",
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.w500,
+                                color: ColorConstant.WhiteColor,
+                              ),
+                            ),
+                          ),
+                          Expanded(child: Container()),
+                        ],
+                      ),
+                    ))),
+          ),
+          Offstage(
+            offstage: !(CommonConstant.isInWechatWeb && PlatformUtils.isWeb),
+            child: Container(
+                margin: EdgeInsets.only(top: 16.h),
+                width: 312.w,
+                height: 54.h,
+                child: OutlinedButton(
+                    style: ButtonStyle(
+                        side: MaterialStateProperty.all(BorderSide(
+                            width: 0, color: ColorConstant.WhiteColor)),
+                        backgroundColor: MaterialStateProperty.all(
+                            ColorConstant.WxGreenColor),
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(28.h)))),
+                    onPressed: () {
+                      webWeixinLogin();
                     },
                     child: Container(
                       child: Row(

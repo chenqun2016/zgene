@@ -52,7 +52,7 @@ class _BaseWebViewState extends State<BaseWebView> {
         useHybridComposition: true,
       ),
       ios: IOSInAppWebViewOptions(
-        allowsInlineMediaPlayback: false,
+        allowsInlineMediaPlayback: true,
       ));
 
   @override

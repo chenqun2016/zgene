@@ -300,49 +300,52 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
           UiUitls.showToast("购买解锁我的更多报告");
         }
       },
-      child: Opacity(
-        opacity: index < 3 ? 1 : 0.4,
-        child: Padding(
-          padding: EdgeInsets.only(left: 16, right: 16, top: 12, bottom: 13),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Text(
-                  archive.title,
-                  style: TextStyle(
-                      color: ColorConstant.TextMainBlack,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 15),
+      child: Container(
+        color: Colors.transparent,
+        child: Opacity(
+          opacity: index < 3 ? 1 : 0.4,
+          child: Padding(
+            padding: EdgeInsets.only(left: 16, right: 16, top: 12, bottom: 13),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Text(
+                    archive.title,
+                    style: TextStyle(
+                        color: ColorConstant.TextMainBlack,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 15),
+                  ),
                 ),
-              ),
-              if (null != model &&
-                  null != model.items &&
-                  model.items.length > 0)
+                if (null != model &&
+                    null != model.items &&
+                    model.items.length > 0)
+                  Image.asset(
+                    _getAssetIcon(model.items[0].color),
+                    width: 22,
+                    height: 22,
+                  ),
+                if (null != model &&
+                    null != model.items &&
+                    model.items.length > 0)
+                  Padding(
+                    padding: EdgeInsets.only(left: 6, right: 28),
+                    child: Text(
+                      model.items[0].title,
+                      style: TextStyle(
+                          color: ColorConstant.Text_8E9AB,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 16),
+                    ),
+                  ),
                 Image.asset(
-                  _getAssetIcon(model.items[0].color),
+                  "assets/images/mine/icon_my_name_right.png",
                   width: 22,
                   height: 22,
                 ),
-              if (null != model &&
-                  null != model.items &&
-                  model.items.length > 0)
-                Padding(
-                  padding: EdgeInsets.only(left: 6, right: 28),
-                  child: Text(
-                    model.items[0].title,
-                    style: TextStyle(
-                        color: ColorConstant.Text_8E9AB,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16),
-                  ),
-                ),
-              Image.asset(
-                "assets/images/mine/icon_my_name_right.png",
-                width: 22,
-                height: 22,
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

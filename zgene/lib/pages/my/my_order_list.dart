@@ -284,7 +284,6 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
                               ],
                             ),
                             Container(
-                              margin: EdgeInsets.only(top: 5),
                               child: Text(
                                 "X${bean.nums}",
                                 style: TextStyle(

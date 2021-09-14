@@ -431,7 +431,7 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
                 Container(
                   margin: EdgeInsets.only(left: 26.w, top: 0),
                   child: Text(
-                    "请先勾选同意《个人信息保护政策》《用户协议》",
+                    "请先勾选同意《个人信息保护政策》和《用户协议》",
                     textAlign: TextAlign.start,
                     style: TextStyle(
                       fontSize: 14,

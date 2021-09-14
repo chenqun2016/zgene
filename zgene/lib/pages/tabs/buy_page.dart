@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:easy_web_view/easy_web_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
@@ -14,6 +15,7 @@ import 'package:zgene/util/base_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/login_base.dart';
+import 'package:zgene/util/platform_utils.dart';
 import 'package:zgene/util/refresh_config_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/time_utils.dart';
@@ -35,6 +37,7 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
   EasyRefreshController _easyController;
   ScrollController _controller = new ScrollController();
   Archives _productDetail;
+  static ValueKey key = ValueKey('key_0');
 
   @override
   void pageWidgetInitState() {
@@ -103,7 +106,7 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
           //   // 控制器
           //   controller: _easyController,
           //   header: RefreshConfigUtils.classicalHeader(),
-            child: _listview,
+          child: _listview,
           //   //下拉刷新事件回调
           //   onRefresh: () async {
           //     // page = 1;
@@ -254,9 +257,25 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
       color: Colors.white,
       width: double.infinity,
       margin: EdgeInsets.only(top: 16, bottom: 56),
-      child: BasePageWebView(
-        url: ApiConstant.getH5DetailUrl(_productDetail.id.toString()),
-      ),
+      child: PlatformUtils.isWeb
+          ? EasyWebView(
+              onLoaded: () {},
+              src: ApiConstant.getH5DetailUrl(_productDetail.id.toString()),
+              key: key,
+              isHtml: false,
+              isMarkdown: false,
+              webAllowFullScreen: false,
+              convertToWidgets: false,
+              widgetsTextSelectable: false,
+              webNavigationDelegate: (_) => true
+                  ? WebNavigationDecision.prevent
+                  : WebNavigationDecision.navigate,
+              // width: 300,
+              height: 3000,
+            )
+          : BasePageWebView(
+              url: ApiConstant.getH5DetailUrl(_productDetail.id.toString()),
+            ),
     );
   }
 

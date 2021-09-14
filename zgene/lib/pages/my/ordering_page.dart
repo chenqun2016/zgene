@@ -43,7 +43,7 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
   String _initProvince = '上海市', _initCity = '上海市', _initTown = '黄浦区';
 
   List _billDes = [
-    "购买后那您如需不开发票，可在付款后60天内联系客服进行查询和申请",
+    "购买后那您如不需开发票，可在付款后60天内联系客服进行查询和申请。",
     "电子发票将在15个工作日内发送到您的电子邮箱，请注意查收。",
     "电子发票将在15个工作日内发送到您的电子邮箱，请注意查收。"
   ];

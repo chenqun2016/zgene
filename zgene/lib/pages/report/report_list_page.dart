@@ -10,6 +10,7 @@ import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/home/home_getHttp.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
+import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/widget/base_web.dart';
 
 class ReportListPage extends BaseWidget {
@@ -270,6 +271,8 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
                 url: ApiConstant.getH5DetailUrl(archive.id.toString()),
                 title: archive.title,
               ));
+        }else{
+          UiUitls.showToast("购买解锁我的更多报告");
         }
       },
       child: Opacity(

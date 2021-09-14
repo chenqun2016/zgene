@@ -110,7 +110,7 @@ class _AboutUsPageState extends BaseWidgetState<AboutUsPage> {
             margin: EdgeInsets.only(top: 25.h, bottom: 32.h),
             child: Text(
               SpUtils().getStorageDefault(SpConstant.appAboutusDescription, ""),
-              textAlign: TextAlign.left,
+              textAlign: TextAlign.justify,
               overflow: TextOverflow.visible,
               style: TextStyle(
                 fontSize: 15.sp,

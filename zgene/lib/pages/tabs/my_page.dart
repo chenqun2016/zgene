@@ -717,7 +717,7 @@ class _MyPageState extends BaseWidgetState<MyPage> {
             BaseLogin.login();
           }
         } else {
-          EasyLoading.showError("个人信息获取失败，请稍后再试。");
+          // EasyLoading.showError("个人信息获取失败，请稍后再试。");
           getHttp();
         }
         break;

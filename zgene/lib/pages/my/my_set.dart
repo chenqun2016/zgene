@@ -417,7 +417,7 @@ class _MySetPageState extends BaseWidgetState<MySetPage> {
             MaterialPageRoute(
                 builder: (context) => BaseWebView(
                       url: CommonConstant.privacy,
-                      title: "隐私政策",
+                      title: "个人信息保护政策",
                     )));
         break;
       case 999: //基于DiVMS

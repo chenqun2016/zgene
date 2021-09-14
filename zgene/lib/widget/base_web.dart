@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
@@ -62,103 +63,123 @@ class _BaseWebViewState extends State<BaseWebView> {
   Widget build(BuildContext context) {
     print("ssssddd");
     return Container(
-        padding: EdgeInsets.all(0),
-        child: Scaffold(
-            appBar: AppBar(
-              backgroundColor: ColorConstant.WhiteColor,
-              brightness: Brightness.light,
-              leading: IconButton(
-                icon: ImageIcon(
-                  AssetImage("assets/images/icon_mine_backArrow.png"),
-                  size: 16,
-                  color: ColorConstant.MainBlack,
-                ),
-                onPressed: () {
-                  Navigator.pop(context, 1);
-                },
-              ),
-              elevation: 0,
-              title: Text(
-                widget.title ?? "",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 16,
-                    fontStyle: FontStyle.normal,
-                    fontWeight: FontWeight.w500,
-                    color: ColorConstant.MainBlack),
-              ),
-              actions: <Widget>[
-                IconButton(
-                    icon: Image(
-                      image: AssetImage(
-                          "assets/images/home/icon_article_detail.png"),
-                    ),
-                    onPressed: () {
-                      print(CommonUtils.splicingUrl(SpUtils()
-                          .getStorageDefault(SpConstant.appShareIcon, "")
-                          .toString()));
-                      ShareUtils.showSheet(
-                          context: context,
-                          shareTitle: widget.title,
-                          shareContent: SpUtils()
-                              .getStorageDefault(
-                                  SpConstant.appShareSubtitle, "")
-                              .toString(),
-                          shareUrl: _uri.toString(),
-                          shareType: 1,
-                          shareImageUrl: CommonUtils.splicingUrl(SpUtils()
-                              .getStorageDefault(SpConstant.appShareIcon, "")
-                              .toString()));
-                    }),
-              ],
+      decoration: BoxDecoration(
+        color: Colors.white,
+      ),
+      child: Container(
+          decoration: BoxDecoration(
+            color: Colors.transparent,
+            image: DecorationImage(
+              image: AssetImage("assets/images/mine/icon_commonQus_back.png"),
+              fit: BoxFit.fill,
             ),
-            body: Column(
-              children: <Widget>[
-                this._flag
-                    ? _getMoreWidget()
-                    : Container(
-                        height: 0,
+          ),
+          // color: Colors.red,
+          padding: EdgeInsets.all(0),
+          child: Scaffold(
+              backgroundColor: Colors.transparent,
+              appBar: AppBar(
+                backgroundColor: Colors.transparent,
+                brightness: Brightness.light,
+                leading: IconButton(
+                  icon: ImageIcon(
+                    AssetImage("assets/images/icon_mine_backArrow.png"),
+                    size: 16,
+                    color: ColorConstant.MainBlack,
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context, 1);
+                  },
+                ),
+                elevation: 0,
+                title: Text(
+                  widget.title ?? "",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.w600,
+                    color: ColorConstant.TextMainBlack,
+                  ),
+                ),
+                actions: <Widget>[
+                  IconButton(
+                      icon: Image(
+                        image: AssetImage(
+                            "assets/images/home/icon_article_detail.png"),
                       ),
-                if (null != _url)
-                  Expanded(
-                    // 官方代码
-                    child: PlatformUtils.isWeb
-                        ? EasyWebView(
-                            onLoaded: () {
-                              print('Loaded: $_url');
-                            },
-                            src: _url,
-                            isHtml: false,
-                            isMarkdown: false,
-                            convertToWidgets: false,
-                            widgetsTextSelectable: false,
-                            key: key,
-                            webNavigationDelegate: (_) => false
-                                ? WebNavigationDecision.prevent
-                                : WebNavigationDecision.navigate,
-                            // width: 100,
-                            // height: 100,
-                          )
-                        : _uri == null
-                            ? Text("")
-                            : InAppWebView(
-                                initialOptions: options,
-                                initialUrlRequest: URLRequest(url: _uri),
-
-                                // 加载进度变化事件.
-                                onProgressChanged:
-                                    (InAppWebViewController controller,
-                                        int progress) {
-                                  if ((progress / 100) > 0.999) {
-                                    setState(() {
-                                      this._flag = false;
-                                    });
-                                  }
+                      onPressed: () {
+                        print(CommonUtils.splicingUrl(SpUtils()
+                            .getStorageDefault(SpConstant.appShareIcon, "")
+                            .toString()));
+                        ShareUtils.showSheet(
+                            context: context,
+                            shareTitle: widget.title,
+                            shareContent: SpUtils()
+                                .getStorageDefault(
+                                    SpConstant.appShareSubtitle, "")
+                                .toString(),
+                            shareUrl: _uri.toString(),
+                            shareType: 1,
+                            shareImageUrl: CommonUtils.splicingUrl(SpUtils()
+                                .getStorageDefault(SpConstant.appShareIcon, "")
+                                .toString()));
+                      }),
+                ],
+              ),
+              body: ClipRRect(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20)),
+                child: Column(
+                  children: <Widget>[
+                    this._flag
+                        ? _getMoreWidget()
+                        : Container(
+                            height: 0,
+                          ),
+                    if (null != _url)
+                      Expanded(
+                        // 官方代码
+                        child: PlatformUtils.isWeb
+                            ? EasyWebView(
+                                onLoaded: () {
+                                  print('Loaded: $_url');
                                 },
-                              ),
-                  )
-              ],
-            )));
+                                src: _url,
+                                isHtml: false,
+                                isMarkdown: false,
+                                convertToWidgets: false,
+                                widgetsTextSelectable: false,
+                                key: key,
+                                webNavigationDelegate: (_) => false
+                                    ? WebNavigationDecision.prevent
+                                    : WebNavigationDecision.navigate,
+                                // width: 100,
+                                // height: 100,
+                              )
+                            : _uri == null
+                                ? Text("")
+                                : InAppWebView(
+                                    initialOptions: options,
+                                    initialUrlRequest: URLRequest(url: _uri),
+
+                                    // 加载进度变化事件.
+                                    onProgressChanged:
+                                        (InAppWebViewController controller,
+                                            int progress) {
+                                      if ((progress / 100) > 0.999) {
+                                        setState(() {
+                                          this._flag = false;
+                                        });
+                                      }
+                                    },
+                                  ),
+                      )
+                  ],
+                ),
+              ))),
+    );
   }
 
   // 加载状态

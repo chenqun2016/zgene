@@ -656,10 +656,14 @@ class _MyPageState extends BaseWidgetState<MyPage> {
   _onTapEvent(index) async {
     switch (index) {
       case 1: //消息
-        final result = await Navigator.push(
-            context, MaterialPageRoute(builder: (context) => MyMessagePage()));
-        if (result != null) {
-          getNoticeCount();
+        if (spUtils.getStorageDefault(SpConstant.IsLogin, false)) {
+          final result = await Navigator.push(context,
+              MaterialPageRoute(builder: (context) => MyMessagePage()));
+          if (result != null) {
+            getNoticeCount();
+          }
+        } else {
+          BaseLogin.login();
         }
         break;
       case 2: //个人信息
@@ -683,6 +687,7 @@ class _MyPageState extends BaseWidgetState<MyPage> {
         }
         break;
       case 3: //我的订单
+
         if (spUtils.getStorageDefault(SpConstant.IsLogin, false)) {
           NavigatorUtil.push(context, MyOrderListPage());
         } else {
@@ -701,6 +706,8 @@ class _MyPageState extends BaseWidgetState<MyPage> {
         CommonUtils.toUrl(context: context, url: CommonUtils.URL_BUY);
         break;
       case 7: //我的报告
+        print(spUtils.getStorageDefault(SpConstant.IsLogin, false));
+
         if (spUtils.getStorageDefault(SpConstant.IsLogin, false)) {
           NavigatorUtil.push(context, MyReportPage());
         } else {

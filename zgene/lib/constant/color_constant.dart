@@ -70,6 +70,8 @@ class ColorConstant {
   static const Color WhiteColor7F = Color(0x7FFFFFFF);
   //透明度70%白色
   static const Color WhiteColorB2 = Color(0xB2FFFFFF);
+  //透明度95%白色
+  static const Color WhiteColor0c = Color(0x0cFFFFFF);
   //标准黑
   static const Color MainBlack = Color(0xFF2E2E33);
 

@@ -78,7 +78,8 @@ class _MyAddressListPageState extends BaseWidgetState<MyAddressListPage> {
             firstRefresh: true,
             // 控制器
             controller: _controller,
-            header: RefreshConfigUtils.classicalHeader(),
+            header: BallPulseHeader(),
+
             child: _listView,
             //下拉刷新事件回调
             onRefresh: () async {

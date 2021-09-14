@@ -72,7 +72,7 @@ class _MyReportPageState extends BaseWidgetState {
         emptyWidget: list.length <= 0 ? _emptyWidget : null,
         // 控制器
         controller: _easyController,
-        header: RefreshConfigUtils.classicalHeader(),
+        header: BallPulseHeader(),
         child: _listView,
         //下拉刷新事件回调
         onRefresh: () async {

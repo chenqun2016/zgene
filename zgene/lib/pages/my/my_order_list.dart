@@ -106,8 +106,8 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
               firstRefresh: true,
               // 控制器
               controller: _controller,
-              header: RefreshConfigUtils.classicalHeader(),
-              footer: RefreshConfigUtils.classicalFooter(),
+              header: BallPulseHeader(),
+              footer: BallPulseFooter(),
               child: _listView,
               //下拉刷新事件回调
               onRefresh: () async {

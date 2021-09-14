@@ -78,7 +78,7 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
       firstRefresh: true,
       // 控制器
       controller: _easyController,
-      header: RefreshConfigUtils.classicalHeader(),
+      header: BallPulseHeader(),
       child: order != null ? _orderStepper(context) : Text(""),
       //下拉刷新事件回调
       onRefresh: () async {

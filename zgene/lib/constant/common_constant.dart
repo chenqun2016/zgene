@@ -98,4 +98,21 @@ class CommonConstant {
 
   //isInWechatWeb 是否在微信
   static bool isInWechatWeb = false;
+
+
+  static const String ROUT_article_detail = "/article_detail";
+  static const String ROUT_report = "/report";
+  static const String ROUT_report_detail = "/report_detail";
+  static const String ROUT_login = "/login";
+  static const String ROUT_my_message = "/my_message";
+  static const String ROUT_my_address =  "/my_address";
+  static const String ROUT_my_info = "/my_info";
+  static const String ROUT_my_order = "/my_order";
+  static const String ROUT_order_step_detail = "/order_step_detail";
+  static const String ROUT_order_detail = "/order_detail";
+  static const String ROUT_bind_collector = "/bind_collector";
+  static const String ROUT_back_collector = "/back_collector";
+  static const String ROUT_kefu = "/kefu";
+  static const String ROUT_about = "/about";
+  static const String ROUT_buy = "/buy";
 }

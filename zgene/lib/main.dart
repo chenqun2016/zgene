@@ -162,21 +162,21 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       ],
       //注册路由表
       routes: {
-        "/article_detail": (context) => ArticleDetailView(), //文章详情
-        "/report": (context) => ReportPage(), //报告
-        "/report_detail": (context) => ReportListPage(), //报告详情
-        "/login": (context) => MainLoginPage(), //登录
-        "/my_message": (context) => MyMessagePage(), //消息
-        "/my_address": (context) => MyAddressListPage(), //我的地址
-        "/my_info": (context) => MyInfoPage(), //我的资料
-        "/my_order": (context) => MyOrderListPage(), //我的订单
-        "/order_step_detail": (context) => OrderStepPage(), //订单步骤详情
-        "/order_detail": (context) => OrderDetailPage(), //订单详情
-        "/bind_collector": (context) => BindCollectorPage(), //绑定采集器
-        "/back_collector": (context) => SendBackAcquisitionPage(), //回寄采集器
-        "/kefu": (context) => contantUsPage(), //联系客服
-        "/about": (context) => AboutUsPage(), //关于我们
-        "/buy": (context) => BuyPage(), //购买页面
+        CommonConstant.ROUT_article_detail: (context) => ArticleDetailView(), //文章详情
+        CommonConstant.ROUT_report: (context) => ReportPage(), //报告
+        CommonConstant.ROUT_report_detail : (context) => ReportListPage(), //报告详情
+        CommonConstant.ROUT_login: (context) => MainLoginPage(), //登录
+        CommonConstant.ROUT_my_message: (context) => MyMessagePage(), //消息
+        CommonConstant.ROUT_my_address: (context) => MyAddressListPage(), //我的地址
+        CommonConstant.ROUT_my_info : (context) => MyInfoPage(), //我的资料
+        CommonConstant.ROUT_my_order : (context) => MyOrderListPage(), //我的订单
+        CommonConstant.ROUT_order_step_detail: (context) => OrderStepPage(), //订单步骤详情
+        CommonConstant.ROUT_order_detail : (context) => OrderDetailPage(), //订单详情
+        CommonConstant.ROUT_bind_collector : (context) => BindCollectorPage(), //绑定采集器
+        CommonConstant.ROUT_back_collector: (context) => SendBackAcquisitionPage(), //回寄采集器
+        CommonConstant.ROUT_kefu: (context) => contantUsPage(), //联系客服
+        CommonConstant.ROUT_about: (context) => AboutUsPage(), //关于我们
+        CommonConstant.ROUT_buy: (context) => BuyPage(), //购买页面
       },
     ));
   }

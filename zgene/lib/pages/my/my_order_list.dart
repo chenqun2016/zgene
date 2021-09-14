@@ -4,6 +4,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/order_list_model.dart';
@@ -387,7 +388,7 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
   ///点击事件
   _onTapEvent(OrderListmodel bean) async {
     await Navigator.of(context)
-        .pushNamed("/order_step_detail", arguments: bean.id.toString());
+        .pushNamed(CommonConstant.ROUT_order_step_detail, arguments: bean.id.toString());
 
     ///刷新状态
     getDatas();

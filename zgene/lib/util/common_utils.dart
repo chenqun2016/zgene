@@ -15,6 +15,8 @@ import 'package:zgene/pages/home/video_page.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/widget/base_web.dart';
 
+import 'login_base.dart';
+
 ///公共工具类
 class CommonUtils {
   ///拼接图片和视频路径
@@ -166,7 +168,21 @@ class CommonUtils {
               ));
           break;
         case 2:
-          var uri = Uri.dataFromString(url);
+          var urlName = url.split("?")[0];
+          if (urlName == CommonConstant.ROUT_bind_collector ||
+              urlName == CommonConstant.ROUT_back_collector ||
+              urlName == CommonConstant.ROUT_order_detail ||
+              urlName == CommonConstant.ROUT_order_step_detail ||
+              urlName == CommonConstant.ROUT_my_order ||
+              urlName == CommonConstant.ROUT_my_info ||
+              urlName == CommonConstant.ROUT_my_address ||
+              urlName == CommonConstant.ROUT_my_message) {
+            if (!SpUtils().getStorageDefault(SpConstant.IsLogin, false)) {
+              BaseLogin.login();
+              return;
+            }
+          }
+          Uri uri = Uri.dataFromString(url);
           Map<String, String> params = uri.queryParameters;
           var id = params['id'];
           if (id == null) {

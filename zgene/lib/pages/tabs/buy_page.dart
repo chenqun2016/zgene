@@ -68,7 +68,6 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
     if (!isNetWorkAvailable) {
       return;
     }
-    EasyLoading.show(status: 'loading...');
 
     Map<String, dynamic> map = new HashMap();
     map['chid'] = 5;

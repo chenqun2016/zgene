@@ -252,8 +252,6 @@ class _GetVFCodeLoginPageState extends BaseWidgetState<GetVFCodeLoginPage> {
     Map<String, dynamic> map = new HashMap();
     map["mobile"] = widget.phoneText;
 
-    EasyLoading.show(status: 'loading...');
-
     HttpUtils.requestHttp(
       ApiConstant.loginSms,
       parameters: map,
@@ -272,7 +270,7 @@ class _GetVFCodeLoginPageState extends BaseWidgetState<GetVFCodeLoginPage> {
     Map<String, dynamic> map = new HashMap();
     map["mobile"] = widget.phoneText;
     map["code"] = _verifyText;
-    EasyLoading.show(status: 'loading...');
+    ;
 
     HttpUtils.requestHttp(
       ApiConstant.loginApp_phone,

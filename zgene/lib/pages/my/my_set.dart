@@ -478,8 +478,6 @@ class _MySetPageState extends BaseWidgetState<MySetPage> {
     Map<String, dynamic> map = new HashMap();
     map["code"] = code;
 
-    EasyLoading.show(status: 'loading...');
-
     HttpUtils.requestHttp(
       ApiConstant.bind_wx,
       parameters: map,
@@ -498,7 +496,7 @@ class _MySetPageState extends BaseWidgetState<MySetPage> {
   }
 
   void unbindWX() {
-    EasyLoading.show(status: 'loading...');
+    ;
 
     HttpUtils.requestHttp(
       ApiConstant.unbind_wx,

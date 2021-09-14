@@ -1009,7 +1009,6 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
     if (!isNetWorkAvailable) {
       return;
     }
-    EasyLoading.show(status: 'loading...');
 
     Map<String, dynamic> map = new HashMap();
     map['pid'] = widget.product.id;

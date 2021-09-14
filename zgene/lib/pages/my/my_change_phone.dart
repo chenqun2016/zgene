@@ -362,8 +362,6 @@ class _ChangePhonePageState extends BaseWidgetState<ChangePhonePage> {
 
     // Map<String, dynamic> map = new HashMap();
 
-    EasyLoading.show(status: 'loading...');
-
     HttpUtils.requestHttp(
       ApiConstant.smscode,
       // parameters: map,

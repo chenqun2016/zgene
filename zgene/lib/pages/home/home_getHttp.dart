@@ -37,7 +37,6 @@ Future<void> CategoriesGetHttp(int type, _CallBack callback) async {
   if (!isNetWorkAvailable) {
     return;
   }
-  EasyLoading.show(status: 'loading...');
 
   Map<String, dynamic> map = new HashMap();
   map['parent_cid'] = type; //ID 6:示例报告（男） 7:示例报告（女）
@@ -62,7 +61,7 @@ Future<void> ArchiveGetHttp(int id, _CallBack callback) async {
   if (!isNetWorkAvailable) {
     return;
   }
-  EasyLoading.show(status: 'loading...');
+  ;
 
   HttpUtils.requestHttp(
     ApiConstant.contentDetail + "/${id}",

@@ -1022,8 +1022,6 @@ class _SendBackAcquisitionPageState
     map["address"] = _addressController.text;
     map["pick_time"] = reportTime;
 
-    EasyLoading.show(status: 'loading...');
-
     HttpUtils.requestHttp(
       ApiConstant.orderReturn,
       parameters: map,

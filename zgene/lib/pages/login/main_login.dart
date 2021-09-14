@@ -500,8 +500,6 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
     Map<String, dynamic> map = new HashMap();
     map["code"] = code;
 
-    EasyLoading.show(status: 'loading...');
-
     HttpUtils.requestHttp(
       ApiConstant.login_wx,
       parameters: map,
@@ -538,7 +536,7 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
     map["giveName"] = giveName;
     map["familyName"] = familyName;
 
-    EasyLoading.show(status: 'loading...');
+    ;
 
     HttpUtils.requestHttp(
       ApiConstant.login_apple,

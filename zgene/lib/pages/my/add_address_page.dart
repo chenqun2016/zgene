@@ -325,8 +325,6 @@ class AddAddressPageState extends BaseWidgetState<AddAddressPage> {
       return;
     }
 
-    EasyLoading.show(status: 'loading...');
-
     Map<String, dynamic> map = new HashMap();
     map['province'] = initProvince;
     map['city'] = initCity;

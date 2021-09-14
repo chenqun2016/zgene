@@ -386,8 +386,6 @@ class _BindPhoneLoginPageState extends BaseWidgetState<BindPhoneLoginPage> {
     Map<String, dynamic> map = new HashMap();
     map["mobile"] = number;
 
-    EasyLoading.show(status: 'loading...');
-
     HttpUtils.requestHttp(
       ApiConstant.loginSms,
       parameters: map,
@@ -415,7 +413,7 @@ class _BindPhoneLoginPageState extends BaseWidgetState<BindPhoneLoginPage> {
     Map<String, dynamic> map = new HashMap();
     map["mobile"] = number;
     map["code"] = _verifyText;
-    EasyLoading.show(status: 'loading...');
+    ;
 
     HttpUtils.requestHttp(
       ApiConstant.bindAppPhone,

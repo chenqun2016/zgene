@@ -198,7 +198,7 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
                         shape: MaterialStateProperty.all(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(28.h)))),
                     onPressed: () {
-                      webWeixinLogin();
+                      loginWXWeb();
                     },
                     child: Container(
                       child: Row(
@@ -463,6 +463,18 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
     }).catchError((e) {
       print('weChatLogin  e  $e');
     });
+  }
+
+  void loginWXWeb() {
+    if (!isAgreePrivacy) {
+      enterThe = true;
+      setState(() {});
+
+      return;
+    }
+    enterThe = false;
+    setState(() {});
+    webWeixinLogin();
   }
 
   Future<void> LoginApple() async {

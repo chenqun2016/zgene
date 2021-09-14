@@ -144,7 +144,6 @@ class _MyAddressListPageState extends BaseWidgetState<MyAddressListPage> {
                   constraints: BoxConstraints(
                     maxWidth: ScreenUtils.screenW(context) - 165.w,
                   ),
-                  width: ScreenUtils.screenW(context) - 165.w,
                   child: Text(
                     content.rcvName,
                     overflow: TextOverflow.ellipsis,

@@ -29,7 +29,7 @@ class _ProblemNavState extends State<ProblemNav>
   void initState() {
     super.initState();
     // bus.on(CommonConstant.HomeRefush, (arg) {
-      getHttp();
+    getHttp();
     // });
   }
 
@@ -108,7 +108,7 @@ class _ProblemNavState extends State<ProblemNav>
             context,
             BaseWebView(
               url: ApiConstant.getH5DetailUrl(archives.id.toString()),
-              title: archives.title,
+              title: "常见问题",
             ));
       },
       child: Container(

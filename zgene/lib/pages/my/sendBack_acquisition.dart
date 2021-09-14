@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/api_constant.dart';
@@ -307,6 +308,7 @@ class _SendBackAcquisitionPageState
                 height: 40.h,
                 width: ScreenUtils.screenW(context) - 99.w,
                 child: TextField(
+                    inputFormatters: [LengthLimitingTextInputFormatter(20)],
                     onChanged: (value) {},
                     controller: _nameController,
                     // keyboardType:
@@ -368,6 +370,10 @@ class _SendBackAcquisitionPageState
                 height: 40.h,
                 width: ScreenUtils.screenW(context) - 99.w,
                 child: TextField(
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp("[0-9]")),
+                      LengthLimitingTextInputFormatter(11)
+                    ],
                     onChanged: (value) {},
                     controller: _phoneController,
                     keyboardType:

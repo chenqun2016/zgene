@@ -331,7 +331,7 @@ class _MySetPageState extends BaseWidgetState<MySetPage> {
                     height: 45,
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      "隐私协议",
+                      "个人信息保护政策",
                       style: textStyle,
                     )),
                 Positioned(

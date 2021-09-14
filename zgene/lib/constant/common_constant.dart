@@ -52,7 +52,7 @@ class CommonConstant {
   static const int PAGE_SIZE10 = 10;
   static const int PAGE_SIZE = 20;
   static const String Privacy_Text =
-      "欢迎使用Z基因APP，您应当阅读并遵守《用户协议》、《隐私政策》，请您务必审慎阅读，充分理解各条款内容。如您未满18周岁，请在法定监护人的陪同下阅读，并特别注意未成年人使用条款。如您继续使用我们APP，将视为您同意我们的条款。";
+      "欢迎使用Z基因APP，您应当阅读并遵守《用户协议》、《个人信息保护政策》，请您务必审慎阅读，充分理解各条款内容。如您未满18周岁，请在法定监护人的陪同下阅读，并特别注意未成年人使用条款。如您继续使用我们APP，将视为您同意我们的条款。";
   static const String Privacy_Text2 = """ 
 为了保证应用的各项功能正常使用，在您使用应用的过程中我们会向您申请一下应用权限：
 

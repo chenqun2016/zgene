@@ -1,6 +1,7 @@
 import 'package:chewie/chewie.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoPage extends StatefulWidget {
@@ -54,6 +55,10 @@ class _VideoPageState extends State<VideoPage> {
       autoPlay: true,
       looping: true,
       showOptions: false,
+      deviceOrientationsAfterFullScreen: [
+        DeviceOrientation.portraitUp,
+      ],
+      fullScreenByDefault: false,
       // customControls: MaterialControls()
       customControls: CupertinoControls(
         backgroundColor: Colors.black,
@@ -102,7 +107,11 @@ class _VideoPageState extends State<VideoPage> {
       margin: EdgeInsets.only(top: 35, left: 10),
       child: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            if(_chewieController.isFullScreen){
+              _chewieController.exitFullScreen();
+            }else{
+              Navigator.pop(context);
+            }
           },
           icon: Image(
             image: AssetImage("assets/images/icon_base_backArrow.png"),

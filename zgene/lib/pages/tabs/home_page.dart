@@ -118,7 +118,7 @@ class _HomePageState extends BaseWidgetState<HomePage> {
       controller: _controller,
       shrinkWrap: true,
       physics: BouncingScrollPhysics(),
-      padding: EdgeInsets.only(top: 0, bottom: 40),
+      padding: EdgeInsets.only(top: 0, bottom: 60),
       children: [
         _title,
         _banner,

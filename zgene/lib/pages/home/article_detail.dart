@@ -83,6 +83,7 @@ class _ArticleDetailViewState extends State<ArticleDetailView> {
                 },
               ),
               elevation: 0,
+              centerTitle: true,
               title: Text(
                 _title,
                 textAlign: TextAlign.center,

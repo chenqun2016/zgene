@@ -93,6 +93,7 @@ class _BaseWebViewState extends State<BaseWebView> {
                   },
                 ),
                 elevation: 0,
+                centerTitle: true,
                 title: Text(
                   widget.title ?? "",
                   textAlign: TextAlign.center,
@@ -225,7 +226,6 @@ class _BaseWebViewState extends State<BaseWebView> {
       }
       setState(() {
         _uri = uri1;
-        print("sss");
       });
     } catch (e) {
       print(e);

@@ -9,15 +9,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:fluwx/fluwx.dart';
-import 'package:jshare_flutter_plugin/jshare_flutter_plugin.dart';
+// import 'package:jshare_flutter_plugin/jshare_flutter_plugin.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/config_constant.dart';
 import 'package:zgene/util/platform_utils.dart';
 
+enum JSharePlatform {
+  wechatSession,
+  wechatTimeLine,
+  wechatFavourite,
+  qq,
+  qZone,
+  sinaWeibo,
+  sinaWeiboContact,
+  facebook,
+  facebookMessenger,
+  twitter
+}
+
 ///分享
 class ShareUtils {
-  static JShare jShare = new JShare();
+  // static JShare jShare = new JShare();
   static String title, content, url, imageUrl;
   static int type = 1; //1.网络图片 2.assets图片
   static List<Map<String, dynamic>> platfromList = [];
@@ -62,7 +75,6 @@ class ShareUtils {
       }
     }
 
-    initPlatformState();
     showModalBottomSheet(
         backgroundColor: Colors.transparent,
         context: context,
@@ -175,104 +187,104 @@ class ShareUtils {
 
   /// 选择摸个平台分享
   static void didSelectPlatform({int index}) async {
-    print("Action - didSelectPlatform:  " +
-        "platfrom = " +
-        platfromList[index].toString());
+    // print("Action - didSelectPlatform:  " +
+    //     "platfrom = " +
+    //     platfromList[index].toString());
 
-    JShareMessage message = new JShareMessage();
-    message.mediaType = JShareType.link;
-    message.platform = platfromList[index]["platform"];
+    // JShareMessage message = new JShareMessage();
+    // message.mediaType = JShareType.link;
+    // message.platform = platfromList[index]["platform"];
 
-    message.text = content;
-    message.title = title;
-    message.url = url;
+    // message.text = content;
+    // message.title = title;
+    // message.url = url;
     if (imageUrl.isEmpty) {
       type = 2;
       imageUrl = "assets/images/home/icon_main_logo.png";
     }
 
-    if (PlatformUtils.isAndroid) {
-      message.imagePath = await _tempSaveTestImage();
-    } else {
-      File compressedFile = await FlutterNativeImage.compressImage(
-          await _tempSaveTestImage(),
-          quality: 32);
-      message.imagePath = compressedFile.path;
+    // if (PlatformUtils.isAndroid) {
+    //   message.imagePath = await _tempSaveTestImage();
+    // } else {
+    //   File compressedFile = await FlutterNativeImage.compressImage(
+    //       await _tempSaveTestImage(),
+    //       quality: 32);
+    //   message.imagePath = compressedFi le.path;
+    // }
+
+    // if (PlatformUtils.isIOS) {
+    //ios分享微信
+    if (platfromList[index]["platform"] == JSharePlatform.wechatSession) {
+      File compressedFile =
+          await FlutterNativeImage.compressImage(await _tempSaveTestImage());
+
+      var model = WeChatShareWebPageModel(
+        url,
+        title: title,
+        thumbnail: WeChatImage.file(compressedFile),
+        scene: WeChatScene.SESSION,
+        description: content,
+      );
+
+      shareToWeChat(model);
+
+      return;
     }
 
-    if (PlatformUtils.isIOS) {
-      //ios分享微信
-      if (message.platform == JSharePlatform.wechatSession) {
-        File compressedFile =
-            await FlutterNativeImage.compressImage(await _tempSaveTestImage());
+    if (platfromList[index]["platform"] == JSharePlatform.wechatTimeLine) {
+      //ios分享微信圈
+      File compressedFile =
+          await FlutterNativeImage.compressImage(await _tempSaveTestImage());
 
-        var model = WeChatShareWebPageModel(
-          url,
-          title: title,
-          thumbnail: WeChatImage.file(compressedFile),
-          scene: WeChatScene.SESSION,
-          description: content,
-        );
+      var model = WeChatShareWebPageModel(
+        url,
+        title: title,
+        thumbnail: WeChatImage.file(compressedFile),
+        scene: WeChatScene.TIMELINE,
+        description: content,
+      );
 
-        shareToWeChat(model);
+      shareToWeChat(model);
 
-        return;
-      }
-
-      if (message.platform == JSharePlatform.wechatTimeLine) {
-        //ios分享微信圈
-        File compressedFile =
-            await FlutterNativeImage.compressImage(await _tempSaveTestImage());
-
-        var model = WeChatShareWebPageModel(
-          url,
-          title: title,
-          thumbnail: WeChatImage.file(compressedFile),
-          scene: WeChatScene.TIMELINE,
-          description: content,
-        );
-
-        shareToWeChat(model);
-
-        return;
-      }
+      return;
     }
+    // }
 
-    jShare.shareMessage(message: message).then((JShareResponse response) {
-      print("分享回调：" + response.toJsonMap().toString());
-      // setState(() {
-      //   _resultString = "分享成功："+ response.toJsonMap().toString();
-      // });
-      /// 删除测试图片
-      _tempDeleteTestImage();
-    }).catchError((error) {
-      print("分享回调 -- 出错：${error.toString()}");
+    // jShare.shareMessage(message: message).then((JShareResponse response) {
+    //   print("分享回调：" + response.toJsonMap().toString());
+    //   // setState(() {
+    //   //   _resultString = "分享成功："+ response.toJsonMap().toString();
+    //   // });
+    //   /// 删除测试图片
+    //   _tempDeleteTestImage();
+    // }).catchError((error) {
+    //   print("分享回调 -- 出错：${error.toString()}");
 
-      // setState(() {
-      //   _resultString = "分享失败："+ error.toString();
-      // });
-      //
-      /// 删除测试图片
-      _tempDeleteTestImage();
-    });
+    //   // setState(() {
+    //   //   _resultString = "分享失败："+ error.toString();
+    //   // });
+    //   //
+    //   /// 删除测试图片
+    //   _tempDeleteTestImage();
+    // });
   }
 
   static Future<void> initPlatformState() async {
-    JShareConfig shareConfig =
-        new JShareConfig(appKey: ConfigConstant.jpushAppKey);
+    // JShareConfig shareConfig =
+    //     new JShareConfig(appKey: ConfigConstant.jpushAppKey);
 
-    /// 填写自己应用的极光 AppKey
+    // /// 填写自己应用的极光 AppKey
 
-    shareConfig.channel = "channel";
-    shareConfig.isDebug = true;
-    shareConfig.isAdvertisinId = true;
-    shareConfig.isProduction = true;
-    shareConfig.universalLink = ConfigConstant.universalLink;
+    // shareConfig.channel = "channel";
+    // shareConfig.isDebug = true;
+    // shareConfig.isAdvertisinId = true;
+    // shareConfig.isProduction = true;
+    // shareConfig.universalLink = ConfigConstant.universalLink;
 
-    shareConfig.weChatAppId = ConfigConstant.wxAppKey;
-    shareConfig.weChatAppSecret = ConfigConstant.wxAppSecret;
+    // shareConfig.weChatAppId = ConfigConstant.wxAppKey;
+    // shareConfig.weChatAppSecret = ConfigConstant.wxAppSecret;
 
-    jShare.setup(config: shareConfig);
+    // jShare.setup(config: shareConfig);
   }
 
   ///处理图片

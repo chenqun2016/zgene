@@ -16,8 +16,9 @@ class BaseWebView extends StatefulWidget {
   String url;
   String showTitle;
   String title;
+  bool isShare = true;
 
-  BaseWebView({Key key, this.url, this.title, this.showTitle})
+  BaseWebView({Key key, this.url, this.title, this.showTitle, this.isShare})
       : super(key: key);
 
   @override
@@ -36,6 +37,13 @@ class _BaseWebViewState extends State<BaseWebView> {
   void initState() {
     super.initState();
     _url = widget.url;
+    print(widget.showTitle);
+    if (widget.isShare == null) {
+      widget.isShare = true;
+    }
+    if (widget.showTitle == null) {
+      widget.showTitle = widget.title;
+    }
     // Web不需要设定cookie
     if (!PlatformUtils.isWeb) {
       setCookie();
@@ -102,28 +110,32 @@ class _BaseWebViewState extends State<BaseWebView> {
                   ),
                 ),
                 actions: <Widget>[
-                  IconButton(
-                      icon: Image(
-                        image: AssetImage(
-                            "assets/images/home/icon_article_detail.png"),
-                      ),
-                      onPressed: () {
-                        print(CommonUtils.splicingUrl(SpUtils()
-                            .getStorageDefault(SpConstant.appShareIcon, "")
-                            .toString()));
-                        ShareUtils.showSheet(
-                            context: context,
-                            shareTitle: widget.title,
-                            shareContent: SpUtils()
-                                .getStorageDefault(
-                                    SpConstant.appShareSubtitle, "")
-                                .toString(),
-                            shareUrl: _uri.toString(),
-                            shareType: 1,
-                            shareImageUrl: CommonUtils.splicingUrl(SpUtils()
-                                .getStorageDefault(SpConstant.appShareIcon, "")
-                                .toString()));
-                      }),
+                  Offstage(
+                    offstage: !widget.isShare,
+                    child: IconButton(
+                        icon: Image(
+                          image: AssetImage(
+                              "assets/images/home/icon_article_detail.png"),
+                        ),
+                        onPressed: () {
+                          print(CommonUtils.splicingUrl(SpUtils()
+                              .getStorageDefault(SpConstant.appShareIcon, "")
+                              .toString()));
+                          ShareUtils.showSheet(
+                              context: context,
+                              shareTitle: widget.title,
+                              shareContent: SpUtils()
+                                  .getStorageDefault(
+                                      SpConstant.appShareSubtitle, "")
+                                  .toString(),
+                              shareUrl: _uri.toString(),
+                              shareType: 1,
+                              shareImageUrl: CommonUtils.splicingUrl(SpUtils()
+                                  .getStorageDefault(
+                                      SpConstant.appShareIcon, "")
+                                  .toString()));
+                        }),
+                  ),
                 ],
               ),
               body: ClipRRect(

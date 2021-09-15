@@ -114,12 +114,25 @@ class _MyPageState extends BaseWidgetState<MyPage> {
         EasyLoading.dismiss();
         UserInfoModel userInfoModel = UserInfoModel.fromJson(data);
         userInfo = userInfoModel;
+        if (userInfo.mobile == "") {
+          var spUtils = SpUtils();
+          spUtils.setStorage(SpConstant.Token, "");
+          spUtils.setStorage(SpConstant.IsLogin, false);
+          spUtils.setStorage(SpConstant.Uid, 0);
+          spUtils.setStorage(SpConstant.UserMobile, 0);
+          //清除用户信息
+          spUtils.setStorage(SpConstant.UserName, "");
+          spUtils.setStorage(SpConstant.UserAvatar, "");
+          spUtils.setStorage(SpConstant.isBindWx, false);
 
-        spUtils.setStorage(SpConstant.UserName, userInfo.nickname);
-        spUtils.setStorage(SpConstant.UserAvatar, userInfo.avatar);
-        spUtils.setStorage(SpConstant.UserMobile, userInfo.mobile);
-        spUtils.setStorage(SpConstant.isBindWx, userInfo.bindWx);
-        spUtils.setStorage(SpConstant.userIntro, userInfo.intro);
+          HttpUtils.clear();
+        } else {
+          spUtils.setStorage(SpConstant.UserName, userInfo.nickname);
+          spUtils.setStorage(SpConstant.UserAvatar, userInfo.avatar);
+          spUtils.setStorage(SpConstant.UserMobile, userInfo.mobile);
+          spUtils.setStorage(SpConstant.isBindWx, userInfo.bindWx);
+          spUtils.setStorage(SpConstant.userIntro, userInfo.intro);
+        }
 
         setData();
       },

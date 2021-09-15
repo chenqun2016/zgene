@@ -460,11 +460,12 @@ class _BindPhoneLoginPageState extends BaseWidgetState<BindPhoneLoginPage> {
 
   @override
   void dispose() {
+    print("销毁bind");
+
     // TODO: implement dispose
     _cancelTimer();
     _timer = null;
     super.dispose();
-
     if (!SpUtils().getStorageDefault(SpConstant.IsLogin, false)) {
       var spUtils = SpUtils();
       spUtils.setStorage(SpConstant.Token, "");

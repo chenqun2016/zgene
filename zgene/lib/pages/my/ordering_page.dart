@@ -1077,20 +1077,13 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
             });
           }
         } else {
-          print("!1111111111111111111");
-          try {
-            var aliPay = await tobias.aliPay(result['pay_param']);
-            print("!222222222222222222");
+          var aliPay = await tobias.aliPay(result['pay_param']);
 
-            log("aliPay result==${aliPay}");
+          log("aliPay result==${aliPay}");
 
-            // 支付成功
-            if ('9000' == aliPay['resultStatus']) {
-              _toOrder();
-            }
-          } catch (e) {
-            print("!23333333333333333333");
-            print(e);
+          // 支付成功
+          if ('9000' == aliPay['resultStatus']) {
+            _toOrder();
           }
         }
       },

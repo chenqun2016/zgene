@@ -206,11 +206,13 @@ class ShareUtils {
         File compressedFile =
             await FlutterNativeImage.compressImage(await _tempSaveTestImage());
 
-        var model = WeChatShareWebPageModel(url,
-            title: title,
-            thumbnail: WeChatImage.file(compressedFile),
-            scene: WeChatScene.SESSION,
-            messageExt: content);
+        var model = WeChatShareWebPageModel(
+          url,
+          title: title,
+          thumbnail: WeChatImage.file(compressedFile),
+          scene: WeChatScene.SESSION,
+          description: content,
+        );
 
         shareToWeChat(model);
 
@@ -222,11 +224,13 @@ class ShareUtils {
         File compressedFile =
             await FlutterNativeImage.compressImage(await _tempSaveTestImage());
 
-        var model = WeChatShareWebPageModel(url,
-            title: title,
-            thumbnail: WeChatImage.file(compressedFile),
-            scene: WeChatScene.TIMELINE,
-            messageExt: content);
+        var model = WeChatShareWebPageModel(
+          url,
+          title: title,
+          thumbnail: WeChatImage.file(compressedFile),
+          scene: WeChatScene.TIMELINE,
+          description: content,
+        );
 
         shareToWeChat(model);
 

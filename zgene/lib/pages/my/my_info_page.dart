@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_crop/image_crop.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
@@ -16,6 +17,7 @@ import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/my/my_editor_name.dart';
 import 'package:zgene/pages/my/my_introduction.dart';
 import 'package:zgene/util/common_utils.dart';
+import 'package:zgene/util/platform_utils.dart';
 import 'package:zgene/util/screen_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/time_utils.dart';
@@ -592,6 +594,14 @@ class _MyInfoPageState extends State<MyInfoPage> {
   Future getImage(bool isTakePhoto) async {
     Navigator.pop(context);
     try {
+      if(!isTakePhoto && PlatformUtils.isAndroid){
+        bool hasPermission =  await ImageCrop.requestPermissions();
+        print("hasPermission=="+hasPermission.toString());
+        if(!hasPermission){
+          EasyLoading.showError("请先去设置打开相册权限。");
+          return;
+        }
+      }
       final picker = ImagePicker();
 
       var image = await picker.getImage(

@@ -72,6 +72,31 @@
       }
     };
 
+    var isShowing = false;
+
+    function showToast(msg, time = 3000) {
+      var outDiv = document.createElement("div")
+      outDiv.style.position = "absolute";
+      outDiv.style.marginTop = "70%";
+      outDiv.style.zIndex = 99999;
+      outDiv.style.left = 0;
+      outDiv.style.right = 0;
+      outDiv.style.textAlign = "center";
+      outDiv.innerHTML = `<div style="background: #E6F2FF;border-radius: 8px;color: #1877F2;padding: 8px;margin: auto;display: inline-block;">${msg}</div>`;
+
+      if (isShowing) {
+        return
+      }
+
+      document.querySelector("body").append(outDiv);
+      isShowing = true;
+
+      setTimeout(function () {
+        outDiv.remove();
+        isShowing = false;
+      }, time);
+    }
+
     function InWechatWeb() {
       return inWechatWeb;
     }

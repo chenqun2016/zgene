@@ -11,6 +11,8 @@ import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/util/platform_utils.dart';
 import 'package:zgene/widget/base_web.dart';
 import 'package:zgene/widget/privacy_view.dart';
+import 'package:zgene/configure.dart'
+    if (dart.library.html) 'package:zgene/configure_web.dart';
 
 ///界面相关工具
 class UiUitls {
@@ -62,12 +64,16 @@ class UiUitls {
 
   ///toast提示
   static showToast(String name) {
-    Fluttertoast.showToast(
-        msg: name,
-        fontSize: 13,
-        gravity: ToastGravity.CENTER,
-        backgroundColor: ColorConstant.toastBlue,
-        textColor: ColorConstant.toastTextBlue);
+    if (PlatformUtils.isWeb) {
+      webShowToast(name);
+    } else {
+      Fluttertoast.showToast(
+          msg: name,
+          fontSize: 13,
+          gravity: ToastGravity.CENTER,
+          backgroundColor: ColorConstant.toastBlue,
+          textColor: ColorConstant.toastTextBlue);
+    }
   }
 
   ///加载框

@@ -30,3 +30,7 @@ void webWeixinPay(parms) {
 void webWeixinLogin() {
   js.context.callMethod('JumpLogin');
 }
+
+void webShowToast(msg) {
+  js.context.callMethod('showToast', [msg]);
+}

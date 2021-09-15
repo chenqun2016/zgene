@@ -165,6 +165,9 @@ class _ArticleDetailViewState extends State<ArticleDetailView> {
                                   });
                                 }
                               },
+                              onWebViewCreated: (controller) {
+                                CommonUtils.addJavaScriptHandler(controller,context);
+                              },
                             ),
                 )
               ],
@@ -195,6 +198,7 @@ class _ArticleDetailViewState extends State<ArticleDetailView> {
       ),
     );
   }
+
   var _uri;
 
   void setCookie() async {
@@ -202,7 +206,7 @@ class _ArticleDetailViewState extends State<ArticleDetailView> {
     try {
       String token = SpUtils().getStorageDefault(SpConstant.Token, "");
       uri1 = Uri.parse(_url);
-      await CommonUtils.setCookie(uri1,token);
+      await CommonUtils.setCookie(uri1, token);
     } catch (e) {
       print("setCookie-error==" + e);
     }

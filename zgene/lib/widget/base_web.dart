@@ -160,7 +160,10 @@ class _BaseWebViewState extends State<BaseWebView> {
                                 : InAppWebView(
                                     initialOptions: options,
                                     initialUrlRequest: URLRequest(url: _uri),
-
+                                    onWebViewCreated: (controller) {
+                                      CommonUtils.addJavaScriptHandler(
+                                          controller, context);
+                                    },
                                     // 加载进度变化事件.
                                     onProgressChanged:
                                         (InAppWebViewController controller,

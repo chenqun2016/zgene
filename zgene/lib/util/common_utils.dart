@@ -288,4 +288,28 @@ class CommonUtils {
     }
     return Future.value(1);
   }
+
+  static void addJavaScriptHandler(InAppWebViewController controller,BuildContext context) {
+    controller.addJavaScriptHandler(
+        handlerName: "navigate",
+        callback: (List<dynamic> args) {
+          try {
+            if (null != args && args.length >= 2) {
+              CommonUtils.toUrl(
+                  context: context,
+                  url: args[1],
+                  type: args[0]);
+              if (args[1] == CommonUtils.URL_BUY ||
+                  args[1] == CommonUtils.URL_MY ||
+                  (args[1].contains(
+                      CommonUtils.URL_REPORT) &&
+                      !args[1].contains("_"))) {
+                Navigator.pop(context);
+              }
+            }
+          } catch (e) {
+            print(e);
+          }
+        });
+  }
 }

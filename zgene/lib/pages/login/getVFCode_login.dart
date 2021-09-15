@@ -267,10 +267,13 @@ class _GetVFCodeLoginPageState extends BaseWidgetState<GetVFCodeLoginPage> {
   }
 
   void loginIn() {
+    if (_verifyText.length < 6) {
+      setState(() {});
+      return;
+    }
     Map<String, dynamic> map = new HashMap();
     map["mobile"] = widget.phoneText;
     map["code"] = _verifyText;
-    ;
 
     HttpUtils.requestHttp(
       ApiConstant.loginApp_phone,

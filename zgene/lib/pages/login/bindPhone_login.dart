@@ -369,6 +369,8 @@ class _BindPhoneLoginPageState extends BaseWidgetState<BindPhoneLoginPage> {
     );
   }
 
+  // var VerifyCodeType = true;
+
   //获取验证码
   void getVerifyCode() {
     var number = _phoneText.replaceAll(new RegExp(r"\s+\b|\b\s"), "");
@@ -382,6 +384,12 @@ class _BindPhoneLoginPageState extends BaseWidgetState<BindPhoneLoginPage> {
       setState(() {});
     }
 
+    EasyLoading.show(status: "请等待");
+    // if (!VerifyCodeType) {
+    //   return;
+    // }
+    // VerifyCodeType = !VerifyCodeType;
+
     Map<String, dynamic> map = new HashMap();
     map["mobile"] = number;
 
@@ -391,10 +399,13 @@ class _BindPhoneLoginPageState extends BaseWidgetState<BindPhoneLoginPage> {
       method: HttpUtils.POST,
       onSuccess: (data) {
         EasyLoading.dismiss();
+        // VerifyCodeType = !VerifyCodeType;
+
         _startTimer();
       },
       onError: (code, error) {
         EasyLoading.showError(error ?? "");
+        // VerifyCodeType = !VerifyCodeType;
       },
     );
   }
@@ -412,7 +423,6 @@ class _BindPhoneLoginPageState extends BaseWidgetState<BindPhoneLoginPage> {
     Map<String, dynamic> map = new HashMap();
     map["mobile"] = number;
     map["code"] = _verifyText;
-    ;
 
     HttpUtils.requestHttp(
       ApiConstant.bindAppPhone,

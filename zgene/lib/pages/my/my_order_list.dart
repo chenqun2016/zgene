@@ -107,7 +107,7 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
               // 控制器
               controller: _controller,
               header: BallPulseHeader(),
-              footer: BallPulseFooter(),
+              // footer: BallPulseFooter(),
               child: _listView,
               //下拉刷新事件回调
               onRefresh: () async {
@@ -143,7 +143,7 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
         controller: listeningController,
         itemCount: list.length,
         shrinkWrap: true,
-        padding: EdgeInsets.all(0),
+        padding: EdgeInsets.only(bottom: 60),
         physics: ScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
           return getItem(list[index]);

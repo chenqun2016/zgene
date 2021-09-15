@@ -160,6 +160,7 @@ class _MyReportPageState extends BaseWidgetState {
                         BaseWebView(
                           url: ApiConstant.getPDFH5DetailUrl(bean.id),
                           title: "${bean.targetName}的基因检测报告",
+                          isShare: false,
                         ));
                   },
                   child: Text("查看报告",

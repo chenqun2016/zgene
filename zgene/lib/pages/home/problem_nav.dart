@@ -107,9 +107,9 @@ class _ProblemNavState extends State<ProblemNav>
         NavigatorUtil.push(
             context,
             BaseWebView(
-              url: ApiConstant.getH5DetailUrl(archives.id.toString()),
-              title: "常见问题",
-            ));
+                url: ApiConstant.getH5DetailUrl(archives.id.toString()),
+                title: archives.title,
+                showTitle: "常见问题"));
       },
       child: Container(
         padding: EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 10),

@@ -65,6 +65,8 @@ class ColorConstant {
   static const Color WhiteColor = Color(0xFFFFFFFF);
   static const Color LineMainColor = Color(0xFFB2BAC6);
   static const Color BgColor = Color(0xFFF5F5F5);
+  static const Color toastBlue = Color(0xFFE6F2FF);
+  static const Color toastTextBlue = Color(0xFF1877F2);
 
   //透明度50%白色
   static const Color WhiteColor7F = Color(0x7FFFFFFF);

@@ -109,7 +109,8 @@ class _AboutUsPageState extends BaseWidgetState<AboutUsPage> {
           Container(
             margin: EdgeInsets.only(top: 25.h, bottom: 32.h),
             child: Text(
-              SpUtils().getStorageDefault(SpConstant.appAboutusDescription, ""),
+              // SpUtils().getStorageDefault(SpConstant.appAboutusDescription, ""),
+              "爱神的箭开,放拉手绝大部分老家啊收代mmmmmmm理费.结案率.山东科技发货量卡加斯对,焊mmmmmmm法兰.愧疚啊收到了咖啡机.哈塑料袋可交付哈拉少鸡蛋.hkjhkjhkjhjkhkhjkj和结案率.山东科.技发货量卡加斯对,焊法兰.愧疚啊收到了咖啡机.哈塑料袋可交付哈拉少鸡蛋和1",
               textAlign: TextAlign.justify,
               overflow: TextOverflow.visible,
               style: TextStyle(
@@ -123,17 +124,5 @@ class _AboutUsPageState extends BaseWidgetState<AboutUsPage> {
         ],
       ),
     );
-  }
-
-  _onTapEvent(index) {
-    switch (index) {
-      case 0:
-        Clipboard.setData(
-            ClipboardData(text: CommonConstant.App_Contact_Wx_Code));
-        EasyLoading.showSuccess('客服（QQ）复制成功');
-        break;
-      case 1:
-        break;
-    }
   }
 }

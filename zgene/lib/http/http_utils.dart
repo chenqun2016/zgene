@@ -149,6 +149,8 @@ class HttpUtils {
   }) async {
     ///定义请求参数
     ///
+    print(url);
+
     parameters = parameters ?? {};
     try {
       parameters.forEach((key, value) {

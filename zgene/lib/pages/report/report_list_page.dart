@@ -295,7 +295,7 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
               BaseWebView(
                 url: ApiConstant.getH5DetailUrl(archive.id.toString()),
                 title: archive.title,
-                isShare: false,
+                // isShare: false,
               ));
         } else {
           UiUitls.showToast("购买解锁我的更多报告");

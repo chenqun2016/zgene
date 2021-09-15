@@ -716,23 +716,24 @@ class _MyPageState extends BaseWidgetState<MyPage> {
         break;
       case 2: //个人信息
         // NavigatorUtil.push(context, MyInfoPage());
-        if (userInfo.id != null) {
-          if (spUtils.getStorageDefault(SpConstant.IsLogin, false)) {
-            final result = await Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => MyInfoPage(userInfo: userInfo)));
-            if (result != null) {
-              userInfo = result;
-              setData();
-            }
-          } else {
-            BaseLogin.login();
+        // if (userInfo.id != null) {
+        if (spUtils.getStorageDefault(SpConstant.IsLogin, false)) {
+          final result = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => MyInfoPage(userInfo: userInfo)));
+          if (result != null) {
+            userInfo = result;
+            setData();
           }
         } else {
-          // EasyLoading.showError("个人信息获取失败，请稍后再试。");
-          getHttp();
+          BaseLogin.login();
         }
+        // }
+        // else {
+        //   // EasyLoading.showError("个人信息获取失败，请稍后再试。");
+        //   getHttp();
+        // }
         break;
       case 3: //我的订单
 

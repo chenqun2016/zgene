@@ -64,9 +64,10 @@ class UiUitls {
   static showToast(String name) {
     Fluttertoast.showToast(
         msg: name,
+        fontSize: 13,
         gravity: ToastGravity.CENTER,
-        backgroundColor: ColorConstant.LineMainColor,
-        textColor: ColorConstant.TextMainColor);
+        backgroundColor: ColorConstant.toastBlue,
+        textColor: ColorConstant.toastTextBlue);
   }
 
   ///加载框

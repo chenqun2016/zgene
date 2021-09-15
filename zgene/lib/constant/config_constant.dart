@@ -12,5 +12,5 @@ class ConfigConstant {
   //android包名
   static const String AndroidAppId = "com.jt.zgene";
   //iOSAppId
-  static const String iOSAppId = "1521631889";
+  static const String iOSAppId = "1585616415";
 }

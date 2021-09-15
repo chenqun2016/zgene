@@ -543,6 +543,8 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
       parameters: map,
       method: HttpUtils.POST,
       onSuccess: (data) {
+        print(1111111111111111);
+        print(data);
         var spUtils = SpUtils();
         spUtils.setStorage(SpConstant.Token, data["token"]);
         spUtils.setStorage(SpConstant.IsLogin, true);

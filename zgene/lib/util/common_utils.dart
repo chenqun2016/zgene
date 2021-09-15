@@ -284,6 +284,7 @@ class CommonUtils {
         name: CommonConstant.JWT,
         value: token,
         isSecure: false,
+        isHttpOnly: false,
       );
     }
     return Future.value(1);
@@ -311,5 +312,13 @@ class CommonUtils {
             print(e);
           }
         });
+    controller.addJavaScriptHandler(handlerName: "getToken", callback: (args) async{
+      Uri url = await controller.getUrl();
+      if(null != url && null != url.path && url.path.isNotEmpty && url.path.toString().startsWith(CommonConstant.BASE_API)){
+        print("host=="+url.host.toString());
+        return SpUtils().getStorageDefault(SpConstant.Token, "");
+      }
+      return "";
+    });
   }
 }

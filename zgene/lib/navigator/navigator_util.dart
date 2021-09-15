@@ -39,12 +39,16 @@ class NavigatorUtil {
             context,
             BaseWebView(
               url: ApiConstant.getSFH5DetailUrl(_order.reSfNo),
+              title: "物流跟踪",
+              isShare: false,
             ));
       case 20:
         return NavigatorUtil.push(
             context,
             BaseWebView(
               url: ApiConstant.getSFH5DetailUrl(_order.sfNo),
+              title: "物流跟踪",
+              isShare: false,
             ));
       case 30:
         return NavigatorUtil.push(context, BindCollectorPage());

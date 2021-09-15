@@ -312,13 +312,17 @@ class CommonUtils {
             print(e);
           }
         });
-    controller.addJavaScriptHandler(handlerName: "getToken", callback: (args) async{
-      Uri url = await controller.getUrl();
-      if(null != url && null != url.path && url.path.isNotEmpty && url.path.toString().startsWith(CommonConstant.BASE_API)){
-        print("host=="+url.host.toString());
-        return SpUtils().getStorageDefault(SpConstant.Token, "");
-      }
-      return "";
-    });
+    controller.addJavaScriptHandler(
+        handlerName: "getToken",
+        callback: (args) async {
+          Uri url = await controller.getUrl();
+          if (null != url &&
+              null != url.toString() &&
+              url.toString().isNotEmpty &&
+              url.toString().startsWith(CommonConstant.BASE_API)) {
+            return SpUtils().getStorageDefault(SpConstant.Token, "");
+          }
+          return "";
+        });
   }
 }

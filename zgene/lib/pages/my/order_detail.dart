@@ -468,6 +468,7 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
 
   ///规则的展示
   _showRule() {
+    print("appAsalesRules == " + appAsalesRules);
     showModalBottomSheet(
       isScrollControlled: true,
       barrierColor: ColorConstant.AppleBlack99Color,
@@ -523,13 +524,10 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
                       ),
                     ],
                   ),
-                  Scrollbar(
-                    // 显示进度条
-                    child: SingleChildScrollView(
-                      padding: EdgeInsets.all(16.0),
-                      child: Expanded(child: Text(appAsalesRules)),
-                    ),
-                  ),
+                  Padding(
+                    padding: EdgeInsets.all(16),
+                    child: Text(appAsalesRules),
+                  )
                 ],
               ),
             )

@@ -283,7 +283,7 @@ class _GetVFCodeLoginPageState extends BaseWidgetState<GetVFCodeLoginPage> {
         spUtils.setStorage(SpConstant.IsLogin, true);
         spUtils.setStorage(SpConstant.Uid, data["uid"]);
         HttpUtils.clear();
-        print("登陆成功");
+        print("登录成功");
         print(spUtils.getStorageDefault(SpConstant.Token, ""));
         // NotificationCenter.instance
         //     .postNotification(NotificationName.GetUserInfo, null);

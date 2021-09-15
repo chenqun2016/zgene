@@ -512,7 +512,7 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
         // NotificationCenter.instance
         //     .postNotification(NotificationName.GetUserInfo, null);
         if (data["has_mobile"] == null) {
-          EasyLoading.showSuccess("登陆成功");
+          EasyLoading.showSuccess("登录成功");
           bus.emit(CommonConstant.refreshMine);
           // Navigator.popUntil(context, ModalRoute.withName('/'));
           Navigator.of(context).popUntil((route) => route.isFirst);
@@ -548,7 +548,7 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
         spUtils.setStorage(SpConstant.IsLogin, true);
         HttpUtils.clear();
         if (data["has_mobile"] == null) {
-          EasyLoading.showSuccess("登陆成功");
+          EasyLoading.showSuccess("登录成功");
           bus.emit(CommonConstant.refreshMine);
           Navigator.of(context).popUntil((route) => route.isFirst);
         } else {

@@ -228,127 +228,138 @@ class UiUitls {
                 width: MediaQuery.of(context).size.width,
                 fit: BoxFit.fill,
               ),
-              SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.fromLTRB(16, 2, 16, 20),
-                      margin: EdgeInsets.only(top: 60, left: 16, right: 16),
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          color: ColorConstant.WhiteColorB2,
-                          borderRadius: BorderRadius.all(Radius.circular(20))),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          if (MediaQuery.of(context).size.height > 660)
-                            Image.asset(
-                              "assets/images/logo.png",
-                              height: 144,
-                              width: 144,
-                              fit: BoxFit.fill,
-                            ),
-                          if (MediaQuery.of(context).size.height <= 660)
-                            Divider(
-                              height: 20,
-                              color: Colors.transparent,
-                            ),
-                          Text(
-                            "欢迎使用Z基因",
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              color: ColorConstant.TextMainBlack,
-                            ),
+              Column(
+                children: [
+                  Expanded(
+                      child: Container(
+                    padding: EdgeInsets.fromLTRB(16, 2, 16, 20),
+                    margin: EdgeInsets.only(top: 60, left: 16, right: 16),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        color: ColorConstant.WhiteColorB2,
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        if (MediaQuery.of(context).size.height > 660)
+                          Image.asset(
+                            "assets/images/logo.png",
+                            height: 144,
+                            width: 144,
+                            fit: BoxFit.fill,
                           ),
-                          Divider(
-                            height: 15,
-                            color: Colors.transparent,
-                          ),
-                          PrivacyView(
-                            style: TextStyle(
-                                color: ColorConstant.TextMainBlack,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500),
-                            data: CommonConstant.Privacy_Text,
-                            keys: ['《用户协议》', '《个人信息保护政策》'],
-                            keyStyle: TextStyle(
-                                color: ColorConstant.TextMainColor,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500),
-                            onTapCallback: (String key) {
-                              if (key == '《用户协议》') {
-                                NavigatorUtil.push(
-                                    context,
-                                    BaseWebView(
-                                      url: CommonConstant.agreement,
-                                      title: "用户协议",
-                                    ));
-                              } else if (key == '《个人信息保护政策》') {
-                                NavigatorUtil.push(
-                                    context,
-                                    BaseWebView(
-                                      url: CommonConstant.privacy,
-                                      title: "个人信息保护政策",
-                                    ));
-                              }
-                            },
-                          ),
+                        if (MediaQuery.of(context).size.height <= 660)
                           Divider(
                             height: 20,
                             color: Colors.transparent,
                           ),
-                          Text(
-                            CommonConstant.Privacy_Text2,
-                            style: TextStyle(
-                                color: ColorConstant.Text_5E6F88,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Divider(
-                      height: 30,
-                      color: Colors.transparent,
-                    ),
-                    MaterialButton(
-                      minWidth: 343,
-                      height: 55,
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(28)),
-                      color: ColorConstant.TextMainColor,
-                      onPressed: () {
-                        Navigator.of(ctx).pop();
-                        onAgree();
-                      },
-                      child: Text("同意并继续",
+                        Text(
+                          "欢迎使用Z基因",
                           style: TextStyle(
-                            fontSize: 18,
+                            fontSize: 24,
                             fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          )),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(ctx).pop();
-                        onCancel();
-                      },
-                      child: Container(
-                        padding: EdgeInsets.fromLTRB(20, 17, 20, 17),
-                        child: Text(
-                          "不同意",
-                          style: TextStyle(
-                              color: ColorConstant.Text_5E6F88,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400),
+                            color: ColorConstant.TextMainBlack,
+                          ),
                         ),
+                        Divider(
+                          height: 15,
+                          color: Colors.transparent,
+                        ),
+                        Expanded(
+                            child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              PrivacyView(
+                                style: TextStyle(
+                                    color: ColorConstant.TextMainBlack,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500),
+                                data: CommonConstant.Privacy_Text,
+                                keys: ['《用户协议》', '《个人信息保护政策》'],
+                                keyStyle: TextStyle(
+                                    color: ColorConstant.TextMainColor,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500),
+                                onTapCallback: (String key) {
+                                  if (key == '《用户协议》') {
+                                    NavigatorUtil.push(
+                                        context,
+                                        BaseWebView(
+                                          url: CommonConstant.agreement,
+                                          title: "用户协议",
+                                        ));
+                                  } else if (key == '《个人信息保护政策》') {
+                                    NavigatorUtil.push(
+                                        context,
+                                        BaseWebView(
+                                          url: CommonConstant.privacy,
+                                          title: "个人信息保护政策",
+                                        ));
+                                  }
+                                },
+                              ),
+                              Divider(
+                                height: 20,
+                                color: Colors.transparent,
+                              ),
+                              Text(
+                                CommonConstant.Privacy_Text2,
+                                style: TextStyle(
+                                    color: ColorConstant.Text_5E6F88,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            ],
+                          ),
+                        ))
+                      ],
+                    ),
+                  )),
+                  Divider(
+                    height: 30,
+                    color: Colors.transparent,
+                  ),
+                  MaterialButton(
+                    minWidth: 343,
+                    height: 55,
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(28)),
+                    color: ColorConstant.TextMainColor,
+                    onPressed: () {
+                      Navigator.of(ctx).pop();
+                      onAgree();
+                    },
+                    child: Text("同意并继续",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        )),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(ctx).pop();
+                      onCancel();
+                    },
+                    child: Container(
+                      color: Colors.transparent,
+                      padding: EdgeInsets.fromLTRB(20, 17, 20, 17),
+                      child: Text(
+                        "不同意",
+                        style: TextStyle(
+                            color: ColorConstant.Text_5E6F88,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400),
                       ),
-                    )
-                  ],
-                ),
+                    ),
+                  ),
+                  Divider(
+                    height: 30,
+                    color: Colors.transparent,
+                  ),
+                ],
               ),
             ],
           ),

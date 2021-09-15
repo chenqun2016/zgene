@@ -177,6 +177,7 @@ class CommonUtils {
               urlName == CommonConstant.ROUT_my_order ||
               urlName == CommonConstant.ROUT_my_info ||
               urlName == CommonConstant.ROUT_my_address ||
+              urlName == CommonConstant.ROUT_my_report_list ||
               urlName == CommonConstant.ROUT_my_message) {
             if (!SpUtils().getStorageDefault(SpConstant.IsLogin, false)) {
               BaseLogin.login();

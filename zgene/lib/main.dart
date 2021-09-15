@@ -26,9 +26,11 @@ import 'event/event_bus.dart';
 import 'pages/bindcollector/bind_collector_page.dart';
 import 'pages/login/main_login.dart';
 import 'pages/my/my_address_list.dart';
+import 'pages/my/my_commonQus.dart';
 import 'pages/my/my_info_page.dart';
 import 'pages/my/my_message_list.dart';
 import 'pages/my/my_order_list.dart';
+import 'pages/my/my_report_page.dart';
 import 'pages/my/order_detail.dart';
 import 'pages/my/order_step_page.dart';
 import 'pages/my/sendBack_acquisition.dart';
@@ -189,6 +191,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         CommonConstant.ROUT_kefu: (context) => contantUsPage(), //联系客服
         CommonConstant.ROUT_about: (context) => AboutUsPage(), //关于我们
         CommonConstant.ROUT_buy: (context) => BuyPage(), //购买页面
+        CommonConstant.ROUT_common_question: (context) => CommonQusListPage(), //常见问题
+        CommonConstant.ROUT_my_report_list: (context) => MyReportPage(), //我的报告
       },
     ));
   }

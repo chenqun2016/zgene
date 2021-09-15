@@ -60,7 +60,7 @@ dependencies:
   event_bus: ^2.0.0
   tobias: ^2.1.2+1
   qr_code_scanner: ^0.5.2
-  jshare_flutter_plugin: ^2.1.2
+  # jshare_flutter_plugin: ^2.1.2
   flutter_native_image: ^0.0.6+1
   webview_flutter: ^2.0.12
   cached_network_image: ^3.1.0

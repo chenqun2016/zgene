@@ -757,7 +757,6 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
                 contentPadding: EdgeInsets.fromLTRB(15, 12, 0, 12),
                 isCollapsed: true,
                 suffixIcon: GestureDetector(
-                  onTap: () {},
                   child: Icon(
                     Icons.keyboard_arrow_down,
                     color: Colors.black,

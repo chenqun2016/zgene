@@ -3,10 +3,19 @@ import 'dart:js' as js;
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
-import 'dart:convert';
+import 'package:js/js.dart';
+
+// ignore: missing_js_lib_annotation
+@JS('helloDart')
+external set _helloDart(void Function() f);
+
+void _intHelloDart() {
+  print('Hello from Dart!');
+}
 
 void configureApp() {
   setUrlStrategy(HashUrlStrategy());
+  _helloDart = allowInterop(_intHelloDart);
 }
 
 void webLogin() {

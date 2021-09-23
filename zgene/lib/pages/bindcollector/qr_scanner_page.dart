@@ -1,10 +1,11 @@
 import 'dart:developer';
-import 'dart:io';
-import 'package:flutter/foundation.dart';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:zgene/util/ui_uitls.dart';
+import 'package:scan/scan.dart';
 import 'package:zgene/util/platform_utils.dart';
+import 'package:zgene/util/ui_uitls.dart';
 
 class QRViewExample extends StatefulWidget {
   @override
@@ -39,6 +40,27 @@ class _QRViewExampleState extends State<QRViewExample> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 customHeaderBack(),
+                GestureDetector(
+                  onTap: () async {
+                    try {
+                      final picker = ImagePicker();
+                      var image = await picker.getImage(
+                        source: ImageSource.gallery,
+                      );
+                      print("image.path == " + image.path);
+
+                      String result = await Scan.parse(image.path);
+                      print("image.path.result == " + result.toString());
+                    } catch (e) {
+                      print("image.path.result.err == " + e.toString());
+                    }
+                  },
+                  child: Icon(
+                    Icons.photo,
+                    color: Colors.white,
+                    size: 25,
+                  ),
+                ),
                 Expanded(child: Divider()),
                 GestureDetector(
                   onTap: () async {
@@ -98,6 +120,7 @@ class _QRViewExampleState extends State<QRViewExample> {
       key: qrKey,
       onQRViewCreated: _onQRViewCreated,
       overlay: QrScannerOverlayShape(
+          cutOutBottomOffset: 50,
           borderColor: Colors.red,
           borderRadius: 10,
           borderLength: 30,
@@ -112,6 +135,8 @@ class _QRViewExampleState extends State<QRViewExample> {
       this.controller = controller;
     });
     controller.scannedDataStream.first.then((scanData) {
+      print(
+          "scan code == ${scanData.code} / type == ${scanData.format.toString()}");
       Navigator.pop(context, scanData.code);
     }).catchError((error) => null);
   }

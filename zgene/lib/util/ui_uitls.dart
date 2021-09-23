@@ -1,18 +1,17 @@
-import 'dart:io';
+import 'dart:ui' as ui;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:zgene/constant/api_constant.dart';
+import 'package:zgene/configure.dart'
+    if (dart.library.html) 'package:zgene/configure_web.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/util/platform_utils.dart';
 import 'package:zgene/widget/base_web.dart';
 import 'package:zgene/widget/privacy_view.dart';
-import 'package:zgene/configure.dart'
-    if (dart.library.html) 'package:zgene/configure_web.dart';
 
 ///界面相关工具
 class UiUitls {
@@ -381,5 +380,13 @@ class UiUitls {
           RegExp("[a-zA-Z]|[\u4e00-\u9fa5]|[0-9]")),
       LengthLimitingTextInputFormatter(max), //最大长度
     ];
+  }
+
+//读取 assets 中的图片
+  static Future<ui.Image> loadImageFromAssets(String path) async {
+    ByteData data = await rootBundle.load(path);
+    List<int> bytes =
+        data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+    return decodeImageFromList(bytes);
   }
 }

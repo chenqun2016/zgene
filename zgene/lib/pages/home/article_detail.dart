@@ -61,7 +61,12 @@ class _ArticleDetailViewState extends State<ArticleDetailView> {
   @override
   Widget build(BuildContext context) {
     var id = ModalRoute.of(context).settings.arguments;
-    _url = ApiConstant.getH5DetailUrl(id.toString());
+
+    // 如果地址为空则初始化
+    if (_url == null) {
+      _url = ApiConstant.getH5DetailUrl(id.toString());
+    }
+
     // Web不需要设定cookie
     if (!PlatformUtils.isWeb) {
       setCookie();
@@ -166,7 +171,8 @@ class _ArticleDetailViewState extends State<ArticleDetailView> {
                                 }
                               },
                               onWebViewCreated: (controller) {
-                                CommonUtils.addJavaScriptHandler(controller,context);
+                                CommonUtils.addJavaScriptHandler(
+                                    controller, context);
                               },
                             ),
                 )

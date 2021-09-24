@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluwx/fluwx.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
@@ -171,6 +172,33 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         const Locale('zh', ''), // China
         // ... other locales the app supports
       ],
+      onGenerateRoute: (settings) {
+        // 支持web页面通过地址来跳转对应的详情页面
+        var u = Uri.parse(settings.name);
+
+        if (u.path == CommonConstant.ROUT_article_detail) {
+          var url = ApiConstant.getH5DetailUrl(u.queryParameters["id"]);
+
+          return MaterialPageRoute(
+            builder: (context) {
+              return ArticleDetailView(
+                title: "文章详情",
+                url: url,
+              );
+            },
+          );
+        } else if (u.path == CommonConstant.ROUT_about) {
+          // 支持about页面跳转
+          return MaterialPageRoute(
+            builder: (context) {
+              return ScreenUtilInit(
+                  designSize: Size(375, 812), builder: () => AboutUsPage());
+            },
+          );
+        }
+
+        return null;
+      },
       //注册路由表
       routes: {
         CommonConstant.ROUT_article_detail: (context) =>
@@ -190,7 +218,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         CommonConstant.ROUT_back_collector: (context) =>
             SendBackAcquisitionPage(), //回寄采集器
         CommonConstant.ROUT_kefu: (context) => contantUsPage(), //联系客服
-        CommonConstant.ROUT_about: (context) => AboutUsPage(), //关于我们
+        CommonConstant.ROUT_about: (context) => ScreenUtilInit(
+            designSize: Size(375, 812), builder: () => AboutUsPage()), //关于我们
         CommonConstant.ROUT_buy: (context) => BuyPage(), //购买页面
         CommonConstant.ROUT_common_question: (context) =>
             CommonQusListPage(), //常见问题

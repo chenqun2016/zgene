@@ -46,7 +46,7 @@
   <script src="js/vconsole.min.js"></script>
   <script>
     // 测试环境开启调试
-    if (window.location.host == "test.z-gene.cn") {
+    if (window.location.host != "www.z-gene.cn") {
       const vConsole = new VConsole();
     }
   </script>
@@ -196,29 +196,6 @@
       // Service workers not supported. Just drop the <script> tag.
       loadMainDartJs();
     }
-
-    // 微信小程序
-    wx.miniProgram.getEnv(function (res) {
-      console.log("WeixinJSBridgeReady ready");
-      console.log(res.miniprogram) // true
-      setTimeout(function () {
-        console.log("postMessage");
-        wx.miniProgram.navigateBack({delta: 1})
-        wx.miniProgram.postMessage({
-          data: JSON.stringify({
-            action: 'vibrateShort',
-          })
-        });
-      }, 5000);
-    })
-
-    setTimeout(function () {
-      // 支持调用flutter内的方法
-      if (typeof window.helloDart !== "undefined") {
-        window.helloDart();
-      }
-
-    }, 5000);
   </script>
 </body>
 

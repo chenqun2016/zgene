@@ -11,7 +11,6 @@ import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/bindcollector/bind_collector_page.dart';
 import 'package:zgene/pages/my/my_contant_us.dart';
-import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/dia_log.dart';
 import 'package:zgene/util/platform_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
@@ -191,8 +190,12 @@ class _QRScannerViewState extends State<QRScannerView>
             height: 6,
           ),
           GestureDetector(
-            onTap: () {
-              NavigatorUtil.push(context, contantUsPage());
+            onTap: () async {
+              controller.pauseCamera();
+              animationController.stop();
+              await NavigatorUtil.push(context, contantUsPage());
+              controller.resumeCamera();
+              animationController.forward();
             },
             child: Padding(
               padding: EdgeInsets.all(28),
@@ -249,14 +252,19 @@ class _QRScannerViewState extends State<QRScannerView>
     return GestureDetector(
       onTap: () async {
         try {
+          controller.pauseCamera();
+          animationController.stop();
           final picker = ImagePicker();
           var image = await picker.pickImage(
             source: ImageSource.gallery,
           );
-          print("image.path == " + image.path);
-          String result = await Scan.parse(image.path);
-          checkNum(result);
-          print("image.path.result == " + result.toString());
+          if (null == image || image.path.isEmpty) {
+            controller.resumeCamera();
+            animationController.forward();
+          } else {
+            String result = await Scan.parse(image.path);
+            checkNum(result);
+          }
         } catch (e) {
           print("image.path.result.err == " + e.toString());
         }
@@ -330,6 +338,8 @@ class _QRScannerViewState extends State<QRScannerView>
       this.controller = controller;
     });
     controller.scannedDataStream.listen((scanData) {
+      controller.pauseCamera();
+      animationController.stop();
       checkNum(scanData.code.toString());
       print(
           "scan code == ${scanData.code} / type == ${scanData.format.toString()}");
@@ -344,12 +354,6 @@ class _QRScannerViewState extends State<QRScannerView>
   }
 
   Future<void> checkNum(String num) async {
-    bool isNetWorkAvailable = await CommonUtils.isNetWorkAvailable();
-    if (!isNetWorkAvailable) {
-      return;
-    }
-    controller.pauseCamera();
-    animationController.stop();
     if (null == num || num.isEmpty) {
       showErrorDialog(tips);
       return;

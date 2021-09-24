@@ -13,4 +13,9 @@ class ConfigConstant {
   static const String AndroidAppId = "com.jt.zgene";
   //iOSAppId
   static const String iOSAppId = "1585616415";
+
+  //友盟androidKey
+  static String umengAndroidKey = "614d843866b59330aa6f3255";
+  //友盟iosKey
+  static String umengIosKey = "614d892966b59330aa6f5127";
 }

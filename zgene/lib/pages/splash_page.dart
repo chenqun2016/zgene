@@ -1,12 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:umeng_common_sdk/umeng_common_sdk.dart';
+import 'package:zgene/constant/config_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/navigator/tab_navigator.dart';
 import 'package:zgene/util/screen_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
-import 'package:zgene/widget/count_down_widget.dart';
 
 ///app启动页
 class SplashPage extends StatefulWidget {
@@ -28,6 +29,7 @@ class _SplashPageState extends State<SplashPage> {
       WidgetsBinding.instance.addPostFrameCallback((callback) {
         ///显示协议弹窗
         UiUitls.showAgreement2(context, onAgree: () {
+          initOther();
           SpUtils().setStorage(SpConstant.SpIsFirst, false);
           isFirst = false;
           setState(() {});
@@ -35,6 +37,8 @@ class _SplashPageState extends State<SplashPage> {
           exit(0);
         });
       });
+    } else {
+      initOther();
     }
   }
 
@@ -57,5 +61,15 @@ class _SplashPageState extends State<SplashPage> {
         )
       ],
     );
+  }
+
+  void initOther() async {
+    //初始化组件化基础库, 所有友盟业务SDK都必须调用此初始化接口。
+    await UmengCommonSdk.initCommon(
+        ConfigConstant.umengAndroidKey, ConfigConstant.umengIosKey, 'zgene');
+    UmengCommonSdk.setPageCollectionModeAuto();
+
+    UmengCommonSdk.onEvent(
+        "appbounced_useragreement", {"name": "appbounced_01_imp"});
   }
 }

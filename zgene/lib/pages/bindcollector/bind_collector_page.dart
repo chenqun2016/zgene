@@ -60,7 +60,6 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
     _textEditingController = new TextEditingController();
     _nameEditingController = new TextEditingController();
 
-    _textEditingController.text = "b70c0cf6";
     currentSex = sex[0];
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {

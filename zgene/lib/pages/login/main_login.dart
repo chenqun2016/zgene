@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'dart:ffi';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -48,6 +49,11 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
     bus.on(CommonConstant.WxCode, (arg) {
       wxLoginHttp(arg);
     });
+  }
+
+  @override
+  Void pageDataInitState() {
+    super.pageDataInitState();
   }
 
   @override
@@ -546,8 +552,6 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
     map["email"] = email;
     map["giveName"] = giveName;
     map["familyName"] = familyName;
-
-    ;
 
     HttpUtils.requestHttp(
       ApiConstant.login_apple,

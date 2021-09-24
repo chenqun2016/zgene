@@ -496,8 +496,6 @@ class _MySetPageState extends BaseWidgetState<MySetPage> {
   }
 
   void unbindWX() {
-    ;
-
     HttpUtils.requestHttp(
       ApiConstant.unbind_wx,
       method: HttpUtils.POST,

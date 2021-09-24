@@ -48,6 +48,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
   double appBarAlpha = 0;
   //顶部渐变监听ScrollController
   ScrollController listeningController;
+  dynamic data = {};
 
   int trans = 0;
   @override
@@ -65,6 +66,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
       }
     });
     pageWidgetInitState();
+    pageDataInitState();
   }
 
   @override
@@ -74,6 +76,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
   }
 
   void pageWidgetInitState() {}
+  void pageDataInitState() {}
 
   Widget viewCustomHeadBody() {
     return showHead

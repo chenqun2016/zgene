@@ -1,13 +1,9 @@
-import 'dart:async';
-
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:event_bus/event_bus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/api_constant.dart';
-import 'package:zgene/constant/app_notification.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
@@ -17,10 +13,8 @@ import 'package:zgene/models/content_model.dart';
 import 'package:zgene/models/msg_event.dart';
 import 'package:zgene/models/userInfo_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
-import 'package:zgene/pages/bindcollector/bind_collector_page.dart';
+import 'package:zgene/pages/bindcollector/qr_scanner_page.dart';
 import 'package:zgene/pages/home/home_getHttp.dart';
-import 'package:zgene/pages/login/main_login.dart';
-import 'package:zgene/pages/my/my_about_us.dart';
 import 'package:zgene/pages/my/my_about_z.dart';
 import 'package:zgene/pages/my/my_commonQus.dart';
 import 'package:zgene/pages/my/my_contant_us.dart';
@@ -34,12 +28,8 @@ import 'package:zgene/pages/my/sendBack_acquisition.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/login_base.dart';
-import 'package:zgene/util/notification_utils.dart';
 import 'package:zgene/util/screen_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
-import 'package:zgene/util/time_utils.dart';
-import 'package:zgene/util/ui_uitls.dart';
-import 'package:zgene/widget/base_web.dart';
 
 class MyPage extends BaseWidget {
   @override
@@ -744,7 +734,7 @@ class _MyPageState extends BaseWidgetState<MyPage> {
         }
         break;
       case 4: //绑定采集器
-        NavigatorUtil.push(context, BindCollectorPage());
+        NavigatorUtil.push(context, QRScannerView());
         break;
       case 5: //回寄采集器
 

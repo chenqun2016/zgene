@@ -10,6 +10,7 @@ import 'package:zgene/constant/config_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/setting_model.dart';
+import 'package:zgene/pages/bindcollector/qr_scanner_page.dart';
 import 'package:zgene/pages/home/article_detail.dart';
 import 'package:zgene/pages/my/my_about_us.dart';
 import 'package:zgene/pages/my/my_contant_us.dart';
@@ -18,12 +19,13 @@ import 'package:zgene/pages/tabs/buy_page.dart';
 import 'package:zgene/pages/tabs/report_page.dart';
 import 'package:zgene/util/chineseCupertino.dart';
 import 'package:zgene/util/common_utils.dart';
+import 'package:zgene/util/platform_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/widget/restart_widget.dart';
+
 import 'configure.dart' if (dart.library.html) 'configure_web.dart';
 import 'event/event_bus.dart';
-import 'pages/bindcollector/bind_collector_page.dart';
 import 'pages/login/main_login.dart';
 import 'pages/my/my_address_list.dart';
 import 'pages/my/my_commonQus.dart';
@@ -35,7 +37,6 @@ import 'pages/my/order_detail.dart';
 import 'pages/my/order_step_page.dart';
 import 'pages/my/sendBack_acquisition.dart';
 import 'pages/report/report_list_page.dart';
-import 'package:zgene/util/platform_utils.dart';
 
 void main() async {
   configureApp();
@@ -185,13 +186,14 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
             OrderStepPage(), //订单步骤详情
         CommonConstant.ROUT_order_detail: (context) => OrderDetailPage(), //订单详情
         CommonConstant.ROUT_bind_collector: (context) =>
-            BindCollectorPage(), //绑定采集器
+            QRScannerView(), //绑定采集器
         CommonConstant.ROUT_back_collector: (context) =>
             SendBackAcquisitionPage(), //回寄采集器
         CommonConstant.ROUT_kefu: (context) => contantUsPage(), //联系客服
         CommonConstant.ROUT_about: (context) => AboutUsPage(), //关于我们
         CommonConstant.ROUT_buy: (context) => BuyPage(), //购买页面
-        CommonConstant.ROUT_common_question: (context) => CommonQusListPage(), //常见问题
+        CommonConstant.ROUT_common_question: (context) =>
+            CommonQusListPage(), //常见问题
         CommonConstant.ROUT_my_report_list: (context) => MyReportPage(), //我的报告
       },
     ));

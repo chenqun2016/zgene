@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
@@ -5,17 +6,27 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:scan/scan.dart';
+import 'package:zgene/constant/api_constant.dart';
+import 'package:zgene/http/http_utils.dart';
+import 'package:zgene/navigator/navigator_util.dart';
+import 'package:zgene/pages/bindcollector/bind_collector_page.dart';
+import 'package:zgene/pages/my/my_contant_us.dart';
+import 'package:zgene/util/common_utils.dart';
+import 'package:zgene/util/dia_log.dart';
 import 'package:zgene/util/platform_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/widget/my_qr_scanner_overlay_shape.dart';
 
-class QRViewExample extends StatefulWidget {
+class QRScannerView extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _QRViewExampleState();
+  State<StatefulWidget> createState() => _QRScannerViewState();
 }
 
-class _QRViewExampleState extends State<QRViewExample>
+class _QRScannerViewState extends State<QRScannerView>
     with SingleTickerProviderStateMixin {
+  static const String tips = """不存在该采集器编码~
+请校验后重新扫描或联系客服。""";
+
   QRViewController controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
@@ -101,6 +112,15 @@ class _QRViewExampleState extends State<QRViewExample>
               ],
             ),
           ),
+          Container(
+            margin: EdgeInsets.only(top: 109),
+            child: Image.asset(
+              "assets/images/mine/img_lading.png",
+              height: 22,
+              width: 176,
+              fit: BoxFit.fill,
+            ),
+          ),
           if (null != animation) _buildLine(),
           buildBottom()
         ],
@@ -128,39 +148,61 @@ class _QRViewExampleState extends State<QRViewExample>
           Expanded(
             child: Divider(),
           ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Image.asset(
-                "assets/images/mine/icon_shuru.png",
-                height: 20,
-                width: 20,
-              ),
-              Text(
-                "手动输入采集器编号",
+          GestureDetector(
+            onTap: () async {
+              controller.pauseCamera();
+              animationController.stop();
+              bool pop = await NavigatorUtil.push(context, BindCollectorPage());
+              if (null != pop && !pop) {
+                controller.resumeCamera();
+                animationController.forward();
+              } else {
+                Navigator.pop(context);
+              }
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image.asset(
+                  "assets/images/mine/icon_shuru.png",
+                  height: 20,
+                  width: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Text(
+                    "手动输入采集器编号",
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.white),
+                  ),
+                ),
+                Image.asset(
+                  "assets/images/mine/icon_back_white.png",
+                  height: 20,
+                  width: 20,
+                ),
+              ],
+            ),
+          ),
+          Divider(
+            height: 6,
+          ),
+          GestureDetector(
+            onTap: () {
+              NavigatorUtil.push(context, contantUsPage());
+            },
+            child: Padding(
+              padding: EdgeInsets.all(28),
+              child: Text(
+                "联系客服",
                 style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: FontWeight.w400,
                     color: Colors.white),
               ),
-              Image.asset(
-                "assets/images/mine/icon_back_white.png",
-                height: 20,
-                width: 20,
-              ),
-            ],
-          ),
-          Divider(
-            height: 10,
-          ),
-          Padding(
-            padding: EdgeInsets.all(28),
-            child: Text(
-              "联系客服",
-              style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.white),
             ),
           ),
         ],
@@ -189,15 +231,12 @@ class _QRViewExampleState extends State<QRViewExample>
             ? controller.getFlashStatus()
             : Future.value(false),
         builder: (context, snapshot) {
-          // return Icon(
-          //   Icons.flash_on,
-          //   color: snapshot.data == null
-          //       ? Colors.white
-          //       : (snapshot.data ? Colors.blue : Colors.white),
-          //   size: 25,
-          // );
           return Image.asset(
-            "assets/images/mine/icon_light.png",
+            snapshot.data == null
+                ? "assets/images/mine/icon_light.png"
+                : (snapshot.data
+                    ? "assets/images/mine/icon_light_on.png"
+                    : "assets/images/mine/icon_light.png"),
             height: 48,
             width: 48,
           );
@@ -211,12 +250,12 @@ class _QRViewExampleState extends State<QRViewExample>
       onTap: () async {
         try {
           final picker = ImagePicker();
-          var image = await picker.getImage(
+          var image = await picker.pickImage(
             source: ImageSource.gallery,
           );
           print("image.path == " + image.path);
-
           String result = await Scan.parse(image.path);
+          checkNum(result);
           print("image.path.result == " + result.toString());
         } catch (e) {
           print("image.path.result.err == " + e.toString());
@@ -290,11 +329,11 @@ class _QRViewExampleState extends State<QRViewExample>
     setState(() {
       this.controller = controller;
     });
-    controller.scannedDataStream.first.then((scanData) {
+    controller.scannedDataStream.listen((scanData) {
+      checkNum(scanData.code.toString());
       print(
           "scan code == ${scanData.code} / type == ${scanData.format.toString()}");
-      Navigator.pop(context, scanData.code);
-    }).catchError((error) => null);
+    });
   }
 
   void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
@@ -302,5 +341,60 @@ class _QRViewExampleState extends State<QRViewExample>
     if (!p) {
       ScaffoldMessenger.of(context).showSnackBar(UiUitls.showToast("请打开相机权限"));
     }
+  }
+
+  Future<void> checkNum(String num) async {
+    bool isNetWorkAvailable = await CommonUtils.isNetWorkAvailable();
+    if (!isNetWorkAvailable) {
+      return;
+    }
+    controller.pauseCamera();
+    animationController.stop();
+    if (null == num || num.isEmpty) {
+      showErrorDialog(tips);
+      return;
+    }
+    Map<String, dynamic> map = new HashMap();
+    map['serial_num'] = num;
+    HttpUtils.requestHttp(
+      ApiConstant.numCheck,
+      parameters: map,
+      method: HttpUtils.POST,
+      onSuccess: (result) async {
+        bool pop = await NavigatorUtil.push(
+            context,
+            BindCollectorPage(
+              num: num,
+            ));
+        if (null != pop && !pop) {
+          controller.resumeCamera();
+          animationController.forward();
+        } else {
+          Navigator.pop(context);
+        }
+      },
+      onError: (code, error) {
+        showErrorDialog(error.toString());
+      },
+    );
+  }
+
+  Future<void> showErrorDialog(String error) async {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return MyDialog(
+            title: error,
+            img: "assets/images/mine/icon_delete_address.png",
+            tureText: "重新扫描",
+            falseText: "联系客服",
+          );
+        }).then((value) async {
+      if (null != value && !value) {
+        await NavigatorUtil.push(context, contantUsPage());
+      }
+      controller.resumeCamera();
+      animationController.forward();
+    });
   }
 }

@@ -34,7 +34,7 @@ class MyDialog extends Dialog {
                         width: 1, color: ColorConstant.WhiteColor),
                   ),
                   width: 344.w,
-                  height: 236.h,
+                  height: 256.h,
                   child: Column(
                     children: <Widget>[
                       Container(
@@ -57,7 +57,7 @@ class MyDialog extends Dialog {
                     ],
                   ))),
           Positioned(
-            top: 224.h,
+            top: 214.h,
             left: (ScreenUtils.screenW(context) - 110.w) / 2,
             child: Image(
               image: AssetImage('${this.img}'),
@@ -119,7 +119,7 @@ class MyDialog extends Dialog {
                     shape: MaterialStateProperty.all(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(40.h)))),
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.of(context).pop(false);
                 },
                 child: Container(
                   child: Center(

@@ -2,15 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/color_constant.dart';
-import 'package:zgene/constant/common_constant.dart';
-import 'package:zgene/event/event_bus.dart';
 import 'package:zgene/models/content_model.dart';
-import 'package:zgene/navigator/navigator_util.dart';
-import 'package:zgene/pages/bindcollector/bind_collector_page.dart';
-import 'package:zgene/pages/my/add_address_page.dart';
-import 'package:zgene/pages/my/order_step_page.dart';
 import 'package:zgene/util/common_utils.dart';
-import 'package:zgene/util/time_utils.dart';
+
 import 'home_getHttp.dart';
 
 class LocalNav extends StatefulWidget {
@@ -86,7 +80,7 @@ class _LocalNavState extends State<LocalNav>
         CommonUtils.toUrl(
             context: context, type: archives.linkType, url: archives.linkUrl);
         // if (0 == index) {
-        //   NavigatorUtil.push(context, BindCollectorPage());
+        //   NavigatorUtil.push(context, QRScannerView());
         // }
         // if (1 == index) {
         //   NavigatorUtil.push(context, OrderStepPage());

@@ -90,6 +90,9 @@ class ApiConstant {
   //获取订单当前状态
   static const String orderStatus = "/api/v1/order/status";
 
+  //采集器id验证
+  static const String numCheck = "/api/v1/order/check";
+
   ///********************************* 报告 *****************************///
   //基因报告列表
   static const String reports = "/api/v1/gene/reports";

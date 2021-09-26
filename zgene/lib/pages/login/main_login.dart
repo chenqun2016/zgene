@@ -6,7 +6,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluwx/fluwx.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
-import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 import 'package:zgene/configure.dart'
     if (dart.library.html) 'package:zgene/configure_web.dart';
 import 'package:zgene/constant/api_constant.dart';
@@ -23,6 +22,7 @@ import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/notification_utils.dart';
 import 'package:zgene/util/platform_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
+import 'package:zgene/util/umeng_utils.dart';
 import 'package:zgene/widget/base_web.dart';
 
 class MainLoginPage extends BaseWidget {
@@ -106,7 +106,7 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(28.h)))),
                   onPressed: () {
-                    UmengCommonSdk.onEvent(StatisticsConstant.MY_PAGE, {
+                    UmengUtils.onEvent(StatisticsConstant.MY_PAGE, {
                       StatisticsConstant.KEY_UMENG_L2:
                           StatisticsConstant.LOGIN_PHONENO
                     });
@@ -156,7 +156,7 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
                         shape: MaterialStateProperty.all(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(28.h)))),
                     onPressed: () {
-                      UmengCommonSdk.onEvent(StatisticsConstant.MY_PAGE, {
+                      UmengUtils.onEvent(StatisticsConstant.MY_PAGE, {
                         StatisticsConstant.KEY_UMENG_L2:
                             StatisticsConstant.LOGIN_WECHAT
                       });
@@ -255,7 +255,7 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
                         shape: MaterialStateProperty.all(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(28.h)))),
                     onPressed: () {
-                      UmengCommonSdk.onEvent(StatisticsConstant.MY_PAGE, {
+                      UmengUtils.onEvent(StatisticsConstant.MY_PAGE, {
                         StatisticsConstant.KEY_UMENG_L2:
                             StatisticsConstant.LOGIN_APPLE
                       });
@@ -537,7 +537,7 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
         //     .postNotification(NotificationName.GetUserInfo, null);
         if (data["has_mobile"] == null) {
           EasyLoading.showSuccess("登录成功");
-          UmengCommonSdk.onEvent(StatisticsConstant.MY_PAGE, {
+          UmengUtils.onEvent(StatisticsConstant.MY_PAGE, {
             StatisticsConstant.KEY_UMENG_L2: StatisticsConstant.MY_PAGE_LOGIN_OK
           });
           bus.emit(CommonConstant.refreshMine);
@@ -578,7 +578,7 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
         HttpUtils.clear();
         if (data["has_mobile"] == null) {
           EasyLoading.showSuccess("登录成功");
-          UmengCommonSdk.onEvent(StatisticsConstant.MY_PAGE, {
+          UmengUtils.onEvent(StatisticsConstant.MY_PAGE, {
             StatisticsConstant.KEY_UMENG_L2: StatisticsConstant.MY_PAGE_LOGIN_OK
           });
           bus.emit(CommonConstant.refreshMine);

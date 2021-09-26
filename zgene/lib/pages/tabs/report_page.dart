@@ -8,7 +8,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
@@ -25,6 +24,7 @@ import 'package:zgene/pages/report/report_list_page.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
+import 'package:zgene/util/umeng_utils.dart';
 
 import 'home_page.dart';
 
@@ -65,7 +65,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
 
   @override
   void pageWidgetInitState() {
-    UmengCommonSdk.onEvent(StatisticsConstant.TAB3_REPORT,
+    UmengUtils.onEvent(StatisticsConstant.TAB3_REPORT,
         {StatisticsConstant.KEY_UMENG_L2: StatisticsConstant.TAB3_REPORT_IMP});
 
     if (null != widget.id) {
@@ -501,7 +501,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
             top: MediaQuery.of(context).padding.top,
             child: GestureDetector(
               onTap: () async {
-                UmengCommonSdk.onEvent(StatisticsConstant.REPORT_PAGE, {
+                UmengUtils.onEvent(StatisticsConstant.REPORT_PAGE, {
                   StatisticsConstant.KEY_UMENG_L2:
                       StatisticsConstant.REPORT_PAGE_GENDER
                 });

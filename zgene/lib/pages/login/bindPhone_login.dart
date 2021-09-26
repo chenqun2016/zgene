@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
@@ -18,6 +17,7 @@ import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/isChina_phone.dart';
 import 'package:zgene/util/phonetextFild_input.dart';
 import 'package:zgene/util/sp_utils.dart';
+import 'package:zgene/util/umeng_utils.dart';
 
 class BindPhoneLoginPage extends BaseWidget {
   @override
@@ -430,7 +430,7 @@ class _BindPhoneLoginPageState extends BaseWidgetState<BindPhoneLoginPage> {
       method: HttpUtils.POST,
       onSuccess: (data) async {
         EasyLoading.showSuccess('登录成功');
-        UmengCommonSdk.onEvent(StatisticsConstant.MY_PAGE, {
+        UmengUtils.onEvent(StatisticsConstant.MY_PAGE, {
           StatisticsConstant.KEY_UMENG_L2: StatisticsConstant.MY_PAGE_LOGIN_OK
         });
         var spUtils = SpUtils();

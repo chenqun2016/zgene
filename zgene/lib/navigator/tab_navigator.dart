@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/statistics_constant.dart';
@@ -10,6 +9,7 @@ import 'package:zgene/pages/tabs/home_page.dart';
 import 'package:zgene/pages/tabs/my_page.dart';
 import 'package:zgene/pages/tabs/report_page.dart';
 import 'package:zgene/util/common_utils.dart';
+import 'package:zgene/util/umeng_utils.dart';
 
 class TabNavigator extends StatefulWidget {
   @override
@@ -88,31 +88,31 @@ class _TabNavigatorState extends State<TabNavigator> {
                 onTap: (index) {
                   switch (index) {
                     case 0:
-                      UmengCommonSdk.onEvent(StatisticsConstant.TAB1_HOME, {
+                      UmengUtils.onEvent(StatisticsConstant.TAB1_HOME, {
                         StatisticsConstant.KEY_UMENG_L2:
                             StatisticsConstant.TAB1_HOME_CLK
                       });
                       break;
                     case 1:
-                      UmengCommonSdk.onEvent(StatisticsConstant.TAB2_BUY, {
+                      UmengUtils.onEvent(StatisticsConstant.TAB2_BUY, {
                         StatisticsConstant.KEY_UMENG_L2:
                             StatisticsConstant.TAB2_BUY_CLK
                       });
                       break;
                     case 2:
-                      UmengCommonSdk.onEvent(StatisticsConstant.TAB3_REPORT, {
+                      UmengUtils.onEvent(StatisticsConstant.TAB3_REPORT, {
                         StatisticsConstant.KEY_UMENG_L2:
                             StatisticsConstant.TAB3_REPORT_CLK
                       });
                       break;
                     case 3:
-                      UmengCommonSdk.onEvent(StatisticsConstant.TAB4_MY, {
+                      UmengUtils.onEvent(StatisticsConstant.TAB4_MY, {
                         StatisticsConstant.KEY_UMENG_L2:
                             StatisticsConstant.TAB4_MY_CLK
                       });
                       break;
                     default:
-                      UmengCommonSdk.onEvent(StatisticsConstant.TAB1_HOME, {
+                      UmengUtils.onEvent(StatisticsConstant.TAB1_HOME, {
                         StatisticsConstant.KEY_UMENG_L2:
                             StatisticsConstant.TAB1_HOME_CLK
                       });

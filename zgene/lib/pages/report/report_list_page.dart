@@ -3,7 +3,6 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
@@ -17,6 +16,7 @@ import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
+import 'package:zgene/util/umeng_utils.dart';
 import 'package:zgene/widget/base_web.dart';
 
 class ReportListPage extends BaseWidget {
@@ -163,7 +163,7 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
           disabledColor: Colors.white,
           color: ColorConstant.TextMainColor,
           onPressed: () {
-            UmengCommonSdk.onEvent(StatisticsConstant.REPORT_PAGE, {
+            UmengUtils.onEvent(StatisticsConstant.REPORT_PAGE, {
               StatisticsConstant.KEY_UMENG_L2:
                   StatisticsConstant.REPORT_PAGE2_BUYBTN
             });

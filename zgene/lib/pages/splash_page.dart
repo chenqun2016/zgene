@@ -1,13 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:umeng_common_sdk/umeng_common_sdk.dart';
-import 'package:zgene/constant/config_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/navigator/tab_navigator.dart';
 import 'package:zgene/util/screen_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
+import 'package:zgene/util/umeng_utils.dart';
 
 ///app启动页
 class SplashPage extends StatefulWidget {
@@ -64,9 +63,6 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   void initOther() {
-    // //初始化组件化基础库, 所有友盟业务SDK都必须调用此初始化接口。
-    UmengCommonSdk.initCommon(
-        ConfigConstant.umengAndroidKey, ConfigConstant.umengIosKey, 'zgene');
-    UmengCommonSdk.setPageCollectionModeAuto();
+    UmengUtils.initCommon();
   }
 }

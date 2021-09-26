@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ui' as ui;
 
 import 'package:flutter/cupertino.dart';
@@ -6,10 +7,13 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:zgene/configure.dart'
     if (dart.library.html) 'package:zgene/configure_web.dart';
+import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
+import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/util/platform_utils.dart';
+import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/widget/base_web.dart';
 import 'package:zgene/widget/privacy_view.dart';
 
@@ -388,5 +392,25 @@ class UiUitls {
     List<int> bytes =
         data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
     return decodeImageFromList(bytes);
+  }
+
+  ///智能语音
+  ///url 拼接规则 url="对话链接(例:https://团队ID.ahc.ink/chat.html)?+"headHidden=1( 1则为隐藏title 不传则不隐藏)"+"&传递顾客参数(例如：customer={})"+"&其它参数（可选择 例如：uniqueId=会员唯一ID）"
+  static void showChatH5(BuildContext context) {
+    var spUtils = SpUtils();
+
+    var customerMap = {
+      "名称": spUtils.getStorage(SpConstant.UserName).toString(),
+      "手机": spUtils.getStorage(SpConstant.UserMobile).toString()
+    };
+    String customer = json.encode(customerMap);
+
+    String url = ApiConstant.smartServiceUrl +
+        "&headHidden=1" +
+        "&uniqueId=${spUtils.getStorage(SpConstant.Uid)}" +
+        "&customer=$customer";
+
+    print("url==" + url);
+    NavigatorUtil.push(context, BaseWebView(url: url, title: "智能客服"));
   }
 }

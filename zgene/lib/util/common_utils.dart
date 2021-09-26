@@ -1,10 +1,9 @@
-import 'dart:collection';
-
 import 'package:connectivity/connectivity.dart';
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
@@ -133,6 +132,10 @@ class CommonUtils {
 
   ///公共跳转链接
   static toUrl({context, String url, type}) {
+    UmengCommonSdk.onEvent(
+        "appbounced_useragreement", {CommonConstant.KEY_UMENG_L2: url});
+    // UmengCommonSdk.reportError('lost space');
+
     print("url==$url+type==${type.toString()}");
     var eventBus = getInstance();
 
@@ -272,7 +275,7 @@ class CommonUtils {
     if (null != token && token.isNotEmpty) {
       CookieManager cookieManager = CookieManager.instance();
       Cookie cookie =
-      await cookieManager.getCookie(url: uri1, name: CommonConstant.JWT);
+          await cookieManager.getCookie(url: uri1, name: CommonConstant.JWT);
       if (null != cookie &&
           null != cookie.value &&
           cookie.value.toString().isNotEmpty &&
@@ -290,20 +293,17 @@ class CommonUtils {
     return Future.value(1);
   }
 
-  static void addJavaScriptHandler(InAppWebViewController controller,BuildContext context) {
+  static void addJavaScriptHandler(
+      InAppWebViewController controller, BuildContext context) {
     controller.addJavaScriptHandler(
         handlerName: "navigate",
         callback: (List<dynamic> args) {
           try {
             if (null != args && args.length >= 2) {
-              CommonUtils.toUrl(
-                  context: context,
-                  url: args[1],
-                  type: args[0]);
+              CommonUtils.toUrl(context: context, url: args[1], type: args[0]);
               if (args[1] == CommonUtils.URL_BUY ||
                   args[1] == CommonUtils.URL_MY ||
-                  (args[1].contains(
-                      CommonUtils.URL_REPORT) &&
+                  (args[1].contains(CommonUtils.URL_REPORT) &&
                       !args[1].contains("_"))) {
                 Navigator.pop(context);
               }

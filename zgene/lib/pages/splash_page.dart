@@ -63,13 +63,10 @@ class _SplashPageState extends State<SplashPage> {
     );
   }
 
-  void initOther() async {
-    //初始化组件化基础库, 所有友盟业务SDK都必须调用此初始化接口。
-    await UmengCommonSdk.initCommon(
+  void initOther() {
+    // //初始化组件化基础库, 所有友盟业务SDK都必须调用此初始化接口。
+    UmengCommonSdk.initCommon(
         ConfigConstant.umengAndroidKey, ConfigConstant.umengIosKey, 'zgene');
     UmengCommonSdk.setPageCollectionModeAuto();
-
-    UmengCommonSdk.onEvent(
-        "appbounced_useragreement", {"name": "appbounced_01_imp"});
   }
 }

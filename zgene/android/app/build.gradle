@@ -86,6 +86,7 @@ android {
             shrinkResources true
             //开启zip对齐
             zipAlignEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 
             ndk {
                 // 设置支持的SO库架构
@@ -104,10 +105,8 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-
     // 友盟基础组件库（所有友盟业务SDK都依赖基础组件库）
     implementation  'com.umeng.umsdk:common:9.4.2'// 必选
-
     implementation  'com.umeng.umsdk:asms:1.4.1'// 必选
 
      implementation 'cn.jiguang.sdk:jshare:2.0.0'  // 此处以JShare 1.6.0 版本为例，具体版本请参考压缩包libs的jar包版本。

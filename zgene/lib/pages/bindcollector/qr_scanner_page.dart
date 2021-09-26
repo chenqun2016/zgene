@@ -11,6 +11,7 @@ import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/bindcollector/bind_collector_page.dart';
 import 'package:zgene/pages/my/my_contant_us.dart';
+import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/dia_log.dart';
 import 'package:zgene/util/platform_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
@@ -354,6 +355,13 @@ class _QRScannerViewState extends State<QRScannerView>
   }
 
   Future<void> checkNum(String num) async {
+    bool isNetWorkAvailable = await CommonUtils.isNetWorkAvailable();
+    if (!isNetWorkAvailable) {
+      controller.resumeCamera();
+      animationController.forward();
+      return;
+    }
+
     if (null == num || num.isEmpty) {
       showErrorDialog(tips);
       return;

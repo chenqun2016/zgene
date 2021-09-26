@@ -1,28 +1,29 @@
 import 'dart:collection';
 
 import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluwx/fluwx.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:umeng_common_sdk/umeng_common_sdk.dart';
+import 'package:zgene/configure.dart'
+    if (dart.library.html) 'package:zgene/configure_web.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/app_notification.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
+import 'package:zgene/constant/statistics_constant.dart';
 import 'package:zgene/event/event_bus.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/pages/login/bindPhone_login.dart';
 import 'package:zgene/pages/login/phone_login.dart';
 import 'package:zgene/util/base_widget.dart';
-
-import 'package:flutter/material.dart';
 import 'package:zgene/util/notification_utils.dart';
 import 'package:zgene/util/platform_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/widget/base_web.dart';
-import 'package:zgene/configure.dart'
-    if (dart.library.html) 'package:zgene/configure_web.dart';
 
 class MainLoginPage extends BaseWidget {
   @override
@@ -105,6 +106,10 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(28.h)))),
                   onPressed: () {
+                    UmengCommonSdk.onEvent(StatisticsConstant.MY_PAGE, {
+                      StatisticsConstant.KEY_UMENG_L2:
+                          StatisticsConstant.LOGIN_PHONENO
+                    });
                     selectPhoneLogin();
                   },
                   child: Container(
@@ -151,6 +156,10 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
                         shape: MaterialStateProperty.all(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(28.h)))),
                     onPressed: () {
+                      UmengCommonSdk.onEvent(StatisticsConstant.MY_PAGE, {
+                        StatisticsConstant.KEY_UMENG_L2:
+                            StatisticsConstant.LOGIN_WECHAT
+                      });
                       loginWX();
                     },
                     child: Container(
@@ -246,6 +255,10 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
                         shape: MaterialStateProperty.all(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(28.h)))),
                     onPressed: () {
+                      UmengCommonSdk.onEvent(StatisticsConstant.MY_PAGE, {
+                        StatisticsConstant.KEY_UMENG_L2:
+                            StatisticsConstant.LOGIN_APPLE
+                      });
                       LoginApple();
                       // toBindingPhone();
                     },
@@ -524,6 +537,9 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
         //     .postNotification(NotificationName.GetUserInfo, null);
         if (data["has_mobile"] == null) {
           EasyLoading.showSuccess("登录成功");
+          UmengCommonSdk.onEvent(StatisticsConstant.MY_PAGE, {
+            StatisticsConstant.KEY_UMENG_L2: StatisticsConstant.MY_PAGE_LOGIN_OK
+          });
           bus.emit(CommonConstant.refreshMine);
           // Navigator.popUntil(context, ModalRoute.withName('/'));
           Navigator.of(context).popUntil((route) => route.isFirst);
@@ -562,6 +578,9 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
         HttpUtils.clear();
         if (data["has_mobile"] == null) {
           EasyLoading.showSuccess("登录成功");
+          UmengCommonSdk.onEvent(StatisticsConstant.MY_PAGE, {
+            StatisticsConstant.KEY_UMENG_L2: StatisticsConstant.MY_PAGE_LOGIN_OK
+          });
           bus.emit(CommonConstant.refreshMine);
           Navigator.of(context).popUntil((route) => route.isFirst);
         } else {

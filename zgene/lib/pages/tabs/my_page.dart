@@ -3,10 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
+import 'package:zgene/constant/statistics_constant.dart';
 import 'package:zgene/event/event_bus.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/content_model.dart';
@@ -46,6 +48,8 @@ class _MyPageState extends BaseWidgetState<MyPage> {
   @override
   void pageWidgetInitState() {
     super.pageWidgetInitState();
+    UmengCommonSdk.onEvent(StatisticsConstant.TAB4_MY,
+        {StatisticsConstant.KEY_UMENG_L2: StatisticsConstant.TAB4_MY_IMP});
     showHead = false;
     // isShowBack = false;
     getHttp();
@@ -692,8 +696,10 @@ class _MyPageState extends BaseWidgetState<MyPage> {
 
   ///点击事件
   _onTapEvent(index) async {
+    String umentType = "";
     switch (index) {
       case 1: //消息
+        umentType = StatisticsConstant.MY_PAGE_TOP_MESSAGE;
         if (spUtils.getStorageDefault(SpConstant.IsLogin, false)) {
           final result = await Navigator.push(context,
               MaterialPageRoute(builder: (context) => MyMessagePage()));
@@ -717,6 +723,7 @@ class _MyPageState extends BaseWidgetState<MyPage> {
             setData();
           }
         } else {
+          umentType = StatisticsConstant.MY_PAGE_LOGIN;
           BaseLogin.login();
         }
         // }
@@ -726,7 +733,7 @@ class _MyPageState extends BaseWidgetState<MyPage> {
         // }
         break;
       case 3: //我的订单
-
+        umentType = StatisticsConstant.MY_PAGE_ORDER;
         if (spUtils.getStorageDefault(SpConstant.IsLogin, false)) {
           NavigatorUtil.push(context, MyOrderListPage());
         } else {
@@ -734,17 +741,20 @@ class _MyPageState extends BaseWidgetState<MyPage> {
         }
         break;
       case 4: //绑定采集器
+        umentType = StatisticsConstant.MY_PAGE_BINDING;
         NavigatorUtil.push(context, QRScannerView());
         break;
       case 5: //回寄采集器
-
+        umentType = StatisticsConstant.MY_PAGE_MAIL;
         NavigatorUtil.push(context, SendBackAcquisitionPage());
 
         break;
       case 6: //产品购买
+        umentType = StatisticsConstant.MY_PAGE_PRODUCTS_BUY;
         CommonUtils.toUrl(context: context, url: CommonUtils.URL_BUY);
         break;
       case 7: //我的报告
+        umentType = StatisticsConstant.MY_PAGE_REPORT;
         print(spUtils.getStorageDefault(SpConstant.IsLogin, false));
 
         if (spUtils.getStorageDefault(SpConstant.IsLogin, false)) {
@@ -754,6 +764,7 @@ class _MyPageState extends BaseWidgetState<MyPage> {
         }
         break;
       case 8: //设置
+        umentType = StatisticsConstant.MY_PAGE_SET;
         if (spUtils.getStorageDefault(SpConstant.IsLogin, false)) {
           NavigatorUtil.push(context, MySetPage());
         } else {
@@ -761,15 +772,20 @@ class _MyPageState extends BaseWidgetState<MyPage> {
         }
         break;
       case 9: //联系客服
+        umentType = StatisticsConstant.MY_PAGE_SERVICE;
         NavigatorUtil.push(context, contantUsPage());
         break;
       case 10: //常见问题
+        umentType = StatisticsConstant.MY_PAGE_PROBLEM;
         NavigatorUtil.push(context, CommonQusListPage());
         break;
       case 11: //关于Z基因
+        umentType = StatisticsConstant.MY_PAGE_ABOUTUS;
         NavigatorUtil.push(context, AboutZPage());
         // BaseLogin.login();
         break;
     }
+    UmengCommonSdk.onEvent(StatisticsConstant.MY_PAGE,
+        {StatisticsConstant.KEY_UMENG_L2: umentType});
   }
 }

@@ -122,7 +122,4 @@ class CommonConstant {
   static const String JWT = "jwt";
 
   static const String BUS_BUYPAGE = "bus_buypage";
-
-  ///Umeng 二级打点事件 - 公共key
-  static const String KEY_UMENG_L2 = "key_L2";
 }

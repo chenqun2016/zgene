@@ -1,9 +1,8 @@
-import 'dart:io';
-
-import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
+import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
+import 'package:zgene/constant/statistics_constant.dart';
 import 'package:zgene/event/event_bus.dart';
 import 'package:zgene/models/msg_event.dart';
 import 'package:zgene/pages/tabs/buy_page.dart';
@@ -35,9 +34,9 @@ class _TabNavigatorState extends State<TabNavigator> {
         case 100: //切换tab
           if (event.msg == 2) {
             reportpage.id = event.arg;
-            bus.emit("ReportPage",event.arg);
+            bus.emit("ReportPage", event.arg);
           }
-          if(event.msg == 1){
+          if (event.msg == 1) {
             bus.emit(CommonConstant.BUS_BUYPAGE);
           }
           _controller.jumpToPage(event.msg);
@@ -87,6 +86,38 @@ class _TabNavigatorState extends State<TabNavigator> {
                 iconSize: 26,
                 currentIndex: _currentIndex,
                 onTap: (index) {
+                  switch (index) {
+                    case 0:
+                      UmengCommonSdk.onEvent(StatisticsConstant.TAB1_HOME, {
+                        StatisticsConstant.KEY_UMENG_L2:
+                            StatisticsConstant.TAB1_HOME_CLK
+                      });
+                      break;
+                    case 1:
+                      UmengCommonSdk.onEvent(StatisticsConstant.TAB2_BUY, {
+                        StatisticsConstant.KEY_UMENG_L2:
+                            StatisticsConstant.TAB2_BUY_CLK
+                      });
+                      break;
+                    case 2:
+                      UmengCommonSdk.onEvent(StatisticsConstant.TAB3_REPORT, {
+                        StatisticsConstant.KEY_UMENG_L2:
+                            StatisticsConstant.TAB3_REPORT_CLK
+                      });
+                      break;
+                    case 3:
+                      UmengCommonSdk.onEvent(StatisticsConstant.TAB4_MY, {
+                        StatisticsConstant.KEY_UMENG_L2:
+                            StatisticsConstant.TAB4_MY_CLK
+                      });
+                      break;
+                    default:
+                      UmengCommonSdk.onEvent(StatisticsConstant.TAB1_HOME, {
+                        StatisticsConstant.KEY_UMENG_L2:
+                            StatisticsConstant.TAB1_HOME_CLK
+                      });
+                      break;
+                  }
                   _controller.jumpToPage(index);
                   setState(() {
                     _currentIndex = index;

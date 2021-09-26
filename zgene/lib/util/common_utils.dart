@@ -3,7 +3,6 @@ import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
@@ -132,10 +131,6 @@ class CommonUtils {
 
   ///公共跳转链接
   static toUrl({context, String url, type}) {
-    UmengCommonSdk.onEvent(
-        "appbounced_useragreement", {CommonConstant.KEY_UMENG_L2: url});
-    // UmengCommonSdk.reportError('lost space');
-
     print("url==$url+type==${type.toString()}");
     var eventBus = getInstance();
 

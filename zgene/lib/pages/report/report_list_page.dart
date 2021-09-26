@@ -1,10 +1,13 @@
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
+import 'package:zgene/constant/statistics_constant.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/archive_des_model.dart';
 import 'package:zgene/models/report_des_model.dart';
@@ -160,6 +163,10 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
           disabledColor: Colors.white,
           color: ColorConstant.TextMainColor,
           onPressed: () {
+            UmengCommonSdk.onEvent(StatisticsConstant.REPORT_PAGE, {
+              StatisticsConstant.KEY_UMENG_L2:
+                  StatisticsConstant.REPORT_PAGE2_BUYBTN
+            });
             CommonUtils.toUrl(context: context, url: CommonUtils.URL_BUY);
             Navigator.pop(context);
           },

@@ -11,9 +11,10 @@ import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:fluwx/fluwx.dart';
 // import 'package:jshare_flutter_plugin/jshare_flutter_plugin.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/config_constant.dart';
-import 'package:zgene/util/platform_utils.dart';
+import 'package:zgene/constant/statistics_constant.dart';
 
 enum JSharePlatform {
   wechatSession,
@@ -227,7 +228,8 @@ class ShareUtils {
       );
 
       shareToWeChat(model);
-
+      UmengCommonSdk.onEvent(StatisticsConstant.SHARE,
+          {StatisticsConstant.KEY_UMENG_L2: StatisticsConstant.SHARE_WEIXIN});
       return;
     }
 
@@ -245,7 +247,9 @@ class ShareUtils {
       );
 
       shareToWeChat(model);
-
+      UmengCommonSdk.onEvent(StatisticsConstant.SHARE, {
+        StatisticsConstant.KEY_UMENG_L2: StatisticsConstant.SHARE_PENGYOUQUAN
+      });
       return;
     }
     // }

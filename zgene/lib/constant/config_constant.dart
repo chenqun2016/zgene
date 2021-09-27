@@ -18,4 +18,8 @@ class ConfigConstant {
   static String umengAndroidKey = "614d843866b59330aa6f3255";
   //友盟iosKey
   static String umengIosKey = "614d892966b59330aa6f5127";
+
+  ///多渠道打包用到的参数
+  static const APP_CHANNEL =
+      String.fromEnvironment('APP_CHANNEL', defaultValue: "zgene");
 }

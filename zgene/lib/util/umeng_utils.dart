@@ -13,8 +13,8 @@ class UmengUtils {
   static void initCommon() {
     if (PlatformUtils.isIOS || PlatformUtils.isAndroid) {
       // //初始化组件化基础库, 所有友盟业务SDK都必须调用此初始化接口。
-      UmengCommonSdk.initCommon(
-          ConfigConstant.umengAndroidKey, ConfigConstant.umengIosKey, 'zgene');
+      UmengCommonSdk.initCommon(ConfigConstant.umengAndroidKey,
+          ConfigConstant.umengIosKey, ConfigConstant.APP_CHANNEL);
       UmengCommonSdk.setPageCollectionModeAuto();
     }
   }

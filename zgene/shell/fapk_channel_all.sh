@@ -1,5 +1,6 @@
-sh fapkc.sh baidu
-sh fapkc.sh huawei
+chmod +x ./fapkc.sh
+./fapkc.sh baidu
+./fapkc.sh huawei
 #sh fapkc.sh Lenovo
 #sh fapkc.sh oppo
 #sh fapkc.sh qihu

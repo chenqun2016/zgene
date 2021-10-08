@@ -35,6 +35,7 @@ class ColorConstant {
   static const Color TextMainColor = Color(0xFF007AF7);
   static const Color TextMainColor_10per = Color(0x19007AF7);
 
+  static const Color text_30112950 = Color(0x30112950);
   //文字标准灰
   static const Color TextMainGray = Color(0xFFA0A0A0);
   //文字标准灰

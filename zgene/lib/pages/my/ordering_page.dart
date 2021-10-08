@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -6,6 +7,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_pickers/pickers.dart';
 import 'package:fluwx/fluwx.dart';
+import 'package:tobias/tobias.dart' as tobias;
+import 'package:zgene/configure.dart'
+    if (dart.library.html) 'package:zgene/configure_web.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
@@ -16,12 +20,8 @@ import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/my/my_order_list.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
-import 'package:tobias/tobias.dart' as tobias;
 import 'package:zgene/util/platform_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
-import 'package:zgene/configure.dart'
-    if (dart.library.html) 'package:zgene/configure_web.dart';
-import 'dart:convert';
 
 import 'my_address_list.dart';
 
@@ -1088,7 +1088,7 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
         }
       },
       onError: (code, error) {
-        EasyLoading.showError(error);
+        UiUitls.showToast(error);
       },
     );
   }

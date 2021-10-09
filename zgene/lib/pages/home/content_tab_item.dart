@@ -1,82 +1,31 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/navigator/navigator_util.dart';
-import 'package:zgene/pages/home/video_page.dart';
 import 'package:zgene/util/common_utils.dart';
 
-class ContentListNav extends StatefulWidget {
-  const ContentListNav({Key key}) : super(key: key);
+import 'video_page.dart';
+
+class ContentTabItem extends StatefulWidget {
+  final int index;
+  const ContentTabItem({Key key, @required this.index}) : super(key: key);
 
   @override
-  _ContentListNavState createState() => _ContentListNavState();
+  _ContentTabItemState createState() => _ContentTabItemState();
 }
 
-class _ContentListNavState extends State<ContentListNav>
-    with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
-  @override
-  bool get wantKeepAlive => true;
-
-  final tabs = ['精选', '基因研究院', '用户测评'];
-  TabController _tabController;
-
+class _ContentTabItemState extends State<ContentTabItem> {
   List contentList = [1, 2, 3, 4, 5, 6, 7];
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(vsync: this, length: tabs.length);
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top: 16, left: 15, right: 15),
-      padding: EdgeInsets.only(top: 10, bottom: 10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(
-          Radius.circular(20),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [_buildTabBar(), _buildTableBarView()],
-      ),
-    );
-  }
-
-  Widget _buildTabBar() => TabBar(
-        onTap: (tab) => print(tab),
-        labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-        unselectedLabelStyle: TextStyle(fontSize: 15),
-        isScrollable: true,
-        controller: _tabController,
-        labelColor: ColorConstant.TextMainColor,
-        unselectedLabelColor: ColorConstant.Text_5E6F88,
-        indicatorWeight: 3,
-        padding: EdgeInsets.zero,
-        indicatorSize: TabBarIndicatorSize.label,
-        indicatorPadding: EdgeInsets.fromLTRB(4, 0, 4, 0),
-        indicatorColor: ColorConstant.TextMainColor,
-        tabs: tabs.map((e) => Tab(text: e)).toList(),
-      );
-
-  Widget _buildTableBarView() => AnimatedBuilder(
-      animation: _tabController.animation,
-      builder: (ctx, child) {
-        return _itemList(_tabController.index);
-      });
-
-  Widget _itemList(int indexOf) {
+    int indexOf = widget.index;
     return Padding(
       padding: const EdgeInsets.only(left: 16, right: 16, top: 15, bottom: 15),
       child: StaggeredGridView.countBuilder(

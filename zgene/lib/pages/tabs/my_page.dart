@@ -18,6 +18,7 @@ import 'package:zgene/pages/bindcollector/qr_scanner_page.dart';
 import 'package:zgene/pages/home/home_getHttp.dart';
 import 'package:zgene/pages/my/my_about_z.dart';
 import 'package:zgene/pages/my/my_commonQus.dart';
+import 'package:zgene/pages/my/my_contant_us.dart';
 import 'package:zgene/pages/my/my_info_page.dart';
 import 'package:zgene/pages/my/my_message_list.dart';
 import 'package:zgene/pages/my/my_order_list.dart';
@@ -30,7 +31,6 @@ import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/login_base.dart';
 import 'package:zgene/util/screen_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
-import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/util/umeng_utils.dart';
 
 class MyPage extends BaseWidget {
@@ -772,10 +772,8 @@ class _MyPageState extends BaseWidgetState<MyPage> {
         }
         break;
       case 9: //联系客服
-        // umentType = StatisticsConstant.MY_PAGE_SERVICE;
-        // NavigatorUtil.push(context, contantUsPage());
-
-        UiUitls.showChatH5(context);
+        umentType = StatisticsConstant.MY_PAGE_SERVICE;
+        NavigatorUtil.push(context, contantUsPage());
         break;
       case 10: //常见问题
         umentType = StatisticsConstant.MY_PAGE_PROBLEM;

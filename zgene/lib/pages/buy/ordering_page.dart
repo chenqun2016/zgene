@@ -23,7 +23,7 @@ import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/platform_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 
-import 'my_address_list.dart';
+import '../my/my_address_list.dart';
 
 class OrderingPage extends BaseWidget {
   Archives product;

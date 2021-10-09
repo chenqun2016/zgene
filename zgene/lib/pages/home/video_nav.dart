@@ -1,19 +1,11 @@
-import 'dart:collection';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
-import 'package:zgene/constant/common_constant.dart';
-import 'package:zgene/event/event_bus.dart';
-import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/content_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/home/home_getHttp.dart';
 import 'package:zgene/pages/home/video_page.dart';
 import 'package:zgene/util/common_utils.dart';
-import 'package:zgene/util/time_utils.dart';
-import 'package:zgene/util/ui_uitls.dart';
 
 class VideoNav extends StatefulWidget {
   @override
@@ -57,7 +49,7 @@ class _VideoNavState extends State<VideoNav>
     if (aloneList.length == 0) {
       return Text("");
     } else {
-      print(CommonUtils.splicingUrl(aloneList[0].imageUrl));
+      print("video img==" + aloneList[0].imageUrl);
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -179,14 +171,41 @@ class _VideoNavState extends State<VideoNav>
             //   Radius.circular(10),
             // ),
           ),
-          child: Text(
-            archives.title,
-            style: TextStyle(
-                fontSize: 16,
-                color: index % 2 == 0
-                    ? ColorConstant.Text_776359
-                    : ColorConstant.Text_64747F,
-                fontWeight: FontWeight.bold),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                archives.title,
+                style: TextStyle(
+                    fontSize: 16,
+                    color: index % 2 == 0
+                        ? ColorConstant.Text_776359
+                        : ColorConstant.Text_64747F,
+                    fontWeight: FontWeight.bold),
+              ),
+              Expanded(
+                child: Text(""),
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "去看看",
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: index % 2 == 0
+                            ? ColorConstant.Text_776359
+                            : ColorConstant.Text_64747F,
+                        fontWeight: FontWeight.w500),
+                  ),
+                  Image.asset(
+                    "assets/images/home/icon_to.png",
+                    height: 16,
+                    width: 16,
+                  )
+                ],
+              )
+            ],
           ),
         ),
       );

@@ -7,6 +7,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/statistics_constant.dart';
 import 'package:zgene/models/content_model.dart';
+import 'package:zgene/pages/home/content_list_nav.dart';
+import 'package:zgene/pages/home/course_nav.dart';
 import 'package:zgene/pages/home/explore_nav.dart';
 import 'package:zgene/pages/home/home_getHttp.dart';
 import 'package:zgene/pages/home/local_nav.dart';
@@ -124,6 +126,8 @@ class _HomePageState extends BaseWidgetState<HomePage> {
         LocalNav(),
         ExploreNav(),
         VideoNav(),
+        CourseNav(),
+        ContentListNav(),
         ProblemNav(),
       ],
     );

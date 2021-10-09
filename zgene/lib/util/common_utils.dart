@@ -20,6 +20,7 @@ import 'login_base.dart';
 class CommonUtils {
   ///拼接图片和视频路径
   static String splicingUrl(String url) {
+    print("splicingUrl==" + url);
     if (null == url || url.isEmpty) {
       return "";
     }

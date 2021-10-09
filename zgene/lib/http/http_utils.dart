@@ -71,6 +71,9 @@ class HttpUtils {
       var platform = "app";
       if (CommonConstant.isInWechatWeb) {
         platform = "gzh";
+        if (CommonConstant.isInWechatMini) {
+          platform = "mini";
+        }
       }
 
       /// 全局属性：请求前缀、连接超时时间、响应超时时间

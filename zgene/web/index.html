@@ -54,6 +54,8 @@
   <script src="//res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
   <script>
     var inWechatWeb = false;
+    var inWechatMini = false; // 是否是微信小程序
+
     // GetCookie 获取Cookie
     function GetCookie(name) {
       var nameEQ = name + "=";
@@ -74,6 +76,27 @@
         inWechatWeb = false;
       }
     };
+
+    let useHtml = true;
+    if (ua.match(/iPhone OS 15/i) == "iphone os 15") {
+      // 如果是IOS15，则采用canvaskit，否则无法打开
+      // HTMLCanvasElement.prototype.getContext = function (orig) {
+      //   return function (type) {
+      //     return type !== "webgl2" ? orig.apply(this, arguments) : null
+      //   }
+      // }(HTMLCanvasElement.prototype.getContext)
+    }
+
+    if (ua.match(/miniProgram/i) == "miniprogram") {
+      // 通过UA判断小程序
+      inWechatMini = true;
+    }
+
+    if (useHtml) {
+      window.flutterWebRenderer = "html";
+    } else {
+      window.flutterWebRenderer = "canvaskit";
+    }
 
     var isShowing = false;
 
@@ -104,6 +127,10 @@
       return inWechatWeb;
     }
 
+    function InWechatMini() {
+      return inWechatMini;
+    }
+
     function JumpLogin() {
       location.href = "/wechat/login";
     }
@@ -123,25 +150,56 @@
 
     function WeixinPay(parms) {
       let res = JSON.parse(parms);
-
-      WeixinJSBridge.invoke(
-        'getBrandWCPayRequest', {
-        "appId": res["appid"],     //公众号ID，由商户传入     
-        "timeStamp": res["timestamp"],         //时间戳，自1970年以来的秒数     
-        "nonceStr": res["noncestr"], //随机串     
-        "package": res["package"],
-        "signType": "RSA",         //微信签名方式：     
-        "paySign": res["sign"] //微信签名 
-      },
-        function (res) {
-          if (res.err_msg == "get_brand_wcpay_request:ok") {
-            // 使用以上方式判断前端返回,微信团队郑重提示：
-            //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
-            // alert("ok");
-            location.href = "/webapp/#/my_order";
-          }
-        });
+      if (inWechatMini) {
+        let tmp = encodeURIComponent(JSON.stringify({
+          timeStamp: res["timeStamp"],
+          nonceStr: res["nonceStr"],
+          package: res["package"],
+          paySign: res["paySign"],
+        }));
+        // console.log("[WeixinPay]tmp=",tmp);
+        // 在小程序里面支付
+        wx.miniProgram.redirectTo({ url: `/pages/pay/index?parms=${tmp}` });
+      } else if (inWechatWeb) {
+        // 微信web支付
+        WeixinJSBridge.invoke(
+          'getBrandWCPayRequest', {
+          "appId": res["appid"],     //公众号ID，由商户传入     
+          "timeStamp": `${res["timestamp"]}`,         //时间戳，自1970年以来的秒数     
+          "nonceStr": res["noncestr"], //随机串     
+          "package": res["package"],
+          "signType": "RSA",         //微信签名方式：     
+          "paySign": res["sign"] //微信签名 
+        },
+          function (res) {
+            if (res.err_msg == "get_brand_wcpay_request:ok") {
+              // 使用以上方式判断前端返回,微信团队郑重提示：
+              //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+              // alert("ok");
+              location.href = "/webapp/#/push_order_page";
+            }
+          });
+      }
+      // WeixinJSBridge.invoke(
+      //   'getBrandWCPayRequest', {
+      //   "appId": res["appid"],     //公众号ID，由商户传入     
+      //   "timeStamp": res["timestamp"],         //时间戳，自1970年以来的秒数     
+      //   "nonceStr": res["noncestr"], //随机串     
+      //   "package": res["package"],
+      //   "signType": "RSA",         //微信签名方式：     
+      //   "paySign": res["sign"] //微信签名 
+      // },
+      //   function (res) {
+      //     if (res.err_msg == "get_brand_wcpay_request:ok") {
+      //       // 使用以上方式判断前端返回,微信团队郑重提示：
+      //       //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+      //       // alert("ok");
+      //       location.href = "/webapp/#/my_order";
+      //     }
+      //   });
     }
+
+
 
     if ('serviceWorker' in navigator) {
       // Service workers are supported. Use them.
@@ -203,7 +261,7 @@
       console.log(res.miniprogram) // true
       setTimeout(function () {
         console.log("postMessage");
-        wx.miniProgram.navigateBack({delta: 1})
+        wx.miniProgram.navigateBack({ delta: 1 })
         wx.miniProgram.postMessage({
           data: JSON.stringify({
             action: 'vibrateShort',

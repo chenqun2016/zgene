@@ -19,9 +19,6 @@ import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/util/umeng_utils.dart';
 
-const APPBAR_SCROLL_OFFSET = 50;
-const APPBAR_SCROLL_OFFSET2 = 400;
-
 ///首页购买页面
 class BuyPage extends BaseWidget {
   @override
@@ -33,7 +30,6 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
   EasyRefreshController _easyController;
   ScrollController _controller = new ScrollController();
   List _products;
-  static ValueKey key = ValueKey('key_0');
 
   @override
   void pageWidgetInitState() {
@@ -116,7 +112,7 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
             onRefresh: () async {
               // page = 1;
               // // 获取数据
-              await HomeGetHttp();
+              HomeGetHttp();
               // await Future.delayed(Duration(seconds: 1), () {
               // 重置刷新状态 【没错，这里用的是resetLoadState】
               if (_easyController != null) {
@@ -145,7 +141,11 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
   Widget getItem(Archives bean) {
     return GestureDetector(
       onTap: () {
-        NavigatorUtil.push(context, ProductDetailPage());
+        NavigatorUtil.push(
+            context,
+            ProductDetailPage(
+              bean: bean,
+            ));
       },
       behavior: HitTestBehavior.opaque,
       child: Container(
@@ -161,14 +161,17 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
             Positioned(
               left: 16,
               top: 16,
-              child: CachedNetworkImage(
-                width: 104,
-                // 设置根据宽度计算高度
-                height: 104,
-                // 图片地址
-                imageUrl: CommonUtils.splicingUrl(bean.imageUrl),
-                // 填充方式为cover
-                fit: BoxFit.fitHeight,
+              child: Hero(
+                tag: bean.id.toString(),
+                child: CachedNetworkImage(
+                  width: 104,
+                  // 设置根据宽度计算高度
+                  height: 104,
+                  // 图片地址
+                  imageUrl: CommonUtils.splicingUrl(bean.imageUrl),
+                  // 填充方式为cover
+                  fit: BoxFit.fitHeight,
+                ),
               ),
             ),
             Positioned(
@@ -248,7 +251,7 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
 
   Widget get _title {
     return Container(
-      margin: EdgeInsets.only(left: 16, right: 16, top: 10.w, bottom: 13),
+      margin: EdgeInsets.only(left: 16, right: 16, top: 10.w, bottom: 2),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [

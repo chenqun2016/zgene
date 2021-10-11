@@ -170,7 +170,7 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
                   // 图片地址
                   imageUrl: CommonUtils.splicingUrl(bean.imageUrl),
                   // 填充方式为cover
-                  fit: BoxFit.fitHeight,
+                  fit: BoxFit.cover,
                 ),
               ),
             ),

@@ -119,6 +119,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
     GetuiUtils.initGetuiSdk();
     GetuiUtils.config();
+    // GetuiUtils.getClientId();
+    GetuiUtils.bindAlias();
   }
 
   _installFluwx() async {
@@ -138,6 +140,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     switch (state) {
       case AppLifecycleState.inactive:
         // jpush.setBadge(0);
+        GetuiUtils.resetBadge();
         print("前后台更改"); // 处于这种状态的应用程序应该假设它们可能在任何时候暂停
         break;
       case AppLifecycleState.resumed: //从后台切换前台，界面可见

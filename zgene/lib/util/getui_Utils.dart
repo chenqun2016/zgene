@@ -1,4 +1,8 @@
+import 'dart:ffi';
+
 import 'package:getuiflut/getuiflut.dart';
+import 'package:zgene/constant/sp_constant.dart';
+import 'package:zgene/util/sp_utils.dart';
 
 class GetuiUtils {
   static config() {
@@ -54,5 +58,21 @@ class GetuiUtils {
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  static Future<Void> bindAlias() async {
+    var spUtils = SpUtils();
+
+    if (spUtils.getStorageDefault(SpConstant.IsLogin, false)) {
+      if (spUtils.getStorageDefault(SpConstant.Uid, 0) != 0) {
+        Getuiflut().bindAlias(
+            spUtils.getStorageDefault(SpConstant.Uid, 0).toString(), "");
+      }
+    }
+  }
+
+  static Future<Void> resetBadge() async {
+    // ignore: unnecessary_statements
+    Getuiflut().resetBadge;
   }
 }

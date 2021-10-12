@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fluwx/fluwx.dart';
+import 'package:getuiflut/getuiflut.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/config_constant.dart';
@@ -18,6 +21,7 @@ import 'package:zgene/pages/tabs/buy_page.dart';
 import 'package:zgene/pages/tabs/report_page.dart';
 import 'package:zgene/util/chineseCupertino.dart';
 import 'package:zgene/util/common_utils.dart';
+import 'package:zgene/util/getui_Utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/widget/restart_widget.dart';
@@ -106,6 +110,15 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     } else {
       webLogin();
     }
+    if (Platform.isIOS) {
+      Getuiflut().startSdk(
+          appId: "LtFmCuKHpj7dr8CM6ExQw5",
+          appKey: "7b0CKZK1Ol85XkOGlmv4H8",
+          appSecret: "ulNNxALdjl7gXekPjnR8D1");
+    }
+
+    GetuiUtils.initGetuiSdk();
+    GetuiUtils.config();
   }
 
   _installFluwx() async {
@@ -191,7 +204,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         CommonConstant.ROUT_kefu: (context) => contantUsPage(), //联系客服
         CommonConstant.ROUT_about: (context) => AboutUsPage(), //关于我们
         CommonConstant.ROUT_buy: (context) => BuyPage(), //购买页面
-        CommonConstant.ROUT_common_question: (context) => CommonQusListPage(), //常见问题
+        CommonConstant.ROUT_common_question: (context) =>
+            CommonQusListPage(), //常见问题
         CommonConstant.ROUT_my_report_list: (context) => MyReportPage(), //我的报告
       },
     ));

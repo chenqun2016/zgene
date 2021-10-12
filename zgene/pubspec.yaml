@@ -64,6 +64,7 @@ dependencies:
   flutter_native_image: ^0.0.6+1
   webview_flutter: ^2.0.12
   cached_network_image: ^3.1.0
+  getuiflut: ^0.2.3
 
 dev_dependencies:
   flutter_test:

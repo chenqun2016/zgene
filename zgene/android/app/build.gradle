@@ -33,12 +33,12 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     compileSdkVersion 30
-
+ 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
-    defaultConfig {
+    defaultConfig {                                                                                                                                                                                                                                                                                                                                                           
         applicationId "com.jt.zgene"
         minSdkVersion 21
         targetSdkVersion 30
@@ -55,11 +55,27 @@ android {
          TENCENT_APPID : "",//腾讯开放平台注册应用得到的
         FACEBOOK_APPID : "",//facebook注册应用得到的appId
         
+        //个推
+        GETUI_APP_ID    : "LtFmCuKHpj7dr8CM6ExQw5",
+        GETUI_APP_KEY   : "7b0CKZK1Ol85XkOGlmv4H8",
+        GETUI_APP_SECRET: "ulNNxALdjl7gXekPjnR8D1",
+        // 下面是多厂商配置，如需要开通使用请联系技术支持
+        // 如果不需要使用，预留空字段即可
+        XIAOMI_APP_ID   : "",
+        XIAOMI_APP_KEY  : "",
+        MEIZU_APP_ID    : "",
+        MEIZU_APP_KEY   : "",
+        HUAWEI_APP_ID   : "",
+        OPPO_APP_KEY   : "",
+        OPPO_APP_SECRET  : "",
+        VIVO_APP_ID   : "",
+        VIVO_APP_KEY  : ""
         ]
 
 
 
     }
+
 
     signingConfigs {
 

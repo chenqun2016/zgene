@@ -4,6 +4,8 @@ import 'package:getuiflut/getuiflut.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/util/sp_utils.dart';
 
+import 'common_utils.dart';
+
 class GetuiUtils {
   static config() {
     Getuiflut().addEventHandler(
@@ -18,6 +20,7 @@ class GetuiUtils {
       },
       onNotificationMessageClicked: (Map<String, dynamic> msg) async {
         print("flutter onNotificationMessageClicked");
+        // CommonUtils.globalToUrl(type: 1, url: "");
       },
       onRegisterDeviceToken: (String message) async {},
       onReceivePayload: (Map<String, dynamic> message) async {

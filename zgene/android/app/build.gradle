@@ -22,6 +22,7 @@ if (flutterVersionName == null) {
 }
 
 apply plugin: 'com.android.application'
+apply plugin: 'com.huawei.agconnect'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
@@ -65,11 +66,11 @@ android {
         XIAOMI_APP_KEY  : "",
         MEIZU_APP_ID    : "",
         MEIZU_APP_KEY   : "",
-        HUAWEI_APP_ID   : "",
+        HUAWEI_APP_ID   : "104739767",
         OPPO_APP_KEY   : "",
         OPPO_APP_SECRET  : "",
-        VIVO_APP_ID   : "",
-        VIVO_APP_KEY  : ""
+        VIVO_APP_ID   : "105510811",
+        VIVO_APP_KEY  : "861307c3cb76394bb4eccdcd63f9ea21"
         ]
 
 
@@ -85,6 +86,7 @@ android {
             keyAlias keystoreProperties.getProperty('keyAlias')
             keyPassword keystoreProperties.getProperty('keyPassword')
         }
+      
     }
     buildTypes {
         debug {
@@ -107,6 +109,8 @@ android {
                 // 设置支持的SO库架构
                 abiFilters 'armeabi-v7a'
             }
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
         }
     }
 }
@@ -125,5 +129,5 @@ dependencies {
     implementation 'cn.jiguang.sdk:jshare-wechatmodel:2.0.0'  // 此处以jshare-wechatmodel 1.6.0  版本为例，具体版本请参考压缩包libs的jar包版本。
     implementation 'cn.jiguang.sdk:jshare-sinamodel:2.0.0'  // 此处以jshare-sinamodel 1.6.0  版本为例，具体版本请参考压缩包libs的jar包版本。
     implementation 'cn.jiguang.sdk:jcore:2.8.2'  // 此处以JCo
-    // classpath 'com.android.tools.build:gradle:3.1.0'
+    implementation 'com.huawei.hms:push:5.3.0.304'
 }

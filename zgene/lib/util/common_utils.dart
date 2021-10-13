@@ -16,6 +16,7 @@ import 'package:zgene/pages/home/video_page.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/widget/base_web.dart';
 
+import '../main.dart';
 import 'login_base.dart';
 
 ///公共工具类
@@ -202,6 +203,90 @@ class CommonUtils {
     }
   }
 
+  ///公共跳转链接
+  static globalToUrl({String url, type}) {
+    print("url==$url+type==${type.toString()}");
+    var eventBus = getInstance();
+
+    if (url == URL_BUY) {
+      //购买
+      //跳到购买
+      eventBus.fire(MsgEvent(100, 1));
+    } else if (url == URL_MY) {
+      //我的
+      //跳到我的
+      eventBus.fire(MsgEvent(100, 3));
+    } else if (url.contains(URL_REPORT) && !url.contains("_")) {
+      //报告
+      var uri = Uri.dataFromString(url);
+      Map<String, String> params = uri.queryParameters;
+      var id = params['id'];
+      eventBus.fire(MsgEvent(100, 2, arg: id));
+    } else if (url.contains('/webview')) {
+      //跳转浏览器
+      var uri = Uri.dataFromString(url);
+      Map<String, String> params = uri.queryParameters;
+      launch(params['url']);
+    } else {
+      switch (type) {
+        // type 0:无 1:HTTP 2:应用内 3:视频
+        case 0:
+          break;
+        case 1:
+          // NavigatorUtil.push(
+          //     context,
+          //     BaseWebView(
+          //       url: url,
+          //       title: "",
+          //     ));
+          Global.navigatorKey.currentState.pushAndRemoveUntil(
+              new MaterialPageRoute(
+                  builder: (BuildContext context) => BaseWebView(
+                        url: url,
+                        title: "",
+                      )),
+              (route) => true);
+          break;
+        case 2:
+          var urlName = url.split("?")[0];
+          if (urlName == CommonConstant.ROUT_bind_collector ||
+              urlName == CommonConstant.ROUT_back_collector ||
+              urlName == CommonConstant.ROUT_order_detail ||
+              urlName == CommonConstant.ROUT_order_step_detail ||
+              urlName == CommonConstant.ROUT_my_order ||
+              urlName == CommonConstant.ROUT_my_info ||
+              urlName == CommonConstant.ROUT_my_address ||
+              urlName == CommonConstant.ROUT_my_report_list ||
+              urlName == CommonConstant.ROUT_my_message) {
+            if (!SpUtils().getStorageDefault(SpConstant.IsLogin, false)) {
+              BaseLogin.login();
+              return;
+            }
+          }
+          Uri uri = Uri.dataFromString(url);
+          Map<String, String> params = uri.queryParameters;
+          var id = params['id'];
+          if (id == null) {
+            print(123);
+            // Navigator.of(context).pushNamed(url);
+            Global.navigatorKey.currentState.pushNamed(url);
+          } else {
+            print(456);
+            Global.navigatorKey.currentState
+                .pushNamed(url.split("?")[0], arguments: id);
+          }
+          break;
+        case 3:
+          // NavigatorUtil.push(context, VideoPage(linkUrl: url));
+          Global.navigatorKey.currentState.pushAndRemoveUntil(
+              new MaterialPageRoute(
+                  builder: (BuildContext context) => VideoPage(linkUrl: url)),
+              (route) => true);
+          break;
+      }
+    }
+  }
+
 //OrderStatus1 int8 = -20 //取消
 // OrderStatus2 int8 = -10 //退款
 // OrderStatus3 int8 = 0   //未付款
@@ -272,7 +357,7 @@ class CommonUtils {
     if (null != token && token.isNotEmpty) {
       CookieManager cookieManager = CookieManager.instance();
       Cookie cookie =
-      await cookieManager.getCookie(url: uri1, name: CommonConstant.JWT);
+          await cookieManager.getCookie(url: uri1, name: CommonConstant.JWT);
       if (null != cookie &&
           null != cookie.value &&
           cookie.value.toString().isNotEmpty &&
@@ -290,20 +375,17 @@ class CommonUtils {
     return Future.value(1);
   }
 
-  static void addJavaScriptHandler(InAppWebViewController controller,BuildContext context) {
+  static void addJavaScriptHandler(
+      InAppWebViewController controller, BuildContext context) {
     controller.addJavaScriptHandler(
         handlerName: "navigate",
         callback: (List<dynamic> args) {
           try {
             if (null != args && args.length >= 2) {
-              CommonUtils.toUrl(
-                  context: context,
-                  url: args[1],
-                  type: args[0]);
+              CommonUtils.toUrl(context: context, url: args[1], type: args[0]);
               if (args[1] == CommonUtils.URL_BUY ||
                   args[1] == CommonUtils.URL_MY ||
-                  (args[1].contains(
-                      CommonUtils.URL_REPORT) &&
+                  (args[1].contains(CommonUtils.URL_REPORT) &&
                       !args[1].contains("_"))) {
                 Navigator.pop(context);
               }

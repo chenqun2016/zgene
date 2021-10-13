@@ -133,7 +133,7 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
             controller: _controller,
             shrinkWrap: true,
             physics: BouncingScrollPhysics(),
-            padding: EdgeInsets.zero,
+            padding: EdgeInsets.only(top: 0, bottom: 80),
             children: _products?.map((e) => getItem(e))?.toList(),
           );
   }

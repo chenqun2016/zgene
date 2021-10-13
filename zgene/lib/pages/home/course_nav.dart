@@ -1,11 +1,12 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/content_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/widget/base_web.dart';
-
-import 'home_getHttp.dart';
 
 class CourseNav extends StatefulWidget {
   const CourseNav({Key key}) : super(key: key);
@@ -27,14 +28,23 @@ class _CourseNavState extends State<CourseNav>
 
   //TODO  更换新的接口参数
   getHttp() {
-    HomeGetHttp(3, (result) {
-      print(result);
-      ContentModel contentModel = ContentModel.fromJson(result);
-      contentList.clear();
-      setState(() {
-        contentList = contentModel.archives;
-      });
-    });
+    Map<String, dynamic> map = new HashMap();
+    map['cid'] = 34;
+    map['order_by'] = 1;
+    HttpUtils.requestHttp(
+      ApiConstant.contentList,
+      parameters: map,
+      method: HttpUtils.GET,
+      onSuccess: (result) async {
+        print(result);
+        ContentModel contentModel = ContentModel.fromJson(result);
+        contentList.clear();
+        setState(() {
+          contentList = contentModel.archives;
+        });
+      },
+      onError: (code, error) {},
+    );
   }
 
   @override
@@ -165,7 +175,7 @@ class _CourseNavState extends State<CourseNav>
           width: 34,
           alignment: Alignment.center,
           child: Text(
-            "$index",
+            "${index + 1}",
             style: TextStyle(
                 fontSize: 16,
                 color: ColorConstant.TextMainBlack,

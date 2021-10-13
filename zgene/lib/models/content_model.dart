@@ -61,7 +61,7 @@ class Archives {
   int _countDigg;
   int _viewStyle;
   bool _isTop;
-  Null _tags;
+  dynamic _tags;
   int _linkType;
   String _linkUrl;
 
@@ -182,8 +182,8 @@ class Archives {
   set viewStyle(int viewStyle) => _viewStyle = viewStyle;
   bool get isTop => _isTop;
   set isTop(bool isTop) => _isTop = isTop;
-  Null get tags => _tags;
-  set tags(Null tags) => _tags = tags;
+  dynamic get tags => _tags;
+  set tags(dynamic tags) => _tags = tags;
   int get linkType => _linkType;
   set linkType(int linkType) => _linkType = linkType;
   String get linkUrl => _linkUrl;

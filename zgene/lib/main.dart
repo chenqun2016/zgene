@@ -308,6 +308,9 @@ Future<void> getSetting() async {
           if (item.name == SpConstant.appShareSubtitle) {
             spUtils.setStorage(SpConstant.appShareSubtitle, item.value);
           }
+          if (item.name == SpConstant.appProductStepAid) {
+            spUtils.setStorage(SpConstant.appProductStepAid, item.value);
+          }
         }
       } catch (e) {
         print(e);

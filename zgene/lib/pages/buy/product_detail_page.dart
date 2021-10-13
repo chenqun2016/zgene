@@ -8,6 +8,7 @@ import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/http/http_utils.dart';
+import 'package:zgene/models/archive_des_model.dart' as adm;
 import 'package:zgene/models/content_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/buy/ordering_page.dart';
@@ -37,7 +38,8 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
   Archives _productDetail;
 
   List<Archives> _productDetailRecommends;
-  List tags = ["简单安全", "往返包邮", "隐私保护", "准确有用"];
+  adm.Archive stepArchive;
+  List<String> tags;
   var colors = [
     ColorConstant.TextMainColor,
     Color(0xFF25D3B2),
@@ -58,8 +60,28 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
       _onScroll(_controller.offset);
     });
     _productDetail = widget.bean;
-
+    try {
+      tags = _productDetail.tags;
+    } catch (e) {
+      print(e);
+    }
     getRecommendContent();
+    getStepContent();
+  }
+
+  void getStepContent() {
+    int stepId = SpUtils().getStorage(SpConstant.appProductStepAid);
+    HttpUtils.requestHttp(
+      ApiConstant.contentDetail + "/${stepId}",
+      method: HttpUtils.GET,
+      onSuccess: (result) async {
+        adm.ArchiveDesModel model = adm.ArchiveDesModel.fromJson(result);
+        setState(() {
+          stepArchive = model.archive;
+        });
+      },
+      onError: (code, error) {},
+    );
   }
 
   @override
@@ -208,6 +230,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
         children: [
           if (null != _productDetail) _banner,
           if (null != _productDetail) _products,
+          if (null != stepArchive) _stepView,
           if (null != _productDetailRecommends) _contentList,
           if (null != _productDetail) _picture,
         ],
@@ -311,12 +334,13 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
               color: ColorConstant.Text_FC4C4E,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 12),
-            child: Row(
-              children: tags.map((e) => _tagItem(e)).toList(),
-            ),
-          )
+          if (null != tags)
+            Padding(
+              padding: const EdgeInsets.only(top: 12),
+              child: Row(
+                children: tags.map((e) => _tagItem(e)).toList(),
+              ),
+            )
         ],
       ),
     );
@@ -345,6 +369,29 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
       ),
     );
   }
+
+  Widget get _stepView => Container(
+        margin: EdgeInsets.only(top: 16),
+        child: InkWell(
+          onTap: () {
+            CommonUtils.toUrl(
+                context: context,
+                type: stepArchive.linkType,
+                url: stepArchive.linkUrl);
+          },
+          child: CachedNetworkImage(
+            width: double.infinity,
+            // 设置根据宽度计算高度
+            height: 155,
+            // 图片地址
+            imageUrl: CommonUtils.splicingUrl(stepArchive.imageUrl),
+            // 填充方式为cover
+            fit: BoxFit.fill,
+            errorWidget: (context, url, error) =>
+                Image.asset("assets/images/home/img_default2.png"),
+          ),
+        ),
+      );
 
   Widget get _picture {
     return Container(
@@ -419,6 +466,8 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
             imageUrl: CommonUtils.splicingUrl(item.imageUrl),
             // 填充方式为cover
             fit: BoxFit.fill,
+            errorWidget: (context, url, error) =>
+                Image.asset("assets/images/home/img_default2.png"),
           ),
         ),
       ),
@@ -466,26 +515,18 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
               top: 0,
               bottom: 0,
               child: PhysicalModel(
-                  color: Colors.transparent,
-                  borderRadius: BorderRadius.all(Radius.circular(14)),
-                  clipBehavior: Clip.antiAlias,
-                  child: Image.asset(
-                    item.imageUrl,
-                    height: 80,
-                    width: 134,
-                    fit: BoxFit.fill,
-                  )
-                  // new CachedNetworkImage(
-                  //   width: double.infinity,
-                  //   // 设置根据宽度计算高度
-                  //   height: 112,
-                  //   // 图片地址
-                  //   imageUrl: CommonUtils.splicingUrl(
-                  //       "/uploads/2021/0914/e741f1851b6a4a61.png"),
-                  //   // 填充方式为cover
-                  //   fit: BoxFit.fill,
-                  // ),
-                  ),
+                color: Colors.transparent,
+                borderRadius: BorderRadius.all(Radius.circular(14)),
+                clipBehavior: Clip.antiAlias,
+                child: new CachedNetworkImage(
+                  height: 80,
+                  width: 134,
+                  // 图片地址
+                  imageUrl: CommonUtils.splicingUrl(item.imageUrl),
+                  // 填充方式为cover
+                  fit: BoxFit.fill,
+                ),
+              ),
             )
           ],
         ),

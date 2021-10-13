@@ -40,6 +40,8 @@ class SpConstant {
   static const String appShareIcon = "app_share_icon";
   //分享图片
   static const String appShareSubtitle = "app_share_subtitle";
+  //商品详情步骤id
+  static const String appProductStepAid = "app_product_step_aid";
   //--End:Z基因项目相关配置接口
   //token
   static const String Token = "token";

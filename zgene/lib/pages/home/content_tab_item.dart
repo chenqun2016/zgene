@@ -1,12 +1,14 @@
+import 'dart:collection';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/content_model.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/widget/home_recommend_widget.dart';
-
-import 'home_getHttp.dart';
 
 class ContentTabItem extends StatefulWidget {
   const ContentTabItem({Key key}) : super(key: key);
@@ -26,13 +28,25 @@ class _ContentTabItemState extends State<ContentTabItem> {
   }
 
   getHttp() {
-    print("ContentTabItem;getHttp");
-    HomeGetHttp(types[indexOf], (result) {
-      ContentModel contentModel = ContentModel.fromJson(result);
-      setState(() {
-        datas = contentModel.archives;
-      });
-    });
+    Map<String, dynamic> map = new HashMap();
+    map['cid'] = types[indexOf];
+    if (28 == types[indexOf]) {
+      map['tag'] = '精选';
+      map['page_size'] = 6;
+    }
+
+    HttpUtils.requestHttp(
+      ApiConstant.contentList,
+      parameters: map,
+      method: HttpUtils.GET,
+      onSuccess: (result) async {
+        ContentModel contentModel = ContentModel.fromJson(result);
+        setState(() {
+          datas = contentModel.archives;
+        });
+      },
+      onError: (code, error) {},
+    );
   }
 
   @override
@@ -73,6 +87,7 @@ class _ContentTabItemState extends State<ContentTabItem> {
           color: ColorConstant.bg_F7F7F8,
           borderRadius: BorderRadius.all(Radius.circular(14))),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           GestureDetector(
             onTap: () {
@@ -92,6 +107,7 @@ class _ContentTabItemState extends State<ContentTabItem> {
                 imageUrl: CommonUtils.splicingUrl(item.imageUrl),
                 // 填充方式为cover
                 fit: BoxFit.fill,
+                errorWidget: (context, url, error) => Text(""),
               ),
             ),
           ),
@@ -131,26 +147,26 @@ class _ContentTabItemState extends State<ContentTabItem> {
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
-              margin: EdgeInsets.only(right: 9),
-              padding: EdgeInsets.fromLTRB(7, 1, 7, 3),
-              decoration: BoxDecoration(
-                color: ColorConstant.Text_5FC88F,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(4),
+            if (indexOf == 0)
+              Container(
+                margin: EdgeInsets.only(right: 9),
+                padding: EdgeInsets.fromLTRB(7, 1, 7, 3),
+                decoration: BoxDecoration(
+                  color: ColorConstant.Text_5FC88F,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(4),
+                  ),
+                ),
+                child: Text(
+                  item.category.categoryName,
+                  style: TextStyle(
+                    fontSize: 10,
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.w500,
+                    color: ColorConstant.WhiteColor,
+                  ),
                 ),
               ),
-              child: Text(
-                //TODO
-                "用户测评",
-                style: TextStyle(
-                  fontSize: 10,
-                  fontStyle: FontStyle.normal,
-                  fontWeight: FontWeight.w500,
-                  color: ColorConstant.WhiteColor,
-                ),
-              ),
-            ),
             Text(
               item.title,
               style: TextStyle(
@@ -180,6 +196,8 @@ class _ContentTabItemState extends State<ContentTabItem> {
                 imageUrl: CommonUtils.splicingUrl(item.imageUrl),
                 // 填充方式为cover
                 fit: BoxFit.fill,
+                errorWidget: (context, url, error) =>
+                    Image.asset("assets/images/home/img_default2.png"),
               ),
             ),
           ),
@@ -194,7 +212,10 @@ class _ContentTabItemState extends State<ContentTabItem> {
     print("didChangeDependencies==" +
         HomeRecommendWidget.of(context, listen: false).toString());
 
-    indexOf = HomeRecommendWidget.of(context, listen: false);
-    getHttp();
+    var index = HomeRecommendWidget.of(context, listen: false);
+    if (index != indexOf) {
+      indexOf = index;
+      getHttp();
+    }
   }
 }

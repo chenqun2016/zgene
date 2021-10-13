@@ -1,4 +1,3 @@
-
 ///内容model
 class ContentModel {
   List<Archives> _archives;
@@ -60,6 +59,7 @@ class Archives {
   int _countComment;
   int _duration;
   int _countDigg;
+  int _viewStyle;
   bool _isTop;
   Null _tags;
   int _linkType;
@@ -67,34 +67,35 @@ class Archives {
 
   Archives(
       {int id,
-        int createdAt,
-        int updatedAt,
-        int cid,
-        Category category,
-        int chid,
-        Channel channel,
-        int uid,
-        String title,
-        String titleShort,
-        String description,
-        String keywords,
-        String seoUrl,
-        String imageUrl,
-        String videoUrl,
-        String audioUrl,
-        String source,
-        String sourceUrl,
-        String author,
-        int coin,
-        int sortRank,
-        int count,
-        int countComment,
-        int duration,
-        int countDigg,
-        bool isTop,
-        int linkType,
-        String linkUrl,
-        Null tags}) {
+      int createdAt,
+      int updatedAt,
+      int cid,
+      Category category,
+      int chid,
+      Channel channel,
+      int uid,
+      String title,
+      String titleShort,
+      String description,
+      String keywords,
+      String seoUrl,
+      String imageUrl,
+      String videoUrl,
+      String audioUrl,
+      String source,
+      String sourceUrl,
+      String author,
+      int coin,
+      int sortRank,
+      int count,
+      int countComment,
+      int duration,
+      int countDigg,
+      int viewStyle,
+      bool isTop,
+      int linkType,
+      String linkUrl,
+      Null tags}) {
     this._id = id;
     this._createdAt = createdAt;
     this._updatedAt = updatedAt;
@@ -119,10 +120,11 @@ class Archives {
     this._count = count;
     this._countComment = countComment;
     this._duration = duration;
-    this._countDigg=countDigg;
-    this._isTop=isTop;
+    this._countDigg = countDigg;
+    this._viewStyle = viewStyle;
+    this._isTop = isTop;
     this._tags = tags;
-    this._linkType=linkType;
+    this._linkType = linkType;
     this._linkUrl = linkUrl;
   }
 
@@ -176,6 +178,8 @@ class Archives {
   set duration(int duration) => _duration = duration;
   int get countDigg => _countDigg;
   set countDigg(int countDigg) => _countDigg = countDigg;
+  int get viewStyle => _viewStyle;
+  set viewStyle(int viewStyle) => _viewStyle = viewStyle;
   bool get isTop => _isTop;
   set isTop(bool isTop) => _isTop = isTop;
   Null get tags => _tags;
@@ -195,7 +199,7 @@ class Archives {
         : null;
     _chid = json['chid'];
     _channel =
-    json['channel'] != null ? new Channel.fromJson(json['channel']) : null;
+        json['channel'] != null ? new Channel.fromJson(json['channel']) : null;
     _uid = json['uid'];
     _title = json['title'];
     _titleShort = json['title_short'];
@@ -214,6 +218,7 @@ class Archives {
     _countComment = json['count_comment'];
     _duration = json['duration'];
     _countDigg = json['count_digg'];
+    _viewStyle = json['view_style'];
     _isTop = json['is_top'];
     _tags = json['tags'];
     _linkType = json['link_type'];
@@ -251,7 +256,7 @@ class Archives {
     data['count_comment'] = this._countComment;
     data['duration'] = this._duration;
     data['count_digg'] = this._countDigg;
-    data['count_digg'] = this._countDigg;
+    data['view_style'] = this._viewStyle;
     data['is_top'] = this._isTop;
     data['link_type'] = this._linkType;
     data['link_url'] = this._linkUrl;
@@ -281,23 +286,23 @@ class Category {
 
   Category(
       {int id,
-        int createdAt,
-        int updatedAt,
-        int parentCid,
-        int topCid,
-        int chid,
-        int total,
-        String step,
-        String categoryName,
-        String keywords,
-        String seoTitle,
-        String description,
-        String seoUrl,
-        int sortRank,
-        bool isHidden,
-        String templateList,
-        String templateArchive,
-        String body}) {
+      int createdAt,
+      int updatedAt,
+      int parentCid,
+      int topCid,
+      int chid,
+      int total,
+      String step,
+      String categoryName,
+      String keywords,
+      String seoTitle,
+      String description,
+      String seoUrl,
+      int sortRank,
+      bool isHidden,
+      String templateList,
+      String templateArchive,
+      String body}) {
     this._id = id;
     this._createdAt = createdAt;
     this._updatedAt = updatedAt;
@@ -411,11 +416,11 @@ class Channel {
 
   Channel(
       {int id,
-        int createdAt,
-        int updatedAt,
-        String name,
-        String addonTable,
-        String title}) {
+      int createdAt,
+      int updatedAt,
+      String name,
+      String addonTable,
+      String title}) {
     this._id = id;
     this._createdAt = createdAt;
     this._updatedAt = updatedAt;

@@ -2,54 +2,72 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:zgene/constant/color_constant.dart';
-import 'package:zgene/navigator/navigator_util.dart';
+import 'package:zgene/models/content_model.dart';
 import 'package:zgene/util/common_utils.dart';
+import 'package:zgene/widget/home_recommend_widget.dart';
 
-import 'video_page.dart';
+import 'home_getHttp.dart';
 
 class ContentTabItem extends StatefulWidget {
-  final int index;
-  const ContentTabItem({Key key, @required this.index}) : super(key: key);
+  const ContentTabItem({Key key}) : super(key: key);
 
   @override
   _ContentTabItemState createState() => _ContentTabItemState();
 }
 
 class _ContentTabItemState extends State<ContentTabItem> {
-  List contentList = [1, 2, 3, 4, 5, 6, 7];
-
+  List types = [28, 29, 30];
+  int indexOf = 0;
+  List<Archives> datas;
   @override
   void initState() {
     super.initState();
+    getHttp();
+  }
+
+  getHttp() {
+    print("ContentTabItem;getHttp");
+    HomeGetHttp(types[indexOf], (result) {
+      ContentModel contentModel = ContentModel.fromJson(result);
+      setState(() {
+        datas = contentModel.archives;
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    int indexOf = widget.index;
-    return Padding(
-      padding: const EdgeInsets.only(left: 16, right: 16, top: 15, bottom: 15),
-      child: StaggeredGridView.countBuilder(
-        crossAxisCount: 2,
-        itemCount: contentList.length,
-        itemBuilder: (BuildContext context, int index) =>
-            _getItemWidget(index, indexOf),
-        mainAxisSpacing: 16,
-        crossAxisSpacing: 16,
-        shrinkWrap: true,
-        padding: EdgeInsets.all(0),
-        physics: NeverScrollableScrollPhysics(),
-        staggeredTileBuilder: (int index) => index % 3 == indexOf
-            ? StaggeredTile.extent(2, 185)
-            : StaggeredTile.extent(1, 200),
-      ),
-    );
+    indexOf = HomeRecommendWidget.of(context);
+    return datas == null
+        ? Text("")
+        : Padding(
+            padding:
+                const EdgeInsets.only(left: 16, right: 16, top: 15, bottom: 15),
+            child: StaggeredGridView.countBuilder(
+              crossAxisCount: 2,
+              itemCount: datas.length,
+              itemBuilder: (BuildContext context, int index) =>
+                  _getItemWidget(index),
+              mainAxisSpacing: 16,
+              crossAxisSpacing: 16,
+              shrinkWrap: true,
+              padding: EdgeInsets.all(0),
+              physics: NeverScrollableScrollPhysics(),
+              staggeredTileBuilder: (int index) => datas[index].viewStyle == 1
+                  ? StaggeredTile.extent(2, 185)
+                  : StaggeredTile.extent(1, 200),
+            ),
+          );
   }
 
-  Widget _getItemWidget(int index, int indexOf) {
-    return index % 3 == indexOf ? _getItemWidgetType1() : _getItemWidgetType2();
+  Widget _getItemWidget(int index) {
+    return datas[index].viewStyle == 1
+        ? _getItemWidgetType1(datas[index])
+        : _getItemWidgetType2(datas[index]);
   }
 
-  Widget _getItemWidgetType2() {
+  //短的
+  Widget _getItemWidgetType2(Archives item) {
     return Container(
       decoration: BoxDecoration(
           color: ColorConstant.bg_F7F7F8,
@@ -58,40 +76,29 @@ class _ContentTabItemState extends State<ContentTabItem> {
         children: [
           GestureDetector(
             onTap: () {
-              NavigatorUtil.push(
-                  context,
-                  VideoPage(
-                      linkUrl:
-                          "https://zgene.divms.com/public/statics/video/z-gene.mp4"));
+              CommonUtils.toUrl(
+                  context: context, type: item.linkType, url: item.linkUrl);
             },
             child: PhysicalModel(
-                color: Colors.transparent,
-                borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(14),
-                    topLeft: Radius.circular(14)),
-                clipBehavior: Clip.antiAlias,
-                child: Image.asset(
-                  "assets/images/home/test_img_home.png",
-                  height: 112,
-                  width: double.infinity,
-                  fit: BoxFit.fill,
-                )
-                // new CachedNetworkImage(
-                //   width: double.infinity,
-                //   // 设置根据宽度计算高度
-                //   height: 112,
-                //   // 图片地址
-                //   imageUrl: CommonUtils.splicingUrl(
-                //       "/uploads/2021/0914/e741f1851b6a4a61.png"),
-                //   // 填充方式为cover
-                //   fit: BoxFit.fill,
-                // ),
-                ),
+              color: Colors.transparent,
+              borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(14), topLeft: Radius.circular(14)),
+              clipBehavior: Clip.antiAlias,
+              child: new CachedNetworkImage(
+                width: double.infinity,
+                // 设置根据宽度计算高度
+                height: 112,
+                // 图片地址
+                imageUrl: CommonUtils.splicingUrl(item.imageUrl),
+                // 填充方式为cover
+                fit: BoxFit.fill,
+              ),
+            ),
           ),
           Container(
             padding: EdgeInsets.fromLTRB(8, 8, 8, 0),
             child: Text(
-              "00后都开始脱发了？到底发生了什么？",
+              item.title,
               style: TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
@@ -117,7 +124,8 @@ class _ContentTabItemState extends State<ContentTabItem> {
     );
   }
 
-  Widget _getItemWidgetType1() {
+  //长的
+  Widget _getItemWidgetType1(Archives item) {
     return Column(
       children: [
         Row(
@@ -133,6 +141,7 @@ class _ContentTabItemState extends State<ContentTabItem> {
                 ),
               ),
               child: Text(
+                //TODO
                 "用户测评",
                 style: TextStyle(
                   fontSize: 10,
@@ -143,7 +152,7 @@ class _ContentTabItemState extends State<ContentTabItem> {
               ),
             ),
             Text(
-              "美妆黑科技-看看这位博主怎么说？",
+              item.title,
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w600,
@@ -156,11 +165,8 @@ class _ContentTabItemState extends State<ContentTabItem> {
           margin: EdgeInsets.only(top: 10),
           child: GestureDetector(
             onTap: () {
-              NavigatorUtil.push(
-                  context,
-                  VideoPage(
-                      linkUrl:
-                          "https://zgene.divms.com/public/statics/video/z-gene.mp4"));
+              CommonUtils.toUrl(
+                  context: context, type: item.linkType, url: item.linkUrl);
             },
             child: PhysicalModel(
               color: Colors.transparent,
@@ -171,8 +177,7 @@ class _ContentTabItemState extends State<ContentTabItem> {
                 // 设置根据宽度计算高度
                 height: 152,
                 // 图片地址
-                imageUrl: CommonUtils.splicingUrl(
-                    "/uploads/2021/0914/e741f1851b6a4a61.png"),
+                imageUrl: CommonUtils.splicingUrl(item.imageUrl),
                 // 填充方式为cover
                 fit: BoxFit.fill,
               ),
@@ -181,5 +186,15 @@ class _ContentTabItemState extends State<ContentTabItem> {
         )
       ],
     );
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    print("didChangeDependencies==" +
+        HomeRecommendWidget.of(context, listen: false).toString());
+
+    indexOf = HomeRecommendWidget.of(context, listen: false);
+    getHttp();
   }
 }

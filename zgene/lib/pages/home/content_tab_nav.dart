@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/pages/home/content_tab_item.dart';
+import 'package:zgene/widget/home_recommend_widget.dart';
 
 class ContentListNav extends StatefulWidget {
   const ContentListNav({Key key}) : super(key: key);
@@ -19,11 +20,16 @@ class _ContentListNavState extends State<ContentListNav>
   TabController _tabController;
 
   List contentList = [1, 2, 3, 4, 5, 6, 7];
-
+  int index = 0;
   @override
   void initState() {
     super.initState();
     _tabController = TabController(vsync: this, length: tabs.length);
+    _tabController.addListener(() {
+      setState(() {
+        index = _tabController.index;
+      });
+    });
   }
 
   @override
@@ -66,11 +72,7 @@ class _ContentListNavState extends State<ContentListNav>
         tabs: tabs.map((e) => Tab(text: e)).toList(),
       );
 
-  Widget _buildTableBarView() => AnimatedBuilder(
-      animation: _tabController.animation,
-      builder: (ctx, child) {
-        return ContentTabItem(
-          index: _tabController.index,
-        );
-      });
+  Widget _buildTableBarView() {
+    return HomeRecommendWidget(data: index, child: ContentTabItem());
+  }
 }

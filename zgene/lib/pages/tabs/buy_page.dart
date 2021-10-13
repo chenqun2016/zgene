@@ -273,6 +273,7 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
               "assets/images/buy/icon_kefu.png",
               height: 40,
               width: 40,
+              fit: BoxFit.fill,
             ),
           )
         ],

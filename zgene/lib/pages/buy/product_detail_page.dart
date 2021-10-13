@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -6,10 +7,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
+import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/content_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/buy/ordering_page.dart';
-import 'package:zgene/pages/home/video_page.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/login_base.dart';
@@ -35,8 +36,8 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
   ScrollController _controller = new ScrollController();
   Archives _productDetail;
 
+  List<Archives> _productDetailRecommends;
   List tags = ["简单安全", "往返包邮", "隐私保护", "准确有用"];
-  List contents = [1, 2, 3, 4, 5];
   var colors = [
     ColorConstant.TextMainColor,
     Color(0xFF25D3B2),
@@ -57,6 +58,8 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
       _onScroll(_controller.offset);
     });
     _productDetail = widget.bean;
+
+    getRecommendContent();
   }
 
   @override
@@ -69,6 +72,28 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
   Future rightBtnTap(BuildContext context) {
     UiUitls.showChatH5(context);
     return super.rightBtnTap(context);
+  }
+
+  Future<void> getRecommendContent() async {
+    if (null == _productDetail) return;
+    Map<String, dynamic> map = new HashMap();
+    map['aid'] = _productDetail.id;
+    HttpUtils.requestHttp(
+      ApiConstant.productDetailRecommends,
+      parameters: map,
+      method: HttpUtils.GET,
+      onSuccess: (result) async {
+        ContentModel contentModel = ContentModel.fromJson(result);
+        if (null != contentModel &&
+            null != contentModel.archives &&
+            contentModel.archives.length > 0) {
+          setState(() {
+            _productDetailRecommends = contentModel.archives;
+          });
+        }
+      },
+      onError: (code, error) {},
+    );
   }
 
   @override
@@ -92,70 +117,84 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
             filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
             child: Container(
               height: 89,
-              color: Colors.white70,
+              color: Color(0xf5FFFFFF),
               width: double.infinity,
-              padding: EdgeInsets.only(left: 38, right: 14),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+              child: Column(
                 children: [
-                  Text(
-                    "应付：",
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      color: ColorConstant.Text_8E9AB,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 2.0),
-                    child: Text(
-                      "¥",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: ColorConstant.MainBlueColor,
-                      ),
-                    ),
+                  Container(
+                    height: 1,
+                    color: Color(0xffEBEFF1),
                   ),
                   Expanded(
-                      child: Padding(
-                    padding: const EdgeInsets.only(bottom: 1.0),
-                    child: Text(
-                      "${CommonUtils.formatMoney(_productDetail.coin)}",
-                      style: TextStyle(
-                        fontSize: 22.sp,
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.w600,
-                        color: ColorConstant.MainBlueColor,
+                      child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 38.0),
+                        child: Text(
+                          "应付：",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: ColorConstant.Text_8E9AB,
+                          ),
+                        ),
                       ),
-                    ),
-                  )),
-                  MaterialButton(
-                    minWidth: 142.w,
-                    height: 55.h,
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(40)),
-                    color: ColorConstant.TextMainColor,
-                    onPressed: () {
-                      if (!SpUtils()
-                          .getStorageDefault(SpConstant.IsLogin, false)) {
-                        BaseLogin.login();
-                        return;
-                      }
-                      NavigatorUtil.push(
-                          context,
-                          OrderingPage(
-                            product: _productDetail,
-                          ));
-                    },
-                    child: Text("立即购买",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        )),
-                  ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 2.0),
+                        child: Text(
+                          "¥",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: ColorConstant.MainBlueColor,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                          child: Padding(
+                        padding: const EdgeInsets.only(bottom: 1.0),
+                        child: Text(
+                          "${CommonUtils.formatMoney(_productDetail.coin)}",
+                          style: TextStyle(
+                            fontSize: 22.sp,
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.w600,
+                            color: ColorConstant.MainBlueColor,
+                          ),
+                        ),
+                      )),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 14.0),
+                        child: MaterialButton(
+                          minWidth: 142.w,
+                          height: 55.h,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(40)),
+                          color: ColorConstant.TextMainColor,
+                          onPressed: () {
+                            if (!SpUtils()
+                                .getStorageDefault(SpConstant.IsLogin, false)) {
+                              BaseLogin.login();
+                              return;
+                            }
+                            NavigatorUtil.push(
+                                context,
+                                OrderingPage(
+                                  product: _productDetail,
+                                ));
+                          },
+                          child: Text("立即购买",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              )),
+                        ),
+                      ),
+                    ],
+                  ))
                 ],
               ),
             ),
@@ -169,7 +208,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
         children: [
           if (null != _productDetail) _banner,
           if (null != _productDetail) _products,
-          if (null != _productDetail) _contentList,
+          if (null != _productDetailRecommends) _contentList,
           if (null != _productDetail) _picture,
         ],
       ),
@@ -346,29 +385,27 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
         margin: EdgeInsets.only(top: 10),
         color: Colors.white,
         child: ListView.builder(
-          itemCount: contents.length,
+          itemCount: _productDetailRecommends.length,
           shrinkWrap: true,
           padding: EdgeInsets.all(15),
           physics: NeverScrollableScrollPhysics(),
           itemBuilder: (BuildContext context, int index) {
-            if (0 == index) {
-              return _videoItem();
+            var productDetailRecommend = _productDetailRecommends[index];
+            if (0 == productDetailRecommend.viewStyle) {
+              return _videoItem(productDetailRecommend);
             }
-            return getContentItem(index);
+            return getContentItem(productDetailRecommend);
           },
         ),
       );
 
-  Widget _videoItem() {
+  Widget _videoItem(Archives item) {
     return Container(
       margin: EdgeInsets.only(top: 10),
       child: GestureDetector(
         onTap: () {
-          NavigatorUtil.push(
-              context,
-              VideoPage(
-                  linkUrl:
-                      "https://zgene.divms.com/public/statics/video/z-gene.mp4"));
+          CommonUtils.toUrl(
+              context: context, type: item.linkType, url: item.linkUrl);
         },
         child: PhysicalModel(
           color: Colors.transparent,
@@ -379,8 +416,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
             // 设置根据宽度计算高度
             height: 168,
             // 图片地址
-            imageUrl: CommonUtils.splicingUrl(
-                "/uploads/2021/0914/e741f1851b6a4a61.png"),
+            imageUrl: CommonUtils.splicingUrl(item.imageUrl),
             // 填充方式为cover
             fit: BoxFit.fill,
           ),
@@ -389,11 +425,11 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
     );
   }
 
-  Widget getContentItem(int index) {
+  Widget getContentItem(Archives item) {
     return InkWell(
       onTap: () {
-        // CommonUtils.toUrl(
-        //     context: context, type: archives.linkType, url: archives.linkUrl);
+        CommonUtils.toUrl(
+            context: context, type: item.linkType, url: item.linkUrl);
       },
       child: Container(
         margin: EdgeInsets.only(top: 16),
@@ -405,7 +441,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
                 top: 5,
                 right: 150,
                 child: Text(
-                  "酒量可以练出来吗？千杯不倒万杯不醉！",
+                  item.title,
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
@@ -416,6 +452,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
               left: 0,
               bottom: 5,
               child: Text(
+                //TODO
                 "Z基因研究院",
                 style: TextStyle(
                   fontSize: 12,
@@ -433,7 +470,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
                   borderRadius: BorderRadius.all(Radius.circular(14)),
                   clipBehavior: Clip.antiAlias,
                   child: Image.asset(
-                    "assets/images/home/test_img_home.png",
+                    item.imageUrl,
                     height: 80,
                     width: 134,
                     fit: BoxFit.fill,

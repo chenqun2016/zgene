@@ -179,15 +179,18 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
         ),
       );
     } else if (customRightBtnImg != "") {
-      return IconButton(
+      return MaterialButton(
           onPressed: () {
             rightBtnTap(context);
           },
-          icon: Image(
+          padding: EdgeInsets.zero,
+          height: 40.h,
+          minWidth: 40.w,
+          child: Image(
             image: AssetImage(customRightBtnImg),
-            height: 40.w,
+            height: 40.h,
             width: 40.w,
-            fit: BoxFit.contain,
+            fit: BoxFit.fill,
           ));
     } else {
       return Container();

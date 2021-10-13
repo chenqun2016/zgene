@@ -6,6 +6,9 @@ class ApiConstant {
   //获取用户详情、修改用户信息
   static const String userInfo = "/api/v1/user/info";
 
+  //商品详情页，内容推荐列表
+  static const String productDetailRecommends =
+      "/api/v1/archive/:aid/recommends";
   //内容列表
   static const String contentList = "/api/v1/archives";
   //分类列表

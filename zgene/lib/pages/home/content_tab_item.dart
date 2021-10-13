@@ -21,6 +21,8 @@ class _ContentTabItemState extends State<ContentTabItem> {
   List types = [28, 29, 30];
   int indexOf = 0;
   List<Archives> datas;
+  int pageSize = 5;
+  bool expend = false;
   @override
   void initState() {
     super.initState();
@@ -32,7 +34,7 @@ class _ContentTabItemState extends State<ContentTabItem> {
     map['cid'] = types[indexOf];
     if (28 == types[indexOf]) {
       map['tag'] = '精选';
-      map['page_size'] = 6;
+      map['page_size'] = pageSize;
     }
 
     HttpUtils.requestHttp(
@@ -40,10 +42,20 @@ class _ContentTabItemState extends State<ContentTabItem> {
       parameters: map,
       method: HttpUtils.GET,
       onSuccess: (result) async {
-        ContentModel contentModel = ContentModel.fromJson(result);
-        setState(() {
-          datas = contentModel.archives;
-        });
+        try {
+          ContentModel contentModel = ContentModel.fromJson(result);
+          if (null != contentModel &&
+              null != contentModel.archives &&
+              contentModel.archives.length > 5 &&
+              !expend) {
+            datas = contentModel.archives.take(5);
+          } else {
+            datas = contentModel.archives;
+          }
+          setState(() {});
+        } catch (e) {
+          print(e);
+        }
       },
       onError: (code, error) {},
     );
@@ -54,23 +66,65 @@ class _ContentTabItemState extends State<ContentTabItem> {
     indexOf = HomeRecommendWidget.of(context);
     return datas == null
         ? Text("")
-        : Padding(
-            padding:
-                const EdgeInsets.only(left: 16, right: 16, top: 15, bottom: 15),
-            child: StaggeredGridView.countBuilder(
-              crossAxisCount: 2,
-              itemCount: datas.length,
-              itemBuilder: (BuildContext context, int index) =>
-                  _getItemWidget(index),
-              mainAxisSpacing: 16,
-              crossAxisSpacing: 16,
-              shrinkWrap: true,
-              padding: EdgeInsets.all(0),
-              physics: NeverScrollableScrollPhysics(),
-              staggeredTileBuilder: (int index) => datas[index].viewStyle == 1
-                  ? StaggeredTile.extent(2, 185)
-                  : StaggeredTile.extent(1, 200),
-            ),
+        : Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: 16, right: 16, top: 15, bottom: 15),
+                child: StaggeredGridView.countBuilder(
+                  crossAxisCount: 2,
+                  itemCount: datas.length,
+                  itemBuilder: (BuildContext context, int index) =>
+                      _getItemWidget(index),
+                  mainAxisSpacing: 16,
+                  crossAxisSpacing: 16,
+                  shrinkWrap: true,
+                  padding: EdgeInsets.all(0),
+                  physics: NeverScrollableScrollPhysics(),
+                  staggeredTileBuilder: (int index) =>
+                      datas[index].viewStyle == 1
+                          ? StaggeredTile.extent(2, 185)
+                          : StaggeredTile.extent(1, 200),
+                ),
+              ),
+              MaterialButton(
+                minWidth: 184,
+                height: 40,
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  side: BorderSide(color: ColorConstant.TextMainColor),
+                ),
+                color: ColorConstant.WhiteColor,
+                onPressed: () {
+                  setState(() {
+                    expend = !expend;
+                    pageSize = expend ? 10 : 5;
+                    getHttp();
+                  });
+                },
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(!expend ? "加载更多" : "收起",
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: ColorConstant.TextMainColor,
+                        )),
+                    Image.asset(
+                      !expend
+                          ? "assets/images/home/icon_next_down.png"
+                          : "assets/images/home/icon_next_up.png",
+                      height: 16,
+                      width: 16,
+                    )
+                  ],
+                ),
+              )
+            ],
           );
   }
 

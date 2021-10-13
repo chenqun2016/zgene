@@ -79,6 +79,7 @@ class _CourseNavState extends State<CourseNav>
               ),
               ListView.builder(
                   shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
                   padding: EdgeInsets.zero,
                   scrollDirection: Axis.vertical,
                   itemCount: contentList.length,

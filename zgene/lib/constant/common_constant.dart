@@ -28,6 +28,7 @@ class CommonConstant {
   //通知
   static const String WxCode = "WxCode";
   static const String WxCodeSet = "WxCodeSet";
+  static const String MessagePush = "MessagePush";
   //首页刷新通知名
   static const String HomeRefush = "HomeRefush";
   //主题颜色

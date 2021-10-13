@@ -134,6 +134,8 @@ class CommonUtils {
 
   ///公共跳转链接
   static toUrl({context, String url, type}) {
+    print("000000000000000000000");
+
     print("url==$url+type==${type.toString()}");
     var eventBus = getInstance();
 
@@ -205,6 +207,7 @@ class CommonUtils {
 
   ///公共跳转链接
   static globalToUrl({String url, type}) {
+    print("000000000000000000000");
     print("url==$url+type==${type.toString()}");
     var eventBus = getInstance();
 

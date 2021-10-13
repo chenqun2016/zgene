@@ -96,6 +96,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
             // NotificationCenter.instance
             //     .postNotification(NotificationName.WxCode, code);
             bus.emit(CommonConstant.WxCode, code);
+
             // wxLoginHttp(code);
             // showToast("用户同意授权成功");
           } else if (errCode == -4) {
@@ -140,7 +141,13 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     switch (state) {
       case AppLifecycleState.inactive:
         // jpush.setBadge(0);
-        GetuiUtils.resetBadge();
+        // GetuiUtils.resetBadge();
+        // bus.on(CommonConstant.MessagePush, (arg) {
+        //   print("090909090909090");
+        //   print(arg);
+        //   CommonUtils.globalToUrl(type: arg["type"], url: arg["url"]);
+        // });
+
         print("前后台更改"); // 处于这种状态的应用程序应该假设它们可能在任何时候暂停
         break;
       case AppLifecycleState.resumed: //从后台切换前台，界面可见

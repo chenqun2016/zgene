@@ -13,7 +13,7 @@ class MethodChannelPlugin {
         print("onPushData arguments==" + call.arguments.toString());
         String url = call.arguments["url"].toString();
         String type = call.arguments["type"].toString();
-        CommonUtils.globalToUrl(type: type, url: url);
+        CommonUtils.globalToUrl(type: int.parse(type), url: url);
       }
       return Future.value(0);
     });

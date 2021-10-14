@@ -3,9 +3,8 @@ import 'dart:ffi';
 import 'dart:io';
 
 import 'package:getuiflut/getuiflut.dart';
-import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
-import 'package:zgene/event/event_bus.dart';
+import 'package:zgene/util/platform_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 
 import 'common_utils.dart';
@@ -22,7 +21,9 @@ class GetuiUtils {
         var payload = json.decode(msg["payload"].toString());
         print(payload);
 
-        CommonUtils.globalToUrl(type: payload["type"], url: payload["url"]);
+        if (PlatformUtils.isAndroid) {
+          CommonUtils.globalToUrl(type: payload["type"], url: payload["url"]);
+        }
       },
       onNotificationMessageArrived: (Map<String, dynamic> msg) async {
         print("flutter onNotificationMessageArrived");
@@ -79,6 +80,7 @@ class GetuiUtils {
   static Future<Void> bindAlias() async {
     var spUtils = SpUtils();
 
+    print("uid == " + spUtils.getStorageDefault(SpConstant.Uid, 0).toString());
     if (spUtils.getStorageDefault(SpConstant.IsLogin, false)) {
       if (spUtils.getStorageDefault(SpConstant.Uid, 0) != 0) {
         Getuiflut().bindAlias(

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:ffi';
 import 'dart:io';
 
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:getuiflut/getuiflut.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
@@ -25,22 +26,30 @@ class GetuiUtils {
         CommonUtils.globalToUrl(type: payload["type"], url: payload["url"]);
       },
       onNotificationMessageArrived: (Map<String, dynamic> msg) async {
-        print("flutter onNotificationMessageArrived");
+        print("flutter onNotificationMessageArrived: $msg");
+        print("++++++++++++++++");
       },
       onNotificationMessageClicked: (Map<String, dynamic> msg) async {
         print("flutter onNotificationMessageClicked: $msg");
-
-        print("++++++++++++++++");
       },
       onRegisterDeviceToken: (String message) async {},
       onReceivePayload: (Map<String, dynamic> message) async {
         print("flutter onReceivePayload: $message");
+        print("-------------------");
+
+        if (Platform.isIOS) {
+          var payload = json.decode(message["payloadMsg"].toString());
+          print(payload);
+          CommonUtils.globalToUrl(type: payload["type"], url: payload["url"]);
+        }
       },
       onReceiveNotificationResponse: (Map<String, dynamic> msg) async {
         print("flutter onReceiveNotificationResponse : $msg");
-        if (Platform.isIOS) {
-          CommonUtils.globalToUrl(type: msg["type"], url: msg["url"]);
-        }
+        // if (Platform.isIOS) {
+        //   var payload = json.decode(msg["payload"]);
+        //   print(payload);
+        //   CommonUtils.globalToUrl(type: payload["type"], url: payload["url"]);
+        // }
       },
       onAppLinkPayload: (String message) async {},
       onRegisterVoipToken: (String message) async {},

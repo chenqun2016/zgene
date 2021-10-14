@@ -7,6 +7,7 @@ class MethodChannelPlugin {
 
   ///开始录音
   static Future<dynamic> registHandler() async {
+    print("-------------- registHandler");
     await _channel.setMethodCallHandler((MethodCall call) {
       if (call.method == "onPushData") {
         print("onPushData arguments==" + call.arguments.toString());

@@ -19,12 +19,15 @@ import 'package:zgene/pages/my/my_contant_us.dart';
 import 'package:zgene/pages/splash_page.dart';
 import 'package:zgene/pages/tabs/buy_page.dart';
 import 'package:zgene/pages/tabs/report_page.dart';
+import 'package:zgene/plugin/method_channel_plugin.dart';
 import 'package:zgene/util/chineseCupertino.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/getui_Utils.dart';
+import 'package:zgene/util/platform_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/widget/restart_widget.dart';
+
 import 'configure.dart' if (dart.library.html) 'configure_web.dart';
 import 'event/event_bus.dart';
 import 'pages/bindcollector/bind_collector_page.dart';
@@ -39,7 +42,6 @@ import 'pages/my/order_detail.dart';
 import 'pages/my/order_step_page.dart';
 import 'pages/my/sendBack_acquisition.dart';
 import 'pages/report/report_list_page.dart';
-import 'package:zgene/util/platform_utils.dart';
 
 void main() async {
   configureApp();
@@ -125,6 +127,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     if (Platform.isAndroid) {
       Getuiflut().turnOnPush();
     }
+    MethodChannelPlugin.registHandler();
   }
 
   _installFluwx() async {

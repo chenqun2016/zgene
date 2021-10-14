@@ -20,8 +20,9 @@ class ContentTabItem extends StatefulWidget {
 class _ContentTabItemState extends State<ContentTabItem> {
   List types = [28, 29, 30];
   int indexOf = 0;
+  List<Archives> oriDatas;
   List<Archives> datas;
-  int pageSize = 5;
+  int pageSize = 50;
   bool expend = false;
   @override
   void initState() {
@@ -44,13 +45,11 @@ class _ContentTabItemState extends State<ContentTabItem> {
       onSuccess: (result) async {
         try {
           ContentModel contentModel = ContentModel.fromJson(result);
-          if (null != contentModel &&
-              null != contentModel.archives &&
-              contentModel.archives.length > 5 &&
-              !expend) {
-            datas = contentModel.archives.take(5);
+          oriDatas = contentModel.archives;
+          if (null != oriDatas && oriDatas.length > 5 && !expend) {
+            datas = oriDatas.take(5).toList();
           } else {
-            datas = contentModel.archives;
+            datas = oriDatas;
           }
           setState(() {});
         } catch (e) {
@@ -87,43 +86,44 @@ class _ContentTabItemState extends State<ContentTabItem> {
                           : StaggeredTile.extent(1, 200),
                 ),
               ),
-              MaterialButton(
-                minWidth: 184,
-                height: 40,
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                  side: BorderSide(color: ColorConstant.TextMainColor),
-                ),
-                color: ColorConstant.WhiteColor,
-                onPressed: () {
-                  setState(() {
+              if (null != oriDatas && oriDatas.length > 5)
+                MaterialButton(
+                  minWidth: 184,
+                  height: 40,
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    side: BorderSide(color: ColorConstant.TextMainColor),
+                  ),
+                  color: ColorConstant.WhiteColor,
+                  onPressed: () {
                     expend = !expend;
-                    pageSize = expend ? 10 : 5;
-                    getHttp();
-                  });
-                },
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(!expend ? "加载更多" : "收起",
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: ColorConstant.TextMainColor,
-                        )),
-                    Image.asset(
-                      !expend
-                          ? "assets/images/home/icon_next_down.png"
-                          : "assets/images/home/icon_next_up.png",
-                      height: 16,
-                      width: 16,
-                    )
-                  ],
-                ),
-              )
+                    if (null != oriDatas) {
+                      datas = expend ? oriDatas : oriDatas.take(5).toList();
+                    }
+                    setState(() {});
+                  },
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(!expend ? "加载更多" : "收起",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: ColorConstant.TextMainColor,
+                          )),
+                      Image.asset(
+                        !expend
+                            ? "assets/images/home/icon_next_down.png"
+                            : "assets/images/home/icon_next_up.png",
+                        height: 16,
+                        width: 16,
+                      )
+                    ],
+                  ),
+                )
             ],
           );
   }

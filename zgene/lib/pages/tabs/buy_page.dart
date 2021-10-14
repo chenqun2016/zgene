@@ -7,9 +7,7 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
-import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/statistics_constant.dart';
-import 'package:zgene/event/event_bus.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/content_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
@@ -28,7 +26,6 @@ class BuyPage extends BaseWidget {
 class _BuyPageState extends BaseWidgetState<BuyPage> {
   double appBarAlpha = 0;
   EasyRefreshController _easyController;
-  ScrollController _controller = new ScrollController();
   List _products;
 
   @override
@@ -42,24 +39,12 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
     setWantKeepAlive = true;
     backImgPath = "assets/images/mine/img_bg_my.png";
     _easyController = EasyRefreshController();
-    //监听滚动事件，打印滚动位置
-    // _controller.addListener(() {
-    // });
-    bus.on(CommonConstant.BUS_BUYPAGE, (arg) {
-      try {
-        _controller.animateTo(0,
-            duration: Duration(milliseconds: 300), curve: Curves.linear);
-      } catch (e) {
-        print(e);
-      }
-    });
+    HomeGetHttp();
   }
 
   @override
   void dispose() {
     //为了避免内存泄露，需要调用_controller.dispose
-    _controller.dispose();
-    bus.off(CommonConstant.BUS_BUYPAGE);
     super.dispose();
   }
 
@@ -100,27 +85,28 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
         children: [
           _title,
           Expanded(
-              child: EasyRefresh(
-            // 是否开启控制结束加载
-            enableControlFinishLoad: false,
-            firstRefresh: true,
-            // 控制器
-            controller: _easyController,
-            header: BallPulseHeader(),
+            //     child: EasyRefresh(
+            //   // 是否开启控制结束加载
+            //   enableControlFinishLoad: false,
+            //   firstRefresh: true,
+            //   // 控制器
+            //   controller: _easyController,
+            //   header: BallPulseHeader(),
             child: _listview,
-            //下拉刷新事件回调
-            onRefresh: () async {
-              // page = 1;
-              // // 获取数据
-              HomeGetHttp();
-              // await Future.delayed(Duration(seconds: 1), () {
-              // 重置刷新状态 【没错，这里用的是resetLoadState】
-              if (_easyController != null) {
-                _easyController.resetLoadState();
-              }
-              // });
-            },
-          ))
+            //   //下拉刷新事件回调
+            //   onRefresh: () async {
+            //     // page = 1;
+            //     // // 获取数据
+            //     HomeGetHttp();
+            //     // await Future.delayed(Duration(seconds: 1), () {
+            //     // 重置刷新状态 【没错，这里用的是resetLoadState】
+            //     if (_easyController != null) {
+            //       _easyController.resetLoadState();
+            //     }
+            //     // });
+            //   },
+            // )
+          )
         ],
       ),
     );
@@ -130,7 +116,6 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
     return _products == null
         ? Text("")
         : ListView(
-            controller: _controller,
             shrinkWrap: true,
             physics: BouncingScrollPhysics(),
             padding: EdgeInsets.only(top: 0, bottom: 80),
@@ -145,6 +130,7 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
             context,
             ProductDetailPage(
               bean: bean,
+              index: _products.indexOf(bean),
             ));
       },
       behavior: HitTestBehavior.opaque,
@@ -162,7 +148,7 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
               left: 16,
               top: 16,
               child: Hero(
-                tag: bean.id.toString(),
+                tag: bean.id.toString() + _products.indexOf(bean).toString(),
                 child: CachedNetworkImage(
                   width: 104,
                   // 设置根据宽度计算高度

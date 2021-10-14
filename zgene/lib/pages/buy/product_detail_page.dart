@@ -26,7 +26,9 @@ const APPBAR_SCROLL_OFFSET = 50;
 ///产品详情页面
 class ProductDetailPage extends BaseWidget {
   final Archives bean;
-  ProductDetailPage({Key key, @required this.bean}) : super(key: key);
+  final int index;
+  ProductDetailPage({Key key, @required this.bean, @required this.index})
+      : super(key: key);
 
   @override
   _BuyPageState getState() => _BuyPageState();
@@ -248,7 +250,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
         height: 170,
         alignment: Alignment.topCenter,
         child: Hero(
-          tag: _productDetail.id.toString(),
+          tag: _productDetail.id.toString() + widget.index.toString(),
           child: FadeInImage.assetNetwork(
               placeholder: 'assets/images/home/img_default2.png',
               image: CommonUtils.splicingUrl(_productDetail.imageUrl),
@@ -259,12 +261,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
               fit: BoxFit.cover,
               alignment: Alignment.topCenter,
               imageErrorBuilder: (context, error, stackTrace) {
-                return Image.asset(
-                  'assets/images/home/img_default2.png',
-                  width: double.infinity,
-                  height: 192,
-                  fit: BoxFit.fill,
-                );
+                return Text("");
               }),
         ),
         // new CachedNetworkImage(

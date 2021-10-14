@@ -122,6 +122,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     GetuiUtils.config();
     // GetuiUtils.getClientId();
     GetuiUtils.bindAlias();
+    if (Platform.isAndroid) {
+      Getuiflut().turnOnPush();
+    }
   }
 
   _installFluwx() async {

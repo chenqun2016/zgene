@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:getuiflut/getuiflut.dart';
+import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/util/platform_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
@@ -18,11 +19,11 @@ class GetuiUtils {
       },
       onReceiveMessageData: (Map<String, dynamic> msg) async {
         print("flutter onReceiveMessageData: $msg");
-        print("------------------");
-        var payload = json.decode(msg["payload"].toString());
-        print(payload);
 
-        if (PlatformUtils.isAndroid) {
+        if (PlatformUtils.isAndroid &&
+            !CommonConstant.AppLifecycleStateResumed) {
+          var payload = json.decode(msg["payload"].toString());
+
           CommonUtils.globalToUrl(type: payload["type"], url: payload["url"]);
         }
       },
@@ -38,7 +39,7 @@ class GetuiUtils {
         print("flutter onReceivePayload: $message");
         print("-------------------");
 
-        if (Platform.isIOS) {
+        if (Platform.isIOS && !CommonConstant.AppLifecycleStateResumed) {
           var payload = json.decode(message["payloadMsg"].toString());
           print(payload);
           CommonUtils.globalToUrl(type: payload["type"], url: payload["url"]);
@@ -99,8 +100,8 @@ class GetuiUtils {
     }
   }
 
-  static Future<Void> resetBadge() async {
+  static Future<Void> setBadge(int num) async {
     // ignore: unnecessary_statements
-    Getuiflut().resetBadge;
+    Getuiflut().setBadge(num);
   }
 }

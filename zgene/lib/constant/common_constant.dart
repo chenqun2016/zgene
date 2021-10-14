@@ -37,6 +37,9 @@ class CommonConstant {
   //主题颜色渐变起始颜色
   static int THEME_COLOR_GRADIENT_START = 0xFF65B8FF;
 
+  //软件是否前台
+  static bool AppLifecycleStateResumed = false;
+
   //客服微信
   static String App_Contact_Wx_Code = "Support_DiVMS";
 

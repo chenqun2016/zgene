@@ -16,6 +16,11 @@ class MainActivity : FlutterActivity() {
         methodChannel = MethodChannel(flutterEngine?.dartExecutor, CHANNEL)
         //获取自定义透传参数值
         Log.d("--------------", "onCreate")
+    }
+
+    override fun onFlutterUiDisplayed() {
+        super.onFlutterUiDisplayed()
+        Log.d("--------------", "onFlutterUiDisplayed")
         checkPushIntent(intent)
     }
 

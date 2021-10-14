@@ -153,11 +153,11 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         //   print(arg);
         //   CommonUtils.globalToUrl(type: arg["type"], url: arg["url"]);
         // });
+        Getuiflut().setBadge(0);
 
         print("前后台更改"); // 处于这种状态的应用程序应该假设它们可能在任何时候暂停
         break;
       case AppLifecycleState.resumed: //从后台切换前台，界面可见
-        GetuiUtils.setBadge(0);
         Future.delayed(Duration(seconds: 1), () {
           CommonConstant.AppLifecycleStateResumed = true;
         });

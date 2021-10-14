@@ -100,8 +100,8 @@ class GetuiUtils {
     }
   }
 
-  static Future<Void> setBadge(int num) async {
+  static Future<Void> resetBadge() async {
     // ignore: unnecessary_statements
-    Getuiflut().setBadge(num);
+    Getuiflut().resetBadge;
   }
 }

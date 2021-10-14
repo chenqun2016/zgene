@@ -3,10 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/navigator/tab_navigator.dart';
+import 'package:zgene/plugin/push_plugin.dart';
 import 'package:zgene/util/screen_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
-import 'package:zgene/widget/count_down_widget.dart';
 
 ///app启动页
 class SplashPage extends StatefulWidget {
@@ -36,6 +36,7 @@ class _SplashPageState extends State<SplashPage> {
         });
       });
     }
+    MethodChannelPlugin.registHandler();
   }
 
   @override

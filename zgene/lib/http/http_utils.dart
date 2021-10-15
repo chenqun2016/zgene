@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
+
 import 'package:device_info/device_info.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -162,6 +162,7 @@ class HttpUtils {
         }
       });
     } catch (e) {}
+    print(url);
     try {
       Dio dio = await createInstance();
       Response response;

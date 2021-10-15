@@ -107,9 +107,9 @@ class _VideoPageState extends State<VideoPage> {
       margin: EdgeInsets.only(top: 35, left: 10),
       child: IconButton(
           onPressed: () {
-            if(_chewieController.isFullScreen){
+            if (null != _chewieController && _chewieController.isFullScreen) {
               _chewieController.exitFullScreen();
-            }else{
+            } else {
               Navigator.pop(context);
             }
           },

@@ -1,7 +1,9 @@
 import 'dart:collection';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_pickers/pickers.dart';
 import 'package:flutter_pickers/time_picker/model/pduration.dart';
@@ -10,19 +12,23 @@ import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/navigator/navigator_util.dart';
-import 'package:zgene/pages/bindcollector/qr_scanner_page.dart';
 import 'package:zgene/pages/my/my_contant_us.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
-import 'package:zgene/util/ui_uitls.dart';
+import 'package:zgene/util/dia_log.dart';
 import 'package:zgene/widget/base_web.dart';
 import 'package:zgene/widget/my_stepper.dart';
 
 class BindCollectorPage extends BaseWidget {
+  ///扫码页传过来的采集码，有值的情况跳过第0步，直接到第1步。
+  final String num;
+
   @override
   BaseWidgetState getState() {
     return _BindCollectorPageState();
   }
+
+  BindCollectorPage({Key key, this.num}) : super(key: key);
 }
 
 class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
@@ -55,6 +61,47 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
     _nameEditingController = new TextEditingController();
 
     currentSex = sex[0];
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      if (null != widget.num && widget.num.isNotEmpty) {
+        _textEditingController.text = widget.num;
+        setState(() {
+          _position++;
+        });
+      }
+    });
+  }
+
+  ///拦截返回
+  ///第0和2步可以直接关闭页面
+  ///第1步需要判断是返回到第0步还是直接关闭页面
+  @override
+  Future myBackClick() {
+    if (_position == 1) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return MyDialog(
+              title: "还未绑定成功，下次绑定该采集器时还需再次填写信息，确定返回吗?",
+              img: "assets/images/mine/icon_delete_address.png",
+              tureText: "确认",
+              falseText: "取消",
+            );
+          }).then((value) async {
+        if (null != value && value) {
+          if ((null == widget.num || widget.num.isEmpty)) {
+            setState(() {
+              _position--;
+            });
+          } else {
+            Navigator.of(context).pop(false);
+          }
+        }
+      });
+    } else {
+      Navigator.of(context).pop(_position == 2);
+    }
+    return Future.value(false);
   }
 
   @override
@@ -72,16 +119,20 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
 
   @override
   Widget viewPageBody(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-      child: Column(
-        children: [
-          // _titlebar(),
-          _stepper(context),
-        ],
-      ),
-    );
+    return WillPopScope(
+        child: Container(
+          width: double.infinity,
+          padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+          child: Column(
+            children: [
+              // _titlebar(),
+              _stepper(context),
+            ],
+          ),
+        ),
+        onWillPop: () async {
+          return myBackClick();
+        });
   }
 
   _bindcollector() async {
@@ -124,7 +175,7 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
 
   _stepper(context) {
     return EStepper(
-      stepperWidth: 240,
+      stepperWidth: 200,
       showEditingIcon: false,
       currentStep: _position,
       // onStepTapped: (index) {
@@ -480,73 +531,6 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
   Widget _bindstep1(context) {
     return Column(
       children: [
-        GestureDetector(
-          onTap: () async {
-            try {
-              String code = await NavigatorUtil.push(context, QRViewExample());
-              if (null != code && code.isNotEmpty) {
-                _textEditingController.text = code;
-                Future.delayed(Duration(milliseconds: 500), () {
-                  setState(() {
-                    _position++;
-                  });
-                });
-              }
-            } catch (e) {
-              print(e);
-            }
-          },
-          child: Container(
-            margin: EdgeInsets.only(top: 0),
-            padding: EdgeInsets.only(top: 0, bottom: 20),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(
-                Radius.circular(20),
-              ),
-            ),
-            child: Column(
-              children: [
-                Image.asset(
-                  "assets/images/home/icon_saoma.png",
-                  height: 110,
-                  width: 110,
-                ),
-                Text(
-                  "扫一扫采集器上的条形码",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: ColorConstant.TextMainBlack,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 10, bottom: 10),
-                  child: Text(
-                    "如无法扫码可以手动输入采集器编号",
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      color: ColorConstant.Text_5E6F88,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
-                  child: Divider(
-                    height: 1,
-                    color: ColorConstant.Divider,
-                  ),
-                ),
-                Image.asset(
-                  "assets/images/home/img_shili.png",
-                  height: 65,
-                  width: 149,
-                )
-              ],
-            ),
-          ),
-        ),
         Container(
           padding: EdgeInsets.all(16),
           margin: EdgeInsets.only(top: 16),
@@ -569,6 +553,9 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
                 padding: EdgeInsets.only(left: 10),
                 child: TextField(
                   keyboardType: TextInputType.multiline,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp("[a-zA-Z]|[0-9]")),
+                  ],
                   controller: _textEditingController,
                   maxLines: 1,
                   textAlign: TextAlign.left,
@@ -633,9 +620,7 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
             color: ColorConstant.TextMainColor,
             onPressed: canStep1Next
                 ? () {
-                    setState(() {
-                      _position++;
-                    });
+                    checkSerialNum();
                   }
                 : null,
             child: Text(_getBottomText(_position),
@@ -649,6 +634,41 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
           ),
         )
       ],
+    );
+  }
+
+  Future<void> checkSerialNum() async {
+    bool isNetWorkAvailable = await CommonUtils.isNetWorkAvailable();
+    if (!isNetWorkAvailable) {
+      return;
+    }
+    Map<String, dynamic> map = new HashMap();
+    map['serial_num'] = _textEditingController.text.toString();
+    HttpUtils.requestHttp(
+      ApiConstant.numCheck,
+      parameters: map,
+      method: HttpUtils.POST,
+      onSuccess: (result) async {
+        setState(() {
+          _position++;
+        });
+      },
+      onError: (code, error) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return MyDialog(
+                title: error.toString(),
+                img: "assets/images/mine/icon_delete_address.png",
+                tureText: "重新输入",
+                falseText: "联系客服",
+              );
+            }).then((value) async {
+          if (null != value && !value) {
+            NavigatorUtil.push(context, contantUsPage());
+          }
+        });
+      },
     );
   }
 }

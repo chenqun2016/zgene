@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:zgene/constant/color_constant.dart';
@@ -58,13 +56,17 @@ class _WebViewWidgetState extends State<BasePageWebView> {
   }
 
   Future<void> _onPageFinished(BuildContext context, String url) async {
-    double newHeight = double.parse(
-      await _webViewController
-          .evaluateJavascript("document.documentElement.scrollHeight;"),
-    );
-    setState(() {
-      _webViewHeight = newHeight;
-    });
+    try {
+      double newHeight = double.parse(
+        await _webViewController
+            .evaluateJavascript("document.documentElement.scrollHeight;"),
+      );
+      setState(() {
+        _webViewHeight = newHeight;
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   // 加载状态

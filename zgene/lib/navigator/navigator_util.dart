@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:zgene/constant/api_constant.dart';
-import 'package:zgene/pages/bindcollector/bind_collector_page.dart';
+import 'package:zgene/pages/bindcollector/qr_scanner_page.dart';
 import 'package:zgene/pages/my/my_report_page.dart';
 import 'package:zgene/pages/my/sendBack_acquisition.dart';
 import 'package:zgene/util/common_utils.dart';
@@ -51,7 +51,7 @@ class NavigatorUtil {
               isShare: false,
             ));
       case 30:
-        return NavigatorUtil.push(context, BindCollectorPage());
+        return NavigatorUtil.push(context, QRScannerView());
       case 40:
         print(123);
         if (null != _order.collectorInfo) {

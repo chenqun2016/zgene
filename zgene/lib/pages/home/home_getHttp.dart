@@ -4,7 +4,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/util/common_utils.dart';
-import 'package:zgene/util/ui_uitls.dart';
 
 typedef _CallBack = void Function(dynamic result);
 
@@ -26,9 +25,7 @@ Future<void> HomeGetHttp(int type, _CallBack callback) async {
         callback(result);
       }
     },
-    onError: (code, error) {
-      EasyLoading.showError(error);
-    },
+    onError: (code, error) {},
   );
 }
 

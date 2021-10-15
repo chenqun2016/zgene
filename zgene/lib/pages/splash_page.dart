@@ -6,6 +6,7 @@ import 'package:zgene/navigator/tab_navigator.dart';
 import 'package:zgene/util/screen_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
+import 'package:zgene/util/umeng_utils.dart';
 
 ///app启动页
 class SplashPage extends StatefulWidget {
@@ -27,6 +28,7 @@ class _SplashPageState extends State<SplashPage> {
       WidgetsBinding.instance.addPostFrameCallback((callback) {
         ///显示协议弹窗
         UiUitls.showAgreement2(context, onAgree: () {
+          initOther();
           SpUtils().setStorage(SpConstant.SpIsFirst, false);
           isFirst = false;
           setState(() {});
@@ -34,6 +36,8 @@ class _SplashPageState extends State<SplashPage> {
           exit(0);
         });
       });
+    } else {
+      initOther();
     }
   }
 
@@ -56,5 +60,9 @@ class _SplashPageState extends State<SplashPage> {
         )
       ],
     );
+  }
+
+  void initOther() {
+    UmengUtils.initCommon();
   }
 }

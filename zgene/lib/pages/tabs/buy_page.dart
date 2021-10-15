@@ -1,32 +1,21 @@
 import 'dart:collection';
 
-import 'package:easy_web_view/easy_web_view.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
-import 'package:zgene/constant/common_constant.dart';
-import 'package:zgene/constant/sp_constant.dart';
-import 'package:zgene/event/event_bus.dart';
+import 'package:zgene/constant/statistics_constant.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/content_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
-import 'package:zgene/pages/my/ordering_page.dart';
+import 'package:zgene/pages/buy/product_detail_page.dart';
 import 'package:zgene/util/base_widget.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/util/common_utils.dart';
-import 'package:zgene/util/login_base.dart';
-import 'package:zgene/util/platform_utils.dart';
-import 'package:zgene/util/refresh_config_utils.dart';
-import 'package:zgene/util/sp_utils.dart';
-import 'package:zgene/util/time_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
-import 'package:zgene/widget/base_web_view.dart';
-
-const APPBAR_SCROLL_OFFSET = 50;
-const APPBAR_SCROLL_OFFSET2 = 400;
+import 'package:zgene/util/umeng_utils.dart';
 
 ///首页购买页面
 class BuyPage extends BaseWidget {
@@ -36,41 +25,26 @@ class BuyPage extends BaseWidget {
 
 class _BuyPageState extends BaseWidgetState<BuyPage> {
   double appBarAlpha = 0;
-  bool showBuyButtom = false;
   EasyRefreshController _easyController;
-  ScrollController _controller = new ScrollController();
-  Archives _productDetail;
-  static ValueKey key = ValueKey('key_0');
+  List _products;
 
   @override
   void pageWidgetInitState() {
     super.pageWidgetInitState();
+    UmengUtils.onEvent(StatisticsConstant.TAB2_BUY,
+        {StatisticsConstant.KEY_UMENG_L2: StatisticsConstant.TAB2_BUY_IMP});
     showBaseHead = false;
     showHead = false;
     isListPage = true;
     setWantKeepAlive = true;
     backImgPath = "assets/images/mine/img_bg_my.png";
     _easyController = EasyRefreshController();
-    //监听滚动事件，打印滚动位置
-    _controller.addListener(() {
-      _onScroll(_controller.offset);
-    });
     HomeGetHttp();
-    bus.on(CommonConstant.BUS_BUYPAGE, (arg) {
-      try {
-        _controller.animateTo(0,
-            duration: Duration(milliseconds: 300), curve: Curves.linear);
-      } catch (e) {
-        print(e);
-      }
-    });
   }
 
   @override
   void dispose() {
     //为了避免内存泄露，需要调用_controller.dispose
-    _controller.dispose();
-    bus.off(CommonConstant.BUS_BUYPAGE);
     super.dispose();
   }
 
@@ -93,7 +67,7 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
             null != contentModel.archives &&
             contentModel.archives.length > 0) {
           setState(() {
-            _productDetail = contentModel.archives[0];
+            _products = contentModel.archives;
           });
         }
       },
@@ -105,321 +79,191 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
 
   @override
   Widget viewPageBody(BuildContext context) {
-    return Stack(
-      alignment: Alignment.topLeft,
-      children: [
-        Padding(
-          padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-          // child: EasyRefresh(
-          //   // 是否开启控制结束加载
-          //   enableControlFinishLoad: false,
-          //   firstRefresh: true,
-          //   // 控制器
-          //   controller: _easyController,
-          //   header: RefreshConfigUtils.classicalHeader(),
-          child: _listview,
-          //   //下拉刷新事件回调
-          //   onRefresh: () async {
-          //     // page = 1;
-          //     // // 获取数据
-          //     HomeGetHttp();
-          //     // await Future.delayed(Duration(seconds: 1), () {
-          //     // 重置刷新状态 【没错，这里用的是resetLoadState】
-          //     if (_easyController != null) {
-          //       _easyController.resetLoadState();
-          //     }
-          //     // });
-          //   },
-          // ),
-        ),
-        _appBar
-      ],
-    );
-  }
-
-  Widget get _webcontain {
-    return Column(
-      children: [
-        _title,
-        if (null != _productDetail) _banner,
-        if (null != _productDetail) _products,
-        if (null != _productDetail)
-          Expanded(
-              child: Container(
-            color: Colors.white,
-            width: double.infinity,
-            margin: EdgeInsets.only(top: 16, bottom: 56),
-            child: BasePageWebView(
-              url: "https://www.z-gene.cn/public/statics/img/5653950028.jpg",
-            ),
-          ))
-      ],
-    );
-  }
-
-  Widget get _listview {
-    return ListView(
-      controller: _controller,
-      shrinkWrap: true,
-      physics: BouncingScrollPhysics(),
-      padding: EdgeInsets.zero,
-      children: [
-        _title,
-        if (null != _productDetail) _banner,
-        if (null != _productDetail) _products,
-        if (null != _productDetail) _picture,
-      ],
-    );
-  }
-
-  Widget get _banner {
-    return ClipRect(
-      child: Container(
-        margin: EdgeInsets.only(left: 17, right: 17),
-        height: 170,
-        alignment: Alignment.topCenter,
-        child: FadeInImage.assetNetwork(
-            placeholder: 'assets/images/home/img_default2.png',
-            image: CommonUtils.splicingUrl(_productDetail.imageUrl),
-            width: double.infinity,
-            height: 192,
-            fadeInDuration: TimeUtils.fadeInDuration(),
-            fadeOutDuration: TimeUtils.fadeOutDuration(),
-            fit: BoxFit.cover,
-            alignment: Alignment.topCenter,
-            imageErrorBuilder: (context, error, stackTrace) {
-              return Image.asset(
-                'assets/images/home/img_default2.png',
-                width: double.infinity,
-                height: 192,
-                fit: BoxFit.fill,
-              );
-            }),
-        // new CachedNetworkImage(
-        //   width: 343,
-        //   // 设置根据宽度计算高度
-        //   height: 192,
-        //   // 图片地址
-        //   imageUrl: CommonUtils.splicingUrl(_productDetail.imageUrl),
-        //   // 填充方式为cover
-        //   fit: BoxFit.fill,
-        //
-        //   errorWidget: (context, url, error) => new Container(
-        //     child: new Image.asset(
-        //       'assets/images/home/img_default2.png',
-        //       height: 343,
-        //       width: 192,
-        //     ),
-        //   ),
-        // ),
-      ),
-    );
-  }
-
-  Widget get _products {
     return Container(
-      alignment: Alignment.topLeft,
-      width: double.infinity,
-      padding: EdgeInsets.fromLTRB(16, 20, 16, 20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-            bottomLeft: Radius.zero,
-            bottomRight: Radius.zero),
-      ),
+      padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            _productDetail.title,
-            style: TextStyle(
-              fontSize: 22.sp,
-              fontStyle: FontStyle.normal,
-              fontWeight: FontWeight.w600,
-              color: ColorConstant.TextMainBlack,
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 12, bottom: 16),
-            child: Text(
-              _productDetail.description,
-              style: TextStyle(
-                fontSize: 15.sp,
-                fontStyle: FontStyle.normal,
-                fontWeight: FontWeight.w500,
-                color: ColorConstant.Text_5E6F88,
-              ),
-            ),
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Text(
-                  "¥${CommonUtils.formatMoney(_productDetail.coin)}",
-                  style: TextStyle(
-                    fontSize: 22.sp,
-                    fontStyle: FontStyle.normal,
-                    fontWeight: FontWeight.w600,
-                    color: ColorConstant.Text_FC4C4E,
-                  ),
-                ),
-                flex: 1,
-              ),
-              MaterialButton(
-                minWidth: 142.w,
-                height: 44.h,
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25)),
-                color: ColorConstant.TextMainColor,
-                onPressed: () {
-                  if (!SpUtils().getStorageDefault(SpConstant.IsLogin, false)) {
-                    BaseLogin.login();
-                    return;
-                  }
-                  NavigatorUtil.push(
-                      context,
-                      OrderingPage(
-                        product: _productDetail,
-                      ));
-                },
-                child: Text("立即购买",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    )),
-              ),
-            ],
+          _title,
+          Expanded(
+            //     child: EasyRefresh(
+            //   // 是否开启控制结束加载
+            //   enableControlFinishLoad: false,
+            //   firstRefresh: true,
+            //   // 控制器
+            //   controller: _easyController,
+            //   header: BallPulseHeader(),
+            child: _listview,
+            //   //下拉刷新事件回调
+            //   onRefresh: () async {
+            //     // page = 1;
+            //     // // 获取数据
+            //     HomeGetHttp();
+            //     // await Future.delayed(Duration(seconds: 1), () {
+            //     // 重置刷新状态 【没错，这里用的是resetLoadState】
+            //     if (_easyController != null) {
+            //       _easyController.resetLoadState();
+            //     }
+            //     // });
+            //   },
+            // )
           )
         ],
       ),
     );
   }
 
-  Widget get _picture {
-    return Container(
-      color: Colors.white,
-      width: double.infinity,
-      margin: EdgeInsets.only(top: 16, bottom: 56),
-      child: PlatformUtils.isWeb
-          ? CachedNetworkImage(
-              width: double.infinity,
-              imageUrl:
-                  "https://www.z-gene.cn/public/statics/img/5653950028.jpg",
-              // 填充方式为cover
-              fit: BoxFit.cover,
-            )
-          : BasePageWebView(
-              url: ApiConstant.getH5DetailUrl(_productDetail.id.toString()),
-            ),
-    );
+  Widget get _listview {
+    return _products == null
+        ? Text("")
+        : ListView(
+            shrinkWrap: true,
+            physics: BouncingScrollPhysics(),
+            padding: EdgeInsets.only(top: 0, bottom: 80),
+            children: _products?.map((e) => getItem(e))?.toList(),
+          );
   }
 
-  Widget get _title {
-    return Container(
-      margin: EdgeInsets.only(left: 16, top: 10.w, bottom: 13),
-      child: Text(
-        "购买",
-        style: TextStyle(
-            fontSize: 24,
-            color: ColorConstant.TextMainBlack,
-            fontWeight: FontWeight.bold),
-      ),
-    );
-  }
-
-  Widget get _appBar {
-    return Opacity(
-      opacity: appBarAlpha,
+  Widget getItem(Archives bean) {
+    return GestureDetector(
+      onTap: () {
+        NavigatorUtil.push(
+            context,
+            ProductDetailPage(
+              bean: bean,
+              index: _products.indexOf(bean),
+            ));
+      },
+      behavior: HitTestBehavior.opaque,
       child: Container(
-        color: Colors.white,
-        height: 55.h + MediaQuery.of(context).padding.top,
+        width: double.infinity,
+        height: 195,
+        margin: EdgeInsets.fromLTRB(16, 17, 16, 5),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
         child: Stack(
           children: [
             Positioned(
-              left: 80.w,
-              right: 80.w,
-              top: MediaQuery.of(context).padding.top,
-              child: Container(
-                height: 55.h,
-                child: Center(
+              left: 16,
+              top: 16,
+              child: Hero(
+                tag: bean.id.toString() + _products.indexOf(bean).toString(),
+                child: CachedNetworkImage(
+                  width: 104,
+                  // 设置根据宽度计算高度
+                  height: 104,
+                  // 图片地址
+                  imageUrl: CommonUtils.splicingUrl(bean.imageUrl),
+                  // 填充方式为cover
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            Positioned(
+              left: 136,
+              right: 0,
+              top: 20,
+              child: Text(
+                bean.title,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: ColorConstant.TextMainBlack,
+                ),
+              ),
+            ),
+            Positioned(
+              left: 136,
+              top: 90,
+              child: Text(
+                "¥${CommonUtils.formatMoney(bean.coin)}",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: ColorConstant.Text_FC4C4E,
+                ),
+              ),
+            ),
+            Positioned(
+                top: 85,
+                right: 16,
+                child: Container(
+                  height: 32,
+                  width: 78,
+                  decoration: BoxDecoration(
+                    color: ColorConstant.MainBlueColor,
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                  ),
+                  alignment: Alignment.center,
                   child: Text(
-                    "购买",
-                    textAlign: TextAlign.center,
-                    overflow: TextOverflow.ellipsis,
+                    "立即购买",
                     style: TextStyle(
-                      fontSize: 18.sp,
-                      fontStyle: FontStyle.normal,
+                      fontSize: 13,
                       fontWeight: FontWeight.bold,
-                      color: ColorConstant.TextMainBlack,
+                      color: ColorConstant.WhiteColor,
                     ),
+                  ),
+                )),
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: Container(
+                alignment: Alignment.center,
+                padding:
+                    EdgeInsets.only(left: 16, right: 16, top: 4, bottom: 4),
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage("assets/images/buy/img_product_bg.png"),
+                      fit: BoxFit.fill),
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                ),
+                child: Text(
+                  bean.description,
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                    color: ColorConstant.Text_5E6F88,
                   ),
                 ),
               ),
             ),
-            if (showBuyButtom)
-              Positioned(
-                  top: MediaQuery.of(context).padding.top,
-                  right: 16.w,
-                  child: Container(
-                    height: 55.h,
-                    alignment: Alignment.center,
-                    child: MaterialButton(
-                      minWidth: 76.w,
-                      height: 28.h,
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25)),
-                      color: ColorConstant.TextMainColor,
-                      onPressed: () {
-                        if (!SpUtils()
-                            .getStorageDefault(SpConstant.IsLogin, false)) {
-                          BaseLogin.login();
-                          return;
-                        }
-
-                        NavigatorUtil.push(
-                            context,
-                            OrderingPage(
-                              product: _productDetail,
-                            ));
-                      },
-                      child: Text("立即购买",
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          )),
-                    ),
-                  ))
           ],
         ),
       ),
     );
   }
 
-  _onScroll(offset) {
-    double alpha = offset / APPBAR_SCROLL_OFFSET;
-    if (alpha < 0) {
-      alpha = 0;
-    } else if (alpha > 1) {
-      alpha = 1;
-    }
-    if (appBarAlpha != alpha) {
-      setState(() {
-        appBarAlpha = alpha;
-      });
-      print(appBarAlpha);
-    }
-    bool showLittleButtom = offset > APPBAR_SCROLL_OFFSET2;
-    if (showLittleButtom != showBuyButtom) {
-      setState(() {
-        showBuyButtom = showLittleButtom;
-      });
-    }
+  Widget get _title {
+    return Container(
+      margin: EdgeInsets.only(left: 16, right: 16, top: 10.w, bottom: 2),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            "购买",
+            style: TextStyle(
+                fontSize: 24,
+                color: ColorConstant.TextMainBlack,
+                fontWeight: FontWeight.bold),
+          ),
+          Expanded(
+            child: Text(""),
+          ),
+          GestureDetector(
+            onTap: () {
+              UiUitls.showChatH5(context);
+            },
+            child: Image.asset(
+              "assets/images/buy/icon_kefu.png",
+              height: 40,
+              width: 40,
+              fit: BoxFit.fill,
+            ),
+          )
+        ],
+      ),
+    );
   }
 }

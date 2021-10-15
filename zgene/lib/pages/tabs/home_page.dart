@@ -3,10 +3,12 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/color_constant.dart';
-import 'package:zgene/constant/common_constant.dart';
-import 'package:zgene/event/event_bus.dart';
+import 'package:zgene/constant/statistics_constant.dart';
 import 'package:zgene/models/content_model.dart';
+import 'package:zgene/pages/home/content_tab_nav.dart';
+import 'package:zgene/pages/home/course_nav.dart';
 import 'package:zgene/pages/home/explore_nav.dart';
 import 'package:zgene/pages/home/home_getHttp.dart';
 import 'package:zgene/pages/home/local_nav.dart';
@@ -14,10 +16,8 @@ import 'package:zgene/pages/home/problem_nav.dart';
 import 'package:zgene/pages/home/video_nav.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
-import 'package:zgene/util/refresh_config_utils.dart';
-import 'package:zgene/util/time_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:zgene/util/umeng_utils.dart';
 
 const APPBAR_SCROLL_OFFSET = 50;
 
@@ -42,7 +42,8 @@ class _HomePageState extends BaseWidgetState<HomePage> {
   @override
   void pageWidgetInitState() {
     UiUitls.setBlackTextStatus();
-
+    UmengUtils.onEvent(StatisticsConstant.TAB1_HOME,
+        {StatisticsConstant.KEY_UMENG_L2: StatisticsConstant.TAB1_HOME_IMP});
     showBaseHead = false;
     showHead = false;
     isListPage = true;
@@ -125,6 +126,8 @@ class _HomePageState extends BaseWidgetState<HomePage> {
         LocalNav(),
         ExploreNav(),
         VideoNav(),
+        CourseNav(),
+        ContentListNav(),
         ProblemNav(),
       ],
     );
@@ -157,6 +160,11 @@ class _HomePageState extends BaseWidgetState<HomePage> {
           Archives archives = bannerList[index];
           return GestureDetector(
             onTap: () {
+              UmengUtils.onEvent(StatisticsConstant.HOME_TOP, {
+                StatisticsConstant.KEY_UMENG_L2:
+                    StatisticsConstant.HOME_FEATURE_BANNER +
+                        (index + 1).toString()
+              });
               CommonUtils.toUrl(
                   context: context,
                   type: archives.linkType,

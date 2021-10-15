@@ -1,10 +1,9 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluwx/fluwx.dart';
 import 'package:getuiflut/getuiflut.dart';
 import 'package:zgene/constant/api_constant.dart';
@@ -13,6 +12,7 @@ import 'package:zgene/constant/config_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/setting_model.dart';
+import 'package:zgene/pages/bindcollector/qr_scanner_page.dart';
 import 'package:zgene/pages/home/article_detail.dart';
 import 'package:zgene/pages/my/my_about_us.dart';
 import 'package:zgene/pages/my/my_contant_us.dart';
@@ -30,7 +30,6 @@ import 'package:zgene/widget/restart_widget.dart';
 
 import 'configure.dart' if (dart.library.html) 'configure_web.dart';
 import 'event/event_bus.dart';
-import 'pages/bindcollector/bind_collector_page.dart';
 import 'pages/login/main_login.dart';
 import 'pages/my/my_address_list.dart';
 import 'pages/my/my_commonQus.dart';
@@ -113,7 +112,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     } else {
       webLogin();
     }
-    if (Platform.isIOS) {
+    if (PlatformUtils.isIOS) {
       Getuiflut().startSdk(
           appId: "LtFmCuKHpj7dr8CM6ExQw5",
           appKey: "7b0CKZK1Ol85XkOGlmv4H8",
@@ -124,7 +123,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     GetuiUtils.config();
     // GetuiUtils.getClientId();
     GetuiUtils.bindAlias();
-    if (Platform.isAndroid) {
+    if (PlatformUtils.isAndroid) {
       Getuiflut().turnOnPush();
     }
     MethodChannelPlugin.registHandler();
@@ -205,6 +204,33 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         const Locale('zh', ''), // China
         // ... other locales the app supports
       ],
+      onGenerateRoute: (settings) {
+        // 支持web页面通过地址来跳转对应的详情页面
+        var u = Uri.parse(settings.name);
+
+        if (u.path == CommonConstant.ROUT_article_detail) {
+          var url = ApiConstant.getH5DetailUrl(u.queryParameters["id"]);
+
+          return MaterialPageRoute(
+            builder: (context) {
+              return ArticleDetailView(
+                title: "文章详情",
+                url: url,
+              );
+            },
+          );
+        } else if (u.path == CommonConstant.ROUT_about) {
+          // 支持about页面跳转
+          return MaterialPageRoute(
+            builder: (context) {
+              return ScreenUtilInit(
+                  designSize: Size(375, 812), builder: () => AboutUsPage());
+            },
+          );
+        }
+
+        return null;
+      },
       //注册路由表
       routes: {
         CommonConstant.ROUT_article_detail: (context) =>
@@ -220,11 +246,12 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
             OrderStepPage(), //订单步骤详情
         CommonConstant.ROUT_order_detail: (context) => OrderDetailPage(), //订单详情
         CommonConstant.ROUT_bind_collector: (context) =>
-            BindCollectorPage(), //绑定采集器
+            QRScannerView(), //绑定采集器
         CommonConstant.ROUT_back_collector: (context) =>
             SendBackAcquisitionPage(), //回寄采集器
         CommonConstant.ROUT_kefu: (context) => contantUsPage(), //联系客服
-        CommonConstant.ROUT_about: (context) => AboutUsPage(), //关于我们
+        CommonConstant.ROUT_about: (context) => ScreenUtilInit(
+            designSize: Size(375, 812), builder: () => AboutUsPage()), //关于我们
         CommonConstant.ROUT_buy: (context) => BuyPage(), //购买页面
         CommonConstant.ROUT_common_question: (context) =>
             CommonQusListPage(), //常见问题
@@ -312,6 +339,9 @@ Future<void> getSetting() async {
           }
           if (item.name == SpConstant.appShareSubtitle) {
             spUtils.setStorage(SpConstant.appShareSubtitle, item.value);
+          }
+          if (item.name == SpConstant.appProductStepAid) {
+            spUtils.setStorage(SpConstant.appProductStepAid, item.value);
           }
         }
       } catch (e) {

@@ -3,7 +3,8 @@ package com.jt.zgene
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-
+import com.umeng.commonsdk.UMConfigure
+import com.umeng.umeng_common_sdk.UmengCommonSdkPlugin
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.plugin.common.MethodChannel
 
@@ -16,6 +17,10 @@ class MainActivity : FlutterActivity() {
         methodChannel = MethodChannel(flutterEngine?.dartExecutor, CHANNEL)
         //获取自定义透传参数值
         Log.d("--------------", "onCreate")
+        //友盟统计
+        UMConfigure.setLogEnabled(BuildConfig.DEBUG)
+        UMConfigure.preInit(this, "614d843866b59330aa6f3255", "zgene")
+        UmengCommonSdkPlugin.setContext(this)
     }
 
     override fun onFlutterUiDisplayed() {

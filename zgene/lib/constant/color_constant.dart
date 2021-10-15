@@ -35,6 +35,7 @@ class ColorConstant {
   static const Color TextMainColor = Color(0xFF007AF7);
   static const Color TextMainColor_10per = Color(0x19007AF7);
 
+  static const Color text_30112950 = Color(0x30112950);
   //文字标准灰
   static const Color TextMainGray = Color(0xFFA0A0A0);
   //文字标准灰
@@ -55,6 +56,7 @@ class ColorConstant {
   static const Color bg_D1D8E2 = Color(0xFFD1D8E2);
   static const Color bg_E5E7F3 = Color(0xFFE5E7F3);
   static const Color bg_EA4335 = Color(0xFFEA4335);
+  static const Color bg_F7F7F8 = Color(0xFFF7F7F8);
   //分割线
   static const Color Divider = Color(0xFFCED0DE);
 //分割线

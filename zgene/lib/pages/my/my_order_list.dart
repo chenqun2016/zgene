@@ -6,18 +6,12 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
-import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/order_list_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
-import 'package:zgene/pages/my/order_detail.dart';
-import 'package:zgene/pages/my/order_step_page.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/date_utils.dart';
-import 'package:zgene/util/refresh_config_utils.dart';
-import 'package:zgene/util/sp_utils.dart';
-import 'package:zgene/util/time_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 
 ///我的订单列表
@@ -173,6 +167,7 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
                     "订单编号：${bean.id}",
                     style: TextStyle(
                       fontSize: 15,
+                      fontWeight: FontWeight.w500,
                       color: Color(0xFF8E9AAB),
                     ),
                   ),
@@ -193,7 +188,9 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
                     child: Text(
                       CommonUtils.getOrderType(bean.status),
                       style: TextStyle(
-                          fontSize: 14, color: ColorConstant.MainBlueColor),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: ColorConstant.MainBlueColor),
                     ),
                   ),
                 ),
@@ -210,25 +207,26 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
               child: Column(
                 children: [
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       if (null != bean.prodInfo)
                         ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(0),
                           child: new CachedNetworkImage(
-                            width: 70,
+                            width: 82,
                             // 设置根据宽度计算高度
-                            height: 70,
+                            height: 82,
                             // 图片地址
                             imageUrl:
                                 CommonUtils.splicingUrl(bean.prodInfo.images),
                             // 填充方式为cover
-                            fit: BoxFit.fill,
+                            fit: BoxFit.cover,
 
                             errorWidget: (context, url, error) => new Container(
                               child: new Image.asset(
                                 'assets/images/banner.png',
-                                height: 70,
-                                width: 70,
+                                height: 82,
+                                width: 82,
                               ),
                             ),
                           ),
@@ -253,50 +251,51 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
                           //     }),
                         ),
                       if (null != bean.prodInfo)
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          mainAxisSize: MainAxisSize.max,
+                        Expanded(
+                            child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Stack(
-                              children: [
-                                Container(
-                                  width:
-                                      MediaQuery.of(context).size.width - 136,
-                                  padding: EdgeInsets.only(left: 10),
-                                  child: Text(
-                                    bean.prodInfo.name,
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      color: Color(0xFF112950),
-                                    ),
-                                  ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 10),
+                              child: Text(
+                                bean.prodInfo.name,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Color(0xFF112950),
                                 ),
-                                Positioned(
-                                  right: 0,
-                                  child: Text(
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 10),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                      child: Container(
+                                    alignment: Alignment.topLeft,
+                                    padding: EdgeInsets.only(left: 10),
+                                    child: Text(
+                                      "X${bean.nums}",
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        color: Color(0xFF8E9AAB),
+                                      ),
+                                      textAlign: TextAlign.right,
+                                    ),
+                                  )),
+                                  Text(
                                     "¥${CommonUtils.formatMoney(bean.price)}",
                                     style: TextStyle(
                                       fontSize: 20,
                                       color: Color(0xFF112950),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            Container(
-                              child: Text(
-                                "X${bean.nums}",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Color(0xFF8E9AAB),
-                                ),
-                                textAlign: TextAlign.right,
+                                ],
                               ),
                             ),
                           ],
-                        ),
+                        )),
                     ],
-                    mainAxisAlignment: MainAxisAlignment.start,
                   ),
                   Container(
                     margin: EdgeInsets.fromLTRB(0, 14, 0, 17),

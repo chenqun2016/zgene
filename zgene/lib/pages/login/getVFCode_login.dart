@@ -7,15 +7,15 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/api_constant.dart';
-import 'package:zgene/constant/app_notification.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
+import 'package:zgene/constant/statistics_constant.dart';
 import 'package:zgene/event/event_bus.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/util/base_widget.dart';
-import 'package:zgene/util/notification_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
+import 'package:zgene/util/umeng_utils.dart';
 
 class GetVFCodeLoginPage extends BaseWidget {
   String phoneText;
@@ -281,6 +281,9 @@ class _GetVFCodeLoginPageState extends BaseWidgetState<GetVFCodeLoginPage> {
       method: HttpUtils.POST,
       onSuccess: (data) async {
         EasyLoading.showSuccess('登录成功');
+        UmengUtils.onEvent(StatisticsConstant.MY_PAGE, {
+          StatisticsConstant.KEY_UMENG_L2: StatisticsConstant.MY_PAGE_LOGIN_OK
+        });
         var spUtils = SpUtils();
         spUtils.setStorage(SpConstant.Token, data["token"]);
         spUtils.setStorage(SpConstant.IsLogin, true);

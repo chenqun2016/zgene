@@ -21,6 +21,23 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
+/// flutter 打包设置的参数，可用于多渠道打包等
+def dartEnvironmentVariables = [
+        APP_CHANNEL: 'zgene'
+]
+
+if (project.hasProperty('dart-defines')) {
+    dartEnvironmentVariables = dartEnvironmentVariables + project.property('dart-defines')
+            .split(',')
+            .collectEntries { entry ->
+                // 1.22.6 版本
+                //def pair = URLDecoder.decode(entry).split('=')
+                // 2.2 版本
+                def pair = new String(entry.decodeBase64(), 'UTF-8').split('=')
+                [(pair.first()): pair.last()]
+            }
+}
+
 apply plugin: 'com.android.application'
 apply plugin: 'com.huawei.agconnect'
 apply plugin: 'kotlin-android'
@@ -34,12 +51,12 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     compileSdkVersion 30
- 
+
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
-    defaultConfig {                                                                                                                                                                                                                                                                                                                                                           
+    defaultConfig {
         applicationId "com.jt.zgene"
         minSdkVersion 21
         targetSdkVersion 30
@@ -55,7 +72,7 @@ android {
         JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
          TENCENT_APPID : "",//腾讯开放平台注册应用得到的
         FACEBOOK_APPID : "",//facebook注册应用得到的appId
-        
+
         //个推
         GETUI_APP_ID    : "LtFmCuKHpj7dr8CM6ExQw5",
         GETUI_APP_KEY   : "7b0CKZK1Ol85XkOGlmv4H8",
@@ -77,7 +94,6 @@ android {
 
     }
 
-
     signingConfigs {
 
         release {
@@ -86,7 +102,6 @@ android {
             keyAlias keystoreProperties.getProperty('keyAlias')
             keyPassword keystoreProperties.getProperty('keyPassword')
         }
-      
     }
     buildTypes {
         debug {
@@ -104,13 +119,24 @@ android {
             shrinkResources true
             //开启zip对齐
             zipAlignEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 
             ndk {
                 // 设置支持的SO库架构
                 abiFilters 'armeabi-v7a'
             }
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 
+        }
+    }
+
+    //多渠道打包 重命名 apk
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            if(variant.buildType.name == "release"){
+                // 设置新名称
+                def newApkName ="${dartEnvironmentVariables.APP_CHANNEL}_zgene_v${defaultConfig.versionName}_${defaultConfig.versionCode}_release.apk"
+                outputFileName = new File(newApkName)
+            }
         }
     }
 }
@@ -120,9 +146,11 @@ flutter {
 }
 
 dependencies {
-    //noinspection GradleDependency
-    implementation 'androidx.multidex:multidex:2.0.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // 友盟基础组件库（所有友盟业务SDK都依赖基础组件库）
+    implementation 'com.umeng.umsdk:common:9.4.2'// 必选
+    implementation 'com.umeng.umsdk:asms:1.4.1'// 必选
 
     implementation 'cn.jiguang.sdk:jshare:2.0.0'  // 此处以JShare 1.6.0 版本为例，具体版本请参考压缩包libs的jar包版本。
     implementation 'cn.jiguang.sdk:jshare-qqmodel:2.0.0'  // 此处以jshare-qqmodel 1.6.0  版本为例，具体版本请参考压缩包libs的jar包版本。

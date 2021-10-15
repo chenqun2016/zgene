@@ -4,7 +4,7 @@ class SpConstant {
   //生产环境
   static const String ProductionApi = "https://www.z-gene.cn";
   //开发环境
-  static const String DevelopApi = "https://test.z-gene.cn/";
+  static const String DevelopApi = "https://test.z-gene.cn";
   //短信服务状态
   static const String SvcMsgStatus = "svc_msg_status";
   //主颜色
@@ -40,6 +40,8 @@ class SpConstant {
   static const String appShareIcon = "app_share_icon";
   //分享图片
   static const String appShareSubtitle = "app_share_subtitle";
+  //商品详情步骤id
+  static const String appProductStepAid = "app_product_step_aid";
   //--End:Z基因项目相关配置接口
   //token
   static const String Token = "token";

@@ -2,11 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:zgene/constant/color_constant.dart';
-import 'package:zgene/constant/common_constant.dart';
-import 'package:zgene/event/event_bus.dart';
+import 'package:zgene/constant/statistics_constant.dart';
 import 'package:zgene/models/content_model.dart';
 import 'package:zgene/util/common_utils.dart';
-import 'package:zgene/util/time_utils.dart';
+import 'package:zgene/util/umeng_utils.dart';
+
 import 'home_getHttp.dart';
 
 class ExploreNav extends StatefulWidget {
@@ -78,6 +78,11 @@ class _ExploreNavState extends State<ExploreNav> {
     Archives archives = tourList[position];
     return GestureDetector(
       onTap: () {
+        UmengUtils.onEvent(StatisticsConstant.HOME_REPORT, {
+          StatisticsConstant.KEY_UMENG_L2:
+              StatisticsConstant.HOME_REPORT_01 + (position + 1).toString()
+        });
+
         CommonUtils.toUrl(
             context: context, type: archives.linkType, url: archives.linkUrl);
       },

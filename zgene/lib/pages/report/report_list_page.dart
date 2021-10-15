@@ -1,10 +1,13 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
+import 'package:zgene/constant/statistics_constant.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/archive_des_model.dart';
 import 'package:zgene/models/report_des_model.dart';
@@ -14,6 +17,7 @@ import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
+import 'package:zgene/util/umeng_utils.dart';
 import 'package:zgene/widget/base_web.dart';
 
 class ReportListPage extends BaseWidget {
@@ -126,7 +130,7 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
           child: Stack(
             children: [
               _buildSliverAppBar(),
-              _buildPersistentHeader(170),
+              _buildPersistentHeader(164),
               _buildSliverList(),
             ],
           ),
@@ -160,6 +164,10 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
           disabledColor: Colors.white,
           color: ColorConstant.TextMainColor,
           onPressed: () {
+            UmengUtils.onEvent(StatisticsConstant.REPORT_PAGE, {
+              StatisticsConstant.KEY_UMENG_L2:
+                  StatisticsConstant.REPORT_PAGE2_BUYBTN
+            });
             CommonUtils.toUrl(context: context, url: CommonUtils.URL_BUY);
             Navigator.pop(context);
           },
@@ -199,6 +207,12 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
                         color: ColorConstant.TextMainBlack),
                   ),
                 ),
+                Container(
+                  margin: EdgeInsets.only(top: 20),
+                  height: 12,
+                  width: 1,
+                  color: ColorConstant.text_30112950,
+                ),
                 Padding(
                   padding: EdgeInsets.only(right: 64, top: 14),
                   child: Text(
@@ -218,7 +232,7 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
       margin: EdgeInsets.only(top: marginHeight),
       decoration: BoxDecoration(
         // color: Color.fromARGB(trans < 150 ? 150 : trans, 255, 255, 255),
-        color: Colors.white,
+        color: Colors.white60,
         border: Border.all(
           color: Colors.white,
           width: 1,
@@ -230,35 +244,56 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
           topRight: Radius.circular(25),
         ),
       ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(left: 64, top: 14),
-            child: Text(
-              "项目",
-              style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: ColorConstant.TextMainBlack),
+      child: PhysicalModel(
+        clipBehavior: Clip.antiAlias,
+        borderRadius: BorderRadius.only(
+          // topLeft: Radius.circular(25 * (1 - trans / 255)),
+          // topRight: Radius.circular(25 * (1 - trans / 255)),
+          topLeft: Radius.circular(25),
+          topRight: Radius.circular(25),
+        ),
+        color: Colors.transparent,
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10), //可以看源码
+          child: Container(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 64, top: 14),
+                  child: Text(
+                    "项目",
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: ColorConstant.TextMainBlack),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 20),
+                  height: 12,
+                  width: 1,
+                  color: Colors.white,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(right: 64, top: 14),
+                  child: Text(
+                    "结果",
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: ColorConstant.TextMainBlack),
+                  ),
+                )
+              ],
             ),
           ),
-          Padding(
-            padding: EdgeInsets.only(right: 64, top: 14),
-            child: Text(
-              "结果",
-              style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: ColorConstant.TextMainBlack),
-            ),
-          )
-        ],
+        ),
       ));
 
   Widget _buildSliverList() => Container(
-        margin: EdgeInsets.only(top: 220),
+        margin: EdgeInsets.only(top: 214),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(

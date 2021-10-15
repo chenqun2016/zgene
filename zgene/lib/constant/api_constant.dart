@@ -6,6 +6,9 @@ class ApiConstant {
   //获取用户详情、修改用户信息
   static const String userInfo = "/api/v1/user/info";
 
+  //商品详情页，内容推荐列表
+  static const String productDetailRecommends =
+      "/api/v1/archive/:aid/recommends";
   //内容列表
   static const String contentList = "/api/v1/archives";
   //分类列表
@@ -90,9 +93,17 @@ class ApiConstant {
   //获取订单当前状态
   static const String orderStatus = "/api/v1/order/status";
 
+  //采集器id验证
+  static const String numCheck = "/api/v1/order/check";
+
   ///********************************* 报告 *****************************///
   //基因报告列表
   static const String reports = "/api/v1/gene/reports";
+
+  //智能客服地址
+  // static const String smartServiceUrl =
+  //     "http://chat.ahcdialogchat.com/chat/h5/chatLink.html?channelId=llHC67";
+  static const String smartServiceUrl = CommonConstant.BASE_API + "/kefu";
 
   //H5地址，直接webview加载
   static String getH5DetailUrl(id) {

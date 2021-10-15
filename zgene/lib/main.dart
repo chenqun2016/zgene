@@ -152,7 +152,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         //   print(arg);
         //   CommonUtils.globalToUrl(type: arg["type"], url: arg["url"]);
         // });
-        Getuiflut().setBadge(0);
+        // Getuiflut().resetBadge;
 
         print("前后台更改"); // 处于这种状态的应用程序应该假设它们可能在任何时候暂停
         break;

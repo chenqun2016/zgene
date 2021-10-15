@@ -22,7 +22,6 @@ import 'package:zgene/pages/tabs/report_page.dart';
 import 'package:zgene/plugin/method_channel_plugin.dart';
 import 'package:zgene/util/chineseCupertino.dart';
 import 'package:zgene/util/common_utils.dart';
-import 'package:zgene/util/platform_utils.dart';
 import 'package:zgene/util/getui_Utils.dart';
 import 'package:zgene/util/platform_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
@@ -113,7 +112,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     } else {
       webLogin();
     }
-    if (Platform.isIOS) {
+    if (PlatformUtils.isIOS) {
       Getuiflut().startSdk(
           appId: "LtFmCuKHpj7dr8CM6ExQw5",
           appKey: "7b0CKZK1Ol85XkOGlmv4H8",
@@ -124,7 +123,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     GetuiUtils.config();
     // GetuiUtils.getClientId();
     GetuiUtils.bindAlias();
-    if (Platform.isAndroid) {
+    if (PlatformUtils.isAndroid) {
       Getuiflut().turnOnPush();
     }
     MethodChannelPlugin.registHandler();
@@ -254,7 +253,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         CommonConstant.ROUT_about: (context) => ScreenUtilInit(
             designSize: Size(375, 812), builder: () => AboutUsPage()), //关于我们
         CommonConstant.ROUT_buy: (context) => BuyPage(), //购买页面
-        CommonConstant.ROUT_common_question: (context) => CommonQusListPage(), //常见问题
+        CommonConstant.ROUT_common_question: (context) =>
+            CommonQusListPage(), //常见问题
         CommonConstant.ROUT_my_report_list: (context) => MyReportPage(), //我的报告
       },
     ));

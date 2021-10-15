@@ -19,6 +19,18 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+############以下为华为 HMS推送服务 #################
+-ignorewarnings
+-keepattributes *Annotation*
+-keepattributes Exceptions
+-keepattributes InnerClasses
+-keepattributes Signature
+-keepattributes SourceFile,LineNumberTable
+-keep class com.huawei.hianalytics.**{*;}
+-keep class com.huawei.updatesdk.**{*;}
+-keep class com.huawei.hms.**{*;}
+############以上为华为 HMS推送服务 #################
+
 ############以下为友盟#################
 -keep class com.umeng.** {*;}
 -keep class com.uc.** {*;}

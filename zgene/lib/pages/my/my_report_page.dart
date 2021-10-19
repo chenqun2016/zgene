@@ -8,7 +8,6 @@ import 'package:zgene/models/my_report_list_page.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
-import 'package:zgene/util/refresh_config_utils.dart';
 import 'package:zgene/widget/base_web.dart';
 
 class MyReportPage extends BaseWidget {
@@ -122,8 +121,9 @@ class _MyReportPageState extends BaseWidgetState {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(20)),
                 image: DecorationImage(
-                    image:
-                        AssetImage("assets/images/report/icon_baogao1.png"))),
+                    image: AssetImage(index % 2 == 0
+                        ? "assets/images/report/icon_baogao1.png"
+                        : "assets/images/report/icon_baogao2.png"))),
             margin: EdgeInsets.fromLTRB(15, 16, 15, 0),
             padding: EdgeInsets.fromLTRB(30, 26, 0, 24),
             child: Column(

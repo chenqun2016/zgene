@@ -7,27 +7,43 @@ import 'package:flutter/material.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/models/archive_des_model.dart';
 import 'package:zgene/models/report_des_model.dart';
-import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/home/home_getHttp.dart';
-import 'package:zgene/pages/report/my_report_detail_page.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
+import 'package:zgene/util/ui_uitls.dart';
+import 'package:zgene/widget/my_inherited_widget.dart';
 
-class ReportListTabPage extends BaseWidget {
+import 'report_level_1_body_page.dart';
+
+class ReportLevel1Page extends BaseWidget {
   final int id;
 
-  ReportListTabPage({Key key, this.id}) : super(key: key);
+  ReportLevel1Page({Key key, this.id}) : super(key: key);
 
   @override
-  BaseWidgetState<ReportListTabPage> getState() => _ReportListTabPageState();
+  BaseWidgetState<ReportLevel1Page> getState() => _ReportLevel1PageState();
 }
 
-class _ReportListTabPageState extends BaseWidgetState<ReportListTabPage> {
+class _ReportLevel1PageState extends BaseWidgetState<ReportLevel1Page>
+    with SingleTickerProviderStateMixin {
   var canFixedHeadShow = false;
   ReportDesModel reportDesModel;
   List list = [];
   Archive _archive;
   int id;
+  var persistentHeaderTopMargin = 164.0;
+  TabController _tabController;
+  final tabs = [
+    '心血管',
+    '抗肿瘤',
+    '风湿免疫',
+    '心血管',
+    '抗肿瘤',
+    '风湿免疫',
+    '心血管',
+    '抗肿瘤',
+    '风湿免疫'
+  ];
 
   @override
   void pageWidgetInitState() {
@@ -41,22 +57,40 @@ class _ReportListTabPageState extends BaseWidgetState<ReportListTabPage> {
     backImgPath = "assets/images/mine/img_bg_my.png";
 
     listeningController.addListener(() {
-      if (listeningController.position.pixels.toInt() > 170 &&
+      if (listeningController.position.pixels.toInt() >
+              persistentHeaderTopMargin &&
           !canFixedHeadShow) {
         setState(() {
           canFixedHeadShow = true;
         });
       }
-      if (listeningController.position.pixels.toInt() <= 170 &&
+      if (listeningController.position.pixels.toInt() <=
+              persistentHeaderTopMargin &&
           canFixedHeadShow) {
         setState(() {
           canFixedHeadShow = false;
         });
       }
     });
+
+    _tabController = TabController(vsync: this, length: tabs.length);
+    _tabController.addListener(() {
+      if (_tabController.animation?.value == _tabController.index) {
+        setState(() {
+          print("_tabController.listener");
+          list = list.sublist(1, list.length);
+        });
+      }
+    });
   }
 
   bool hasDatas = false;
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   _getDatas() {
     String arg = ModalRoute.of(context).settings.arguments;
@@ -102,7 +136,7 @@ class _ReportListTabPageState extends BaseWidgetState<ReportListTabPage> {
           child: Stack(
             children: [
               _buildSliverAppBar(),
-              _buildPersistentHeader(164),
+              _buildPersistentHeader(),
               _buildSliverList(),
             ],
           ),
@@ -116,6 +150,7 @@ class _ReportListTabPageState extends BaseWidgetState<ReportListTabPage> {
         opacity: canFixedHeadShow ? 1 : 0,
         child: Container(
             height: 50,
+            width: double.infinity,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
@@ -123,43 +158,12 @@ class _ReportListTabPageState extends BaseWidgetState<ReportListTabPage> {
                 topRight: Radius.circular(25 * (1 - trans / 255)),
               ),
             ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: 64, top: 14),
-                  child: Text(
-                    "项目",
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: ColorConstant.TextMainBlack),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 20),
-                  height: 12,
-                  width: 1,
-                  color: ColorConstant.text_30112950,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(right: 64, top: 14),
-                  child: Text(
-                    "结果",
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: ColorConstant.TextMainBlack),
-                  ),
-                )
-              ],
-            )),
+            child: _getTitleView()),
       );
 
-  Widget _buildPersistentHeader(double marginHeight) => Container(
+  Widget _buildPersistentHeader() => Container(
       height: 88,
-      margin: EdgeInsets.only(top: marginHeight),
+      margin: EdgeInsets.only(top: persistentHeaderTopMargin),
       decoration: BoxDecoration(
         // color: Color.fromARGB(trans < 150 ? 150 : trans, 255, 255, 255),
         color: Colors.white60,
@@ -186,44 +190,74 @@ class _ReportListTabPageState extends BaseWidgetState<ReportListTabPage> {
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10), //可以看源码
           child: Container(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: 64, top: 14),
-                  child: Text(
-                    "项目",
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: ColorConstant.TextMainBlack),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 20),
-                  height: 12,
-                  width: 1,
-                  color: Colors.white,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(right: 64, top: 14),
-                  child: Text(
-                    "结果",
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: ColorConstant.TextMainBlack),
-                  ),
-                )
-              ],
-            ),
+            alignment: Alignment.topLeft,
+            width: double.infinity,
+            child: _getTitleView(),
           ),
         ),
       ));
 
+  Widget _getTitleView() {
+    return tabs.length > 1 ? _titleTabView() : _titleView();
+  }
+
+  Widget _titleTabView() {
+    return TabBar(
+      onTap: (tab) => print(tab),
+      labelPadding: EdgeInsets.fromLTRB(8, 0, 8, 0),
+      padding: const EdgeInsets.only(left: 10.0, right: 10),
+      indicatorPadding: EdgeInsets.fromLTRB(10, 0, 10, 6),
+      labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+      unselectedLabelStyle:
+          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+      isScrollable: true,
+      controller: _tabController,
+      labelColor: ColorConstant.TextMainColor,
+      unselectedLabelColor: ColorConstant.Text_5E6F88,
+      indicatorWeight: 2,
+      indicatorSize: TabBarIndicatorSize.label,
+      indicatorColor: ColorConstant.TextMainColor,
+      tabs: tabs.map((e) => Tab(text: e)).toList(),
+    );
+  }
+
+  Widget _titleView() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(left: 64, top: 14),
+          child: Text(
+            "项目",
+            style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: ColorConstant.TextMainBlack),
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.only(top: 20),
+          height: 12,
+          width: 1,
+          color: Colors.white,
+        ),
+        Padding(
+          padding: EdgeInsets.only(right: 64, top: 14),
+          child: Text(
+            "结果",
+            style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: ColorConstant.TextMainBlack),
+          ),
+        )
+      ],
+    );
+  }
+
   Widget _buildSliverList() => Container(
-        margin: EdgeInsets.only(top: 214),
+        margin: EdgeInsets.only(top: 220),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
@@ -231,95 +265,11 @@ class _ReportListTabPageState extends BaseWidgetState<ReportListTabPage> {
             topRight: Radius.circular(20),
           ),
         ),
-        child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: list.length,
-          physics: BouncingScrollPhysics(),
-          padding: EdgeInsets.fromLTRB(0, 12, 0, 140),
-          itemBuilder: (BuildContext context, int index) {
-            return _buildSliverItem(context, list[index], index);
-          },
+        child: MyInheritedWidget(
+          data: list,
+          child: ReportLevel1BodyPage(),
         ),
       );
-
-  Widget _buildSliverItem(context, archive, index) {
-    ReportDesModel model;
-    try {
-      if (archive.description.isNotEmpty) {
-        var json = jsonDecode(archive.description);
-        model = ReportDesModel.fromJson(json);
-      }
-    } catch (e) {
-      print(e);
-    }
-    return GestureDetector(
-      onTap: () {
-        NavigatorUtil.push(
-            context,
-            MyReportDetailPage(
-              id: archive.id,
-            ));
-      },
-      child: Container(
-        color: Colors.transparent,
-        child: Padding(
-          padding: EdgeInsets.only(left: 16, right: 16, top: 12, bottom: 13),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Text(
-                  archive.title,
-                  style: TextStyle(
-                      color: ColorConstant.TextMainBlack,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 15),
-                ),
-              ),
-              if (null != model &&
-                  null != model.items &&
-                  model.items.length > 0)
-                Image.asset(
-                  _getAssetIcon(model.items[0].color),
-                  width: 22,
-                  height: 22,
-                ),
-              if (null != model &&
-                  null != model.items &&
-                  model.items.length > 0)
-                Padding(
-                  padding: EdgeInsets.only(left: 6, right: 28),
-                  child: Text(
-                    model.items[0].title,
-                    style: TextStyle(
-                        color: ColorConstant.Text_8E9AB,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16),
-                  ),
-                ),
-              Image.asset(
-                "assets/images/mine/icon_my_name_right.png",
-                width: 22,
-                height: 22,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  String _getAssetIcon(String color) {
-    if ("green" == color) {
-      return "assets/images/report/img_zhong.png";
-    }
-    if ("blue" == color) {
-      return "assets/images/report/img_qiang.png";
-    }
-    if ("red" == color) {
-      return "assets/images/report/img_luo.png";
-    }
-  }
 
   Widget _buildSliverAppBar() {
     return Stack(
@@ -390,7 +340,7 @@ class _ReportListTabPageState extends BaseWidgetState<ReportListTabPage> {
             width: 12,
             margin: EdgeInsets.only(right: 6),
             decoration: BoxDecoration(
-              gradient: _getTipColor(item.color),
+              gradient: UiUitls.getTipColor(item.color),
               shape: BoxShape.circle,
               border: Border.all(
                 color: Colors.white,
@@ -405,26 +355,5 @@ class _ReportListTabPageState extends BaseWidgetState<ReportListTabPage> {
         ],
       ),
     );
-  }
-
-  _getTipColor(String color) {
-    if ("green" == color) {
-      return LinearGradient(colors: [
-        Color(0xFF47FEDB),
-        Color(0xFF23CFAF),
-      ]);
-    }
-    if ("blue" == color) {
-      return LinearGradient(colors: [
-        Color(0xFF5EECFD),
-        Color(0xFF248DFA),
-      ]);
-    }
-    if ("red" == color) {
-      return LinearGradient(colors: [
-        Color(0xFFFE8B8C),
-        Color(0xFFFE4343),
-      ]);
-    }
   }
 }

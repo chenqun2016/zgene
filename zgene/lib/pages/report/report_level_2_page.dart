@@ -13,16 +13,16 @@ import 'package:zgene/pages/report/item/my_report_sciencedetail.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
 
-class MyReportDetailPage extends BaseWidget {
+class ReportLevel2Page extends BaseWidget {
   final int id;
 
-  MyReportDetailPage({Key key, this.id}) : super(key: key);
+  ReportLevel2Page({Key key, this.id}) : super(key: key);
 
   @override
-  BaseWidgetState<MyReportDetailPage> getState() => _MyReportDetailPageState();
+  BaseWidgetState<ReportLevel2Page> getState() => _ReportLevel2PageState();
 }
 
-class _MyReportDetailPageState extends BaseWidgetState<MyReportDetailPage>
+class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
     with SingleTickerProviderStateMixin {
   var canFixedHeadShow = false;
   ReportDesModel reportDesModel;
@@ -59,7 +59,9 @@ class _MyReportDetailPageState extends BaseWidgetState<MyReportDetailPage>
 
     _tabController = TabController(vsync: this, length: tabs.length);
     _tabController.addListener(() {
-      setState(() {});
+      if (_tabController.animation?.value == _tabController.index) {
+        setState(() {});
+      }
     });
   }
 
@@ -186,7 +188,7 @@ class _MyReportDetailPageState extends BaseWidgetState<MyReportDetailPage>
             unselectedLabelColor: ColorConstant.Text_5E6F88,
             indicatorWeight: 2,
             indicatorSize: TabBarIndicatorSize.label,
-            indicatorPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+            indicatorPadding: EdgeInsets.fromLTRB(10, 0, 10, 6),
             indicatorColor: ColorConstant.TextMainColor,
             tabs: tabs.map((e) => Tab(text: e)).toList(),
           ),

@@ -16,6 +16,7 @@ import 'package:zgene/pages/bindcollector/qr_scanner_page.dart';
 import 'package:zgene/pages/home/article_detail.dart';
 import 'package:zgene/pages/my/my_about_us.dart';
 import 'package:zgene/pages/my/my_contant_us.dart';
+import 'package:zgene/pages/report/report_level_1_body_page.dart';
 import 'package:zgene/pages/splash_page.dart';
 import 'package:zgene/pages/tabs/buy_page.dart';
 import 'package:zgene/pages/tabs/report_page.dart';
@@ -40,7 +41,6 @@ import 'pages/my/my_report_page.dart';
 import 'pages/my/order_detail.dart';
 import 'pages/my/order_step_page.dart';
 import 'pages/my/sendBack_acquisition.dart';
-import 'pages/report/report_list_page.dart';
 
 void main() async {
   configureApp();
@@ -236,7 +236,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         CommonConstant.ROUT_article_detail: (context) =>
             ArticleDetailView(), //文章详情
         CommonConstant.ROUT_report: (context) => ReportPage(), //报告
-        CommonConstant.ROUT_report_detail: (context) => ReportListPage(), //报告详情
+        CommonConstant.ROUT_report_detail: (context) =>
+            ReportLevel1BodyPage(), //报告详情
         CommonConstant.ROUT_login: (context) => MainLoginPage(), //登录
         CommonConstant.ROUT_my_message: (context) => MyMessagePage(), //消息
         CommonConstant.ROUT_my_address: (context) => MyAddressListPage(), //我的地址

@@ -422,4 +422,37 @@ class UiUitls {
           isShare: false,
         ));
   }
+
+  static String getAssetIcon(String color) {
+    if ("green" == color) {
+      return "assets/images/report/img_zhong.png";
+    }
+    if ("blue" == color) {
+      return "assets/images/report/img_qiang.png";
+    }
+    if ("red" == color) {
+      return "assets/images/report/img_luo.png";
+    }
+  }
+
+  static getTipColor(String color) {
+    if ("green" == color) {
+      return LinearGradient(colors: [
+        Color(0xFF47FEDB),
+        Color(0xFF23CFAF),
+      ]);
+    }
+    if ("blue" == color) {
+      return LinearGradient(colors: [
+        Color(0xFF5EECFD),
+        Color(0xFF248DFA),
+      ]);
+    }
+    if ("red" == color) {
+      return LinearGradient(colors: [
+        Color(0xFFFE8B8C),
+        Color(0xFFFE4343),
+      ]);
+    }
+  }
 }

@@ -17,10 +17,18 @@ class ReportLevel1BodyPage extends StatefulWidget {
 }
 
 class _ReportLevel1BodyPageState extends State<ReportLevel1BodyPage> {
+  ScrollController listeningController;
+  @override
+  void initState() {
+    listeningController = ScrollController();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     List data = MyInheritedWidget.of(context);
     return ListView.builder(
+      controller: listeningController,
       shrinkWrap: true,
       itemCount: data.length,
       physics: BouncingScrollPhysics(),
@@ -103,5 +111,6 @@ class _ReportLevel1BodyPageState extends State<ReportLevel1BodyPage> {
     super.didChangeDependencies();
     print("didChangeDependencies==" +
         MyInheritedWidget.of(context, listen: false).toString());
+    if (listeningController?.hasClients) listeningController?.jumpTo(0);
   }
 }

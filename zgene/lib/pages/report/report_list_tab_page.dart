@@ -13,16 +13,16 @@ import 'package:zgene/pages/report/my_report_detail_page.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
 
-class ReportListPage extends BaseWidget {
+class ReportListTabPage extends BaseWidget {
   final int id;
 
-  ReportListPage({Key key, this.id}) : super(key: key);
+  ReportListTabPage({Key key, this.id}) : super(key: key);
 
   @override
-  BaseWidgetState<BaseWidget> getState() => _ReportListPageState();
+  BaseWidgetState<ReportListTabPage> getState() => _ReportListTabPageState();
 }
 
-class _ReportListPageState extends BaseWidgetState<ReportListPage> {
+class _ReportListTabPageState extends BaseWidgetState<ReportListTabPage> {
   var canFixedHeadShow = false;
   ReportDesModel reportDesModel;
   List list = [];
@@ -262,50 +262,47 @@ class _ReportListPageState extends BaseWidgetState<ReportListPage> {
       },
       child: Container(
         color: Colors.transparent,
-        child: Opacity(
-          opacity: index < 3 ? 1 : 0.4,
-          child: Padding(
-            padding: EdgeInsets.only(left: 16, right: 16, top: 12, bottom: 13),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Text(
-                    archive.title,
-                    style: TextStyle(
-                        color: ColorConstant.TextMainBlack,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 15),
-                  ),
+        child: Padding(
+          padding: EdgeInsets.only(left: 16, right: 16, top: 12, bottom: 13),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Text(
+                  archive.title,
+                  style: TextStyle(
+                      color: ColorConstant.TextMainBlack,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15),
                 ),
-                if (null != model &&
-                    null != model.items &&
-                    model.items.length > 0)
-                  Image.asset(
-                    _getAssetIcon(model.items[0].color),
-                    width: 22,
-                    height: 22,
-                  ),
-                if (null != model &&
-                    null != model.items &&
-                    model.items.length > 0)
-                  Padding(
-                    padding: EdgeInsets.only(left: 6, right: 28),
-                    child: Text(
-                      model.items[0].title,
-                      style: TextStyle(
-                          color: ColorConstant.Text_8E9AB,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 16),
-                    ),
-                  ),
+              ),
+              if (null != model &&
+                  null != model.items &&
+                  model.items.length > 0)
                 Image.asset(
-                  "assets/images/mine/icon_my_name_right.png",
+                  _getAssetIcon(model.items[0].color),
                   width: 22,
                   height: 22,
                 ),
-              ],
-            ),
+              if (null != model &&
+                  null != model.items &&
+                  model.items.length > 0)
+                Padding(
+                  padding: EdgeInsets.only(left: 6, right: 28),
+                  child: Text(
+                    model.items[0].title,
+                    style: TextStyle(
+                        color: ColorConstant.Text_8E9AB,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16),
+                  ),
+                ),
+              Image.asset(
+                "assets/images/mine/icon_my_name_right.png",
+                width: 22,
+                height: 22,
+              ),
+            ],
           ),
         ),
       ),

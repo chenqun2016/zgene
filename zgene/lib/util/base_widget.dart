@@ -60,9 +60,11 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
           listeningController.position.pixels.toInt() > 0) {
         trans = listeningController.position.pixels.toInt();
         setState(() {});
-      } else if (listeningController.position.pixels.toInt() == 255) {
-        trans = 255;
-        setState(() {});
+      } else if (listeningController.position.pixels.toInt() >= 255) {
+        if (trans != 255) {
+          trans = 255;
+          setState(() {});
+        }
       }
     });
     pageWidgetInitState();

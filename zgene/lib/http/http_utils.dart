@@ -207,7 +207,7 @@ class HttpUtils {
       log('响应数据：' + response.toString());
     } catch (e) {
       print('请求出错：' + e.toString());
-      EasyLoading.showError("网络开小差啦，请稍后重试");
+      // EasyLoading.showError("网络开小差啦，请稍后重试");
       // onError(0, e.toString());
     }
   }

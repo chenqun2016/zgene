@@ -44,24 +44,24 @@ class Categories {
 
   Categories(
       {this.id,
-        this.createdAt,
-        this.updatedAt,
-        this.parentCid,
-        this.topCid,
-        this.chid,
-        this.total,
-        this.channel,
-        this.step,
-        this.categoryName,
-        this.keywords,
-        this.seoTitle,
-        this.description,
-        this.seoUrl,
-        this.sortRank,
-        this.isHidden,
-        this.templateList,
-        this.templateArchive,
-        this.body});
+      this.createdAt,
+      this.updatedAt,
+      this.parentCid,
+      this.topCid,
+      this.chid,
+      this.total,
+      this.channel,
+      this.step,
+      this.categoryName,
+      this.keywords,
+      this.seoTitle,
+      this.description,
+      this.seoUrl,
+      this.sortRank,
+      this.isHidden,
+      this.templateList,
+      this.templateArchive,
+      this.body});
 
   Categories.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -72,7 +72,7 @@ class Categories {
     chid = json['chid'];
     total = json['total'];
     channel =
-    json['channel'] != null ? new Channel.fromJson(json['channel']) : null;
+        json['channel'] != null ? new Channel.fromJson(json['channel']) : null;
     step = json['step'];
     categoryName = json['category_name'];
     keywords = json['keywords'];
@@ -123,11 +123,11 @@ class Channel {
 
   Channel(
       {this.id,
-        this.createdAt,
-        this.updatedAt,
-        this.name,
-        this.addonTable,
-        this.title});
+      this.createdAt,
+      this.updatedAt,
+      this.name,
+      this.addonTable,
+      this.title});
 
   Channel.fromJson(Map<String, dynamic> json) {
     id = json['id'];

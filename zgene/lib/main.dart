@@ -22,6 +22,7 @@ import 'package:zgene/pages/tabs/report_page.dart';
 import 'package:zgene/plugin/method_channel_plugin.dart';
 import 'package:zgene/util/chineseCupertino.dart';
 import 'package:zgene/util/common_utils.dart';
+import 'package:zgene/util/get_notice_count.dart';
 import 'package:zgene/util/getui_Utils.dart';
 import 'package:zgene/util/platform_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
@@ -145,14 +146,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     print("-didChangeAppLifecycleState-" + state.toString());
     switch (state) {
       case AppLifecycleState.inactive:
-        // jpush.setBadge(0);
-        // GetuiUtils.resetBadge();
-        // bus.on(CommonConstant.MessagePush, (arg) {
-        //   print("090909090909090");
-        //   print(arg);
-        //   CommonUtils.globalToUrl(type: arg["type"], url: arg["url"]);
-        // });
-        // Getuiflut().resetBadge;
+        GetNoticeCount.obtain();
 
         print("前后台更改"); // 处于这种状态的应用程序应该假设它们可能在任何时候暂停
         break;

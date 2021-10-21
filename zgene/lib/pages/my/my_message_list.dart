@@ -277,6 +277,7 @@ class _MyMessagePageState extends State<MyMessagePage> {
           print(index);
           return InkWell(
             onTap: () {
+              setMessageRead(list[index].nid);
               print(content.linkType.toString() + "111" + content.linkUrl);
               CommonUtils.toUrl(
                   context: context,
@@ -302,13 +303,28 @@ class _MyMessagePageState extends State<MyMessagePage> {
                     margin: EdgeInsets.only(bottom: 15),
                     child: Stack(
                       children: [
-                        Positioned(
-                          child: Text(content.title,
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: ColorConstant.TextMainBlack,
-                                fontWeight: FontWeight.w500,
-                              )),
+                        Row(
+                          children: [
+                            Offstage(
+                              offstage: list[index].isRead != 1 ? false : true,
+                              child: Positioned(
+                                child: Text("● ",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: ColorConstant.MainRed,
+                                      fontWeight: FontWeight.w500,
+                                    )),
+                              ),
+                            ),
+                            Positioned(
+                              child: Text(content.title,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: ColorConstant.TextMainBlack,
+                                    fontWeight: FontWeight.w500,
+                                  )),
+                            )
+                          ],
                         ),
                         Positioned(
                           right: 0,
@@ -405,7 +421,7 @@ class _MyMessagePageState extends State<MyMessagePage> {
         errorCode = 0;
         if (page == 1) {
           list.clear();
-          clearMessage();
+          // clearMessage();
         }
         page++;
         int length = list.length;
@@ -448,6 +464,29 @@ class _MyMessagePageState extends State<MyMessagePage> {
       method: HttpUtils.POST,
       onSuccess: (result) {
         // print(result.toString());
+      },
+      onError: (code, error) {
+        print(error);
+      },
+    );
+  }
+
+  ///设置消息已读
+  setMessageRead(int id) async {
+    bool isNetWorkAvailable = await CommonUtils.isNetWorkAvailable();
+    if (!isNetWorkAvailable) {
+      return;
+    }
+    print("11111111111111");
+    print(id);
+    Map<String, dynamic> map = new HashMap();
+    map['id'] = id;
+    HttpUtils.requestHttp(
+      ApiConstant.noticeRead,
+      parameters: map,
+      method: HttpUtils.POST,
+      onSuccess: (result) {
+        print("成功");
       },
       onError: (code, error) {
         print(error);

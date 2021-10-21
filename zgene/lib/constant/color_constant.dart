@@ -36,6 +36,7 @@ class ColorConstant {
   static const Color TextMainColor_10per = Color(0x19007AF7);
 
   static const Color text_30112950 = Color(0x30112950);
+  static const Color text_112950 = Color(0xff112950);
   //文字标准灰
   static const Color TextMainGray = Color(0xFFA0A0A0);
   //文字标准灰
@@ -69,6 +70,12 @@ class ColorConstant {
   static const Color BgColor = Color(0xFFF5F5F5);
   static const Color toastBlue = Color(0xFFE6F2FF);
   static const Color toastTextBlue = Color(0xFF1877F2);
+
+  static const Color bg_FD7A7A = Color(0xFFFD7A7A);
+  static const Color bg_017AF6 = Color(0xFF017AF6);
+  static const Color bg_42F5D3 = Color(0xFF42F5D3);
+
+  static const Color bg_2D3142 = Color(0xFF2D3142);
 
   //透明度50%白色
   static const Color WhiteColor7F = Color(0x7FFFFFFF);

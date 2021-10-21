@@ -20,7 +20,7 @@ import 'package:zgene/models/content_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/home/home_getHttp.dart';
 import 'package:zgene/pages/my/my_report_page.dart';
-import 'package:zgene/pages/report/report_list_page.dart';
+import 'package:zgene/pages/report/report_level_1_page.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
@@ -362,7 +362,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
       onTap: () {
         NavigatorUtil.push(
             context,
-            ReportListPage(
+            ReportLevel1Page(
               id: bean.id,
             ));
       },

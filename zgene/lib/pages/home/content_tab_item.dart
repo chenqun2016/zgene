@@ -8,7 +8,7 @@ import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/content_model.dart';
 import 'package:zgene/util/common_utils.dart';
-import 'package:zgene/widget/home_recommend_widget.dart';
+import 'package:zgene/widget/my_inherited_widget.dart';
 
 class ContentTabItem extends StatefulWidget {
   const ContentTabItem({Key key}) : super(key: key);
@@ -62,7 +62,7 @@ class _ContentTabItemState extends State<ContentTabItem> {
 
   @override
   Widget build(BuildContext context) {
-    indexOf = HomeRecommendWidget.of(context);
+    indexOf = MyInheritedWidget.of(context);
     return datas == null
         ? Text("")
         : Column(
@@ -264,9 +264,9 @@ class _ContentTabItemState extends State<ContentTabItem> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     print("didChangeDependencies==" +
-        HomeRecommendWidget.of(context, listen: false).toString());
+        MyInheritedWidget.of(context, listen: false).toString());
 
-    var index = HomeRecommendWidget.of(context, listen: false);
+    var index = MyInheritedWidget.of(context, listen: false);
     if (index != indexOf) {
       indexOf = index;
       getHttp();

@@ -15,7 +15,7 @@ class MyInheritedWidget extends InheritedWidget {
         : context
             .getElementForInheritedWidgetOfExactType<MyInheritedWidget>()
             ?.widget as MyInheritedWidget;
-    return provider.data;
+    return provider?.data;
   }
 
   @override

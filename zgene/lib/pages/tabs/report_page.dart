@@ -26,8 +26,6 @@ import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/umeng_utils.dart';
 
-import 'home_page.dart';
-
 ///首页报告
 class ReportPage extends BaseWidget {
   String id;
@@ -130,7 +128,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
   }
 
   _onScroll(offset) {
-    double alpha = offset / APPBAR_SCROLL_OFFSET;
+    double alpha = offset / APPBAR_SCORLL_OFFSET;
     if (alpha < 0) {
       alpha = 0;
     } else if (alpha > 1) {

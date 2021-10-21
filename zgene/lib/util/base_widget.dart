@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/widget/base_widget_title.dart';
+import 'package:zgene/widget/my_inherited_widget.dart';
 
-const APPBAR_SCORLL_OFFSET = 100;
+const int APPBAR_SCORLL_OFFSET = 100;
 
 abstract class BaseWidget extends StatefulWidget {
   BaseWidget({Key key}) : super(key: key);
@@ -56,13 +58,13 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
     super.initState();
     listeningController = ScrollController();
     listeningController.addListener(() {
-      if (listeningController.position.pixels.toInt() < 255 &&
-          listeningController.position.pixels.toInt() > 0) {
+      if (listeningController.position.pixels.toInt() < APPBAR_SCORLL_OFFSET) {
         trans = listeningController.position.pixels.toInt();
+        if (trans < 0) trans = 0;
         setState(() {});
-      } else if (listeningController.position.pixels.toInt() >= 255) {
-        if (trans != 255) {
-          trans = 255;
+      } else {
+        if (trans != APPBAR_SCORLL_OFFSET) {
+          trans = APPBAR_SCORLL_OFFSET;
           setState(() {});
         }
       }
@@ -82,47 +84,14 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
 
   Widget viewCustomHeadBody() {
     return showHead
-        ? Container(
-            decoration: BoxDecoration(
-              color: Color.fromARGB(trans, 255, 255, 255),
-            ),
-            height: 55.h + MediaQuery.of(context).padding.top,
-            child: Stack(
-              children: [
-                Positioned(
-                    top: MediaQuery.of(context).padding.top,
-                    left: 16.w,
-                    child: Container(
-                        height: 55.h,
-                        child: isShowBack ? customHeaderBack() : null)),
-                Positioned(
-                  left: 80.w,
-                  right: 80.w,
-                  top: MediaQuery.of(context).padding.top,
-                  child: Container(
-                    height: 55.h,
-                    child: Center(
-                      child: Text(
-                        pageWidgetTitle,
-                        textAlign: TextAlign.center,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: 18.sp,
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.w600,
-                          color: ColorConstant.TextMainBlack,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned(
-                    top: MediaQuery.of(context).padding.top,
-                    right: 16.w,
-                    child: Container(height: 55.h, child: headerRightBtn()))
-              ],
-            ),
-          )
+        ? MyInheritedWidget(
+            data: trans,
+            child: BaseWidgetTitle(
+              isShowBack: isShowBack,
+              customHeaderBack: customHeaderBack(),
+              headerRightBtn: headerRightBtn(),
+              pageWidgetTitle: pageWidgetTitle,
+            ))
         : Container();
   }
 

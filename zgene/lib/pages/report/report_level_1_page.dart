@@ -157,8 +157,10 @@ class _ReportLevel1PageState extends BaseWidgetState<ReportLevel1Page>
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(25 * (1 - trans / 255)),
-                topRight: Radius.circular(25 * (1 - trans / 255)),
+                topLeft:
+                    Radius.circular(25 * (1 - trans / APPBAR_SCORLL_OFFSET)),
+                topRight:
+                    Radius.circular(25 * (1 - trans / APPBAR_SCORLL_OFFSET)),
               ),
             ),
             child: _getTitleView()),

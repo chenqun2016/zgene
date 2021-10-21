@@ -12,12 +12,16 @@ class MyReportResult extends StatefulWidget {
   _MyReportResultState createState() => _MyReportResultState();
 }
 
-class _MyReportResultState extends State<MyReportResult> {
+class _MyReportResultState extends State<MyReportResult>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
       shrinkWrap: true,
-      itemCount: 26,
+      itemCount: 6,
       physics: BouncingScrollPhysics(),
       padding: EdgeInsets.fromLTRB(0, 0, 0, 40),
       itemBuilder: (BuildContext context, int index) {
@@ -57,7 +61,7 @@ class _MyReportResultState extends State<MyReportResult> {
                 Positioned(
                   left: 48,
                   child: Text(
-                    "患病倍数",
+                    _getTitle(index),
                     style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -80,6 +84,25 @@ class _MyReportResultState extends State<MyReportResult> {
         ],
       ),
     );
+  }
+
+  String _getTitle(index) {
+    switch (index) {
+      case 0:
+        return "患病倍数";
+      case 1:
+        return "人群占比";
+      case 2:
+        return "疾病概述";
+      case 3:
+        return "致病因素";
+      case 4:
+        return "早期症状";
+      case 5:
+        return "体检筛查";
+      default:
+        return "";
+    }
   }
 
   Widget _buildItemItem(context, index) {

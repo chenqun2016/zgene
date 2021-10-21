@@ -176,6 +176,11 @@ class _BaseWebViewState extends State<BaseWebView> {
                                       CommonUtils.addJavaScriptHandler(
                                           controller, context);
                                     },
+                                    onLoadStart:
+                                        (InAppWebViewController controller,
+                                            Uri url) {
+                                      print("url== == " + url.path.toString());
+                                    },
                                     // 加载进度变化事件.
                                     onProgressChanged:
                                         (InAppWebViewController controller,

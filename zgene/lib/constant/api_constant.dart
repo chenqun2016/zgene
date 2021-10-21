@@ -17,6 +17,8 @@ class ApiConstant {
   static const String contentDetail = "/api/v1/archive";
 //阅读全部消息
   static const String readMessage = "/api/v1/user/notice/readall";
+//设置消息已读
+  static const String noticeRead = "/api/v2/notice/read";
 
   ///********************************* 用户 *****************************///
   //隐私政策
@@ -62,6 +64,10 @@ class ApiConstant {
   static const String unbind_wx = "/api/v1/user/unbind/wx";
   //苹果联合登录
   static const String login_apple = "/api/v1/user/login/apple";
+  //采集器列表
+  static const String collector_list = "/api/v2/collector/list";
+  //采集器详情
+  static const String collector_detail = "/api/v2/collector/detail";
   //隐私政策
   // static const String privacys = CommonConstant.BASE_API + ApiConstant.privacy;
 

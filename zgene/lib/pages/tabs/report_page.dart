@@ -637,10 +637,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
                     padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                     children: reports.map((e) {
                       var index = reports.indexOf(e);
-                      var name = e;
-                      if (currentReport == index) {
-                        name = "$e（当前）";
-                      }
+
                       return InkWell(
                         onTap: () {
                           Navigator.of(ctx).pop();
@@ -649,17 +646,33 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
                         child: Container(
                           width: double.infinity,
                           alignment: Alignment.center,
-                          padding: EdgeInsets.only(top: 22, bottom: 22),
-                          child: Text(
-                            name,
-                            style: TextStyle(
-                              fontSize: 18.sp,
-                              fontStyle: FontStyle.normal,
-                              fontWeight: FontWeight.bold,
-                              color: currentReport == index
-                                  ? ColorConstant.TextMainColor
-                                  : ColorConstant.TextMainBlack,
-                            ),
+                          padding: EdgeInsets.only(top: 20, bottom: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                e,
+                                style: TextStyle(
+                                  fontSize: 18.sp,
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.bold,
+                                  color: currentReport == index
+                                      ? ColorConstant.TextMainColor
+                                      : ColorConstant.TextMainBlack,
+                                ),
+                              ),
+                              if (currentReport == index)
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 8.0, top: 2),
+                                  child: Icon(
+                                    Icons.check_circle,
+                                    size: 20,
+                                    color: ColorConstant.TextMainColor,
+                                  ),
+                                )
+                            ],
                           ),
                         ),
                       );

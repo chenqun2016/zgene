@@ -131,26 +131,21 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
             ],
           ),
         ),
-        _buildfixedHeader(),
+        if (canFixedHeadShow) _buildfixedHeader(),
       ],
     );
   }
 
-  Widget _buildfixedHeader() => Opacity(
-        opacity: canFixedHeadShow ? 1 : 0,
-        child: Container(
-            height: 65,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft:
-                    Radius.circular(25 * (1 - trans / APPBAR_SCORLL_OFFSET)),
-                topRight:
-                    Radius.circular(25 * (1 - trans / APPBAR_SCORLL_OFFSET)),
-              ),
-            ),
-            child: _buildTabBar),
-      );
+  Widget _buildfixedHeader() => Container(
+      height: 65,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(25 * (1 - trans / APPBAR_SCORLL_OFFSET)),
+          topRight: Radius.circular(25 * (1 - trans / APPBAR_SCORLL_OFFSET)),
+        ),
+      ),
+      child: _buildTabBar);
 
   Widget _buildPersistentHeaderList() {
     if (topType == 0) return _buildList();

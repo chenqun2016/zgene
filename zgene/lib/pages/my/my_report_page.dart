@@ -64,38 +64,27 @@ class _MyReportPageState extends BaseWidgetState {
 
   @override
   Widget viewPageBody(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.vertical(
-            top: Radius.circular(20), bottom: Radius.circular(40)),
-        border: Border.all(
-          color: Colors.white,
-          width: 1,
-        ),
-        color: Colors.white70,
-      ),
-      child: EasyRefresh(
-        // 是否开启控制结束加载
-        enableControlFinishLoad: false,
-        firstRefresh: true,
-        emptyWidget: list.length <= 0 ? _emptyWidget : null,
-        // 控制器
-        controller: _easyController,
-        header: BallPulseHeader(),
-        child: _listView,
-        //下拉刷新事件回调
-        onRefresh: () async {
-          // page = 1;
-          // // 获取数据
-          getDatas();
-          // await Future.delayed(Duration(seconds: 1), () {
-          // 重置刷新状态 【没错，这里用的是resetLoadState】
-          if (_easyController != null) {
-            _easyController.resetLoadState();
-          }
-          // });
-        },
-      ),
+    return EasyRefresh(
+      // 是否开启控制结束加载
+      enableControlFinishLoad: false,
+      firstRefresh: true,
+      emptyWidget: list.length <= 0 ? _emptyWidget : null,
+      // 控制器
+      controller: _easyController,
+      header: BallPulseHeader(),
+      child: _listView,
+      //下拉刷新事件回调
+      onRefresh: () async {
+        // page = 1;
+        // // 获取数据
+        getDatas();
+        // await Future.delayed(Duration(seconds: 1), () {
+        // 重置刷新状态 【没错，这里用的是resetLoadState】
+        if (_easyController != null) {
+          _easyController.resetLoadState();
+        }
+        // });
+      },
     );
   }
 
@@ -127,23 +116,15 @@ class _MyReportPageState extends BaseWidgetState {
         itemCount: list.length,
         itemBuilder: (BuildContext context, int index) {
           ReportPageModel bean = list[index];
-          String bkImg = "assets/images/report/icon_baogao1.png";
-          switch (bean.collectorBatch.productType) {
-            case "v1":
-              bkImg = "assets/images/report/icon_baogao1.png";
-              break;
-            case "v2":
-              bkImg = "assets/images/report/icon_baogao2.png";
-              break;
-            case "v3":
-              bkImg = "assets/images/report/icon_baogao3.png";
-              break;
-            default:
-          }
+          print(CommonUtils.splicingImageId(
+              "reportbg/" + bean.collectorBatch.productId.toString()));
           return Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(20)),
-                image: DecorationImage(image: AssetImage(bkImg))),
+                image: DecorationImage(
+                    image: NetworkImage(CommonUtils.splicingImageId(
+                        "reportbg/" +
+                            bean.collectorBatch.productId.toString())))),
             margin: EdgeInsets.fromLTRB(15, 16, 15, 0),
             padding: EdgeInsets.fromLTRB(30, 26, 0, 24),
             child: Column(
@@ -206,7 +187,7 @@ class _MyReportPageState extends BaseWidgetState {
                                     "的检测进度",
                               ));
                         },
-                        child: Text("查看报告",
+                        child: Text(bean.status == 80 ? "查看报告" : "检测进度",
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,

@@ -17,7 +17,7 @@ class _ReportResultItemTextState extends State<ReportResultItemText> {
       '野花遍地是：杂样儿，有名字的，没名字的，散在草丛里，像眼睛，像星星，还眨呀眨的。';
 
   bool expand = false;
-  int maxLines = 4;
+  int maxLines = 5;
   final style = TextStyle(
       fontSize: 15,
       overflow: TextOverflow.ellipsis,

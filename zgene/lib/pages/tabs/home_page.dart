@@ -19,8 +19,6 @@ import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/util/umeng_utils.dart';
 
-const APPBAR_SCROLL_OFFSET = 50;
-
 ///首页
 class HomePage extends BaseWidget {
   @override
@@ -255,7 +253,7 @@ class _HomePageState extends BaseWidgetState<HomePage> {
   }
 
   _onScroll(offset) {
-    double alpha = offset / APPBAR_SCROLL_OFFSET;
+    double alpha = offset / APPBAR_SCORLL_OFFSET;
     if (alpha < 0) {
       alpha = 0;
     } else if (alpha > 1) {

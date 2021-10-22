@@ -57,14 +57,14 @@ class _ReportLevel1PageState extends BaseWidgetState<ReportLevel1Page>
     backImgPath = "assets/images/mine/img_bg_my.png";
 
     listeningController.addListener(() {
-      if (listeningController.position.pixels.toInt() >
+      if (listeningController.position.pixels.toInt() >=
               persistentHeaderTopMargin &&
           !canFixedHeadShow) {
         setState(() {
           canFixedHeadShow = true;
         });
       }
-      if (listeningController.position.pixels.toInt() <=
+      if (listeningController.position.pixels.toInt() <
               persistentHeaderTopMargin &&
           canFixedHeadShow) {
         setState(() {
@@ -80,6 +80,9 @@ class _ReportLevel1PageState extends BaseWidgetState<ReportLevel1Page>
           print("_tabController.listener");
           list = list.sublist(1, list.length);
         });
+        if (listeningController?.hasClients &&
+            listeningController.offset > persistentHeaderTopMargin)
+          listeningController?.jumpTo(persistentHeaderTopMargin + 4);
       }
     });
   }
@@ -154,8 +157,10 @@ class _ReportLevel1PageState extends BaseWidgetState<ReportLevel1Page>
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(25 * (1 - trans / 255)),
-                topRight: Radius.circular(25 * (1 - trans / 255)),
+                topLeft:
+                    Radius.circular(25 * (1 - trans / APPBAR_SCORLL_OFFSET)),
+                topRight:
+                    Radius.circular(25 * (1 - trans / APPBAR_SCORLL_OFFSET)),
               ),
             ),
             child: _getTitleView()),

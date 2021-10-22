@@ -21,8 +21,6 @@ import 'package:zgene/util/time_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/widget/base_web_view.dart';
 
-const APPBAR_SCROLL_OFFSET = 50;
-
 ///产品详情页面
 class ProductDetailPage extends BaseWidget {
   final Archives bean;
@@ -409,19 +407,16 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
     );
   }
 
-  _onScroll(offset) {
-    double alpha = offset / APPBAR_SCROLL_OFFSET;
-    if (alpha < 0) {
-      alpha = 0;
-    } else if (alpha > 1) {
-      alpha = 1;
-    }
-    int t = (alpha * 255).toInt();
-    if (trans != t) {
-      setState(() {
-        trans = t;
-      });
-      print(trans);
+  _onScroll(double offset) {
+    if (offset < APPBAR_SCORLL_OFFSET) {
+      trans = offset.toInt();
+      if (trans < 0) trans = 0;
+      setState(() {});
+    } else {
+      if (trans != APPBAR_SCORLL_OFFSET) {
+        trans = APPBAR_SCORLL_OFFSET;
+        setState(() {});
+      }
     }
   }
 

@@ -74,6 +74,7 @@ class ColorConstant {
   static const Color bg_FD7A7A = Color(0xFFFD7A7A);
   static const Color bg_017AF6 = Color(0xFF017AF6);
   static const Color bg_42F5D3 = Color(0xFF42F5D3);
+  static const Color bg_FFBE00 = Color(0xFFFFBE00);
 
   static const Color bg_2D3142 = Color(0xFF2D3142);
 

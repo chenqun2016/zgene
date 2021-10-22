@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:card_swiper/card_swiper.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,6 @@ import 'package:zgene/models/category_model.dart';
 import 'package:zgene/models/content_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/home/home_getHttp.dart';
-import 'package:zgene/pages/my/my_report_page.dart';
 import 'package:zgene/pages/report/report_level_1_page.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
@@ -86,7 +86,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
     showHead = false;
     isListPage = true;
     setWantKeepAlive = true;
-    backImgPath = "assets/images/home/bg_home.png";
+    backImgPath = "assets/images/mine/icon_contant_us_back.png";
 
     _easyController = EasyRefreshController();
     //监听滚动事件，打印滚动位置
@@ -146,7 +146,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
     return Container(
       child: Column(children: <Widget>[
         _appBar,
-        _tip,
+        if (!hasReport) _tip,
         Expanded(
           // child: EasyRefresh(
           //   // 是否开启控制结束加载
@@ -164,7 +164,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
             children: categories.map((e) {
               return _items(e);
             }).toList()
-              ..add(_bottomBanner),
+              ..insert(0, _topBanner),
           ),
           //   //下拉刷新事件回调
           //   onRefresh: () async {
@@ -186,7 +186,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
     );
   }
 
-  Widget get _bottomBanner {
+  Widget get _topBanner {
     var fut;
     if (cache.containsKey(jingxuan)) {
       print("15");
@@ -217,79 +217,43 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 128.h,
-                  child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      physics: BouncingScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: snapshot.data.archives.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        var bean = snapshot.data.archives[index];
-                        return GestureDetector(
-                          onTap: () {
-                            CommonUtils.toUrl(
-                                context: context,
-                                type: bean.linkType,
-                                url: bean.linkUrl);
-                          },
-                          // child: Image.network(
-                          //   bannerList[index],
-                          //   fit: BoxFit.fill,
-                          // ),
-                          child: Container(
-                            width: 256.w,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(20),
-                              ),
-                              // gradient: LinearGradient(colors: [
-                              //   Color(0xFFFF5D66),
-                              //   Color(0xFFFFB254),
-                              // ])
-                              // image: DecorationImage(
-                              //     image: NetworkImage("assets/images/banner.png"))
-                            ),
-                            margin: EdgeInsets.only(left: 16),
-                            child: new CachedNetworkImage(
-                              width: 256.w,
-                              // 设置根据宽度计算高度
-                              height: 128.h,
-                              // 图片地址
-                              imageUrl: CommonUtils.splicingUrl(bean.imageUrl),
-                              // 填充方式为cover
-                              fit: BoxFit.fill,
-
-                              errorWidget: (context, url, error) =>
-                                  new Container(
-                                child: new Image.asset(
-                                  'assets/images/home/img_default2.png',
-                                  width: 256.w,
-                                  height: 128.h,
-                                ),
+                Container(
+                  height: 168,
+                  padding: EdgeInsets.only(left: 15),
+                  child: Swiper(
+                    itemCount: snapshot.data.archives.length,
+                    autoplay: true,
+                    loop: false,
+                    containerWidth: double.infinity,
+                    itemWidth: 343,
+                    itemHeight: 168,
+                    itemBuilder: (BuildContext context, int index) {
+                      var bean = snapshot.data.archives[index];
+                      return GestureDetector(
+                        onTap: () {
+                          CommonUtils.toUrl(
+                              context: context,
+                              type: bean.linkType,
+                              url: bean.linkUrl);
+                        },
+                        child: Container(
+                          padding: EdgeInsets.only(right: 15),
+                          child: CachedNetworkImage(
+                            // 图片地址
+                            imageUrl: CommonUtils.splicingUrl(bean.imageUrl),
+                            // 填充方式为cover
+                            fit: BoxFit.fill,
+                            errorWidget: (context, url, error) => new Container(
+                              child: new Image.asset(
+                                'assets/images/home/img_default2.png',
+                                fit: BoxFit.fill,
                               ),
                             ),
-                            //  FadeInImage.assetNetwork(
-                            //     placeholder:
-                            //         'assets/images/home/img_default2.png',
-                            //     width: 256.w,
-                            //     height: 128.h,
-                            //     image: CommonUtils.splicingUrl(bean.imageUrl),
-                            //     fadeInDuration: TimeUtils.fadeInDuration(),
-                            //     fadeOutDuration: TimeUtils.fadeOutDuration(),
-                            //     fit: BoxFit.fill,
-                            //     imageErrorBuilder:
-                            //         (context, error, stackTrace) {
-                            //       return Image.asset(
-                            //         'assets/images/home/img_default2.png',
-                            //         width: 256.w,
-                            //         height: 128.h,
-                            //         fit: BoxFit.fill,
-                            //       );
-                            //     }),
                           ),
-                        );
-                      }),
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ],
             ),
@@ -338,10 +302,10 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
                     //增加
                     scrollDirection: Axis.vertical,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3, //条目个数
+                        crossAxisCount: 2, //条目个数
                         mainAxisSpacing: 16, //主轴间距
                         crossAxisSpacing: 16, //交叉轴间距
-                        childAspectRatio: 0.86),
+                        childAspectRatio: 2.1),
                     itemCount: snapshot.data.archives.length,
                     itemBuilder: (context, i) {
                       return _item(snapshot.data.archives[i]);
@@ -365,15 +329,46 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
             ));
       },
       child: Container(
+        padding: EdgeInsets.only(left: 13, right: 6),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.all(
             Radius.circular(20),
           ),
         ),
-        child: (Column(
+        child: Row(
           children: [
-            new CachedNetworkImage(
+            Expanded(
+                child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  bean.title,
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.w600,
+                    color: ColorConstant.TextMainBlack,
+                  ),
+                ),
+                Divider(
+                  color: Colors.transparent,
+                  height: 6,
+                ),
+                if (bean.keywords != null && bean.keywords.isNotEmpty)
+                  Text(
+                    bean.keywords,
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.w500,
+                      color: ColorConstant.Text_8E9AB,
+                    ),
+                  ),
+              ],
+            )),
+            CachedNetworkImage(
               width: 76,
               // 设置根据宽度计算高度
               height: 76,
@@ -381,7 +376,6 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
               imageUrl: CommonUtils.splicingImageId(bean.id.toString()),
               // 填充方式为cover
               fit: BoxFit.fill,
-
               errorWidget: (context, url, error) => new Container(
                 child: new Image.asset(
                   'assets/images/home/img_default2.png',
@@ -390,42 +384,8 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
                 ),
               ),
             ),
-            // FadeInImage.assetNetwork(
-            //     placeholder: 'assets/images/home/img_default2.png',
-            //     image: CommonUtils.splicingImageId(bean.id.toString()),
-            //     width: 76,
-            //     height: 76,
-            //     fadeInDuration: TimeUtils.fadeInDuration(),
-            //     fadeOutDuration: TimeUtils.fadeOutDuration(),
-            //     fit: BoxFit.fill,
-            //     imageErrorBuilder: (context, error, stackTrace) {
-            //       return Image.asset(
-            //         'assets/images/home/img_default2.png',
-            //         width: 76,
-            //         height: 76,
-            //         fit: BoxFit.fill,
-            //       );
-            //     }),
-            Text(
-              bean.title,
-              style: TextStyle(
-                fontSize: 14.sp,
-                fontStyle: FontStyle.normal,
-                fontWeight: FontWeight.w600,
-                color: ColorConstant.TextMainBlack,
-              ),
-            ),
-            Text(
-              bean.keywords,
-              style: TextStyle(
-                fontSize: 12.sp,
-                fontStyle: FontStyle.normal,
-                fontWeight: FontWeight.w500,
-                color: ColorConstant.Text_8E9AB,
-              ),
-            ),
           ],
-        )),
+        ),
       ),
     );
   }
@@ -433,11 +393,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
   Widget get _tip {
     return GestureDetector(
       onTap: () {
-        if (hasReport) {
-          NavigatorUtil.push(context, MyReportPage());
-        } else {
-          CommonUtils.toUrl(context: context, url: CommonUtils.URL_BUY);
-        }
+        CommonUtils.toUrl(context: context, url: CommonUtils.URL_BUY);
       },
       child: Container(
         width: double.infinity,
@@ -454,7 +410,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
                   fontWeight: FontWeight.w500),
             ),
             Text(
-              hasReport ? " 查看报告>>" : " 去购买>>",
+              " 去购买>>",
               style: TextStyle(
                   fontSize: 13,
                   color: ColorConstant.bg_EA4335,
@@ -480,17 +436,37 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
             child: Container(
               height: 55.h,
               child: Center(
-                child: Text(
-                  "示例报告",
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 24.sp,
-                    fontStyle: FontStyle.normal,
-                    fontWeight: FontWeight.bold,
-                    color: ColorConstant.TextMainBlack,
+                child: Text.rich(TextSpan(children: [
+                  TextSpan(
+                    text: hasReport ? "Andy" : "示例报告",
+                    style: TextStyle(
+                      fontSize: 24.sp,
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.bold,
+                      color: ColorConstant.TextMainBlack,
+                    ),
                   ),
-                ),
+                  if (hasReport)
+                    TextSpan(
+                      text: "的报告—",
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.bold,
+                        color: ColorConstant.TextMainBlack,
+                      ),
+                    ),
+                  if (hasReport)
+                    TextSpan(
+                      text: "青春版",
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.bold,
+                        color: ColorConstant.Text_5FC88F,
+                      ),
+                    ),
+                ])),
               ),
             ),
           ),
@@ -503,7 +479,8 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
                   StatisticsConstant.KEY_UMENG_L2:
                       StatisticsConstant.REPORT_PAGE_GENDER
                 });
-                var type = await _showModalBottomSheet();
+                // await _showModalBottomSheet();
+                await _switchReport();
               },
               child: Container(
                 height: 55.h,
@@ -596,6 +573,98 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
                           fontWeight: FontWeight.w600),
                     )),
               )
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  var reports = [
+    "andy",
+    "张飞",
+    "李白",
+    "嫦娥",
+  ];
+  var currentReport = 0;
+// 弹出底部菜单列表模态对话框
+  Future<int> _switchReport() async {
+    var size = reports.length > 9 ? 9 : reports.length;
+    var height = (56 + size * 70).toDouble();
+    return await showModalBottomSheet<int>(
+      context: context,
+      enableDrag: true,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (BuildContext ctx) {
+        return Container(
+          height: height,
+          alignment: Alignment.bottomCenter,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Text(
+                  "切换报告",
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: ColorConstant.TextMainBlack,
+                      fontWeight: FontWeight.w600),
+                ),
+              ),
+              Container(
+                height: height - 56,
+                margin: EdgeInsets.only(left: 16, right: 16),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(colors: [
+                    Color(0xFFEDF3F6),
+                    Color(0xFFEBEFF1).withAlpha(1),
+                  ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(16),
+                      topRight: Radius.circular(16)),
+                ),
+                child: ListView(
+                    shrinkWrap: true,
+                    physics: BouncingScrollPhysics(),
+                    padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                    children: reports.map((e) {
+                      var index = reports.indexOf(e);
+                      var name = e;
+                      if (currentReport == index) {
+                        name = "$e（当前）";
+                      }
+                      return InkWell(
+                        onTap: () {
+                          Navigator.of(ctx).pop();
+                          currentReport = index;
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          alignment: Alignment.center,
+                          padding: EdgeInsets.only(top: 22, bottom: 22),
+                          child: Text(
+                            name,
+                            style: TextStyle(
+                              fontSize: 18.sp,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.bold,
+                              color: currentReport == index
+                                  ? ColorConstant.TextMainColor
+                                  : ColorConstant.TextMainBlack,
+                            ),
+                          ),
+                        ),
+                      );
+                    }).toList()),
+              ),
             ],
           ),
         );

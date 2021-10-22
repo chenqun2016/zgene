@@ -11,7 +11,7 @@ class ReportRusultItem2 extends StatefulWidget {
 }
 
 class _ReportRusultItem2State extends State<ReportRusultItem2> {
-  var data = [0.1, 0.2, 0.4, 0.3];
+  var data = [0.1, 0.2, 0.4];
   @override
   Widget build(BuildContext context) {
     return Column(

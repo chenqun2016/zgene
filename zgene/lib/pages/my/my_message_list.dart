@@ -308,7 +308,7 @@ class _MyMessagePageState extends State<MyMessagePage> {
                             Offstage(
                               offstage: list[index].isRead != 1 ? false : true,
                               child: Positioned(
-                                child: Text("● ",
+                                child: Text("• ",
                                     style: TextStyle(
                                       fontSize: 16,
                                       color: ColorConstant.MainRed,
@@ -477,7 +477,6 @@ class _MyMessagePageState extends State<MyMessagePage> {
     if (!isNetWorkAvailable) {
       return;
     }
-    print("11111111111111");
     print(id);
     Map<String, dynamic> map = new HashMap();
     map['id'] = id;
@@ -486,6 +485,8 @@ class _MyMessagePageState extends State<MyMessagePage> {
       parameters: map,
       method: HttpUtils.POST,
       onSuccess: (result) {
+        page = 1;
+        getHttp(type);
         print("成功");
       },
       onError: (code, error) {

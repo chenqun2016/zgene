@@ -7,11 +7,10 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/statistics_constant.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/content_model.dart';
-import 'package:zgene/navigator/navigator_util.dart';
-import 'package:zgene/pages/buy/product_detail_page.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
@@ -126,12 +125,8 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
   Widget getItem(Archives bean) {
     return GestureDetector(
       onTap: () {
-        NavigatorUtil.push(
-            context,
-            ProductDetailPage(
-              bean: bean,
-              index: _products.indexOf(bean),
-            ));
+        Navigator.of(context).pushNamed(CommonConstant.ROUT_buy_detail,
+            arguments: bean.id.toString());
       },
       behavior: HitTestBehavior.opaque,
       child: Container(

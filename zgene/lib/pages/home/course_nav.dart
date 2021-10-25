@@ -5,8 +5,7 @@ import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/content_model.dart';
-import 'package:zgene/navigator/navigator_util.dart';
-import 'package:zgene/widget/base_web.dart';
+import 'package:zgene/util/common_utils.dart';
 
 class CourseNav extends StatefulWidget {
   const CourseNav({Key key}) : super(key: key);
@@ -97,11 +96,8 @@ class _CourseNavState extends State<CourseNav>
     Archives archives = contentList[index];
     return GestureDetector(
       onTap: () {
-        NavigatorUtil.push(
-            context,
-            BaseWebView(
-                url: ApiConstant.getH5DetailUrl(archives.id.toString()),
-                title: archives.title));
+        CommonUtils.toUrl(
+            context: context, type: archives.linkType, url: archives.linkUrl);
       },
       child: Column(
         children: [

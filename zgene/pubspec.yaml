@@ -64,7 +64,9 @@ dependencies:
   flutter_native_image: ^0.0.6+1
   webview_flutter: ^2.0.12
   cached_network_image: ^3.1.0
-  getuiflut: ^0.2.7
+#  getuiflut: ^0.2.7
+  getuiflut:
+    path: plugins/getui-flutter-plugin
   scan: ^1.4.3
   umeng_common_sdk: ^1.2.3
   flutter_staggered_grid_view: ^0.4.0

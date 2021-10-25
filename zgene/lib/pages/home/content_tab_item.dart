@@ -146,7 +146,10 @@ class _ContentTabItemState extends State<ContentTabItem> {
           GestureDetector(
             onTap: () {
               CommonUtils.toUrl(
-                  context: context, type: item.linkType, url: item.linkUrl);
+                  context: context,
+                  type: item.linkType,
+                  url: item.linkUrl,
+                  archives: item);
             },
             child: PhysicalModel(
               color: Colors.transparent,
@@ -236,7 +239,10 @@ class _ContentTabItemState extends State<ContentTabItem> {
           child: GestureDetector(
             onTap: () {
               CommonUtils.toUrl(
-                  context: context, type: item.linkType, url: item.linkUrl);
+                  context: context,
+                  type: item.linkType,
+                  url: item.linkUrl,
+                  archives: item);
             },
             child: PhysicalModel(
               color: Colors.transparent,

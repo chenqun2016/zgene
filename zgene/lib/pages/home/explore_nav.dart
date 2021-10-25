@@ -84,7 +84,10 @@ class _ExploreNavState extends State<ExploreNav> {
         });
 
         CommonUtils.toUrl(
-            context: context, type: archives.linkType, url: archives.linkUrl);
+            context: context,
+            type: archives.linkType,
+            url: archives.linkUrl,
+            archives: archives);
       },
       child: Container(
           margin: EdgeInsets.only(left: 16, top: 10),

@@ -97,7 +97,10 @@ class _CourseNavState extends State<CourseNav>
     return GestureDetector(
       onTap: () {
         CommonUtils.toUrl(
-            context: context, type: archives.linkType, url: archives.linkUrl);
+            context: context,
+            type: archives.linkType,
+            url: archives.linkUrl,
+            archives: archives);
       },
       child: Column(
         children: [

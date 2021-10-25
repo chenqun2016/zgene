@@ -147,7 +147,10 @@ class _VideoNavState extends State<VideoNav>
       return GestureDetector(
         onTap: () {
           CommonUtils.toUrl(
-              context: context, type: archives.linkType, url: archives.linkUrl);
+              context: context,
+              type: archives.linkType,
+              url: archives.linkUrl,
+              archives: archives);
         },
         child: Container(
           height: 153,

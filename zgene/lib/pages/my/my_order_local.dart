@@ -4,11 +4,9 @@ import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/models/content_model.dart';
 import 'package:zgene/pages/home/home_getHttp.dart';
-
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/login_base.dart';
 import 'package:zgene/util/sp_utils.dart';
-import 'package:zgene/util/time_utils.dart';
 
 class MyoRderNav extends StatefulWidget {
   @override
@@ -64,7 +62,10 @@ class _MyoRderNavState extends State<MyoRderNav> {
       onTap: () {
         if (SpUtils().getStorageDefault(SpConstant.IsLogin, false)) {
           CommonUtils.toUrl(
-              context: context, type: archives.linkType, url: archives.linkUrl);
+              context: context,
+              type: archives.linkType,
+              url: archives.linkUrl,
+              archives: archives);
         } else {
           BaseLogin.login();
         }

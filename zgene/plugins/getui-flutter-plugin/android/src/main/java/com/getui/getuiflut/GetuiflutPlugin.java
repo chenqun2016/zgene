@@ -8,6 +8,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.igexin.sdk.IUserLoggerInterface;
 import com.igexin.sdk.PushManager;
 import com.igexin.sdk.Tag;
 
@@ -17,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.flutter.BuildConfig;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
@@ -153,8 +155,17 @@ public class GetuiflutPlugin implements MethodCallHandler, FlutterPlugin {
   private void initGtSdk() {
     Log.d(TAG, "init getui sdk...test");
 //    fContext = registrar.context();
-    PushManager.getInstance().initialize(fContext, FlutterPushService.class);
-    PushManager.getInstance().registerPushIntentService(fContext, FlutterIntentService.class);
+    PushManager.getInstance().initialize(fContext);
+    if(BuildConfig.DEBUG){
+      PushManager.getInstance().setDebugLogger(fContext, new IUserLoggerInterface() {
+        @Override
+        public void log(String s) {
+          Log.d("getui log" , s);
+        }
+      });
+    }
+
+//    PushManager.getInstance().registerPushIntentService(fContext, FlutterIntentService.class);
   }
 
   private void onActivityCreate() {

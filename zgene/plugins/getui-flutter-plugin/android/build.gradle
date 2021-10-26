@@ -24,14 +24,14 @@ buildscript {
         google()
         jcenter()
         maven {
-            url "http://mvn.gt.getui.com/nexus/content/repositories/releases/"
+            url "https://mvn.getui.com/nexus/content/repositories/releases/"
         }
         maven {url 'http://developer.huawei.com/repo/'}
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.0'
-        classpath 'com.huawei.agconnect:agcp:1.3.1.300'
+        classpath 'com.android.tools.build:gradle:4.2.1'
+        classpath 'com.huawei.agconnect:agcp:1.6.0.300'
     }
 }
 rootProject.allprojects {
@@ -71,22 +71,34 @@ dependencies {
 
     implementation 'org.jetbrains:annotations:15.0'
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.getui:sdk-for-google-play:4.3.5.13'
-    implementation ('com.getui:hwp-v4:2.0.0'){
-        exclude group: 'com.getui', module: 'sdk'
-    }
-    implementation ('com.getui:mzp:1.0.7'){
-        exclude group: 'com.getui', module: 'sdk'
-    }
-    implementation ('com.assist:oppo:1.0.7'){
-        exclude group: 'com.getui', module: 'sdk'
-    }
-    implementation ('com.assist:vivo:1.0.6'){
-        exclude group: 'com.getui', module: 'sdk'
-    }
-    implementation ('com.getui:xmp:1.0.8'){
-        exclude group: 'com.getui', module: 'sdk'
-    }
-    implementation 'com.huawei.hms:push:5.0.2.300'
+//    implementation 'com.getui:sdk-for-google-play:4.3.5.13'
+    implementation 'com.getui:gtsdk:3.2.4.0'  //个推SDK
+    implementation 'com.getui:gtc:3.1.6.0'  //个推核心组件
+
+
+    // 根据所需厂商选择集成
+    implementation 'com.getui.opt:hwp:3.1.0'   // 华为
+    implementation 'com.getui.opt:xmp:3.0.3'   // 小米
+    implementation 'com.assist-v3:oppo:3.0.2'  // oppo
+    implementation 'com.assist-v3:vivo:3.0.5'  // vivo
+    implementation 'com.getui.opt:mzp:3.1.0'   // 魅族
+    implementation 'com.getui.opt:ups:3.0.2'   // ups，ups目前支持坚果，索尼，海信手机
+
+//    implementation ('com.getui:hwp-v4:2.0.0'){
+//        exclude group: 'com.getui', module: 'sdk'
+//    }
+//    implementation ('com.getui:mzp:1.0.7'){
+//        exclude group: 'com.getui', module: 'sdk'
+//    }
+//    implementation ('com.assist:oppo:1.0.7'){
+//        exclude group: 'com.getui', module: 'sdk'
+//    }
+//    implementation ('com.assist:vivo:1.0.6'){
+//        exclude group: 'com.getui', module: 'sdk'
+//    }
+//    implementation ('com.getui:xmp:1.0.8'){
+//        exclude group: 'com.getui', module: 'sdk'
+//    }
+    implementation 'com.huawei.hms:push:5.3.0.304'
 
 }

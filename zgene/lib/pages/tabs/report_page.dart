@@ -1,10 +1,6 @@
 import 'dart:collection';
-import 'dart:convert';
-import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:card_swiper/card_swiper.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
@@ -14,12 +10,10 @@ import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/constant/statistics_constant.dart';
 import 'package:zgene/event/event_bus.dart';
-import 'package:zgene/http/base_response.dart';
 import 'package:zgene/http/http_utils.dart';
-import 'package:zgene/models/category_model.dart';
-import 'package:zgene/models/content_model.dart';
+import 'package:zgene/models/report_page_model.dart';
+import 'package:zgene/models/report_summary_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
-import 'package:zgene/pages/home/home_getHttp.dart';
 import 'package:zgene/pages/report/report_level_1_page.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
@@ -39,7 +33,7 @@ class ReportPage extends BaseWidget {
 }
 
 class _ReportPageState extends BaseWidgetState<ReportPage> {
-  List<Categories> categories = [];
+  List<ReportSummaryModel> categories = [];
   ScrollController _controller = new ScrollController();
   EasyRefreshController _easyController;
 
@@ -51,8 +45,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
   //顶部渐变
   double appBarAlphas = 0;
 
-  bool hasReport = false;
-  HashMap cache = HashMap<int, dynamic>();
+  ///采集器序列号
 
   @override
   void dispose() {
@@ -93,38 +86,8 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
     _controller.addListener(() {
       _onScroll(_controller.offset);
     });
-    _getReport();
-    _getOwnerReport();
-  }
 
-  _getReport() {
-    CategoriesGetHttp(type, (result) {
-      var categoryModel = CategoryModel.fromJson(result);
-      if (null != categoryModel) {
-        setState(() {
-          categories = categoryModel.categories;
-        });
-      }
-    });
-  }
-
-  Future<dynamic> _getReportItem(id) async {
-    try {
-      Map<String, dynamic> map = new HashMap();
-      map['cid'] = id.toString();
-      Dio dio = await HttpUtils.createInstance();
-      Response response =
-          await dio.get(ApiConstant.contentList, queryParameters: map);
-      var responseString = json.decode(response.toString());
-      var responseResult = BaseResponse.fromJson(responseString);
-      log('响应数据item：${id.toString()}//' + response.toString());
-      ContentModel contentModel = ContentModel.fromJson(responseResult.result);
-      // cache[id] = contentModel;
-      return contentModel;
-    } catch (e) {
-      print(e);
-    }
-    return;
+    _getCollector();
   }
 
   _onScroll(offset) {
@@ -146,7 +109,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
     return Container(
       child: Column(children: <Widget>[
         _appBar,
-        if (!hasReport) _tip,
+        if (collectors.length <= 0) _tip,
         Expanded(
           // child: EasyRefresh(
           //   // 是否开启控制结束加载
@@ -156,15 +119,11 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
           //   bottomBouncing: false,
           //   controller: _easyController,
           //   header: RefreshConfigUtils.classicalHeader(),
-          child: ListView(
+          child: SingleChildScrollView(
             controller: _controller,
-            shrinkWrap: true,
-            // physics: BouncingScrollPhysics(),
+            physics: BouncingScrollPhysics(),
             padding: EdgeInsets.fromLTRB(0, 0, 0, 100),
-            children: categories.map((e) {
-              return _items(e);
-            }).toList()
-              ..insert(0, _topBanner),
+            child: _items(),
           ),
           //   //下拉刷新事件回调
           //   onRefresh: () async {
@@ -187,145 +146,115 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
   }
 
   Widget get _topBanner {
-    var fut;
-    if (cache.containsKey(jingxuan)) {
-      print("15");
-      fut = cache[jingxuan];
-    } else {
-      fut = _getReportItem(jingxuan);
-      cache[jingxuan] = fut;
-    }
-    return FutureBuilder(
-      future: fut,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.connectionState == ConnectionState.done &&
-            snapshot.hasData) {
-          return Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding:
-                      EdgeInsets.only(left: 15, top: 24, right: 15, bottom: 10),
-                  child: Text(
-                    snapshot.data.archives[0].category.categoryName,
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      fontStyle: FontStyle.normal,
-                      fontWeight: FontWeight.bold,
-                      color: ColorConstant.TextMainBlack,
-                    ),
-                  ),
-                ),
-                Container(
-                  height: 168,
-                  padding: EdgeInsets.only(left: 15),
-                  child: Swiper(
-                    itemCount: snapshot.data.archives.length,
-                    autoplay: true,
-                    loop: false,
-                    containerWidth: double.infinity,
-                    itemWidth: 343,
-                    itemHeight: 168,
-                    itemBuilder: (BuildContext context, int index) {
-                      var bean = snapshot.data.archives[index];
-                      return GestureDetector(
-                        onTap: () {
-                          CommonUtils.toUrl(
-                              context: context,
-                              type: bean.linkType,
-                              url: bean.linkUrl);
-                        },
-                        child: Container(
-                          padding: EdgeInsets.only(right: 15),
-                          child: CachedNetworkImage(
-                            // 图片地址
-                            imageUrl: CommonUtils.splicingUrl(bean.imageUrl),
-                            // 填充方式为cover
-                            fit: BoxFit.fill,
-                            errorWidget: (context, url, error) => new Container(
-                              child: new Image.asset(
-                                'assets/images/home/img_default2.png',
-                                fit: BoxFit.fill,
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
+    return Text("精选报告");
+    // return Container(
+    //   child: Column(
+    //     crossAxisAlignment: CrossAxisAlignment.start,
+    //     children: [
+    //       Padding(
+    //         padding: EdgeInsets.only(left: 15, top: 24, right: 15, bottom: 10),
+    //         child: Text(
+    //           snapshot.data.archives[0].category.categoryName,
+    //           style: TextStyle(
+    //             fontSize: 18.sp,
+    //             fontStyle: FontStyle.normal,
+    //             fontWeight: FontWeight.bold,
+    //             color: ColorConstant.TextMainBlack,
+    //           ),
+    //         ),
+    //       ),
+    //       Container(
+    //         height: 168,
+    //         padding: EdgeInsets.only(left: 15),
+    //         child: Swiper(
+    //           itemCount: snapshot.data.archives.length,
+    //           autoplay: true,
+    //           loop: false,
+    //           containerWidth: double.infinity,
+    //           itemWidth: 343,
+    //           itemHeight: 168,
+    //           itemBuilder: (BuildContext context, int index) {
+    //             var bean = snapshot.data.archives[index];
+    //             return GestureDetector(
+    //               onTap: () {
+    //                 CommonUtils.toUrl(
+    //                     context: context,
+    //                     type: bean.linkType,
+    //                     url: bean.linkUrl);
+    //               },
+    //               child: Container(
+    //                 padding: EdgeInsets.only(right: 15),
+    //                 child: CachedNetworkImage(
+    //                   // 图片地址
+    //                   imageUrl: CommonUtils.splicingUrl(bean.imageUrl),
+    //                   // 填充方式为cover
+    //                   fit: BoxFit.fill,
+    //                   errorWidget: (context, url, error) => new Container(
+    //                     child: new Image.asset(
+    //                       'assets/images/home/img_default2.png',
+    //                       fit: BoxFit.fill,
+    //                     ),
+    //                   ),
+    //                 ),
+    //               ),
+    //             );
+    //           },
+    //         ),
+    //       ),
+    //     ],
+    //   ),
+    // );
+  }
+
+  Widget _items() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _topBanner,
+        Padding(
+          padding: EdgeInsets.only(left: 16, top: 24),
+          child: Text(
+            "探索基因蓝图",
+            style: TextStyle(
+              fontSize: 18.sp,
+              fontStyle: FontStyle.normal,
+              fontWeight: FontWeight.bold,
+              color: ColorConstant.TextMainBlack,
             ),
-          );
-        }
-        return Text("");
-      },
+          ),
+        ),
+        GridView.builder(
+            padding: EdgeInsets.fromLTRB(16, 15, 16, 0),
+            physics: NeverScrollableScrollPhysics(),
+            //增加
+            shrinkWrap: true,
+            //增加
+            scrollDirection: Axis.vertical,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2, //条目个数
+                mainAxisSpacing: 16, //主轴间距
+                crossAxisSpacing: 16, //交叉轴间距
+                childAspectRatio: 2.1),
+            itemCount: categories.length,
+            itemBuilder: (context, i) {
+              return _item(categories[i]);
+            }),
+      ],
     );
   }
 
-  Widget _items(Categories category) {
-    var fut;
-    if (cache.containsKey(category.id)) {
-      print(category.id.toString());
-      fut = cache[category.id];
-    } else {
-      fut = _getReportItem(category.id);
-      cache[category.id] = fut;
-    }
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(left: 16, top: 24),
-            child: Text(
-              category.categoryName,
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontStyle: FontStyle.normal,
-                fontWeight: FontWeight.bold,
-                color: ColorConstant.TextMainBlack,
-              ),
-            ),
-          ),
-          FutureBuilder(
-            future: fut,
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.connectionState == ConnectionState.done &&
-                  snapshot.hasData) {
-                return GridView.builder(
-                    padding: EdgeInsets.fromLTRB(16, 15, 16, 0),
-                    physics: NeverScrollableScrollPhysics(),
-                    //增加
-                    shrinkWrap: true,
-                    //增加
-                    scrollDirection: Axis.vertical,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2, //条目个数
-                        mainAxisSpacing: 16, //主轴间距
-                        crossAxisSpacing: 16, //交叉轴间距
-                        childAspectRatio: 2.1),
-                    itemCount: snapshot.data.archives.length,
-                    itemBuilder: (context, i) {
-                      return _item(snapshot.data.archives[i]);
-                    });
-              }
-              return Text("");
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _item(Archives bean) {
+  Widget _item(ReportSummaryModel bean) {
     return GestureDetector(
       onTap: () {
         NavigatorUtil.push(
             context,
             ReportLevel1Page(
-              id: bean.id,
+              type: type == 6 ? "male" : "female",
+              id: bean.code,
+              summaryModel: bean,
+              serialNum: collectors.length > 0
+                  ? collectors[currentCollector].serialNum
+                  : null,
             ));
       },
       child: Container(
@@ -344,7 +273,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  bean.title,
+                  bean.name,
                   style: TextStyle(
                     fontSize: 14.sp,
                     fontStyle: FontStyle.normal,
@@ -356,9 +285,10 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
                   color: Colors.transparent,
                   height: 6,
                 ),
-                if (bean.keywords != null && bean.keywords.isNotEmpty)
-                  Text(
-                    bean.keywords,
+                Padding(
+                  padding: const EdgeInsets.only(left: 2.0),
+                  child: Text(
+                    "共${bean.count}项",
                     style: TextStyle(
                       fontSize: 12.sp,
                       fontStyle: FontStyle.normal,
@@ -366,6 +296,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
                       color: ColorConstant.Text_8E9AB,
                     ),
                   ),
+                ),
               ],
             )),
             CachedNetworkImage(
@@ -373,16 +304,10 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
               // 设置根据宽度计算高度
               height: 76,
               // 图片地址
-              imageUrl: CommonUtils.splicingImageId(bean.id.toString()),
+              imageUrl: CommonUtils.splicingUrl(bean.img.toString()),
               // 填充方式为cover
               fit: BoxFit.fill,
-              errorWidget: (context, url, error) => new Container(
-                child: new Image.asset(
-                  'assets/images/home/img_default2.png',
-                  height: 76,
-                  width: 76,
-                ),
-              ),
+              errorWidget: (context, url, error) => Text(""),
             ),
           ],
         ),
@@ -438,7 +363,9 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
               child: Center(
                 child: Text.rich(TextSpan(children: [
                   TextSpan(
-                    text: hasReport ? "Andy" : "示例报告",
+                    text: collectors.length > 0
+                        ? collectors[currentCollector].targetName
+                        : "示例报告",
                     style: TextStyle(
                       fontSize: 24.sp,
                       fontStyle: FontStyle.normal,
@@ -446,7 +373,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
                       color: ColorConstant.TextMainBlack,
                     ),
                   ),
-                  if (hasReport)
+                  if (collectors.length > 0)
                     TextSpan(
                       text: "的报告—",
                       style: TextStyle(
@@ -456,7 +383,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
                         color: ColorConstant.TextMainBlack,
                       ),
                     ),
-                  if (hasReport)
+                  if (collectors.length > 0)
                     TextSpan(
                       text: "青春版",
                       style: TextStyle(
@@ -479,8 +406,11 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
                   StatisticsConstant.KEY_UMENG_L2:
                       StatisticsConstant.REPORT_PAGE_GENDER
                 });
-                // await _showModalBottomSheet();
-                await _switchReport();
+                if (collectors.length > 0) {
+                  await _switchReport();
+                } else {
+                  await _showModalBottomSheet();
+                }
               },
               child: Container(
                 height: 55.h,
@@ -580,16 +510,9 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
     );
   }
 
-  var reports = [
-    "andy",
-    "张飞",
-    "李白",
-    "嫦娥",
-  ];
-  var currentReport = 0;
 // 弹出底部菜单列表模态对话框
   Future<int> _switchReport() async {
-    var size = reports.length > 9 ? 9 : reports.length;
+    var size = collectors.length > 9 ? 9 : collectors.length;
     var height = (56 + size * 70).toDouble();
     return await showModalBottomSheet<int>(
       context: context,
@@ -635,13 +558,13 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
                     shrinkWrap: true,
                     physics: BouncingScrollPhysics(),
                     padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                    children: reports.map((e) {
-                      var index = reports.indexOf(e);
+                    children: collectors.map((e) {
+                      var index = collectors.indexOf(e);
 
                       return InkWell(
                         onTap: () {
                           Navigator.of(ctx).pop();
-                          currentReport = index;
+                          currentCollector = index;
                         },
                         child: Container(
                           width: double.infinity,
@@ -652,17 +575,17 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
-                                e,
+                                e.targetName,
                                 style: TextStyle(
                                   fontSize: 18.sp,
                                   fontStyle: FontStyle.normal,
                                   fontWeight: FontWeight.bold,
-                                  color: currentReport == index
+                                  color: currentCollector == index
                                       ? ColorConstant.TextMainColor
                                       : ColorConstant.TextMainBlack,
                                 ),
                               ),
-                              if (currentReport == index)
+                              if (currentCollector == index)
                                 Padding(
                                   padding:
                                       const EdgeInsets.only(left: 8.0, top: 2),
@@ -685,19 +608,59 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
     );
   }
 
-  void _getOwnerReport() {
-    if (SpUtils().getStorageDefault(SpConstant.IsLogin, false))
+  List<ReportPageModel> collectors = [];
+  var currentCollector = 0;
+
+  void _getCollector() async {
+    if (SpUtils().getStorageDefault(SpConstant.IsLogin, false)) {
+      Map<String, dynamic> map = new HashMap();
+      map['page'] = 1;
+      map['size'] = 20;
+
       HttpUtils.requestHttp(
-        ApiConstant.reports,
+        ApiConstant.collector_list,
         method: HttpUtils.GET,
+        parameters: map,
         onSuccess: (result) async {
           List l = result;
-          if (null != l && l.length > 0) {
-            setState(() {
-              hasReport = true;
-            });
-          }
+          collectors.clear();
+          l.forEach((element) {
+            var reportPageModel = ReportPageModel.fromJson(element);
+            if (reportPageModel.status == 80) {
+              collectors.add(reportPageModel);
+            }
+          });
+          _getReport();
+        },
+        onError: (code, error) {
+          _getReport();
         },
       );
+    } else {
+      _getReport();
+    }
+  }
+
+  _getReport() {
+    Map<String, dynamic> map = new HashMap();
+    if (collectors.length > 0) {
+      map['serial_num'] = collectors[currentCollector].serialNum;
+    } else {
+      map['sample'] = type == 6 ? "male" : "female";
+    }
+    HttpUtils.requestHttp(
+      ApiConstant.reportSummary,
+      parameters: map,
+      method: HttpUtils.GET,
+      onSuccess: (result) async {
+        List l = result;
+        categories.clear();
+        l.forEach((element) {
+          categories.add(ReportSummaryModel.fromJson(element));
+        });
+        setState(() {});
+      },
+      onError: (code, error) {},
+    );
   }
 }

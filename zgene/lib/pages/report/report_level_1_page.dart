@@ -1,24 +1,29 @@
-import 'dart:convert';
-import 'dart:developer';
+import 'dart:collection';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
-import 'package:zgene/models/archive_des_model.dart';
+import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/report_des_model.dart';
-import 'package:zgene/pages/home/home_getHttp.dart';
+import 'package:zgene/models/report_list_model.dart';
+import 'package:zgene/models/report_summary_model.dart';
 import 'package:zgene/util/base_widget.dart';
-import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/widget/my_inherited_widget.dart';
 
 import 'report_level_1_body_page.dart';
 
 class ReportLevel1Page extends BaseWidget {
-  final int id;
-
-  ReportLevel1Page({Key key, this.id}) : super(key: key);
+  final String id;
+  String serialNum;
+  final ReportSummaryModel summaryModel;
+  final String type;
+  ReportLevel1Page(
+      {Key key, this.id, this.serialNum, this.summaryModel, this.type})
+      : super(key: key);
 
   @override
   BaseWidgetState<ReportLevel1Page> getState() => _ReportLevel1PageState();
@@ -27,35 +32,22 @@ class ReportLevel1Page extends BaseWidget {
 class _ReportLevel1PageState extends BaseWidgetState<ReportLevel1Page>
     with SingleTickerProviderStateMixin {
   var canFixedHeadShow = false;
-  ReportDesModel reportDesModel;
-  List list = [];
-  Archive _archive;
-  int id;
+
   var persistentHeaderTopMargin = 164.0;
   TabController _tabController;
-  final tabs = [
-    '心血管',
-    '抗肿瘤',
-    '风湿免疫',
-    '心血管',
-    '抗肿瘤',
-    '风湿免疫',
-    '心血管',
-    '抗肿瘤',
-    '风湿免疫'
-  ];
+
+  var list = [];
+  var tabs = [];
 
   @override
   void pageWidgetInitState() {
     super.pageWidgetInitState();
-    id = widget.id;
-
     showBaseHead = false;
     showHead = true;
     isListPage = true;
     // backColor = Colors.red;
     backImgPath = "assets/images/mine/img_bg_my.png";
-
+    pageWidgetTitle = widget.summaryModel.name;
     listeningController.addListener(() {
       if (listeningController.position.pixels.toInt() >=
               persistentHeaderTopMargin &&
@@ -73,21 +65,8 @@ class _ReportLevel1PageState extends BaseWidgetState<ReportLevel1Page>
       }
     });
 
-    _tabController = TabController(vsync: this, length: tabs.length);
-    _tabController.addListener(() {
-      if (_tabController.animation?.value == _tabController.index) {
-        setState(() {
-          print("_tabController.listener");
-          list = list.sublist(1, list.length);
-        });
-        if (listeningController?.hasClients &&
-            listeningController.offset > persistentHeaderTopMargin)
-          listeningController?.jumpTo(persistentHeaderTopMargin + 4);
-      }
-    });
+    _getDatas();
   }
-
-  bool hasDatas = false;
 
   @override
   void dispose() {
@@ -96,41 +75,51 @@ class _ReportLevel1PageState extends BaseWidgetState<ReportLevel1Page>
   }
 
   _getDatas() {
-    String arg = ModalRoute.of(context).settings.arguments;
-    if (null != arg) {
-      id = int.parse(arg);
+    Map<String, dynamic> map = new HashMap();
+
+    map['id'] = widget.id;
+    // map['id'] = "yongyaozhidao";
+    if (widget.serialNum != null) {
+      map['serial_num'] = widget.serialNum;
+    } else {
+      map['sample'] = widget.type;
     }
 
-    ArchiveGetHttp(id, (result) {
-      ArchiveDesModel model = ArchiveDesModel.fromJson(result);
-      list.clear();
-      setState(() {
-        list = model.addon.archives;
-        _archive = model.archive;
-        try {
-          pageWidgetTitle = _archive.title;
-
-          log("hahaha==" + _archive.description);
-          if (null != _archive.description && _archive.description.isNotEmpty) {
-            var json = jsonDecode(_archive.description);
-            reportDesModel = ReportDesModel.fromJson(json);
+    HttpUtils.requestHttp(
+      ApiConstant.reportList,
+      parameters: map,
+      method: HttpUtils.GET,
+      onSuccess: (result) async {
+        List l = result;
+        tabs.clear();
+        list.clear();
+        l.forEach((element) {
+          if (null != element["group"]) {
+            tabs.add(ReportListModel.fromJson(element));
+          } else {
+            list.add(ReportDataList.fromJson(element));
           }
-        } catch (e) {
-          print("exception==" + e.toString());
+        });
+        if (tabs.length > 0) {
+          _tabController = TabController(vsync: this, length: tabs.length);
+          _tabController.addListener(() {
+            if (_tabController.animation?.value == _tabController.index) {
+              setState(() {});
+              list = tabs[_tabController.index].dataList;
+              if (listeningController?.hasClients &&
+                  listeningController.offset > persistentHeaderTopMargin)
+                listeningController?.jumpTo(persistentHeaderTopMargin + 4);
+            }
+          });
+          list = tabs[0].dataList;
         }
-      });
-    });
+        setState(() {});
+      },
+      onError: (code, error) {},
+    );
   }
 
   Widget viewPageBody(BuildContext context) {
-    if (!hasDatas) {
-      hasDatas = true;
-      _getDatas();
-    }
-
-    if (null == _archive) {
-      return Text("");
-    }
     return Stack(
       children: [
         SingleChildScrollView(
@@ -198,12 +187,12 @@ class _ReportLevel1PageState extends BaseWidgetState<ReportLevel1Page>
       ));
 
   Widget _getTitleView() {
-    return tabs.length > 1 ? _titleTabView() : _titleView();
+    return tabs.length > 0 ? _titleTabView() : _titleView();
   }
 
   Widget _titleTabView() {
     return TabBar(
-      onTap: (tab) => print(tab),
+      onTap: (tab) {},
       labelPadding: EdgeInsets.fromLTRB(8, 0, 8, 0),
       padding: const EdgeInsets.only(left: 10.0, right: 10),
       indicatorPadding: EdgeInsets.fromLTRB(10, 0, 10, 6),
@@ -217,7 +206,7 @@ class _ReportLevel1PageState extends BaseWidgetState<ReportLevel1Page>
       indicatorWeight: 2,
       indicatorSize: TabBarIndicatorSize.label,
       indicatorColor: ColorConstant.TextMainColor,
-      tabs: tabs.map((e) => Tab(text: e)).toList(),
+      tabs: tabs.map((e) => Tab(text: e.group)).toList(),
     );
   }
 
@@ -256,7 +245,19 @@ class _ReportLevel1PageState extends BaseWidgetState<ReportLevel1Page>
     );
   }
 
-  Widget _buildSliverList() => Container(
+  Widget _buildSliverList() {
+    double bottom;
+    var bottomPadding =
+        (48 * list.length) + 85 + (55.h + MediaQuery.of(context).padding.top);
+    if (bottomPadding < MediaQuery.of(context).size.height) {
+      bottom = MediaQuery.of(context).size.height - bottomPadding;
+    } else {
+      bottom = 0;
+    }
+
+    return Padding(
+      padding: EdgeInsets.only(bottom: bottom),
+      child: Container(
         margin: EdgeInsets.only(top: 220),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -269,7 +270,9 @@ class _ReportLevel1PageState extends BaseWidgetState<ReportLevel1Page>
           data: list,
           child: ReportLevel1BodyPage(),
         ),
-      );
+      ),
+    );
+  }
 
   Widget _buildSliverAppBar() {
     return Stack(
@@ -279,7 +282,7 @@ class _ReportLevel1PageState extends BaseWidgetState<ReportLevel1Page>
           height: 168,
           decoration: BoxDecoration(
               image: DecorationImage(
-            image: NetworkImage(CommonUtils.splicingUrl(_archive.imageUrl)),
+            image: AssetImage(UiUitls.getReportListIcon(widget.id)),
             fit: BoxFit.fill,
           )),
           padding: EdgeInsets.fromLTRB(30, 22, 0, 0),
@@ -308,19 +311,18 @@ class _ReportLevel1PageState extends BaseWidgetState<ReportLevel1Page>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          _archive.title,
+          widget.summaryModel.name,
           style: TextStyle(
               fontWeight: FontWeight.bold, color: Colors.white, fontSize: 28),
         ),
         Text(
-          _archive.keywords,
+          "共${widget.summaryModel.count}项",
           style: TextStyle(
               fontWeight: FontWeight.w500, color: Colors.white, fontSize: 14),
         ),
-        if (null != reportDesModel && null != reportDesModel.items)
-          Row(
-            children: reportDesModel.items.map((e) => _titletip(e)).toList(),
-          )
+        // Row(
+        //   children: reportDesModel.items.map((e) => _titletip(e)).toList(),
+        // )
       ],
     );
   }

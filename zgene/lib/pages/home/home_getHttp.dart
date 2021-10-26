@@ -53,7 +53,7 @@ Future<void> CategoriesGetHttp(int type, _CallBack callback) async {
   );
 }
 
-Future<void> ArchiveGetHttp(int id, _CallBack callback) async {
+Future<void> ArchiveGetHttp(var id, _CallBack callback) async {
   bool isNetWorkAvailable = await CommonUtils.isNetWorkAvailable();
   if (!isNetWorkAvailable) {
     return;

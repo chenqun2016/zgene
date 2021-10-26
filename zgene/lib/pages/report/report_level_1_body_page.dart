@@ -7,7 +7,11 @@ import 'package:zgene/widget/my_inherited_widget.dart';
 import 'report_level_2_page.dart';
 
 class ReportLevel1BodyPage extends StatefulWidget {
-  ReportLevel1BodyPage({Key key}) : super(key: key);
+  final String id;
+  String serialNum;
+  final String type;
+  ReportLevel1BodyPage({Key key, this.id, this.serialNum, this.type})
+      : super(key: key);
 
   @override
   _ReportLevel1BodyPageState createState() => _ReportLevel1BodyPageState();
@@ -42,7 +46,10 @@ class _ReportLevel1BodyPageState extends State<ReportLevel1BodyPage> {
         NavigatorUtil.push(
             context,
             ReportLevel2Page(
-              id: data.scode,
+              id: widget.id,
+              itemid: data.itemid,
+              type: widget.type,
+              serialNum: widget.serialNum,
             ));
       },
       child: Container(

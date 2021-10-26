@@ -268,7 +268,11 @@ class _ReportLevel1PageState extends BaseWidgetState<ReportLevel1Page>
         ),
         child: MyInheritedWidget(
           data: list,
-          child: ReportLevel1BodyPage(),
+          child: ReportLevel1BodyPage(
+            id: widget.id,
+            serialNum: widget.serialNum,
+            type: widget.type,
+          ),
         ),
       ),
     );

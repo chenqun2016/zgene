@@ -104,6 +104,8 @@ class ApiConstant {
 
   ///********************************* 报告 *****************************///
 
+  //报告详情
+  static const String reportDetail = "/api/v2/report/:id/detail";
   //报告列表
   static const String reportList = "/api/v2/report/:id/list";
   //首页我的报告

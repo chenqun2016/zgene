@@ -1,21 +1,24 @@
-import 'dart:convert';
-import 'dart:developer';
+import 'dart:collection';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
-import 'package:zgene/models/archive_des_model.dart';
-import 'package:zgene/models/report_des_model.dart';
-import 'package:zgene/pages/home/home_getHttp.dart';
+import 'package:zgene/http/http_utils.dart';
+import 'package:zgene/models/report_list_detail_model.dart';
 import 'package:zgene/pages/report/item/my_report_result.dart';
 import 'package:zgene/pages/report/item/my_report_sciencedetail.dart';
 import 'package:zgene/util/base_widget.dart';
 
 class ReportLevel2Page extends BaseWidget {
-  final int id;
+  final String id;
+  final String itemid;
+  String serialNum;
+  final String type;
 
-  ReportLevel2Page({Key key, this.id}) : super(key: key);
+  ReportLevel2Page({Key key, this.id, this.itemid, this.serialNum, this.type})
+      : super(key: key);
 
   @override
   BaseWidgetState<ReportLevel2Page> getState() => _ReportLevel2PageState();
@@ -24,10 +27,6 @@ class ReportLevel2Page extends BaseWidget {
 class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
     with SingleTickerProviderStateMixin {
   var canFixedHeadShow = false;
-  ReportDesModel reportDesModel;
-  List list = [];
-  Archive _archive;
-  int id;
   var persistentHeaderTopMargin = 148.0;
   final tabs = ['检测结果', '科学细节'];
   //顶部两种title， 0：图片类型，1：进度条类型
@@ -42,7 +41,6 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
   @override
   void pageWidgetInitState() {
     super.pageWidgetInitState();
-    id = widget.id;
     showBaseHead = false;
     showHead = true;
     isListPage = true;
@@ -73,6 +71,8 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
           listeningController?.jumpTo(persistentHeaderTopMargin + 4);
       }
     });
+
+    _getDatas();
   }
 
   @override
@@ -81,42 +81,31 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
     super.dispose();
   }
 
-  bool hasDatas = false;
-
   _getDatas() {
-    String arg = ModalRoute.of(context).settings.arguments;
-    if (null != arg) {
-      id = int.parse(arg);
-    }
-    ArchiveGetHttp(id, (result) {
-      ArchiveDesModel model = ArchiveDesModel.fromJson(result);
-      list.clear();
-      setState(() {
-        list = model.addon.archives;
-        _archive = model.archive;
-        try {
-          pageWidgetTitle = _archive.title;
+    Map<String, dynamic> map = new HashMap();
 
-          log("hahaha==" + _archive.description);
-          if (null != _archive.description && _archive.description.isNotEmpty) {
-            var json = jsonDecode(_archive.description);
-            reportDesModel = ReportDesModel.fromJson(json);
-          }
-        } catch (e) {
-          print("exception==" + e.toString());
-        }
-      });
-    });
+    map['itemid'] = widget.itemid;
+    map['id'] = widget.id;
+    if (widget.serialNum != null) {
+      map['serial_num'] = widget.serialNum;
+    } else {
+      map['sample'] = widget.type;
+    }
+
+    HttpUtils.requestHttp(
+      ApiConstant.reportDetail,
+      parameters: map,
+      method: HttpUtils.GET,
+      onSuccess: (result) async {
+        var reportData = ReportListDetailModel.fromJson(result);
+        pageWidgetTitle = reportData.chname;
+        setState(() {});
+      },
+      onError: (code, error) {},
+    );
   }
 
   Widget viewPageBody(BuildContext context) {
-    if (!hasDatas) {
-      hasDatas = true;
-      _getDatas();
-    }
-    if (null == _archive) {
-      return Text("");
-    }
     return Stack(
       children: [
         SingleChildScrollView(

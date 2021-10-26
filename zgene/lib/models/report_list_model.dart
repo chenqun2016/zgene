@@ -41,7 +41,7 @@ class ReportDataList {
   String drugToxic;
   String drugReaction;
   String drugInteraction;
-  Null gene;
+  dynamic gene;
 
   ReportDataList(
       {this.scode,

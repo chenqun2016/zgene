@@ -117,7 +117,6 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
             break;
 
           case "jibingshaicha": //疾病筛查 肿瘤报告 TODO
-            break;
           case "jiankangfengxian": //健康风险
           case "pifuguanli": //皮肤管理
             if (reportData.conclusion == "高风险") {

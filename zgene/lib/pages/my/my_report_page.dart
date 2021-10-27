@@ -39,7 +39,7 @@ class _MyReportPageState extends BaseWidgetState {
       return;
     }
     Map<String, dynamic> map = new HashMap();
-    map['page'] = 1;
+    map['page'] = page;
     map['size'] = 20;
 
     HttpUtils.requestHttp(
@@ -50,10 +50,17 @@ class _MyReportPageState extends BaseWidgetState {
         print(result);
         EasyLoading.dismiss();
         List l = result;
-        list.clear();
-        l.forEach((element) {
-          list.add(ReportPageModel.fromJson(element));
-        });
+        if (page == 1) {
+          list.clear();
+          l.forEach((element) {
+            list.add(ReportPageModel.fromJson(element));
+          });
+        } else {
+          l.forEach((element) {
+            list.add(ReportPageModel.fromJson(element));
+          });
+        }
+
         setState(() {});
       },
       onError: (code, error) {
@@ -72,10 +79,11 @@ class _MyReportPageState extends BaseWidgetState {
       // 控制器
       controller: _easyController,
       header: BallPulseHeader(),
+      footer: BallPulseFooter(),
       child: _listView,
       //下拉刷新事件回调
       onRefresh: () async {
-        // page = 1;
+        page = 1;
         // // 获取数据
         getDatas();
         // await Future.delayed(Duration(seconds: 1), () {
@@ -85,9 +93,17 @@ class _MyReportPageState extends BaseWidgetState {
         }
         // });
       },
+      onLoad: () async {
+        page += 1;
+        getDatas();
+        if (_easyController != null) {
+          _easyController.finishLoad();
+        }
+      },
     );
   }
 
+  int page = 1;
   get _emptyWidget {
     return Column(
       children: [

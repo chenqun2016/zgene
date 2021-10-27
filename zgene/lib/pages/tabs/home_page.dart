@@ -166,7 +166,8 @@ class _HomePageState extends BaseWidgetState<HomePage> {
               CommonUtils.toUrl(
                   context: context,
                   type: archives.linkType,
-                  url: archives.linkUrl);
+                  url: archives.linkUrl,
+                  archives: archives);
               // String model = bannerList[index];
               // NavigatorUtil.push();
             },

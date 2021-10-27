@@ -15,7 +15,7 @@ import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/address_list_model.dart';
-import 'package:zgene/models/content_model.dart';
+import 'package:zgene/models/archive_des_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/my/my_order_list.dart';
 import 'package:zgene/util/base_widget.dart';
@@ -26,7 +26,7 @@ import 'package:zgene/util/ui_uitls.dart';
 import '../my/my_address_list.dart';
 
 class OrderingPage extends BaseWidget {
-  Archives product;
+  Archive product;
 
   OrderingPage({Key key, this.product}) : super(key: key);
 

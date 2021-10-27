@@ -9,12 +9,12 @@ class ArchiveDesModel {
   ArchiveDesModel.fromJson(Map<String, dynamic> json) {
     addon = json['addon'] != null ? new Addon.fromJson(json['addon']) : null;
     archive =
-    json['archive'] != null ? new Archive.fromJson(json['archive']) : null;
+        json['archive'] != null ? new Archive.fromJson(json['archive']) : null;
     attachment = json['attachment'] != null
         ? new Attachment.fromJson(json['attachment'])
         : null;
     status =
-    json['status'] != null ? new Status.fromJson(json['status']) : null;
+        json['status'] != null ? new Status.fromJson(json['status']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -37,11 +37,13 @@ class ArchiveDesModel {
 
 class Addon {
   int aid;
+  int stock;
   List<Archives> archives;
 
-  Addon({this.aid, this.archives});
+  Addon({this.aid, this.stock, this.archives});
 
   Addon.fromJson(Map<String, dynamic> json) {
+    stock = json['stock'];
     aid = json['aid'];
     if (json['archives'] != null) {
       archives = new List<Archives>();
@@ -54,6 +56,7 @@ class Addon {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['aid'] = this.aid;
+    data['stock'] = this.stock;
     if (this.archives != null) {
       data['archives'] = this.archives.map((v) => v.toJson()).toList();
     }
@@ -93,33 +96,33 @@ class Archives {
 
   Archives(
       {this.id,
-        this.createdAt,
-        this.updatedAt,
-        this.cid,
-        this.chid,
-        this.uid,
-        this.title,
-        this.titleShort,
-        this.description,
-        this.keywords,
-        this.seoUrl,
-        this.imageUrl,
-        this.videoUrl,
-        this.audioUrl,
-        this.source,
-        this.sourceUrl,
-        this.author,
-        this.coin,
-        this.sortRank,
-        this.count,
-        this.countComment,
-        this.countDigg,
-        this.duration,
-        this.tags,
-        this.isTop,
-        this.template,
-        this.linkType,
-        this.linkUrl});
+      this.createdAt,
+      this.updatedAt,
+      this.cid,
+      this.chid,
+      this.uid,
+      this.title,
+      this.titleShort,
+      this.description,
+      this.keywords,
+      this.seoUrl,
+      this.imageUrl,
+      this.videoUrl,
+      this.audioUrl,
+      this.source,
+      this.sourceUrl,
+      this.author,
+      this.coin,
+      this.sortRank,
+      this.count,
+      this.countComment,
+      this.countDigg,
+      this.duration,
+      this.tags,
+      this.isTop,
+      this.template,
+      this.linkType,
+      this.linkUrl});
 
   Archives.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -220,35 +223,35 @@ class Archive {
 
   Archive(
       {this.id,
-        this.createdAt,
-        this.updatedAt,
-        this.cid,
-        this.category,
-        this.chid,
-        this.channel,
-        this.uid,
-        this.title,
-        this.titleShort,
-        this.description,
-        this.keywords,
-        this.seoUrl,
-        this.imageUrl,
-        this.videoUrl,
-        this.audioUrl,
-        this.source,
-        this.sourceUrl,
-        this.author,
-        this.coin,
-        this.sortRank,
-        this.count,
-        this.countComment,
-        this.countDigg,
-        this.duration,
-        this.tags,
-        this.isTop,
-        this.template,
-        this.linkType,
-        this.linkUrl});
+      this.createdAt,
+      this.updatedAt,
+      this.cid,
+      this.category,
+      this.chid,
+      this.channel,
+      this.uid,
+      this.title,
+      this.titleShort,
+      this.description,
+      this.keywords,
+      this.seoUrl,
+      this.imageUrl,
+      this.videoUrl,
+      this.audioUrl,
+      this.source,
+      this.sourceUrl,
+      this.author,
+      this.coin,
+      this.sortRank,
+      this.count,
+      this.countComment,
+      this.countDigg,
+      this.duration,
+      this.tags,
+      this.isTop,
+      this.template,
+      this.linkType,
+      this.linkUrl});
 
   Archive.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -260,7 +263,7 @@ class Archive {
         : null;
     chid = json['chid'];
     channel =
-    json['channel'] != null ? new Channel.fromJson(json['channel']) : null;
+        json['channel'] != null ? new Channel.fromJson(json['channel']) : null;
     uid = json['uid'];
     title = json['title'];
     titleShort = json['title_short'];
@@ -355,23 +358,23 @@ class Category {
 
   Category(
       {this.id,
-        this.createdAt,
-        this.updatedAt,
-        this.parentCid,
-        this.topCid,
-        this.chid,
-        this.total,
-        this.step,
-        this.categoryName,
-        this.keywords,
-        this.seoTitle,
-        this.description,
-        this.seoUrl,
-        this.sortRank,
-        this.isHidden,
-        this.templateList,
-        this.templateArchive,
-        this.body});
+      this.createdAt,
+      this.updatedAt,
+      this.parentCid,
+      this.topCid,
+      this.chid,
+      this.total,
+      this.step,
+      this.categoryName,
+      this.keywords,
+      this.seoTitle,
+      this.description,
+      this.seoUrl,
+      this.sortRank,
+      this.isHidden,
+      this.templateList,
+      this.templateArchive,
+      this.body});
 
   Category.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -428,11 +431,11 @@ class Channel {
 
   Channel(
       {this.id,
-        this.createdAt,
-        this.updatedAt,
-        this.name,
-        this.addonTable,
-        this.title});
+      this.createdAt,
+      this.updatedAt,
+      this.name,
+      this.addonTable,
+      this.title});
 
   Channel.fromJson(Map<String, dynamic> json) {
     id = json['id'];

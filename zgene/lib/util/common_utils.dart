@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
@@ -132,7 +133,7 @@ class CommonUtils {
   }
 
   ///公共跳转链接
-  static toUrl({context, String url, type}) {
+  static toUrl({context, String url, type, archives}) {
     print("000000000000000000000");
 
     print("url==$url+type==${type.toString()}");
@@ -161,6 +162,13 @@ class CommonUtils {
       switch (type) {
         // type 0:无 1:HTTP 2:应用内 3:视频
         case 0:
+          if (null != archives) {
+            NavigatorUtil.push(
+                context,
+                BaseWebView(
+                    url: ApiConstant.getH5DetailUrl(archives.id.toString()),
+                    title: archives.title));
+          }
           break;
         case 1:
           NavigatorUtil.push(

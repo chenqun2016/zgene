@@ -3,7 +3,6 @@ import 'dart:developer';
 
 import 'package:device_info/device_info.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:package_info/package_info.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
@@ -152,8 +151,6 @@ class HttpUtils {
   }) async {
     ///定义请求参数
     ///
-    print(url);
-
     parameters = parameters ?? {};
     try {
       parameters.forEach((key, value) {
@@ -163,6 +160,7 @@ class HttpUtils {
       });
     } catch (e) {}
     print(url);
+    print(parameters.toString());
     try {
       Dio dio = await createInstance();
       Response response;

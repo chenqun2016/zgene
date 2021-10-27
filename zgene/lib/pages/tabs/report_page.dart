@@ -1,9 +1,6 @@
 import 'dart:collection';
-import 'dart:convert';
-import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
@@ -13,13 +10,10 @@ import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/constant/statistics_constant.dart';
 import 'package:zgene/event/event_bus.dart';
-import 'package:zgene/http/base_response.dart';
 import 'package:zgene/http/http_utils.dart';
-import 'package:zgene/models/category_model.dart';
-import 'package:zgene/models/content_model.dart';
+import 'package:zgene/models/report_page_model.dart';
+import 'package:zgene/models/report_summary_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
-import 'package:zgene/pages/home/home_getHttp.dart';
-import 'package:zgene/pages/my/my_report_page.dart';
 import 'package:zgene/pages/report/report_level_1_page.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
@@ -39,7 +33,7 @@ class ReportPage extends BaseWidget {
 }
 
 class _ReportPageState extends BaseWidgetState<ReportPage> {
-  List<Categories> categories = [];
+  List<ReportSummaryModel> categories = [];
   ScrollController _controller = new ScrollController();
   EasyRefreshController _easyController;
 
@@ -51,8 +45,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
   //顶部渐变
   double appBarAlphas = 0;
 
-  bool hasReport = false;
-  HashMap cache = HashMap<int, dynamic>();
+  ///采集器序列号
 
   @override
   void dispose() {
@@ -86,45 +79,15 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
     showHead = false;
     isListPage = true;
     setWantKeepAlive = true;
-    backImgPath = "assets/images/home/bg_home.png";
+    backImgPath = "assets/images/mine/icon_contant_us_back.png";
 
     _easyController = EasyRefreshController();
     //监听滚动事件，打印滚动位置
     _controller.addListener(() {
       _onScroll(_controller.offset);
     });
-    _getReport();
-    _getOwnerReport();
-  }
 
-  _getReport() {
-    CategoriesGetHttp(type, (result) {
-      var categoryModel = CategoryModel.fromJson(result);
-      if (null != categoryModel) {
-        setState(() {
-          categories = categoryModel.categories;
-        });
-      }
-    });
-  }
-
-  Future<dynamic> _getReportItem(id) async {
-    try {
-      Map<String, dynamic> map = new HashMap();
-      map['cid'] = id.toString();
-      Dio dio = await HttpUtils.createInstance();
-      Response response =
-          await dio.get(ApiConstant.contentList, queryParameters: map);
-      var responseString = json.decode(response.toString());
-      var responseResult = BaseResponse.fromJson(responseString);
-      log('响应数据item：${id.toString()}//' + response.toString());
-      ContentModel contentModel = ContentModel.fromJson(responseResult.result);
-      // cache[id] = contentModel;
-      return contentModel;
-    } catch (e) {
-      print(e);
-    }
-    return;
+    _getCollector();
   }
 
   _onScroll(offset) {
@@ -146,7 +109,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
     return Container(
       child: Column(children: <Widget>[
         _appBar,
-        _tip,
+        if (collectors.length <= 0) _tip,
         Expanded(
           // child: EasyRefresh(
           //   // 是否开启控制结束加载
@@ -156,15 +119,11 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
           //   bottomBouncing: false,
           //   controller: _easyController,
           //   header: RefreshConfigUtils.classicalHeader(),
-          child: ListView(
+          child: SingleChildScrollView(
             controller: _controller,
-            shrinkWrap: true,
-            // physics: BouncingScrollPhysics(),
+            physics: BouncingScrollPhysics(),
             padding: EdgeInsets.fromLTRB(0, 0, 0, 100),
-            children: categories.map((e) {
-              return _items(e);
-            }).toList()
-              ..add(_bottomBanner),
+            child: _items(),
           ),
           //   //下拉刷新事件回调
           //   onRefresh: () async {
@@ -186,246 +145,172 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
     );
   }
 
-  Widget get _bottomBanner {
-    var fut;
-    if (cache.containsKey(jingxuan)) {
-      print("15");
-      fut = cache[jingxuan];
-    } else {
-      fut = _getReportItem(jingxuan);
-      cache[jingxuan] = fut;
-    }
-    return FutureBuilder(
-      future: fut,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.connectionState == ConnectionState.done &&
-            snapshot.hasData) {
-          return Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding:
-                      EdgeInsets.only(left: 15, top: 24, right: 15, bottom: 10),
-                  child: Text(
-                    snapshot.data.archives[0].category.categoryName,
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      fontStyle: FontStyle.normal,
-                      fontWeight: FontWeight.bold,
-                      color: ColorConstant.TextMainBlack,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 128.h,
-                  child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      physics: BouncingScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: snapshot.data.archives.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        var bean = snapshot.data.archives[index];
-                        return GestureDetector(
-                          onTap: () {
-                            CommonUtils.toUrl(
-                                context: context,
-                                type: bean.linkType,
-                                url: bean.linkUrl);
-                          },
-                          // child: Image.network(
-                          //   bannerList[index],
-                          //   fit: BoxFit.fill,
-                          // ),
-                          child: Container(
-                            width: 256.w,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(20),
-                              ),
-                              // gradient: LinearGradient(colors: [
-                              //   Color(0xFFFF5D66),
-                              //   Color(0xFFFFB254),
-                              // ])
-                              // image: DecorationImage(
-                              //     image: NetworkImage("assets/images/banner.png"))
-                            ),
-                            margin: EdgeInsets.only(left: 16),
-                            child: new CachedNetworkImage(
-                              width: 256.w,
-                              // 设置根据宽度计算高度
-                              height: 128.h,
-                              // 图片地址
-                              imageUrl: CommonUtils.splicingUrl(bean.imageUrl),
-                              // 填充方式为cover
-                              fit: BoxFit.fill,
+  Widget get _topBanner {
+    return Text("精选报告");
+    // return Container(
+    //   child: Column(
+    //     crossAxisAlignment: CrossAxisAlignment.start,
+    //     children: [
+    //       Padding(
+    //         padding: EdgeInsets.only(left: 15, top: 24, right: 15, bottom: 10),
+    //         child: Text(
+    //           snapshot.data.archives[0].category.categoryName,
+    //           style: TextStyle(
+    //             fontSize: 18.sp,
+    //             fontStyle: FontStyle.normal,
+    //             fontWeight: FontWeight.bold,
+    //             color: ColorConstant.TextMainBlack,
+    //           ),
+    //         ),
+    //       ),
+    //       Container(
+    //         height: 168,
+    //         padding: EdgeInsets.only(left: 15),
+    //         child: Swiper(
+    //           itemCount: snapshot.data.archives.length,
+    //           autoplay: true,
+    //           loop: false,
+    //           containerWidth: double.infinity,
+    //           itemWidth: 343,
+    //           itemHeight: 168,
+    //           itemBuilder: (BuildContext context, int index) {
+    //             var bean = snapshot.data.archives[index];
+    //             return GestureDetector(
+    //               onTap: () {
+    //                 CommonUtils.toUrl(
+    //                     context: context,
+    //                     type: bean.linkType,
+    //                     url: bean.linkUrl);
+    //               },
+    //               child: Container(
+    //                 padding: EdgeInsets.only(right: 15),
+    //                 child: CachedNetworkImage(
+    //                   // 图片地址
+    //                   imageUrl: CommonUtils.splicingUrl(bean.imageUrl),
+    //                   // 填充方式为cover
+    //                   fit: BoxFit.fill,
+    //                   errorWidget: (context, url, error) => new Container(
+    //                     child: new Image.asset(
+    //                       'assets/images/home/img_default2.png',
+    //                       fit: BoxFit.fill,
+    //                     ),
+    //                   ),
+    //                 ),
+    //               ),
+    //             );
+    //           },
+    //         ),
+    //       ),
+    //     ],
+    //   ),
+    // );
+  }
 
-                              errorWidget: (context, url, error) =>
-                                  new Container(
-                                child: new Image.asset(
-                                  'assets/images/home/img_default2.png',
-                                  width: 256.w,
-                                  height: 128.h,
-                                ),
-                              ),
-                            ),
-                            //  FadeInImage.assetNetwork(
-                            //     placeholder:
-                            //         'assets/images/home/img_default2.png',
-                            //     width: 256.w,
-                            //     height: 128.h,
-                            //     image: CommonUtils.splicingUrl(bean.imageUrl),
-                            //     fadeInDuration: TimeUtils.fadeInDuration(),
-                            //     fadeOutDuration: TimeUtils.fadeOutDuration(),
-                            //     fit: BoxFit.fill,
-                            //     imageErrorBuilder:
-                            //         (context, error, stackTrace) {
-                            //       return Image.asset(
-                            //         'assets/images/home/img_default2.png',
-                            //         width: 256.w,
-                            //         height: 128.h,
-                            //         fit: BoxFit.fill,
-                            //       );
-                            //     }),
-                          ),
-                        );
-                      }),
-                ),
-              ],
+  Widget _items() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _topBanner,
+        Padding(
+          padding: EdgeInsets.only(left: 16, top: 24),
+          child: Text(
+            "探索基因蓝图",
+            style: TextStyle(
+              fontSize: 18.sp,
+              fontStyle: FontStyle.normal,
+              fontWeight: FontWeight.bold,
+              color: ColorConstant.TextMainBlack,
             ),
-          );
-        }
-        return Text("");
-      },
+          ),
+        ),
+        GridView.builder(
+            padding: EdgeInsets.fromLTRB(16, 15, 16, 0),
+            physics: NeverScrollableScrollPhysics(),
+            //增加
+            shrinkWrap: true,
+            //增加
+            scrollDirection: Axis.vertical,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2, //条目个数
+                mainAxisSpacing: 16, //主轴间距
+                crossAxisSpacing: 16, //交叉轴间距
+                childAspectRatio: 2.1),
+            itemCount: categories.length,
+            itemBuilder: (context, i) {
+              return _item(categories[i]);
+            }),
+      ],
     );
   }
 
-  Widget _items(Categories category) {
-    var fut;
-    if (cache.containsKey(category.id)) {
-      print(category.id.toString());
-      fut = cache[category.id];
-    } else {
-      fut = _getReportItem(category.id);
-      cache[category.id] = fut;
-    }
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(left: 16, top: 24),
-            child: Text(
-              category.categoryName,
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontStyle: FontStyle.normal,
-                fontWeight: FontWeight.bold,
-                color: ColorConstant.TextMainBlack,
-              ),
-            ),
-          ),
-          FutureBuilder(
-            future: fut,
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.connectionState == ConnectionState.done &&
-                  snapshot.hasData) {
-                return GridView.builder(
-                    padding: EdgeInsets.fromLTRB(16, 15, 16, 0),
-                    physics: NeverScrollableScrollPhysics(),
-                    //增加
-                    shrinkWrap: true,
-                    //增加
-                    scrollDirection: Axis.vertical,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3, //条目个数
-                        mainAxisSpacing: 16, //主轴间距
-                        crossAxisSpacing: 16, //交叉轴间距
-                        childAspectRatio: 0.86),
-                    itemCount: snapshot.data.archives.length,
-                    itemBuilder: (context, i) {
-                      return _item(snapshot.data.archives[i]);
-                    });
-              }
-              return Text("");
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _item(Archives bean) {
+  Widget _item(ReportSummaryModel bean) {
     return GestureDetector(
       onTap: () {
         NavigatorUtil.push(
             context,
             ReportLevel1Page(
-              id: bean.id,
+              type: type == 6 ? "male" : "female",
+              id: bean.code,
+              summaryModel: bean,
+              serialNum: collectors.length > 0
+                  ? collectors[currentCollector].serialNum
+                  : null,
             ));
       },
       child: Container(
+        padding: EdgeInsets.only(left: 13, right: 6),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.all(
             Radius.circular(20),
           ),
         ),
-        child: (Column(
+        child: Row(
           children: [
-            new CachedNetworkImage(
+            Expanded(
+                child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  bean.name,
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.w600,
+                    color: ColorConstant.TextMainBlack,
+                  ),
+                ),
+                Divider(
+                  color: Colors.transparent,
+                  height: 6,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 2.0),
+                  child: Text(
+                    "共${bean.count}项",
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.w500,
+                      color: ColorConstant.Text_8E9AB,
+                    ),
+                  ),
+                ),
+              ],
+            )),
+            CachedNetworkImage(
               width: 76,
               // 设置根据宽度计算高度
               height: 76,
               // 图片地址
-              imageUrl: CommonUtils.splicingImageId(bean.id.toString()),
+              imageUrl: CommonUtils.splicingUrl(bean.img.toString()),
               // 填充方式为cover
               fit: BoxFit.fill,
-
-              errorWidget: (context, url, error) => new Container(
-                child: new Image.asset(
-                  'assets/images/home/img_default2.png',
-                  height: 76,
-                  width: 76,
-                ),
-              ),
-            ),
-            // FadeInImage.assetNetwork(
-            //     placeholder: 'assets/images/home/img_default2.png',
-            //     image: CommonUtils.splicingImageId(bean.id.toString()),
-            //     width: 76,
-            //     height: 76,
-            //     fadeInDuration: TimeUtils.fadeInDuration(),
-            //     fadeOutDuration: TimeUtils.fadeOutDuration(),
-            //     fit: BoxFit.fill,
-            //     imageErrorBuilder: (context, error, stackTrace) {
-            //       return Image.asset(
-            //         'assets/images/home/img_default2.png',
-            //         width: 76,
-            //         height: 76,
-            //         fit: BoxFit.fill,
-            //       );
-            //     }),
-            Text(
-              bean.title,
-              style: TextStyle(
-                fontSize: 14.sp,
-                fontStyle: FontStyle.normal,
-                fontWeight: FontWeight.w600,
-                color: ColorConstant.TextMainBlack,
-              ),
-            ),
-            Text(
-              bean.keywords,
-              style: TextStyle(
-                fontSize: 12.sp,
-                fontStyle: FontStyle.normal,
-                fontWeight: FontWeight.w500,
-                color: ColorConstant.Text_8E9AB,
-              ),
+              errorWidget: (context, url, error) => Text(""),
             ),
           ],
-        )),
+        ),
       ),
     );
   }
@@ -433,11 +318,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
   Widget get _tip {
     return GestureDetector(
       onTap: () {
-        if (hasReport) {
-          NavigatorUtil.push(context, MyReportPage());
-        } else {
-          CommonUtils.toUrl(context: context, url: CommonUtils.URL_BUY);
-        }
+        CommonUtils.toUrl(context: context, url: CommonUtils.URL_BUY);
       },
       child: Container(
         width: double.infinity,
@@ -454,7 +335,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
                   fontWeight: FontWeight.w500),
             ),
             Text(
-              hasReport ? " 查看报告>>" : " 去购买>>",
+              " 去购买>>",
               style: TextStyle(
                   fontSize: 13,
                   color: ColorConstant.bg_EA4335,
@@ -480,17 +361,39 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
             child: Container(
               height: 55.h,
               child: Center(
-                child: Text(
-                  "示例报告",
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 24.sp,
-                    fontStyle: FontStyle.normal,
-                    fontWeight: FontWeight.bold,
-                    color: ColorConstant.TextMainBlack,
+                child: Text.rich(TextSpan(children: [
+                  TextSpan(
+                    text: collectors.length > 0
+                        ? collectors[currentCollector].targetName
+                        : "示例报告",
+                    style: TextStyle(
+                      fontSize: 24.sp,
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.bold,
+                      color: ColorConstant.TextMainBlack,
+                    ),
                   ),
-                ),
+                  if (collectors.length > 0)
+                    TextSpan(
+                      text: "的报告—",
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.bold,
+                        color: ColorConstant.TextMainBlack,
+                      ),
+                    ),
+                  if (collectors.length > 0)
+                    TextSpan(
+                      text: "青春版",
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.bold,
+                        color: ColorConstant.Text_5FC88F,
+                      ),
+                    ),
+                ])),
               ),
             ),
           ),
@@ -503,7 +406,11 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
                   StatisticsConstant.KEY_UMENG_L2:
                       StatisticsConstant.REPORT_PAGE_GENDER
                 });
-                var type = await _showModalBottomSheet();
+                if (collectors.length > 0) {
+                  await _switchReport();
+                } else {
+                  await _showModalBottomSheet();
+                }
               },
               child: Container(
                 height: 55.h,
@@ -603,19 +510,157 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
     );
   }
 
-  void _getOwnerReport() {
-    if (SpUtils().getStorageDefault(SpConstant.IsLogin, false))
+// 弹出底部菜单列表模态对话框
+  Future<int> _switchReport() async {
+    var size = collectors.length > 9 ? 9 : collectors.length;
+    var height = (56 + size * 70).toDouble();
+    return await showModalBottomSheet<int>(
+      context: context,
+      enableDrag: true,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (BuildContext ctx) {
+        return Container(
+          height: height,
+          alignment: Alignment.bottomCenter,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Text(
+                  "切换报告",
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: ColorConstant.TextMainBlack,
+                      fontWeight: FontWeight.w600),
+                ),
+              ),
+              Container(
+                height: height - 56,
+                margin: EdgeInsets.only(left: 16, right: 16),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(colors: [
+                    Color(0xFFEDF3F6),
+                    Color(0xFFEBEFF1).withAlpha(1),
+                  ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(16),
+                      topRight: Radius.circular(16)),
+                ),
+                child: ListView(
+                    shrinkWrap: true,
+                    physics: BouncingScrollPhysics(),
+                    padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                    children: collectors.map((e) {
+                      var index = collectors.indexOf(e);
+
+                      return InkWell(
+                        onTap: () {
+                          Navigator.of(ctx).pop();
+                          currentCollector = index;
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          alignment: Alignment.center,
+                          padding: EdgeInsets.only(top: 20, bottom: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                e.targetName,
+                                style: TextStyle(
+                                  fontSize: 18.sp,
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.bold,
+                                  color: currentCollector == index
+                                      ? ColorConstant.TextMainColor
+                                      : ColorConstant.TextMainBlack,
+                                ),
+                              ),
+                              if (currentCollector == index)
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 8.0, top: 2),
+                                  child: Icon(
+                                    Icons.check_circle,
+                                    size: 20,
+                                    color: ColorConstant.TextMainColor,
+                                  ),
+                                )
+                            ],
+                          ),
+                        ),
+                      );
+                    }).toList()),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  List<ReportPageModel> collectors = [];
+  var currentCollector = 0;
+
+  void _getCollector() async {
+    if (SpUtils().getStorageDefault(SpConstant.IsLogin, false)) {
+      Map<String, dynamic> map = new HashMap();
+      map['page'] = 1;
+      map['size'] = 20;
+
       HttpUtils.requestHttp(
-        ApiConstant.reports,
+        ApiConstant.collector_list,
         method: HttpUtils.GET,
+        parameters: map,
         onSuccess: (result) async {
           List l = result;
-          if (null != l && l.length > 0) {
-            setState(() {
-              hasReport = true;
-            });
-          }
+          collectors.clear();
+          l.forEach((element) {
+            var reportPageModel = ReportPageModel.fromJson(element);
+            if (reportPageModel.status == 80) {
+              collectors.add(reportPageModel);
+            }
+          });
+          _getReport();
+        },
+        onError: (code, error) {
+          _getReport();
         },
       );
+    } else {
+      _getReport();
+    }
+  }
+
+  _getReport() {
+    Map<String, dynamic> map = new HashMap();
+    if (collectors.length > 0) {
+      map['serial_num'] = collectors[currentCollector].serialNum;
+    } else {
+      map['sample'] = type == 6 ? "male" : "female";
+    }
+    HttpUtils.requestHttp(
+      ApiConstant.reportSummary,
+      parameters: map,
+      method: HttpUtils.GET,
+      onSuccess: (result) async {
+        List l = result;
+        categories.clear();
+        l.forEach((element) {
+          categories.add(ReportSummaryModel.fromJson(element));
+        });
+        setState(() {});
+      },
+      onError: (code, error) {},
+    );
   }
 }

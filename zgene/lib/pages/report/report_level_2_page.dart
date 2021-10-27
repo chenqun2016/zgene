@@ -31,7 +31,7 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
   var persistentHeaderTopMargin = 148.0;
   final tabs = ['检测结果', '科学细节'];
   //顶部两种title， 0：图片类型，1：进度条类型
-  var topType = 1;
+  var topType = 0;
   String topResult = "结果显示您携带可能导致叶酸吸收能力降低的基因多态性，叶酸吸收能力较弱";
   var topTextStype = TextStyle(
       color: ColorConstant.Text_5E6F88,
@@ -131,26 +131,21 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
             ],
           ),
         ),
-        _buildfixedHeader(),
+        if (canFixedHeadShow) _buildfixedHeader(),
       ],
     );
   }
 
-  Widget _buildfixedHeader() => Opacity(
-        opacity: canFixedHeadShow ? 1 : 0,
-        child: Container(
-            height: 65,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft:
-                    Radius.circular(25 * (1 - trans / APPBAR_SCORLL_OFFSET)),
-                topRight:
-                    Radius.circular(25 * (1 - trans / APPBAR_SCORLL_OFFSET)),
-              ),
-            ),
-            child: _buildTabBar),
-      );
+  Widget _buildfixedHeader() => Container(
+      height: 65,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(25 * (1 - trans / APPBAR_SCORLL_OFFSET)),
+          topRight: Radius.circular(25 * (1 - trans / APPBAR_SCORLL_OFFSET)),
+        ),
+      ),
+      child: _buildTabBar);
 
   Widget _buildPersistentHeaderList() {
     if (topType == 0) return _buildList();

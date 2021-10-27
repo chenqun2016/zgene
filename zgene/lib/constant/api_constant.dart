@@ -103,6 +103,12 @@ class ApiConstant {
   static const String numCheck = "/api/v1/order/check";
 
   ///********************************* 报告 *****************************///
+
+  //报告列表
+  static const String reportList = "/api/v2/report/:id/list";
+  //首页我的报告
+  static const String reportSummary = "/api/v2/report/summary";
+
   //基因报告列表
   static const String reports = "/api/v1/gene/reports";
 

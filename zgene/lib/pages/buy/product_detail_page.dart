@@ -8,10 +8,11 @@ import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/http/http_utils.dart';
-import 'package:zgene/models/archive_des_model.dart' as adm;
-import 'package:zgene/models/content_model.dart';
+import 'package:zgene/models/archive_des_model.dart';
+import 'package:zgene/models/content_model.dart' as cm;
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/buy/ordering_page.dart';
+import 'package:zgene/pages/home/home_getHttp.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/login_base.dart';
@@ -23,10 +24,7 @@ import 'package:zgene/widget/base_web_view.dart';
 
 ///产品详情页面
 class ProductDetailPage extends BaseWidget {
-  final Archives bean;
-  final int index;
-  ProductDetailPage({Key key, @required this.bean, @required this.index})
-      : super(key: key);
+  ProductDetailPage({Key key}) : super(key: key);
 
   @override
   _BuyPageState getState() => _BuyPageState();
@@ -35,11 +33,16 @@ class ProductDetailPage extends BaseWidget {
 class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
   double appBarAlpha = 0;
   ScrollController _controller = new ScrollController();
-  Archives _productDetail;
+  Archive _productDetail;
 
-  List<Archives> _productDetailRecommends;
-  adm.Archive stepArchive;
-  List<String> tags;
+  List<cm.Archives> _productDetailRecommends;
+  Archive stepArchive;
+  List<dynamic> tags;
+
+  var id;
+
+  ///商品库存
+  int stock = 0;
   var colors = [
     ColorConstant.TextMainColor,
     Color(0xFF25D3B2),
@@ -59,14 +62,6 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
     _controller.addListener(() {
       _onScroll(_controller.offset);
     });
-    _productDetail = widget.bean;
-    try {
-      tags = _productDetail.tags;
-    } catch (e) {
-      print(e);
-    }
-    getRecommendContent();
-    getStepContent();
   }
 
   void getStepContent() {
@@ -75,7 +70,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
       ApiConstant.contentDetail + "/${stepId}",
       method: HttpUtils.GET,
       onSuccess: (result) async {
-        adm.ArchiveDesModel model = adm.ArchiveDesModel.fromJson(result);
+        ArchiveDesModel model = ArchiveDesModel.fromJson(result);
         setState(() {
           stepArchive = model.archive;
         });
@@ -96,16 +91,30 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
     return super.rightBtnTap(context);
   }
 
+  void getProductDetail() {
+    ArchiveGetHttp(int.parse(id), (result) {
+      ArchiveDesModel model = ArchiveDesModel.fromJson(result);
+      setState(() {
+        try {
+          _productDetail = model.archive;
+          tags = _productDetail.tags;
+          stock = model.addon?.stock;
+        } catch (e) {
+          print(e);
+        }
+      });
+    });
+  }
+
   Future<void> getRecommendContent() async {
-    if (null == _productDetail) return;
     Map<String, dynamic> map = new HashMap();
-    map['aid'] = _productDetail.id;
+    map['aid'] = id;
     HttpUtils.requestHttp(
       ApiConstant.productDetailRecommends,
       parameters: map,
       method: HttpUtils.GET,
       onSuccess: (result) async {
-        ContentModel contentModel = ContentModel.fromJson(result);
+        cm.ContentModel contentModel = cm.ContentModel.fromJson(result);
         if (null != contentModel &&
             null != contentModel.archives &&
             contentModel.archives.length > 0) {
@@ -120,10 +129,17 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
 
   @override
   Widget viewPageBody(BuildContext context) {
+    if (null == id) {
+      //获取路由传的参数
+      id = "${ModalRoute.of(context).settings.arguments}";
+      getProductDetail();
+      getRecommendContent();
+      getStepContent();
+    }
     return Stack(
       children: [
         _listview,
-        _buyButtom,
+        if (null != stock && stock > 0) _buyButtom,
       ],
     );
   }
@@ -248,7 +264,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
         height: 170,
         alignment: Alignment.topCenter,
         child: Hero(
-          tag: _productDetail.id.toString() + widget.index.toString(),
+          tag: _productDetail.id.toString(),
           child: FadeInImage.assetNetwork(
               placeholder: 'assets/images/home/img_default2.png',
               image: CommonUtils.splicingUrl(_productDetail.imageUrl),
@@ -341,7 +357,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
     );
   }
 
-  Widget _tagItem(String tag) {
+  Widget _tagItem(dynamic tag) {
     var indexOf = tags.indexOf(tag);
     var colorIndex = indexOf % colors.length;
     return Container(
@@ -354,7 +370,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
         ),
       ),
       child: Text(
-        "$tag",
+        "${tag.toString()}",
         style: TextStyle(
           fontSize: 11,
           fontStyle: FontStyle.normal,
@@ -438,7 +454,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
         ),
       );
 
-  Widget _videoItem(Archives item) {
+  Widget _videoItem(cm.Archives item) {
     return Container(
       margin: EdgeInsets.only(top: 10),
       child: GestureDetector(
@@ -466,7 +482,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
     );
   }
 
-  Widget getContentItem(Archives item) {
+  Widget getContentItem(cm.Archives item) {
     return InkWell(
       onTap: () {
         CommonUtils.toUrl(

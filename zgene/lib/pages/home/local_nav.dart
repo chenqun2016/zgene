@@ -83,7 +83,10 @@ class _LocalNavState extends State<LocalNav>
         });
         print(archives.linkType);
         CommonUtils.toUrl(
-            context: context, type: archives.linkType, url: archives.linkUrl);
+            context: context,
+            type: archives.linkType,
+            url: archives.linkUrl,
+            archives: archives);
         // if (0 == index) {
         //   NavigatorUtil.push(context, QRScannerView());
         // }

@@ -74,9 +74,9 @@ android {
         FACEBOOK_APPID : "",//facebook注册应用得到的appId
 
         //个推
-        GETUI_APP_ID    : "LtFmCuKHpj7dr8CM6ExQw5",
-        GETUI_APP_KEY   : "7b0CKZK1Ol85XkOGlmv4H8",
-        GETUI_APP_SECRET: "ulNNxALdjl7gXekPjnR8D1",
+        GETUI_APPID    : "LtFmCuKHpj7dr8CM6ExQw5",
+//        GETUI_APP_KEY   : "7b0CKZK1Ol85XkOGlmv4H8",
+//        GETUI_APP_SECRET: "ulNNxALdjl7gXekPjnR8D1",
         // 下面是多厂商配置，如需要开通使用请联系技术支持
         // 如果不需要使用，预留空字段即可
         XIAOMI_APP_ID   : "",

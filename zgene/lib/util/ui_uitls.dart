@@ -435,6 +435,33 @@ class UiUitls {
     }
   }
 
+  static String getReportListIcon(String id) {
+    switch (id) {
+      case "jibingshaicha":
+        return "assets/images/report/banner_jibingshaicha.png";
+      case "jiankangfengxian":
+        return "assets/images/report/banner_jiankang.png";
+      case "pifuguanli":
+        return "assets/images/report/banner_pifuguanli.png";
+      case "jibingshaicha":
+        return "assets/images/report/banner_shenhghuozhidao.png";
+      case "tizhitedian":
+        return "assets/images/report/banner_tizhi.png";
+      case "xinlirenzhi":
+        return "assets/images/report/banner_xinlirenzhi.png";
+      case "yingyangxuqiu":
+        return "assets/images/report/banner_yingyangxuq.png";
+      case "daixienengli":
+        return "assets/images/report/banner_yinshidaixie.png";
+      case "yongyaozhidao":
+        return "assets/images/report/banner_yongyao.png";
+      case "yundongjianshen":
+        return "assets/images/report/banner_yundong.png";
+      default:
+        return "assets/images/report/banner_jibingshaicha.png";
+    }
+  }
+
   static getTipColor(String color) {
     if ("green" == color) {
       return LinearGradient(colors: [

@@ -33,6 +33,7 @@ class _ReportResultItem1State extends State<ReportResultItem1> {
                     color: ColorConstant.bg_42F5D3,
                     borderRadius: BorderRadius.all(
                       Radius.circular(8),
+                    
                     ),
                   ),
                 ),

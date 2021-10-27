@@ -3,7 +3,11 @@ import 'package:zgene/constant/color_constant.dart';
 
 ///患病倍数
 class ReportResultItem1 extends StatefulWidget {
-  const ReportResultItem1({Key key}) : super(key: key);
+  var minRisk;
+  var maxRisk;
+  var risk;
+  ReportResultItem1({Key key, this.minRisk, this.maxRisk, this.risk})
+      : super(key: key);
 
   @override
   _ReportResultItem1State createState() => _ReportResultItem1State();
@@ -13,6 +17,27 @@ class _ReportResultItem1State extends State<ReportResultItem1> {
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width - 64;
+    var minRisk = widget.minRisk;
+    var maxRisk = widget.maxRisk;
+    var risk = widget.risk;
+    double left = (risk - minRisk) / (maxRisk - minRisk) * width - 17;
+    if (left < 0) {
+      left = 0;
+    }
+    if (left > width - 34) {
+      left = width - 34;
+    }
+    print("left==" + left.toString() + "/width==" + width.toString());
+    var space = (maxRisk - minRisk) / 3;
+    var color;
+    if (risk < space + minRisk) {
+      color = ColorConstant.bg_42F5D3;
+    } else if (risk < space * 2 + minRisk) {
+      color = ColorConstant.bg_017AF6;
+    } else {
+      color = ColorConstant.bg_FD7A7A;
+    }
+
     return Column(
       children: [
         Container(
@@ -79,7 +104,7 @@ class _ReportResultItem1State extends State<ReportResultItem1> {
                     },
                   )),
               Positioned(
-                  left: width * 50 / 100 - 17,
+                  left: left,
                   top: 0,
                   child: Column(
                     children: [
@@ -91,7 +116,7 @@ class _ReportResultItem1State extends State<ReportResultItem1> {
                           constraints: BoxConstraints(
                             minWidth: 30,
                           ),
-                          color: ColorConstant.bg_017AF6,
+                          color: color,
                           // decoration: BoxDecoration(
                           //   image: DecorationImage(
                           //     image: AssetImage(
@@ -100,7 +125,7 @@ class _ReportResultItem1State extends State<ReportResultItem1> {
                           //   ),
                           // ),
                           child: Text(
-                            "0.927",
+                            widget.risk.toString(),
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w500,
@@ -115,7 +140,7 @@ class _ReportResultItem1State extends State<ReportResultItem1> {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             border: Border.all(
-                              color: ColorConstant.bg_017AF6,
+                              color: color,
                               width: 4,
                             ),
                             color: ColorConstant.WhiteColor,
@@ -133,21 +158,21 @@ class _ReportResultItem1State extends State<ReportResultItem1> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "0.255",
+              widget.minRisk.toString(),
               style: TextStyle(
                   color: ColorConstant.Text_5E6F88,
                   fontWeight: FontWeight.w500,
                   fontSize: 14),
             ),
             Text(
-              "1.334",
+              ((widget.minRisk + widget.maxRisk) / 2).toStringAsFixed(3),
               style: TextStyle(
                   color: ColorConstant.Text_5E6F88,
                   fontWeight: FontWeight.w500,
                   fontSize: 14),
             ),
             Text(
-              "2.412",
+              widget.maxRisk.toString(),
               style: TextStyle(
                   color: ColorConstant.Text_5E6F88,
                   fontWeight: FontWeight.w500,

@@ -64,7 +64,8 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
         ContentModel contentModel = ContentModel.fromJson(result);
         if (null != contentModel &&
             null != contentModel.archives &&
-            contentModel.archives.length > 0) {
+            contentModel.archives.length > 0 &&
+            mounted) {
           setState(() {
             _products = contentModel.archives;
           });

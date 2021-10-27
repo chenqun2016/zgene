@@ -210,7 +210,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _topBanner,
+        // _topBanner,
         Padding(
           padding: EdgeInsets.only(left: 16, top: 24),
           child: Text(

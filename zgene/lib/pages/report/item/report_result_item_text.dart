@@ -3,19 +3,14 @@ import 'package:flutter/rendering.dart';
 import 'package:zgene/constant/color_constant.dart';
 
 class ReportResultItemText extends StatefulWidget {
-  const ReportResultItemText({Key key}) : super(key: key);
+  String text;
+  ReportResultItemText({Key key, this.text}) : super(key: key);
 
   @override
   _ReportResultItemTextState createState() => _ReportResultItemTextState();
 }
 
 class _ReportResultItemTextState extends State<ReportResultItemText> {
-  final text = '桃树杏树我不让你，都开满了花赶趟儿。'
-      '红的像火，粉的像霞，白的像雪。'
-      '花里带着甜味儿；闭了眼，树上仿佛已经满是桃儿杏儿、梨儿。'
-      '花下成千成百的蜜蜂嗡嗡地闹着，大小的蝴蝶飞来飞去。'
-      '野花遍地是：杂样儿，有名字的，没名字的，散在草丛里，像眼睛，像星星，还眨呀眨的。';
-
   bool expand = false;
   int maxLines = 5;
   final style = TextStyle(
@@ -51,15 +46,16 @@ class _ReportResultItemTextState extends State<ReportResultItemText> {
       ),
       child: LayoutBuilder(builder: (context, size) {
         final painter = TextPainter(
-          text: TextSpan(text: text, style: style),
+          text: TextSpan(text: widget.text, style: style),
           maxLines: maxLines,
           textDirection: TextDirection.ltr,
         );
         painter.layout(maxWidth: size.maxWidth);
-        if (!painter.didExceedMaxLines) return Text(text, style: style);
+        if (!painter.didExceedMaxLines)
+          return Text(widget.text, maxLines: maxLines, style: style);
         return Stack(
           children: <Widget>[
-            Text(text, maxLines: expand ? 1000 : maxLines, style: style),
+            Text(widget.text, maxLines: expand ? 1000 : maxLines, style: style),
             if (!expand)
               Positioned(
                   right: 0,

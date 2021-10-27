@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/models/report_list_detail_model.dart';
 
 class MyReportScienceDetail extends StatefulWidget {
-  const MyReportScienceDetail({Key key}) : super(key: key);
+  ReportListDetailModel reportData;
+  MyReportScienceDetail({Key key, this.reportData}) : super(key: key);
 
   @override
   _MyReportScienceDetailState createState() => _MyReportScienceDetailState();
@@ -10,18 +12,31 @@ class MyReportScienceDetail extends StatefulWidget {
 
 class _MyReportScienceDetailState extends State<MyReportScienceDetail>
     with AutomaticKeepAliveClientMixin {
-  List data = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-  List wenxian = [
-    "Roura E. Salivary leptin and TAS1R2/TAS1R3 polymorphisms are related to sweet taste sensitivity and carbohydrate intake from a buffet meal in healthy young adults[J]. British Journal of Nutrition, 2017:1.",
-    "Alcohol and aldehyde dehydrogenase. Alcohol Alcohol",
-  ];
+  List<Gene> data;
+  var badList = [];
+  List wenxian = [];
   var geneSize = 5;
   var limit =
-      """本检测结果根据已发表的论文成果计算得到, 从基因层面对您进行评估受限于当前人类认知水平和科技手段等因素, 本检测无法覆盖与该项目相关的所有基因位点;
-      您的表现型由基因、环境等共同作用决定，我们的检测结果可能无法正确反映您的现状；""";
+      """·本检测结果根据已发表的论文成果计算得到, 从基因层面对您进行评估受限于当前人类认知水平和科技手段等因素, 本检测无法覆盖与该项目相关的所有基因位点；
+
+·您的表现型由基因、环境等共同作用决定，我们的检测结果可能无法正确反映您的现状；
+
+·本检测结果仅供参考，不具备临床诊断资格和法律效应;
+
+·随着科学研究的进一步发展，我们会对检测结果进行优化。""";
 
   @override
   void initState() {
+    data = widget.reportData.gene;
+    if (null != widget.reportData.disReference) {
+      wenxian.add(widget.reportData.disReference);
+    }
+
+    data.forEach((element) {
+      if (element.repute == "bad") {
+        badList.add(element);
+      }
+    });
     super.initState();
   }
 
@@ -31,9 +46,9 @@ class _MyReportScienceDetailState extends State<MyReportScienceDetail>
       margin: const EdgeInsets.only(bottom: 90.0),
       child: Column(
         children: [
-          _item1(),
+          if (null != data) _item1(),
           _item2(),
-          _item3(),
+          if (wenxian.length > 0) _item3(),
         ],
       ),
     );
@@ -96,7 +111,7 @@ class _MyReportScienceDetailState extends State<MyReportScienceDetail>
             child: Padding(
           padding: const EdgeInsets.only(top: 3.0, bottom: 15),
           child: Text(
-            text,
+            "$text",
             style: TextStyle(
                 color: ColorConstant.Text_5E6F88,
                 letterSpacing: 2,
@@ -178,7 +193,7 @@ class _MyReportScienceDetailState extends State<MyReportScienceDetail>
             children: [
               Text.rich(TextSpan(children: [
                 TextSpan(
-                    text: "10",
+                    text: "${data.length}",
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 30.0,
@@ -193,7 +208,7 @@ class _MyReportScienceDetailState extends State<MyReportScienceDetail>
               ])),
               Text.rich(TextSpan(children: [
                 TextSpan(
-                    text: "2",
+                    text: badList.length.toString(),
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 30.0,
@@ -284,8 +299,8 @@ class _MyReportScienceDetailState extends State<MyReportScienceDetail>
               physics: NeverScrollableScrollPhysics(),
               padding: EdgeInsets.zero,
               children: data
-                  .getRange(0, geneSize)
-                  .map((e) => _getItem1Item())
+                  .getRange(0, data.length < geneSize ? data.length : geneSize)
+                  .map((e) => _getItem1Item(e))
                   .toList(),
             ),
           ),
@@ -310,7 +325,7 @@ class _MyReportScienceDetailState extends State<MyReportScienceDetail>
     );
   }
 
-  Widget _getItem1Item() {
+  Widget _getItem1Item(Gene e) {
     return Container(
       width: double.infinity,
       height: 40,
@@ -320,7 +335,7 @@ class _MyReportScienceDetailState extends State<MyReportScienceDetail>
           Positioned(
               left: 0,
               child: Text(
-                "ALDH2",
+                e.geneName,
                 style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
@@ -330,7 +345,7 @@ class _MyReportScienceDetailState extends State<MyReportScienceDetail>
               left: 0,
               right: 0,
               child: Text(
-                "rs671",
+                e.rs,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 14,
@@ -345,14 +360,17 @@ class _MyReportScienceDetailState extends State<MyReportScienceDetail>
                     style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
-                        color: ColorConstant.text_112950)),
+                        color: e.repute == "bad"
+                            ? ColorConstant.bg_EA4335
+                            : ColorConstant.text_112950)),
                 TextSpan(
-                  text: "C",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 14.0,
-                      color: ColorConstant.bg_EA4335),
-                ),
+                    text: "C",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14.0,
+                        color: e.repute == "bad"
+                            ? ColorConstant.bg_EA4335
+                            : ColorConstant.text_112950)),
               ])))
         ],
       ),

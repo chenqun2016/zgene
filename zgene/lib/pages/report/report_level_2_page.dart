@@ -31,13 +31,15 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
   final tabs = ['检测结果', '科学细节'];
   //顶部两种title， 0：图片类型，1：进度条类型
   var topType = 0;
-  String topResult = "结果显示您携带可能导致叶酸吸收能力降低的基因多态性，叶酸吸收能力较弱";
+  String topResult = "";
   var topTextStype = TextStyle(
       color: ColorConstant.Text_5E6F88,
       fontWeight: FontWeight.w600,
       fontSize: 16);
 
   TabController _tabController;
+  ReportListDetailModel reportData;
+
   @override
   void pageWidgetInitState() {
     super.pageWidgetInitState();
@@ -81,6 +83,9 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
     super.dispose();
   }
 
+  String des = "";
+  String title = "";
+  AssetImage bg = AssetImage("assets/images/report/img_jieguo_0.png");
   _getDatas() {
     Map<String, dynamic> map = new HashMap();
 
@@ -97,32 +102,71 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
       parameters: map,
       method: HttpUtils.GET,
       onSuccess: (result) async {
-        var reportData = ReportListDetailModel.fromJson(result);
+        reportData = ReportListDetailModel.fromJson(result);
         pageWidgetTitle = reportData.chname;
+        topResult = reportData.explain;
         setState(() {});
+
+        switch (widget.id) {
+          case "daixienengli": //代谢能力
+          case "tizhitedian": //体质特点
+          case "xinlirenzhi": //心理认知
+          case "yingyangxuqiu": //营养需求
+          case "yundongjianshen": //运动健身
+            topType = 1;
+            break;
+
+          case "jibingshaicha": //疾病筛查 肿瘤报告 TODO
+            break;
+          case "jiankangfengxian": //健康风险
+          case "pifuguanli": //皮肤管理
+            if (reportData.conclusion == "高风险") {
+              bg = AssetImage("assets/images/report/img_jieguo_1.png");
+            } else {
+              bg = AssetImage("assets/images/report/img_jieguo_0.png");
+            }
+            title = reportData.conclusion;
+            des = "您的${reportData.chname}患病风险为 \n ${reportData.conclusion}";
+            break;
+          case "yongyaozhidao": //用药指导
+            ///药物报告
+            if (null != reportData.tag) {
+              if (reportData.tag == "1") {
+                bg = AssetImage("assets/images/report/img_jieguo_1.png");
+                title = "需关注";
+              } else {
+                bg = AssetImage("assets/images/report/img_jieguo_0.png");
+                title = "正常用药";
+              }
+              des = reportData.conclusion;
+            }
+            break;
+        }
       },
       onError: (code, error) {},
     );
   }
 
   Widget viewPageBody(BuildContext context) {
-    return Stack(
-      children: [
-        SingleChildScrollView(
-          controller: listeningController,
-          physics: BouncingScrollPhysics(),
-          child: Stack(
+    return reportData == null
+        ? Text("")
+        : Stack(
             children: [
-              //TODO 两种 title
-              if (topType == 0) _buildTitle(),
-              if (topType == 1) _buildTitle2(),
-              _buildPersistentHeaderList(),
+              SingleChildScrollView(
+                controller: listeningController,
+                physics: BouncingScrollPhysics(),
+                child: Stack(
+                  children: [
+                    //TODO 两种 title
+                    if (topType == 0) _buildTitle(),
+                    if (topType == 1) _buildTitle2(),
+                    _buildPersistentHeaderList(),
+                  ],
+                ),
+              ),
+              if (canFixedHeadShow) _buildfixedHeader(),
             ],
-          ),
-        ),
-        if (canFixedHeadShow) _buildfixedHeader(),
-      ],
-    );
+          );
   }
 
   Widget _buildfixedHeader() => Container(
@@ -141,11 +185,16 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
     return LayoutBuilder(builder: (context, size) {
       final painter = TextPainter(
         text: TextSpan(text: topResult, style: topTextStype),
-        maxLines: 1,
+        maxLines: 3,
         textDirection: TextDirection.ltr,
       );
       painter.layout(maxWidth: size.maxWidth);
-      if (painter.didExceedMaxLines) persistentHeaderTopMargin = 170;
+      // if (painter.didExceedMaxLines) persistentHeaderTopMargin = 160;
+      // painter.maxLines = 2;
+      // painter.layout(maxWidth: size.maxWidth);
+      // if (painter.didExceedMaxLines) persistentHeaderTopMargin = 180;
+      print("height== ${painter.height}");
+      persistentHeaderTopMargin = 148 + painter.height - 21;
       return _buildList();
     });
   }
@@ -222,15 +271,23 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
         ],
       );
 
-  Widget get _buildSliverList => Container(
-        color: Colors.transparent,
-        child: _tabController.index == 0
-            ? _getMyReportResult
-            : _getMyReportScienceDetail,
-      );
+  Widget get _buildSliverList => reportData == null
+      ? Container(
+          height: 300,
+        )
+      : Container(
+          color: Colors.transparent,
+          child: _tabController.index == 0
+              ? _getMyReportResult
+              : _getMyReportScienceDetail,
+        );
 
-  Widget get _getMyReportResult => MyReportResult();
-  Widget get _getMyReportScienceDetail => MyReportScienceDetail();
+  Widget get _getMyReportResult => MyReportResult(
+        reportData: reportData,
+        topType: topType,
+      );
+  Widget get _getMyReportScienceDetail =>
+      MyReportScienceDetail(reportData: reportData);
 
   Widget _buildTitle() {
     return Container(
@@ -238,10 +295,7 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
       height: 168,
       decoration: BoxDecoration(
           image: DecorationImage(
-        // image: NetworkImage(CommonUtils.splicingUrl(_archive.imageUrl)),
-        //TODO 切换图片
-        // image: AssetImage("assets/images/report/img_jieguo_1.png"),
-        image: AssetImage("assets/images/report/img_jieguo_0.png"),
+        image: bg,
         fit: BoxFit.fill,
       )),
       padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
@@ -255,14 +309,14 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          "一般风险",
+          title,
           style: TextStyle(
               fontWeight: FontWeight.bold, color: Colors.white, fontSize: 32),
         ),
         Padding(
           padding: const EdgeInsets.only(top: 4.0),
           child: Text(
-            "您的精神分裂症患病风险为 \n 一般风险",
+            des,
             textAlign: TextAlign.center,
             style: TextStyle(
                 fontWeight: FontWeight.w500, color: Colors.white, fontSize: 15),
@@ -275,6 +329,17 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
   ///第二种 title
   Widget _buildTitle2() {
     var width = MediaQuery.of(context).size.width - 80;
+
+    var tag = int.parse(reportData.tag);
+    var progress;
+    if (tag == -1) {
+      progress = width * 83 / 100 - 7;
+    } else if (tag == 0) {
+      progress = width * 50 / 100 - 7;
+    } else {
+      progress = width * 17 / 100 - 7;
+    }
+
     return Container(
       width: double.infinity,
       height: 168,
@@ -358,7 +423,7 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
                       },
                     )),
                 Positioned(
-                    left: width * 50 / 100 - 7,
+                    left: progress,
                     top: 0,
                     child: Container(
                         height: 14,
@@ -367,7 +432,11 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(
-                            color: ColorConstant.bg_017AF6,
+                            color: tag == -1
+                                ? ColorConstant.bg_42F5D3
+                                : (tag == 0
+                                    ? ColorConstant.bg_017AF6
+                                    : ColorConstant.bg_FD7A7A),
                             width: 4,
                           ),
                           color: ColorConstant.WhiteColor,
@@ -425,7 +494,7 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
               Color(0xFF007AF7).withAlpha(0),
             ], begin: Alignment.bottomCenter, end: Alignment.topCenter)),
             child: Text(
-              topResult,
+              reportData.explain,
               textAlign: TextAlign.center,
               style: topTextStype,
             ),

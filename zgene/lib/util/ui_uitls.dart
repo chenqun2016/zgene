@@ -493,9 +493,17 @@ class UiUitls {
     if (2 == color % 4) {
       return "assets/images/report/icon_report_item_yellow.png";
     }
-    if (3 == color % 4) {
-      return "assets/images/report/icon_report_item_red.png";
+    return "assets/images/report/icon_report_item_red.png";
+  }
+
+  static String getReportResultCircle3(int color) {
+    if (0 == color % 4) {
+      return "assets/images/report/icon_report_item_green.png";
     }
+    if (1 == color % 4) {
+      return "assets/images/report/icon_report_item_blue.png";
+    }
+    return "assets/images/report/icon_report_item_red.png";
   }
 
   static Color getColor(int index) {
@@ -511,11 +519,20 @@ class UiUitls {
       //黄色
       return ColorConstant.bg_FFBE00;
     }
-    if (3 == index % 4) {
-      //橙色
-      return ColorConstant.bg_FD7A7A;
+    //橙色
+    return ColorConstant.bg_FD7A7A;
+  }
+
+  static Color getColor3(int index) {
+    if (0 == index % 4) {
+      //绿色
+      return ColorConstant.bg_42F5D3;
     }
-    //绿色
-    return ColorConstant.bg_42F5D3;
+    if (1 == index % 4) {
+      //蓝色
+      return ColorConstant.bg_017AF6;
+    }
+    //橙色
+    return ColorConstant.bg_FD7A7A;
   }
 }

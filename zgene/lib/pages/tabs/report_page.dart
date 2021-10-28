@@ -615,7 +615,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
     if (SpUtils().getStorageDefault(SpConstant.IsLogin, false)) {
       Map<String, dynamic> map = new HashMap();
       map['page'] = 1;
-      map['size'] = 20;
+      map['size'] = 100;
 
       HttpUtils.requestHttp(
         ApiConstant.collector_list,

@@ -144,7 +144,7 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
               left: 16,
               top: 16,
               child: Hero(
-                tag: bean.id.toString() + _products.indexOf(bean).toString(),
+                tag: bean.id.toString(),
                 child: CachedNetworkImage(
                   width: 104,
                   // 设置根据宽度计算高度

@@ -1,6 +1,7 @@
 package com.jt.zgene
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import com.umeng.commonsdk.UMConfigure
@@ -46,7 +47,7 @@ class MainActivity : FlutterActivity() {
         if (null != intent) {
             val url = intent.getStringExtra("url")
             val type = intent.getStringExtra("type")
-            Log.d("--------------", "url = " + url + ",type = " + type)
+            Log.d("--------------", "url = " + url + ",type = " + type+"brand=="+ Build.MANUFACTURER+"/"+Build.BRAND)
             if (null != url && url.isNotEmpty()) {
                 intent.putExtra("url", "")
                 intent.putExtra("type", "")

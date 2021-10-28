@@ -1,6 +1,7 @@
 package com.getui.getuiflut;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -85,11 +86,11 @@ public class GetuiflutPlugin implements MethodCallHandler, FlutterPlugin {
       switch (msg.what) {
         case FLUTTER_CALL_BACK_CID:
           if (msg.arg1 == StateType.onReceiveClientId.ordinal()) {
-            GetuiflutPlugin.instance.channel.invokeMethod("onReceiveClientId", msg.obj);
+            instance.channel.invokeMethod("onReceiveClientId", msg.obj);
             Log.d("flutterHandler", "onReceiveClientId >>> "+msg.obj);
 
           } else if (msg.arg1 == StateType.onReceiveOnlineState.ordinal()) {
-            GetuiflutPlugin.instance.channel.invokeMethod("onReceiveOnlineState", msg.obj);
+            instance.channel.invokeMethod("onReceiveOnlineState", msg.obj);
             Log.d("flutterHandler", "onReceiveOnlineState >>> "+msg.obj);
           } else  {
             Log.d(TAG,"default state type...");
@@ -97,15 +98,15 @@ public class GetuiflutPlugin implements MethodCallHandler, FlutterPlugin {
           break;
         case  FLUTTER_CALL_BACK_MSG:
           if (msg.arg1 == MessageType.onReceiveMessageData.ordinal()) {
-            GetuiflutPlugin.instance.channel.invokeMethod("onReceiveMessageData", msg.obj);
+            instance.channel.invokeMethod("onReceiveMessageData", msg.obj);
             Log.d("flutterHandler", "onReceiveMessageData >>> "+msg.obj);
 
           } else if (msg.arg1 == MessageType.onNotificationMessageArrived.ordinal()) {
-            GetuiflutPlugin.instance.channel.invokeMethod("onNotificationMessageArrived", msg.obj);
+            instance.channel.invokeMethod("onNotificationMessageArrived", msg.obj);
             Log.d("flutterHandler", "onNotificationMessageArrived >>> "+msg.obj);
 
           } else if (msg.arg1 == MessageType.onNotificationMessageClicked.ordinal()) {
-            GetuiflutPlugin.instance.channel.invokeMethod("onNotificationMessageClicked", msg.obj);
+            instance.channel.invokeMethod("onNotificationMessageClicked", msg.obj);
             Log.d("flutterHandler", "onNotificationMessageClicked >>> "+msg.obj);
           } else {
             Log.d(TAG, "default Message type...");
@@ -147,8 +148,30 @@ public class GetuiflutPlugin implements MethodCallHandler, FlutterPlugin {
     } else if (call.method.equals("onActivityCreate")) {
       Log.d(TAG,"do onActivityCreate");
       onActivityCreate();
+    } else if (call.method.equals("setLocalBadge")) {
+      Log.d(TAG,"do setLocalBadge");
+      setLocalBadge(call.argument("badge").toString());
+    } else if (call.method.equals("resetBadge")) {
+      Log.d(TAG,"do resetBadge");
+      resetBadge();
     } else {
       result.notImplemented();
+    }
+  }
+
+  private void resetBadge() {
+    setLocalBadge("0");
+  }
+
+  private void setLocalBadge(String badge) {
+    if("HUAWEI".equals(Build.MANUFACTURER)){
+      PushManager.getInstance().setHwBadgeNum(fContext,Integer.parseInt(badge));
+    }
+    if("vivo".equals(Build.MANUFACTURER)){
+      PushManager.getInstance().setVivoAppBadgeNum(Integer.parseInt(badge));
+    }
+    if("OPPO".equals(Build.MANUFACTURER)){
+      PushManager.getInstance().setOPPOBadgeNum(Integer.parseInt(badge));
     }
   }
 

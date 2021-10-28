@@ -1019,7 +1019,7 @@ class _SendBackAcquisitionPageState
   void reporHttp() {
     print(widget.ordId);
     Map<String, dynamic> map = new HashMap();
-    map["order_id"] = widget.ordId;
+    map["id"] = widget.ordId;
     map["rcv_name"] = _nameController.text;
     map["rcv_phone"] = _phoneController.text;
     map["province"] = initProvince;

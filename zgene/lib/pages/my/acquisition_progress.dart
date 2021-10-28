@@ -163,8 +163,7 @@ class _OacqusitionProgressPageState
           );
         },
       ).toList(),
-      controlsBuilder: (BuildContext context,
-          {VoidCallback onStepContinue, VoidCallback onStepCancel}) {
+      controlsBuilder: (BuildContext context, ControlsDetails controls) {
         return Container();
       },
     );

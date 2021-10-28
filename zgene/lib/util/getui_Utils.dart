@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:ffi';
+// import 'dart:ffi';
 import 'dart:io';
 
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -87,7 +87,7 @@ class GetuiUtils {
     }
   }
 
-  static Future<Void> bindAlias() async {
+  static Future<void> bindAlias() async {
     var spUtils = SpUtils();
 
     print("uid == " + spUtils.getStorageDefault(SpConstant.Uid, 0).toString());
@@ -100,7 +100,7 @@ class GetuiUtils {
     }
   }
 
-  static Future<Void> resetBadge() async {
+  static Future<void> resetBadge() async {
     // ignore: unnecessary_statements
     Getuiflut().resetBadge;
   }

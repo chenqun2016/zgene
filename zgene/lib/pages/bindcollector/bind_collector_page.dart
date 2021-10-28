@@ -208,8 +208,11 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
           );
         },
       ).toList(),
-      controlsBuilder: (BuildContext context,
-          {VoidCallback onStepContinue, VoidCallback onStepCancel}) {
+      // controlsBuilder: (BuildContext context,
+      //     {VoidCallback onStepContinue, VoidCallback onStepCancel}) {
+      //   return Container();
+      // },
+      controlsBuilder: (BuildContext context, ControlsDetails controls) {
         return Container();
       },
     );

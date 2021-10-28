@@ -8,9 +8,6 @@ class ReportListModel {
     group = json['group'];
     if (json['data_list'] != null) {
       dataList = new List<ReportDataList>();
-      json['data_list'].forEach((v) {
-        dataList.add(new ReportDataList.fromJson(v));
-      });
     }
   }
 

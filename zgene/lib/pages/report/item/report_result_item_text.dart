@@ -33,6 +33,14 @@ class _ReportResultItemTextState extends State<ReportResultItemText> {
     Color(0xFFEBEFF1).withAlpha(25),
   ], begin: Alignment.topCenter, end: Alignment.bottomCenter);
 
+  String text;
+  @override
+  void initState() {
+    text = widget.text;
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -46,16 +54,16 @@ class _ReportResultItemTextState extends State<ReportResultItemText> {
       ),
       child: LayoutBuilder(builder: (context, size) {
         final painter = TextPainter(
-          text: TextSpan(text: widget.text, style: style),
+          text: TextSpan(text: text, style: style),
           maxLines: maxLines,
           textDirection: TextDirection.ltr,
         );
         painter.layout(maxWidth: size.maxWidth);
         if (!painter.didExceedMaxLines)
-          return Text(widget.text, maxLines: maxLines, style: style);
+          return Text(text, maxLines: maxLines, style: style);
         return Stack(
           children: <Widget>[
-            Text(widget.text, maxLines: expand ? 1000 : maxLines, style: style),
+            Text(text, maxLines: expand ? 1000 : maxLines, style: style),
             if (!expand)
               Positioned(
                   right: 0,

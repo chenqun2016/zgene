@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/models/report_list_detail_model.dart';
+import 'package:zgene/util/sp_utils.dart';
 
+///报告详情页：科学细节tab
 class MyReportScienceDetail extends StatefulWidget {
   ReportListDetailModel reportData;
   MyReportScienceDetail({Key key, this.reportData}) : super(key: key);
@@ -28,16 +31,29 @@ class _MyReportScienceDetailState extends State<MyReportScienceDetail>
   @override
   void initState() {
     data = widget.reportData.gene;
-    if (null != widget.reportData.disReference) {
-      wenxian.add(widget.reportData.disReference);
-    }
+    _initDatas();
+    super.initState();
+  }
 
+  void _initDatas() {
+    if (null != widget.reportData.disReference) {
+      wenxian.addAll(widget.reportData.disReference.split('|').toList());
+    }
     data.forEach((element) {
       if (element.repute == "bad") {
         badList.add(element);
       }
     });
-    super.initState();
+    String storage = SpUtils().getStorage(SpConstant.appGeneReportLimit);
+    if (null != storage) {
+      var split = storage.split('|');
+      limit = split.fold("", (previousValue, element) {
+        if (split.indexOf(element) == split.length - 1) {
+          return previousValue + '·' + element;
+        }
+        return previousValue + '·' + element + "\n\n";
+      });
+    }
   }
 
   @override
@@ -46,8 +62,13 @@ class _MyReportScienceDetailState extends State<MyReportScienceDetail>
       margin: const EdgeInsets.only(bottom: 90.0),
       child: Column(
         children: [
+          ///基因 位点
           if (null != data) _item1(),
+
+          ///检测限制
           _item2(),
+
+          ///参考文献
           if (wenxian.length > 0) _item3(),
         ],
       ),
@@ -110,13 +131,20 @@ class _MyReportScienceDetailState extends State<MyReportScienceDetail>
         Expanded(
             child: Padding(
           padding: const EdgeInsets.only(top: 3.0, bottom: 15),
-          child: Text(
-            "$text",
-            style: TextStyle(
-                color: ColorConstant.Text_5E6F88,
-                letterSpacing: 2,
-                fontSize: 12),
-          ),
+          child: Text.rich(TextSpan(children: [
+            TextSpan(
+                text: "${text.substring(0, text.indexOf(".") + 1)}",
+                style: TextStyle(
+                    color: ColorConstant.MainBlueColor,
+                    letterSpacing: 2,
+                    fontSize: 12)),
+            TextSpan(
+                text: "${text.substring(text.indexOf(".") + 1)}",
+                style: TextStyle(
+                    color: ColorConstant.Text_5E6F88,
+                    letterSpacing: 2,
+                    fontSize: 12)),
+          ])),
         )),
       ],
     );
@@ -329,11 +357,11 @@ class _MyReportScienceDetailState extends State<MyReportScienceDetail>
     return Container(
       width: double.infinity,
       height: 40,
-      padding: const EdgeInsets.only(left: 20, right: 25, top: 18),
+      padding: const EdgeInsets.only(left: 0, right: 0, top: 18),
       child: Stack(
         children: [
           Positioned(
-              left: 0,
+              left: 15,
               child: Text(
                 e.geneName,
                 style: TextStyle(
@@ -353,7 +381,7 @@ class _MyReportScienceDetailState extends State<MyReportScienceDetail>
                     color: ColorConstant.text_112950),
               )),
           Positioned(
-              right: 0,
+              right: 25,
               child: Text.rich(TextSpan(children: [
                 TextSpan(
                     text: "C/",

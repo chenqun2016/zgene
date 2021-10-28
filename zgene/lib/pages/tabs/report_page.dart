@@ -611,6 +611,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
   List<ReportPageModel> collectors = [];
   var currentCollector = 0;
 
+  ///查看是否登录，时候有报告
   void _getCollector() async {
     if (SpUtils().getStorageDefault(SpConstant.IsLogin, false)) {
       Map<String, dynamic> map = new HashMap();

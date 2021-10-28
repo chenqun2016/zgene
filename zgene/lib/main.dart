@@ -340,6 +340,9 @@ Future<void> getSetting() async {
           if (item.name == SpConstant.appProductStepAid) {
             spUtils.setStorage(SpConstant.appProductStepAid, item.value);
           }
+          if (item.name == SpConstant.appGeneReportLimit) {
+            spUtils.setStorage(SpConstant.appGeneReportLimit, item.value);
+          }
         }
       } catch (e) {
         print(e);

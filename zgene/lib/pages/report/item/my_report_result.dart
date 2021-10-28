@@ -5,7 +5,9 @@ import 'package:zgene/models/report_list_detail_model.dart';
 import 'package:zgene/pages/report/item/report_result_item1.dart';
 import 'package:zgene/pages/report/item/report_result_item2.dart';
 import 'package:zgene/pages/report/item/report_result_item_text.dart';
+import 'package:zgene/util/ui_uitls.dart';
 
+///报告详情页：检测结果tab
 class MyReportResult extends StatefulWidget {
   ReportListDetailModel reportData;
   int topType;
@@ -20,7 +22,7 @@ class _MyReportResultState extends State<MyReportResult>
   @override
   bool get wantKeepAlive => true;
 
-  ///人群占比  3个圈 转换数据格式
+  ///人群占比  3个圈
   List<Distribution> distribution;
   @override
   void initState() {
@@ -83,7 +85,7 @@ class _MyReportResultState extends State<MyReportResult>
                 risk: widget.reportData.risk,
               )),
 
-        ///患病倍数
+        ///患病倍数  不同的接口参数
         if (widget.topType == 0 &&
             null != widget.reportData.predisposition &&
             null != widget.reportData.predisposition.risk &&
@@ -104,7 +106,7 @@ class _MyReportResultState extends State<MyReportResult>
           _buildSliverItem(context, index++, "人群占比",
               ReportRusultItem2(distribution: widget.reportData.distribution)),
 
-        ///人群占比  不同的参数
+        ///人群占比  不同的接口参数
         if (null != distribution)
           _buildSliverItem(context, index++, "人群占比",
               ReportRusultItem2(distribution: distribution)),
@@ -231,7 +233,7 @@ class _MyReportResultState extends State<MyReportResult>
               alignment: Alignment.centerLeft,
               children: [
                 Image.asset(
-                  _getIndexIcon(index),
+                  UiUitls.getReportDetailIndexIcon(index),
                   height: 60,
                   width: 60,
                   fit: BoxFit.fitWidth,
@@ -272,20 +274,5 @@ class _MyReportResultState extends State<MyReportResult>
         ],
       ),
     );
-  }
-
-  String _getIndexIcon(int index) {
-    switch (index % 4) {
-      case 0:
-        return "assets/images/report/icon_report_item_1.png";
-      case 1:
-        return "assets/images/report/icon_report_item_2.png";
-      case 2:
-        return "assets/images/report/icon_report_item_3.png";
-      case 3:
-        return "assets/images/report/icon_report_item_4.png";
-      default:
-        return "assets/images/report/icon_report_item_4.png";
-    }
   }
 }

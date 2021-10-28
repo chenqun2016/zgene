@@ -11,6 +11,7 @@ import 'package:zgene/pages/report/item/my_report_result.dart';
 import 'package:zgene/pages/report/item/my_report_sciencedetail.dart';
 import 'package:zgene/util/base_widget.dart';
 
+///报告详情页
 class ReportLevel2Page extends BaseWidget {
   final String id;
   final String itemid;
@@ -28,7 +29,7 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
     with SingleTickerProviderStateMixin {
   var canFixedHeadShow = false;
   var persistentHeaderTopMargin = 148.0;
-  final tabs = ['检测结果', '科学细节'];
+  var tabs = ['检测结果', '科学细节'];
   //顶部两种title， 0：图片类型，1：进度条类型
   var topType = 0;
   var topTextStype = TextStyle(
@@ -104,20 +105,14 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
         reportData = ReportListDetailModel.fromJson(result);
         pageWidgetTitle = reportData.chname;
 
-        setState(() {});
-
         switch (widget.id) {
-          case "daixienengli": //代谢能力
-          case "tizhitedian": //体质特点
-          case "xinlirenzhi": //心理认知
-          case "yingyangxuqiu": //营养需求
-          case "yundongjianshen": //运动健身
-            topType = 1;
-            des = reportData.explain;
-            break;
-
           case "jibingshaicha": //疾病筛查 肿瘤报告 TODO 未携带
+            tabs = ['检测结果', '科学细节'];
+            continue next;
           case "jiankangfengxian": //健康风险
+            tabs = ['药物概述', '科学细节'];
+            continue next;
+          next:
           case "pifuguanli": //皮肤管理
             if (reportData.conclusion == "高风险") {
               bg = AssetImage("assets/images/report/img_jieguo_1.png");
@@ -129,8 +124,9 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
             break;
           case "yongyaozhidao": //用药指导
             ///药物报告
+            tabs = ['药物概述', '科学细节'];
             if (null != reportData.tag) {
-              if (reportData.tag == "1") {
+              if (int.parse(reportData.tag) >= 1) {
                 bg = AssetImage("assets/images/report/img_jieguo_1.png");
                 title = "需关注";
               } else {
@@ -140,7 +136,19 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
               des = reportData.conclusion;
             }
             break;
+
+          // case "daixienengli": //代谢能力
+          // case "tizhitedian": //体质特点
+          // case "xinlirenzhi": //心理认知
+          // case "yingyangxuqiu": //营养需求
+          // case "yundongjianshen": //运动健身
+          default:
+            tabs = ['结果概述', '科学细节'];
+            topType = 1;
+            des = reportData.explain;
+            break;
         }
+        setState(() {});
       },
       onError: (code, error) {},
     );
@@ -166,17 +174,17 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
                   else
                     painter.layout(maxWidth: size.maxWidth - 80);
 
-                  if (topType == 1)
-                    persistentHeaderTopMargin = 120 + painter.height;
-                  else
+                  if (topType == 0)
                     persistentHeaderTopMargin = 100 + painter.height;
+                  else
+                    persistentHeaderTopMargin = 120 + painter.height;
 
                   print("height== ${painter.height}");
                   print(
                       "persistentHeaderTopMargin== ${persistentHeaderTopMargin}");
                   return Stack(
                     children: [
-                      //TODO 两种 title
+                      // 两种 title
                       if (topType == 0) _buildTitle(),
                       if (topType == 1) _buildTitle2(),
                       _buildList(),
@@ -283,10 +291,13 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
               : _getMyReportScienceDetail,
         );
 
+  ///检测结果
   Widget get _getMyReportResult => MyReportResult(
         reportData: reportData,
         topType: topType,
       );
+
+  ///科学细节
   Widget get _getMyReportScienceDetail =>
       MyReportScienceDetail(reportData: reportData);
 

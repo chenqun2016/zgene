@@ -16,6 +16,7 @@ import 'package:zgene/widget/my_inherited_widget.dart';
 
 import 'report_level_1_body_page.dart';
 
+///报告列表页
 class ReportLevel1Page extends BaseWidget {
   final String id;
   String serialNum;
@@ -70,16 +71,20 @@ class _ReportLevel1PageState extends BaseWidgetState<ReportLevel1Page>
 
   @override
   void dispose() {
-    _tabController.dispose();
+    if (null != _tabController) _tabController.dispose();
     super.dispose();
   }
 
   int risk_count = 0;
+  int middle_count = 0;
+  List<Items> tags = [];
   _getDatas() {
     Map<String, dynamic> map = new HashMap();
 
+    ///接口类型
     map['id'] = widget.id;
     // map['id'] = "yongyaozhidao";
+    ///有采集器编号，请求个人采集器相关报告，否则请求示例报告
     if (widget.serialNum != null) {
       map['serial_num'] = widget.serialNum;
     } else {
@@ -95,20 +100,28 @@ class _ReportLevel1PageState extends BaseWidgetState<ReportLevel1Page>
         tabs.clear();
         list.clear();
         l.forEach((element) {
+          ///两种类型的数据格式
+          ///有group字段的代表有  tab
+          ///否则 没有 tab
           if (null != element["group"]) {
-            tabs.add(ReportListModel.fromJson(element));
+            var reportListModel = ReportListModel.fromJson(element);
+            if (element['data_list'] != null) {
+              element['data_list'].forEach((v) {
+                var reportDataList = new ReportDataList.fromJson(v);
+                reportListModel.dataList.add(reportDataList);
+                _caculate(reportDataList);
+              });
+            }
+            tabs.add(reportListModel);
           } else {
             var reportDataList = ReportDataList.fromJson(element);
             list.add(reportDataList);
-            if (null != reportDataList.tag && reportDataList.tag == "1") {
-              ///计算需关注的个数
-              risk_count += 1;
-            }
+            _caculate(reportDataList);
           }
         });
 
         if (tabs.length > 0) {
-          risk_count = widget.summaryModel.risk_count;
+          ///初始化 tab
           _tabController = TabController(vsync: this, length: tabs.length);
           _tabController.addListener(() {
             if (_tabController.animation?.value == _tabController.index) {
@@ -121,10 +134,74 @@ class _ReportLevel1PageState extends BaseWidgetState<ReportLevel1Page>
           });
           list = tabs[0].dataList;
         }
+        _initTags();
+
         setState(() {});
       },
       onError: (code, error) {},
     );
+  }
+
+  ///计算title中标签 强，中，弱 的个数
+  void _caculate(ReportDataList reportDataList) {
+    if (null != reportDataList.tag) {
+      if (int.parse(reportDataList.tag) >= 1) {
+        ///计算需关注的个数
+        risk_count += 1;
+      } else if (int.parse(reportDataList.tag) == 0) {
+        ///计算不需关注的个数
+        middle_count += 1;
+      }
+    } else if (null != reportDataList.conclusion) {
+      if ("高风险" == reportDataList.conclusion) {
+        risk_count += 1;
+      } else if ("一般风险" == reportDataList.conclusion) {
+        middle_count += 1;
+      }
+    }
+  }
+
+  ///根据 _caculate()方法计算的数据，设置不同类型的标签数据
+  ///用药指导是2个标签，其他都是3个
+  void _initTags() {
+    List tagStrs = [];
+    switch (widget.id) {
+      case "yongyaozhidao": //用药指导
+        ///用药指导：设置标签数据
+        tagStrs = ["正常", "需关注"];
+        break;
+      case "jibingshaicha": //疾病筛查 肿瘤报告
+        tagStrs = ["低", "中", "高"];
+        break;
+      case "pifuguanli": //皮肤管理
+      case "tizhitedian": //体质特点
+        tagStrs = ["一般", "正常", "较高"];
+        break;
+      case "xinlirenzhi": //心理认知
+        tagStrs = ["高", "中", "低"];
+        break;
+      case "daixienengli": //代谢能力
+      case "jiankangfengxian": //健康风险
+      case "yingyangxuqiu": //营养需求
+      case "yundongjianshen": //运动健身
+      default:
+        tagStrs = ["强", "中", "弱"];
+        break;
+    }
+    if (tagStrs.length == 2) {
+      tags.add(Items(
+          color: "green",
+          number: (widget.summaryModel.count - risk_count),
+          title: tagStrs[0]));
+      tags.add(Items(color: "red", number: risk_count, title: tagStrs[1]));
+    } else {
+      tags.add(Items(
+          color: "green",
+          number: (widget.summaryModel.count - risk_count - middle_count),
+          title: tagStrs[0]));
+      tags.add(Items(color: "blue", number: (middle_count), title: tagStrs[1]));
+      tags.add(Items(color: "red", number: risk_count, title: tagStrs[2]));
+    }
   }
 
   Widget viewPageBody(BuildContext context) {
@@ -135,7 +212,7 @@ class _ReportLevel1PageState extends BaseWidgetState<ReportLevel1Page>
           physics: BouncingScrollPhysics(),
           child: Stack(
             children: [
-              _buildSliverAppBar(),
+              _buildSliverTitle(),
               _buildPersistentHeader(),
               _buildSliverList(),
             ],
@@ -263,30 +340,33 @@ class _ReportLevel1PageState extends BaseWidgetState<ReportLevel1Page>
       bottom = 0;
     }
 
-    return Padding(
-      padding: EdgeInsets.only(bottom: bottom),
-      child: Container(
-        margin: EdgeInsets.only(top: 220),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-          ),
-        ),
-        child: MyInheritedWidget(
-          data: list,
-          child: ReportLevel1BodyPage(
-            id: widget.id,
-            serialNum: widget.serialNum,
-            type: widget.type,
-          ),
-        ),
-      ),
-    );
+    return tags.length == 0
+        ? Text("")
+        : Padding(
+            padding: EdgeInsets.only(bottom: bottom),
+            child: Container(
+              margin: EdgeInsets.only(top: 220),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                ),
+              ),
+              child: MyInheritedWidget(
+                data: list,
+                child: ReportLevel1BodyPage(
+                  id: widget.id,
+                  serialNum: widget.serialNum,
+                  type: widget.type,
+                  tags: tags,
+                ),
+              ),
+            ),
+          );
   }
 
-  Widget _buildSliverAppBar() {
+  Widget _buildSliverTitle() {
     return Stack(
       children: [
         Container(
@@ -333,13 +413,7 @@ class _ReportLevel1PageState extends BaseWidgetState<ReportLevel1Page>
               fontWeight: FontWeight.w500, color: Colors.white, fontSize: 14),
         ),
         Row(
-          children: [
-            _titletip(Items(
-                color: "green",
-                number: (widget.summaryModel.count - risk_count),
-                title: "正常")),
-            _titletip(Items(color: "red", number: risk_count, title: "需关注")),
-          ],
+          children: tags.map((e) => _titletip(e)).toList(),
         )
       ],
     );

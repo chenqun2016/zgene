@@ -42,6 +42,8 @@ class SpConstant {
   static const String appShareSubtitle = "app_share_subtitle";
   //商品详情步骤id
   static const String appProductStepAid = "app_product_step_aid";
+  //报告详情：检测限制
+  static const String appGeneReportLimit = "app_gene_report_limit";
   //--End:Z基因项目相关配置接口
   //token
   static const String Token = "token";

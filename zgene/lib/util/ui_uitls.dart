@@ -435,6 +435,21 @@ class UiUitls {
     }
   }
 
+  static String getReportDetailIndexIcon(int index) {
+    switch (index % 4) {
+      case 0:
+        return "assets/images/report/icon_report_item_1.png";
+      case 1:
+        return "assets/images/report/icon_report_item_2.png";
+      case 2:
+        return "assets/images/report/icon_report_item_3.png";
+      case 3:
+        return "assets/images/report/icon_report_item_4.png";
+      default:
+        return "assets/images/report/icon_report_item_4.png";
+    }
+  }
+
   static String getReportListIcon(String id) {
     switch (id) {
       case "jibingshaicha":

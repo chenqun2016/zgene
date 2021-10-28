@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:zgene/constant/color_constant.dart';
@@ -310,13 +309,12 @@ class _StepperState extends State<EStepper> with TickerProviderStateMixin {
   @override
   void didUpdateWidget(EStepper oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if(widget.steps.length != oldWidget.steps.length){
+    if (widget.steps.length != oldWidget.steps.length) {
       _keys = List<GlobalKey>.generate(
         widget.steps.length,
-            (int i) => GlobalKey(),
+        (int i) => GlobalKey(),
       );
     }
-
 
     for (int i = 0; i < oldWidget.steps.length; i += 1)
       _oldStates[i] = oldWidget.steps[i].state;
@@ -486,18 +484,24 @@ class _StepperState extends State<EStepper> with TickerProviderStateMixin {
     //     duration: kThemeAnimationDuration,
     //   );
     // } else {
-      if (widget.steps[index].state != EStepState.error)
-        return _buildCircle(index, false);
-      else
-        return _buildTriangle(index, false);
+    if (widget.steps[index].state != EStepState.error)
+      return _buildCircle(index, false);
+    else
+      return _buildTriangle(index, false);
     // }
   }
 
   Widget _buildVerticalControls() {
     if (widget.controlsBuilder != null)
-      return widget.controlsBuilder(context,
-          onStepContinue: widget.onStepContinue,
-          onStepCancel: widget.onStepCancel);
+      // return widget.controlsBuilder(context,
+      //     onStepContinue: widget.onStepContinue,
+      //     onStepCancel: widget.onStepCancel);
+      return widget.controlsBuilder(
+          context,
+          ControlsDetails(
+              onStepContinue: widget.onStepContinue,
+              onStepCancel: widget.onStepCancel,
+              currentStep: null));
 
     Color cancelColor;
     switch (Theme.of(context).brightness) {

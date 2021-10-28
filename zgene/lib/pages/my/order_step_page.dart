@@ -153,10 +153,11 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
           );
         },
       ).toList(),
-      controlsBuilder: (BuildContext context,
-          {VoidCallback onStepContinue, VoidCallback onStepCancel}) {
-        return Container();
-      },
+      // controlsBuilder: (BuildContext context,
+      //     {VoidCallback onStepContinue, VoidCallback onStepCancel}) {
+      //   return Container();
+      // },
+      
     );
   }
 

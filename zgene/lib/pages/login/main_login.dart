@@ -1,5 +1,5 @@
 import 'dart:collection';
-import 'dart:ffi';
+// import 'dart:ffi';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -53,7 +53,7 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
   }
 
   @override
-  Void pageDataInitState() {
+  void pageDataInitState() {
     super.pageDataInitState();
   }
 

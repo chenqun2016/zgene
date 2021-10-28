@@ -215,7 +215,7 @@ class Archive {
   int countComment;
   int countDigg;
   int duration;
-  List<dynamic> tags;
+  List<ArchiveTag> tags;
   bool isTop;
   String template;
   int linkType;
@@ -285,7 +285,7 @@ class Archive {
     if (json['tags'] != null) {
       tags = [];
       json['tags'].forEach((v) {
-        tags.add(v);
+        tags.add(ArchiveTag.fromJson(v));
       });
     }
     isTop = json['is_top'];
@@ -492,6 +492,59 @@ class Status {
     data['digged'] = this.digged;
     data['favored'] = this.favored;
     data['purchased'] = this.purchased;
+    return data;
+  }
+}
+
+class ArchiveTag {
+  int id;
+  int createdAt;
+  int updatedAt;
+  String name;
+  String keywords;
+  String seoTitle;
+  int click;
+  int count;
+  String description;
+  String seoUrl;
+
+  ArchiveTag(
+      {this.id,
+      this.createdAt,
+      this.updatedAt,
+      this.name,
+      this.keywords,
+      this.seoTitle,
+      this.click,
+      this.count,
+      this.description,
+      this.seoUrl});
+
+  ArchiveTag.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    name = json['name'];
+    keywords = json['keywords'];
+    seoTitle = json['seo_title'];
+    click = json['click'];
+    count = json['count'];
+    description = json['description'];
+    seoUrl = json['seo_url'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    data['name'] = this.name;
+    data['keywords'] = this.keywords;
+    data['seo_title'] = this.seoTitle;
+    data['click'] = this.click;
+    data['count'] = this.count;
+    data['description'] = this.description;
+    data['seo_url'] = this.seoUrl;
     return data;
   }
 }

@@ -74,6 +74,7 @@ class _ReportLevel1PageState extends BaseWidgetState<ReportLevel1Page>
     super.dispose();
   }
 
+  int risk_count = 0;
   _getDatas() {
     Map<String, dynamic> map = new HashMap();
 
@@ -97,10 +98,17 @@ class _ReportLevel1PageState extends BaseWidgetState<ReportLevel1Page>
           if (null != element["group"]) {
             tabs.add(ReportListModel.fromJson(element));
           } else {
-            list.add(ReportDataList.fromJson(element));
+            var reportDataList = ReportDataList.fromJson(element);
+            list.add(reportDataList);
+            if (null != reportDataList.tag && reportDataList.tag == "1") {
+              ///计算需关注的个数
+              risk_count += 1;
+            }
           }
         });
+
         if (tabs.length > 0) {
+          risk_count = widget.summaryModel.risk_count;
           _tabController = TabController(vsync: this, length: tabs.length);
           _tabController.addListener(() {
             if (_tabController.animation?.value == _tabController.index) {
@@ -268,7 +276,11 @@ class _ReportLevel1PageState extends BaseWidgetState<ReportLevel1Page>
         ),
         child: MyInheritedWidget(
           data: list,
-          child: ReportLevel1BodyPage(),
+          child: ReportLevel1BodyPage(
+            id: widget.id,
+            serialNum: widget.serialNum,
+            type: widget.type,
+          ),
         ),
       ),
     );
@@ -320,9 +332,15 @@ class _ReportLevel1PageState extends BaseWidgetState<ReportLevel1Page>
           style: TextStyle(
               fontWeight: FontWeight.w500, color: Colors.white, fontSize: 14),
         ),
-        // Row(
-        //   children: reportDesModel.items.map((e) => _titletip(e)).toList(),
-        // )
+        Row(
+          children: [
+            _titletip(Items(
+                color: "green",
+                number: (widget.summaryModel.count - risk_count),
+                title: "正常")),
+            _titletip(Items(color: "red", number: risk_count, title: "需关注")),
+          ],
+        )
       ],
     );
   }
@@ -330,7 +348,7 @@ class _ReportLevel1PageState extends BaseWidgetState<ReportLevel1Page>
   Widget _titletip(Items item) {
     return Container(
       margin: EdgeInsets.only(top: 16, right: 10),
-      padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
+      padding: EdgeInsets.fromLTRB(8, 2, 8, 2),
       decoration: BoxDecoration(
         color: Colors.white24,
         borderRadius: BorderRadius.all(Radius.circular(32)),
@@ -351,7 +369,7 @@ class _ReportLevel1PageState extends BaseWidgetState<ReportLevel1Page>
             ),
           ),
           Text(
-            "${item.title}  ${item.number}",
+            "${item.title} ${item.number}",
             style: TextStyle(color: Colors.white, fontSize: 12),
           )
         ],

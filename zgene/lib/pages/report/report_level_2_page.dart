@@ -1,21 +1,24 @@
-import 'dart:convert';
-import 'dart:developer';
+import 'dart:collection';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
-import 'package:zgene/models/archive_des_model.dart';
-import 'package:zgene/models/report_des_model.dart';
-import 'package:zgene/pages/home/home_getHttp.dart';
+import 'package:zgene/http/http_utils.dart';
+import 'package:zgene/models/report_list_detail_model.dart';
 import 'package:zgene/pages/report/item/my_report_result.dart';
 import 'package:zgene/pages/report/item/my_report_sciencedetail.dart';
 import 'package:zgene/util/base_widget.dart';
 
 class ReportLevel2Page extends BaseWidget {
-  final int id;
+  final String id;
+  final String itemid;
+  String serialNum;
+  final String type;
 
-  ReportLevel2Page({Key key, this.id}) : super(key: key);
+  ReportLevel2Page({Key key, this.id, this.itemid, this.serialNum, this.type})
+      : super(key: key);
 
   @override
   BaseWidgetState<ReportLevel2Page> getState() => _ReportLevel2PageState();
@@ -24,25 +27,21 @@ class ReportLevel2Page extends BaseWidget {
 class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
     with SingleTickerProviderStateMixin {
   var canFixedHeadShow = false;
-  ReportDesModel reportDesModel;
-  List list = [];
-  Archive _archive;
-  int id;
   var persistentHeaderTopMargin = 148.0;
   final tabs = ['检测结果', '科学细节'];
   //顶部两种title， 0：图片类型，1：进度条类型
   var topType = 0;
-  String topResult = "结果显示您携带可能导致叶酸吸收能力降低的基因多态性，叶酸吸收能力较弱";
   var topTextStype = TextStyle(
       color: ColorConstant.Text_5E6F88,
       fontWeight: FontWeight.w600,
       fontSize: 16);
 
   TabController _tabController;
+  ReportListDetailModel reportData;
+
   @override
   void pageWidgetInitState() {
     super.pageWidgetInitState();
-    id = widget.id;
     showBaseHead = false;
     showHead = true;
     isListPage = true;
@@ -73,6 +72,8 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
           listeningController?.jumpTo(persistentHeaderTopMargin + 4);
       }
     });
+
+    _getDatas();
   }
 
   @override
@@ -81,59 +82,111 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
     super.dispose();
   }
 
-  bool hasDatas = false;
-
+  String des = "";
+  String title = "";
+  AssetImage bg = AssetImage("assets/images/report/img_jieguo_0.png");
   _getDatas() {
-    String arg = ModalRoute.of(context).settings.arguments;
-    if (null != arg) {
-      id = int.parse(arg);
-    }
-    ArchiveGetHttp(id, (result) {
-      ArchiveDesModel model = ArchiveDesModel.fromJson(result);
-      list.clear();
-      setState(() {
-        list = model.addon.archives;
-        _archive = model.archive;
-        try {
-          pageWidgetTitle = _archive.title;
+    Map<String, dynamic> map = new HashMap();
 
-          log("hahaha==" + _archive.description);
-          if (null != _archive.description && _archive.description.isNotEmpty) {
-            var json = jsonDecode(_archive.description);
-            reportDesModel = ReportDesModel.fromJson(json);
-          }
-        } catch (e) {
-          print("exception==" + e.toString());
+    map['itemid'] = widget.itemid;
+    map['id'] = widget.id;
+    if (widget.serialNum != null) {
+      map['serial_num'] = widget.serialNum;
+    } else {
+      map['sample'] = widget.type;
+    }
+
+    HttpUtils.requestHttp(
+      ApiConstant.reportDetail,
+      parameters: map,
+      method: HttpUtils.GET,
+      onSuccess: (result) async {
+        reportData = ReportListDetailModel.fromJson(result);
+        pageWidgetTitle = reportData.chname;
+
+        setState(() {});
+
+        switch (widget.id) {
+          case "daixienengli": //代谢能力
+          case "tizhitedian": //体质特点
+          case "xinlirenzhi": //心理认知
+          case "yingyangxuqiu": //营养需求
+          case "yundongjianshen": //运动健身
+            topType = 1;
+            des = reportData.explain;
+            break;
+
+          case "jibingshaicha": //疾病筛查 肿瘤报告 TODO 未携带
+          case "jiankangfengxian": //健康风险
+          case "pifuguanli": //皮肤管理
+            if (reportData.conclusion == "高风险") {
+              bg = AssetImage("assets/images/report/img_jieguo_1.png");
+            } else {
+              bg = AssetImage("assets/images/report/img_jieguo_0.png");
+            }
+            title = reportData.conclusion;
+            des = "您的${reportData.chname}患病风险为 \n ${reportData.conclusion}";
+            break;
+          case "yongyaozhidao": //用药指导
+            ///药物报告
+            if (null != reportData.tag) {
+              if (reportData.tag == "1") {
+                bg = AssetImage("assets/images/report/img_jieguo_1.png");
+                title = "需关注";
+              } else {
+                bg = AssetImage("assets/images/report/img_jieguo_0.png");
+                title = "正常用药";
+              }
+              des = reportData.conclusion;
+            }
+            break;
         }
-      });
-    });
+      },
+      onError: (code, error) {},
+    );
   }
 
   Widget viewPageBody(BuildContext context) {
-    if (!hasDatas) {
-      hasDatas = true;
-      _getDatas();
-    }
-    if (null == _archive) {
-      return Text("");
-    }
-    return Stack(
-      children: [
-        SingleChildScrollView(
-          controller: listeningController,
-          physics: BouncingScrollPhysics(),
-          child: Stack(
+    return reportData == null
+        ? Text("")
+        : Stack(
             children: [
-              //TODO 两种 title
-              if (topType == 0) _buildTitle(),
-              if (topType == 1) _buildTitle2(),
-              _buildPersistentHeaderList(),
+              SingleChildScrollView(
+                controller: listeningController,
+                physics: BouncingScrollPhysics(),
+                child: LayoutBuilder(builder: (context, size) {
+                  final painter = TextPainter(
+                    text: TextSpan(text: des, style: topTextStype),
+                    maxLines: 3,
+                    textDirection: TextDirection.ltr,
+                    locale: Localizations.maybeLocaleOf(context),
+                  );
+                  if (topType == 0)
+                    painter.layout(maxWidth: size.maxWidth - 60);
+                  else
+                    painter.layout(maxWidth: size.maxWidth - 80);
+
+                  if (topType == 1)
+                    persistentHeaderTopMargin = 120 + painter.height;
+                  else
+                    persistentHeaderTopMargin = 100 + painter.height;
+
+                  print("height== ${painter.height}");
+                  print(
+                      "persistentHeaderTopMargin== ${persistentHeaderTopMargin}");
+                  return Stack(
+                    children: [
+                      //TODO 两种 title
+                      if (topType == 0) _buildTitle(),
+                      if (topType == 1) _buildTitle2(),
+                      _buildList(),
+                    ],
+                  );
+                }),
+              ),
+              if (canFixedHeadShow) _buildfixedHeader(),
             ],
-          ),
-        ),
-        if (canFixedHeadShow) _buildfixedHeader(),
-      ],
-    );
+          );
   }
 
   Widget _buildfixedHeader() => Container(
@@ -146,20 +199,6 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
         ),
       ),
       child: _buildTabBar);
-
-  Widget _buildPersistentHeaderList() {
-    if (topType == 0) return _buildList();
-    return LayoutBuilder(builder: (context, size) {
-      final painter = TextPainter(
-        text: TextSpan(text: topResult, style: topTextStype),
-        maxLines: 1,
-        textDirection: TextDirection.ltr,
-      );
-      painter.layout(maxWidth: size.maxWidth);
-      if (painter.didExceedMaxLines) persistentHeaderTopMargin = 170;
-      return _buildList();
-    });
-  }
 
   Widget _buildList() => Container(
       margin:
@@ -233,29 +272,34 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
         ],
       );
 
-  Widget get _buildSliverList => Container(
-        color: Colors.transparent,
-        child: _tabController.index == 0
-            ? _getMyReportResult
-            : _getMyReportScienceDetail,
-      );
+  Widget get _buildSliverList => reportData == null
+      ? Container(
+          height: 300,
+        )
+      : Container(
+          color: Colors.transparent,
+          child: _tabController.index == 0
+              ? _getMyReportResult
+              : _getMyReportScienceDetail,
+        );
 
-  Widget get _getMyReportResult => MyReportResult();
-  Widget get _getMyReportScienceDetail => MyReportScienceDetail();
+  Widget get _getMyReportResult => MyReportResult(
+        reportData: reportData,
+        topType: topType,
+      );
+  Widget get _getMyReportScienceDetail =>
+      MyReportScienceDetail(reportData: reportData);
 
   Widget _buildTitle() {
     return Container(
       width: double.infinity,
-      height: 168,
+      height: persistentHeaderTopMargin + 25,
       decoration: BoxDecoration(
           image: DecorationImage(
-        // image: NetworkImage(CommonUtils.splicingUrl(_archive.imageUrl)),
-        //TODO 切换图片
-        // image: AssetImage("assets/images/report/img_jieguo_1.png"),
-        image: AssetImage("assets/images/report/img_jieguo_0.png"),
+        image: bg,
         fit: BoxFit.fill,
       )),
-      padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+      padding: EdgeInsets.fromLTRB(10, 15, 10, 0),
       margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
       child: _titleContent,
     );
@@ -266,14 +310,14 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          "一般风险",
+          title,
           style: TextStyle(
               fontWeight: FontWeight.bold, color: Colors.white, fontSize: 32),
         ),
         Padding(
           padding: const EdgeInsets.only(top: 4.0),
           child: Text(
-            "您的精神分裂症患病风险为 \n 一般风险",
+            des,
             textAlign: TextAlign.center,
             style: TextStyle(
                 fontWeight: FontWeight.w500, color: Colors.white, fontSize: 15),
@@ -286,9 +330,20 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
   ///第二种 title
   Widget _buildTitle2() {
     var width = MediaQuery.of(context).size.width - 80;
+
+    var tag = int.parse(reportData.tag);
+    var progress;
+    if (tag == -1) {
+      progress = width * 83 / 100 - 7;
+    } else if (tag == 0) {
+      progress = width * 50 / 100 - 7;
+    } else {
+      progress = width * 17 / 100 - 7;
+    }
+
     return Container(
       width: double.infinity,
-      height: 168,
+      height: persistentHeaderTopMargin,
       decoration: BoxDecoration(
         color: Colors.white60,
         border: Border.all(
@@ -369,7 +424,7 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
                       },
                     )),
                 Positioned(
-                    left: width * 50 / 100 - 7,
+                    left: progress,
                     top: 0,
                     child: Container(
                         height: 14,
@@ -378,7 +433,11 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(
-                            color: ColorConstant.bg_017AF6,
+                            color: tag == -1
+                                ? ColorConstant.bg_42F5D3
+                                : (tag == 0
+                                    ? ColorConstant.bg_017AF6
+                                    : ColorConstant.bg_FD7A7A),
                             width: 4,
                           ),
                           color: ColorConstant.WhiteColor,
@@ -427,7 +486,7 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
           Expanded(
               child: Container(
             margin: EdgeInsets.only(top: 12),
-            padding: EdgeInsets.only(left: 24, right: 24),
+            padding: EdgeInsets.only(left: 20, right: 20),
             alignment: Alignment.topCenter,
             width: double.infinity,
             decoration: BoxDecoration(
@@ -436,7 +495,7 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
               Color(0xFF007AF7).withAlpha(0),
             ], begin: Alignment.bottomCenter, end: Alignment.topCenter)),
             child: Text(
-              topResult,
+              reportData.explain,
               textAlign: TextAlign.center,
               style: topTextStype,
             ),

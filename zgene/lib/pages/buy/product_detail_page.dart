@@ -37,7 +37,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
 
   List<cm.Archives> _productDetailRecommends;
   Archive stepArchive;
-  List<dynamic> tags;
+  List<ArchiveTag> tags;
 
   var id;
 
@@ -357,7 +357,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
     );
   }
 
-  Widget _tagItem(dynamic tag) {
+  Widget _tagItem(ArchiveTag tag) {
     var indexOf = tags.indexOf(tag);
     var colorIndex = indexOf % colors.length;
     return Container(
@@ -370,7 +370,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
         ),
       ),
       child: Text(
-        "${tag.toString()}",
+        "${tag.name}",
         style: TextStyle(
           fontSize: 11,
           fontStyle: FontStyle.normal,

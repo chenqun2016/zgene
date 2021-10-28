@@ -1,19 +1,18 @@
 import 'dart:async';
-import 'package:flutter/services.dart';
 import 'dart:io';
+
+import 'package:flutter/services.dart';
 
 typedef Future<dynamic> EventHandler(String res);
 typedef Future<dynamic> EventHandlerMap(Map<String, dynamic> event);
 
 class Getuiflut {
-
   static const MethodChannel _channel = const MethodChannel('getuiflut');
 
   EventHandler _onReceiveClientId;
   EventHandlerMap _onReceiveMessageData;
   EventHandlerMap _onNotificationMessageArrived;
   EventHandlerMap _onNotificationMessageClicked;
-
 
   // deviceToken
   EventHandler _onRegisterDeviceToken;
@@ -60,57 +59,50 @@ class Getuiflut {
   }
 
   void turnOffPush() {
-    if(Platform.isAndroid) {
-       _channel.invokeMethod('stopPush');
+    if (Platform.isAndroid) {
+      _channel.invokeMethod('stopPush');
     }
   }
 
   void onActivityCreate() {
     _channel.invokeMethod('onActivityCreate');
   }
-  
-  void bindAlias(String alias,String sn) {
-    if(Platform.isAndroid) {
-      _channel.invokeMethod('bindAlias',<String,dynamic>{'alias':alias});
+
+  void bindAlias(String alias, String sn) {
+    if (Platform.isAndroid) {
+      _channel.invokeMethod('bindAlias', <String, dynamic>{'alias': alias});
     } else {
-      _channel.invokeMethod('bindAlias',<String,dynamic>{'alias':alias,'aSn':sn});
+      _channel.invokeMethod(
+          'bindAlias', <String, dynamic>{'alias': alias, 'aSn': sn});
     }
   }
 
-  void unbindAlias(String alias,String sn,bool isSelf) {
-    if(Platform.isAndroid) {
-      _channel.invokeMethod('unbindAlias',<String,dynamic>{'alias':alias});
+  void unbindAlias(String alias, String sn, bool isSelf) {
+    if (Platform.isAndroid) {
+      _channel.invokeMethod('unbindAlias', <String, dynamic>{'alias': alias});
     } else {
-      _channel.invokeMethod('unbindAlias',<String,dynamic>{'alias':alias,'aSn':sn,'isSelf':isSelf});
+      _channel.invokeMethod('unbindAlias',
+          <String, dynamic>{'alias': alias, 'aSn': sn, 'isSelf': isSelf});
     }
   }
 
   void setBadge(int badge) {
-    if(Platform.isAndroid) {
-
+    if (Platform.isAndroid) {
     } else {
-      _channel.invokeMethod('setBadge',<String,dynamic>{'badge':badge});
+      _channel.invokeMethod('setBadge', <String, dynamic>{'badge': badge});
     }
   }
 
   void resetBadge() {
-    if(Platform.isAndroid) {
-
-    } else {
-      _channel.invokeMethod('resetBadge');
-    }
+    _channel.invokeMethod('resetBadge');
   }
-   
-  void setLocalBadge(int badge) {
-    if(Platform.isAndroid) {
 
-    } else {
-      _channel.invokeMethod('setLocalBadge',<String,dynamic>{'badge':badge});
-    }
+  void setLocalBadge(int badge) {
+    _channel.invokeMethod('setLocalBadge', <String, dynamic>{'badge': badge});
   }
 
   void setTag(List<dynamic> tags) {
-    _channel.invokeMethod('setTag',<String,dynamic>{'tags':tags});
+    _channel.invokeMethod('setTag', <String, dynamic>{'tags': tags});
   }
 
   void addEventHandler({
@@ -118,7 +110,6 @@ class Getuiflut {
     EventHandlerMap onReceiveMessageData,
     EventHandlerMap onNotificationMessageArrived,
     EventHandlerMap onNotificationMessageClicked,
-
 
     //deviceToken
     EventHandler onRegisterDeviceToken,
@@ -145,8 +136,7 @@ class Getuiflut {
     EventHandlerMap onWillPresentNotification,
     // ios收到APNs通知设置跳转回调
     EventHandlerMap onOpenSettingsForNotification,
-
-  }){
+  }) {
     _onReceiveClientId = onReceiveClientId;
     _onRegisterDeviceToken = onRegisterDeviceToken;
     _onRegisterVoipToken = onRegisterVoipToken;
@@ -169,12 +159,12 @@ class Getuiflut {
     _onQueryTagResult = onQueryTagResult;
     _onWillPresentNotification = onWillPresentNotification;
     _onOpenSettingsForNotification = onOpenSettingsForNotification;
-  
+
     _channel.setMethodCallHandler(_handleMethod);
   }
 
   Future<Null> _handleMethod(MethodCall call) async {
-    switch(call.method) {
+    switch (call.method) {
       case "onReceiveClientId":
         print('onReceiveClientId' + call.arguments);
         return _onReceiveClientId(call.arguments);
@@ -182,36 +172,40 @@ class Getuiflut {
       case "onReceiveMessageData":
         return _onReceiveMessageData(call.arguments.cast<String, dynamic>());
       case "onNotificationMessageArrived":
-        return _onNotificationMessageArrived(call.arguments.cast<String, dynamic>());
+        return _onNotificationMessageArrived(
+            call.arguments.cast<String, dynamic>());
       case "onNotificationMessageClicked":
-        return _onNotificationMessageClicked(call.arguments.cast<String, dynamic>());
+        return _onNotificationMessageClicked(
+            call.arguments.cast<String, dynamic>());
       case "onRegisterDeviceToken":
         return _onRegisterDeviceToken(call.arguments);
       case "onReceivePayload":
         return _onReceivePayload(call.arguments.cast<String, dynamic>());
       case "onReceiveNotificationResponse":
-        return _onReceiveNotificationResponse(call.arguments.cast<String, dynamic>());
+        return _onReceiveNotificationResponse(
+            call.arguments.cast<String, dynamic>());
       case "onAppLinkPayload":
         return _onAppLinkPayload(call.arguments);
       case "onRegisterVoipToken":
         return _onRegisterVoipToken(call.arguments);
       case "onReceiveVoipPayLoad":
         return _onReceiveVoipPayLoad(call.arguments.cast<String, dynamic>());
-        
+
       case "onPushModeResult":
         return _onPushModeResult(call.arguments.cast<String, dynamic>());
       case "onSetTagResult":
         return _onSetTagResult(call.arguments.cast<String, dynamic>());
       case "onAliasResult":
         return _onAliasResult(call.arguments.cast<String, dynamic>());
-      
+
       case "onWillPresentNotification":
-        return _onWillPresentNotification(call.arguments.cast<String, dynamic>());
+        return _onWillPresentNotification(
+            call.arguments.cast<String, dynamic>());
       case "onOpenSettingsForNotification":
-        return _onOpenSettingsForNotification(call.arguments.cast<String, dynamic>());
+        return _onOpenSettingsForNotification(
+            call.arguments.cast<String, dynamic>());
       case "onQueryTagResult":
         return _onQueryTagResult(call.arguments.cast<String, dynamic>());
-
 
       default:
         throw new UnsupportedError("Unrecongnized Event");
@@ -224,11 +218,8 @@ class Getuiflut {
     String appId,
     String appKey,
     String appSecret,
-
   }) {
-    _channel.invokeMethod('startSdk',{'appId':appId, 'appKey':appKey, 'appSecret':appSecret});
+    _channel.invokeMethod(
+        'startSdk', {'appId': appId, 'appKey': appKey, 'appSecret': appSecret});
   }
-
-
-
 }

@@ -74,6 +74,7 @@ class _ReportLevel1PageState extends BaseWidgetState<ReportLevel1Page>
     super.dispose();
   }
 
+  int risk_count = 0;
   _getDatas() {
     Map<String, dynamic> map = new HashMap();
 
@@ -97,10 +98,17 @@ class _ReportLevel1PageState extends BaseWidgetState<ReportLevel1Page>
           if (null != element["group"]) {
             tabs.add(ReportListModel.fromJson(element));
           } else {
-            list.add(ReportDataList.fromJson(element));
+            var reportDataList = ReportDataList.fromJson(element);
+            list.add(reportDataList);
+            if (null != reportDataList.tag && reportDataList.tag == "1") {
+              ///计算需关注的个数
+              risk_count += 1;
+            }
           }
         });
+
         if (tabs.length > 0) {
+          risk_count = widget.summaryModel.risk_count;
           _tabController = TabController(vsync: this, length: tabs.length);
           _tabController.addListener(() {
             if (_tabController.animation?.value == _tabController.index) {
@@ -326,8 +334,11 @@ class _ReportLevel1PageState extends BaseWidgetState<ReportLevel1Page>
         ),
         Row(
           children: [
-            _titletip(Items(color: "green", number: 0, title: "正常")),
-            _titletip(Items(color: "red", number: 0, title: "需关注")),
+            _titletip(Items(
+                color: "green",
+                number: (widget.summaryModel.count - risk_count),
+                title: "正常")),
+            _titletip(Items(color: "red", number: risk_count, title: "需关注")),
           ],
         )
       ],
@@ -358,7 +369,7 @@ class _ReportLevel1PageState extends BaseWidgetState<ReportLevel1Page>
             ),
           ),
           Text(
-            "${item.title} ",
+            "${item.title} ${item.number}",
             style: TextStyle(color: Colors.white, fontSize: 12),
           )
         ],

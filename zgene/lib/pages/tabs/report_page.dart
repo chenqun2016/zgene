@@ -643,9 +643,12 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
 
   _getReport() {
     Map<String, dynamic> map = new HashMap();
+
+    ///有报告的情况
     if (collectors.length > 0) {
       map['serial_num'] = collectors[currentCollector].serialNum;
     } else {
+      ///没报告，请求示例报告
       map['sample'] = type == 6 ? "male" : "female";
     }
     HttpUtils.requestHttp(

@@ -31,7 +31,6 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
   final tabs = ['检测结果', '科学细节'];
   //顶部两种title， 0：图片类型，1：进度条类型
   var topType = 0;
-  String topResult = "";
   var topTextStype = TextStyle(
       color: ColorConstant.Text_5E6F88,
       fontWeight: FontWeight.w600,
@@ -104,7 +103,7 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
       onSuccess: (result) async {
         reportData = ReportListDetailModel.fromJson(result);
         pageWidgetTitle = reportData.chname;
-        topResult = reportData.explain;
+
         setState(() {});
 
         switch (widget.id) {
@@ -114,9 +113,10 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
           case "yingyangxuqiu": //营养需求
           case "yundongjianshen": //运动健身
             topType = 1;
+            des = reportData.explain;
             break;
 
-          case "jibingshaicha": //疾病筛查 肿瘤报告 TODO
+          case "jibingshaicha": //疾病筛查 肿瘤报告 TODO 未携带
           case "jiankangfengxian": //健康风险
           case "pifuguanli": //皮肤管理
             if (reportData.conclusion == "高风险") {
@@ -154,14 +154,35 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
               SingleChildScrollView(
                 controller: listeningController,
                 physics: BouncingScrollPhysics(),
-                child: Stack(
-                  children: [
-                    //TODO 两种 title
-                    if (topType == 0) _buildTitle(),
-                    if (topType == 1) _buildTitle2(),
-                    _buildPersistentHeaderList(),
-                  ],
-                ),
+                child: LayoutBuilder(builder: (context, size) {
+                  final painter = TextPainter(
+                    text: TextSpan(text: des, style: topTextStype),
+                    maxLines: 3,
+                    textDirection: TextDirection.ltr,
+                    locale: Localizations.maybeLocaleOf(context),
+                  );
+                  if (topType == 0)
+                    painter.layout(maxWidth: size.maxWidth - 60);
+                  else
+                    painter.layout(maxWidth: size.maxWidth - 80);
+
+                  if (topType == 1)
+                    persistentHeaderTopMargin = 120 + painter.height;
+                  else
+                    persistentHeaderTopMargin = 100 + painter.height;
+
+                  print("height== ${painter.height}");
+                  print(
+                      "persistentHeaderTopMargin== ${persistentHeaderTopMargin}");
+                  return Stack(
+                    children: [
+                      //TODO 两种 title
+                      if (topType == 0) _buildTitle(),
+                      if (topType == 1) _buildTitle2(),
+                      _buildList(),
+                    ],
+                  );
+                }),
               ),
               if (canFixedHeadShow) _buildfixedHeader(),
             ],
@@ -178,25 +199,6 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
         ),
       ),
       child: _buildTabBar);
-
-  Widget _buildPersistentHeaderList() {
-    if (topType == 0) return _buildList();
-    return LayoutBuilder(builder: (context, size) {
-      final painter = TextPainter(
-        text: TextSpan(text: topResult, style: topTextStype),
-        maxLines: 3,
-        textDirection: TextDirection.ltr,
-      );
-      painter.layout(maxWidth: size.maxWidth);
-      // if (painter.didExceedMaxLines) persistentHeaderTopMargin = 160;
-      // painter.maxLines = 2;
-      // painter.layout(maxWidth: size.maxWidth);
-      // if (painter.didExceedMaxLines) persistentHeaderTopMargin = 180;
-      print("height== ${painter.height}");
-      persistentHeaderTopMargin = 148 + painter.height - 21;
-      return _buildList();
-    });
-  }
 
   Widget _buildList() => Container(
       margin:
@@ -291,13 +293,13 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
   Widget _buildTitle() {
     return Container(
       width: double.infinity,
-      height: 168,
+      height: persistentHeaderTopMargin + 25,
       decoration: BoxDecoration(
           image: DecorationImage(
         image: bg,
         fit: BoxFit.fill,
       )),
-      padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+      padding: EdgeInsets.fromLTRB(10, 15, 10, 0),
       margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
       child: _titleContent,
     );
@@ -341,7 +343,7 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
 
     return Container(
       width: double.infinity,
-      height: 168,
+      height: persistentHeaderTopMargin,
       decoration: BoxDecoration(
         color: Colors.white60,
         border: Border.all(
@@ -484,7 +486,7 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
           Expanded(
               child: Container(
             margin: EdgeInsets.only(top: 12),
-            padding: EdgeInsets.only(left: 24, right: 24),
+            padding: EdgeInsets.only(left: 20, right: 20),
             alignment: Alignment.topCenter,
             width: double.infinity,
             decoration: BoxDecoration(

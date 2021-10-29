@@ -20,6 +20,12 @@ import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/umeng_utils.dart';
 
+///7 : 女    6：男
+var genderType = 7;
+
+///当前选中的 采集器编号
+var currentSerialNum;
+
 ///首页报告
 class ReportPage extends BaseWidget {
   String id;
@@ -39,9 +45,6 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
 
   int jingxuan = 15;
 
-  ///7 : 女    6：男
-  var type = 7;
-
   //顶部渐变
   double appBarAlphas = 0;
 
@@ -60,14 +63,14 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
         {StatisticsConstant.KEY_UMENG_L2: StatisticsConstant.TAB3_REPORT_IMP});
 
     if (null != widget.id) {
-      type = int.parse(widget.id);
+      genderType = int.parse(widget.id);
     }
     bus.on("ReportPage", (arg) {
       if (null != arg) {
         int argType = int.parse(arg);
-        if (type != argType) {
+        if (genderType != argType) {
           setState(() {
-            type = argType;
+            genderType = argType;
             _getReport();
           });
         }
@@ -145,72 +148,81 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
     );
   }
 
+  List jinxuanDatas = [1, 2, 3];
   Widget get _topBanner {
-    return Text("精选报告");
-    // return Container(
-    //   child: Column(
-    //     crossAxisAlignment: CrossAxisAlignment.start,
-    //     children: [
-    //       Padding(
-    //         padding: EdgeInsets.only(left: 15, top: 24, right: 15, bottom: 10),
-    //         child: Text(
-    //           snapshot.data.archives[0].category.categoryName,
-    //           style: TextStyle(
-    //             fontSize: 18.sp,
-    //             fontStyle: FontStyle.normal,
-    //             fontWeight: FontWeight.bold,
-    //             color: ColorConstant.TextMainBlack,
-    //           ),
-    //         ),
-    //       ),
-    //       Container(
-    //         height: 168,
-    //         padding: EdgeInsets.only(left: 15),
-    //         child: Swiper(
-    //           itemCount: snapshot.data.archives.length,
-    //           autoplay: true,
-    //           loop: false,
-    //           containerWidth: double.infinity,
-    //           itemWidth: 343,
-    //           itemHeight: 168,
-    //           itemBuilder: (BuildContext context, int index) {
-    //             var bean = snapshot.data.archives[index];
-    //             return GestureDetector(
-    //               onTap: () {
-    //                 CommonUtils.toUrl(
-    //                     context: context,
-    //                     type: bean.linkType,
-    //                     url: bean.linkUrl);
-    //               },
-    //               child: Container(
-    //                 padding: EdgeInsets.only(right: 15),
-    //                 child: CachedNetworkImage(
-    //                   // 图片地址
-    //                   imageUrl: CommonUtils.splicingUrl(bean.imageUrl),
-    //                   // 填充方式为cover
-    //                   fit: BoxFit.fill,
-    //                   errorWidget: (context, url, error) => new Container(
-    //                     child: new Image.asset(
-    //                       'assets/images/home/img_default2.png',
-    //                       fit: BoxFit.fill,
-    //                     ),
-    //                   ),
-    //                 ),
-    //               ),
-    //             );
-    //           },
-    //         ),
-    //       ),
-    //     ],
-    //   ),
-    // );
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(left: 15, top: 24, right: 15, bottom: 10),
+          child: Text(
+            "精选报告",
+            style: TextStyle(
+              fontSize: 18.sp,
+              fontStyle: FontStyle.normal,
+              fontWeight: FontWeight.bold,
+              color: ColorConstant.TextMainBlack,
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 152.h,
+          child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              physics: BouncingScrollPhysics(),
+              shrinkWrap: true,
+              padding: EdgeInsets.zero,
+              itemCount: jinxuanDatas.length,
+              itemBuilder: (BuildContext context, int index) {
+                var bean = jinxuanDatas[index];
+                return GestureDetector(
+                  onTap: () {
+                    // CommonUtils.toUrl(
+                    //     context: context,
+                    //     type: bean.linkType,
+                    //     url: bean.linkUrl);
+                  },
+                  child: Container(
+                    width: 310.w,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(20),
+                      ),
+                    ),
+                    margin: index == jinxuanDatas.length - 1
+                        ? EdgeInsets.only(left: 16, right: 16)
+                        : EdgeInsets.only(left: 16),
+                    child: CachedNetworkImage(
+                      width: 310.w,
+                      // 设置根据宽度计算高度
+                      height: 152.h,
+                      // 图片地址
+                      imageUrl: CommonUtils.splicingUrl(
+                          "/uploads/2021/1020/fcf6303ab69afa61.jpg"),
+                      // 填充方式为cover
+                      fit: BoxFit.fill,
+
+                      errorWidget: (context, url, error) => new Container(
+                        child: new Image.asset(
+                          'assets/images/home/img_default2.png',
+                          width: 310.w,
+                          height: 152.h,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              }),
+        ),
+      ],
+    );
   }
 
   Widget _items() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // _topBanner,
+        _topBanner,
         Padding(
           padding: EdgeInsets.only(left: 16, top: 24),
           child: Text(
@@ -246,10 +258,13 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
   Widget _item(ReportSummaryModel bean) {
     return GestureDetector(
       onTap: () {
+        if ("更多报告" == bean.name) {
+          return;
+        }
         NavigatorUtil.push(
             context,
             ReportLevel1Page(
-              type: type == 6 ? "male" : "female",
+              type: genderType == 6 ? "male" : "female",
               id: bean.code,
               summaryModel: bean,
               serialNum: collectors.length > 0
@@ -278,7 +293,9 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
                     fontSize: 14.sp,
                     fontStyle: FontStyle.normal,
                     fontWeight: FontWeight.w600,
-                    color: ColorConstant.TextMainBlack,
+                    color: "更多报告" == bean.name
+                        ? ColorConstant.Text_8E9AB
+                        : ColorConstant.TextMainBlack,
                   ),
                 ),
                 Divider(
@@ -288,7 +305,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
                 Padding(
                   padding: const EdgeInsets.only(left: 2.0),
                   child: Text(
-                    "共${bean.count}项",
+                    "更多报告" == bean.name ? "等待解锁" : "共${bean.count}项",
                     style: TextStyle(
                       fontSize: 12.sp,
                       fontStyle: FontStyle.normal,
@@ -328,7 +345,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "此示例报告[标准/${type == 7 ? "女" : "男"}]，请以真实检测数据为准。",
+              "此示例报告[标准/${genderType == 7 ? "女" : "男"}]，请以真实检测数据为准。",
               style: TextStyle(
                   fontSize: 13,
                   color: ColorConstant.TextMainColor,
@@ -453,9 +470,9 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
               ),
               GestureDetector(
                 onTap: () {
-                  if (type == 7) {
+                  if (genderType == 7) {
                     setState(() {
-                      type = 6;
+                      genderType = 6;
                     });
                     _getReport();
                   }
@@ -482,9 +499,9 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
               ),
               GestureDetector(
                 onTap: () {
-                  if (type == 6) {
+                  if (genderType == 6) {
                     setState(() {
-                      type = 7;
+                      genderType = 7;
                     });
                     _getReport();
                   }
@@ -647,10 +664,11 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
 
     ///有报告的情况
     if (collectors.length > 0) {
-      map['serial_num'] = collectors[currentCollector].serialNum;
+      currentSerialNum = collectors[currentCollector].serialNum;
+      map['serial_num'] = currentSerialNum;
     } else {
       ///没报告，请求示例报告
-      map['sample'] = type == 6 ? "male" : "female";
+      map['sample'] = genderType == 6 ? "male" : "female";
     }
     HttpUtils.requestHttp(
       ApiConstant.reportSummary,

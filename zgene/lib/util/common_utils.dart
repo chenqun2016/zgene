@@ -196,14 +196,19 @@ class CommonUtils {
           }
           Uri uri = Uri.dataFromString(url);
           Map<String, String> params = uri.queryParameters;
-          var id = params['id'];
-          if (id == null) {
+          if (params == null || params.length <= 0) {
             print(123);
             Navigator.of(context).pushNamed(url);
-          } else {
+          } else if (params.length == 1 && params.containsKey('id')) {
+            var id = params['id'];
             print(456);
             Navigator.of(context).pushNamed(url.split("?")[0], arguments: id);
+          } else {
+            print(789);
+            Navigator.of(context)
+                .pushNamed(url.split("?")[0], arguments: params);
           }
+
           break;
         case 3:
           NavigatorUtil.push(context, VideoPage(linkUrl: url));
@@ -275,15 +280,18 @@ class CommonUtils {
           }
           Uri uri = Uri.dataFromString(url);
           Map<String, String> params = uri.queryParameters;
-          var id = params['id'];
-          if (id == null) {
+          if (params == null || params.length <= 0) {
             print(123);
-            // Navigator.of(context).pushNamed(url);
             Global.navigatorKey.currentState.pushNamed(url);
-          } else {
+          } else if (params.length == 1 && params.containsKey('id')) {
+            var id = params['id'];
             print(456);
             Global.navigatorKey.currentState
                 .pushNamed(url.split("?")[0], arguments: id);
+          } else {
+            print(789);
+            Global.navigatorKey.currentState
+                .pushNamed(url.split("?")[0], arguments: params);
           }
           break;
         case 3:

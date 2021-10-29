@@ -9,17 +9,13 @@ import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/report_list_detail_model.dart';
 import 'package:zgene/pages/report/item/report_result.dart';
 import 'package:zgene/pages/report/item/report_sciencedetail.dart';
+import 'package:zgene/pages/tabs/report_page.dart';
 import 'package:zgene/util/base_widget.dart';
+import 'package:zgene/widget/progress_page.dart';
 
 ///报告详情页
 class ReportLevel2Page extends BaseWidget {
-  final String id;
-  final String itemid;
-  String serialNum;
-  final String type;
-
-  ReportLevel2Page({Key key, this.id, this.itemid, this.serialNum, this.type})
-      : super(key: key);
+  ReportLevel2Page({Key key}) : super(key: key);
 
   @override
   BaseWidgetState<ReportLevel2Page> getState() => _ReportLevel2PageState();
@@ -73,8 +69,6 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
           listeningController?.jumpTo(persistentHeaderTopMargin + 4);
       }
     });
-
-    _getDatas();
   }
 
   @override
@@ -86,15 +80,17 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
   String des = "";
   String title = "";
   AssetImage bg = AssetImage("assets/images/report/img_jieguo_0.png");
-  _getDatas() {
+  _getDatas(BuildContext context) {
     Map<String, dynamic> map = new HashMap();
-
-    map['itemid'] = widget.itemid;
-    map['id'] = widget.id;
-    if (widget.serialNum != null) {
-      map['serial_num'] = widget.serialNum;
+    var arguments = ModalRoute.of(context).settings.arguments;
+    if (null != arguments && arguments is Map) {
+      map['itemid'] = arguments['itemid'];
+      map['id'] = arguments['id'];
+    }
+    if (currentSerialNum != null) {
+      map['serial_num'] = currentSerialNum;
     } else {
-      map['sample'] = widget.type;
+      map['sample'] = genderType == 6 ? "male" : "female";
     }
 
     HttpUtils.requestHttp(
@@ -105,7 +101,7 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
         reportData = ReportListDetailModel.fromJson(result);
         pageWidgetTitle = reportData.chname;
 
-        switch (widget.id) {
+        switch (map['id']) {
           case "jibingshaicha": //疾病筛查 肿瘤报告 TODO 未携带
             tabs = ['检测结果', '科学细节'];
             continue next;
@@ -154,9 +150,14 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
     );
   }
 
+  bool firstGetData = true;
   Widget viewPageBody(BuildContext context) {
+    if (firstGetData) {
+      firstGetData = false;
+      _getDatas(context);
+    }
     return reportData == null
-        ? Text("")
+        ? ProgressPage()
         : Stack(
             children: [
               SingleChildScrollView(

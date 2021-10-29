@@ -7,8 +7,8 @@ import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/report_list_detail_model.dart';
-import 'package:zgene/pages/report/item/my_report_result.dart';
-import 'package:zgene/pages/report/item/my_report_sciencedetail.dart';
+import 'package:zgene/pages/report/item/report_result.dart';
+import 'package:zgene/pages/report/item/report_sciencedetail.dart';
 import 'package:zgene/util/base_widget.dart';
 
 ///报告详情页
@@ -292,14 +292,14 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
         );
 
   ///检测结果
-  Widget get _getMyReportResult => MyReportResult(
+  Widget get _getMyReportResult => ReportResult(
         reportData: reportData,
         topType: topType,
       );
 
   ///科学细节
   Widget get _getMyReportScienceDetail =>
-      MyReportScienceDetail(reportData: reportData);
+      ReportScienceDetail(reportData: reportData);
 
   Widget _buildTitle() {
     return Container(

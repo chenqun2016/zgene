@@ -11,6 +11,7 @@ import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/constant/statistics_constant.dart';
 import 'package:zgene/event/event_bus.dart';
 import 'package:zgene/http/http_utils.dart';
+import 'package:zgene/models/jinxuan_model.dart';
 import 'package:zgene/models/report_page_model.dart';
 import 'package:zgene/models/report_summary_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
@@ -40,6 +41,7 @@ class ReportPage extends BaseWidget {
 
 class _ReportPageState extends BaseWidgetState<ReportPage> {
   List<ReportSummaryModel> categories = [];
+  List<JinxuanModel> jinxuanDatas = [];
   ScrollController _controller = new ScrollController();
   EasyRefreshController _easyController;
 
@@ -148,7 +150,6 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
     );
   }
 
-  List jinxuanDatas = [1, 2, 3];
   Widget get _topBanner {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -177,10 +178,8 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
                 var bean = jinxuanDatas[index];
                 return GestureDetector(
                   onTap: () {
-                    // CommonUtils.toUrl(
-                    //     context: context,
-                    //     type: bean.linkType,
-                    //     url: bean.linkUrl);
+                    CommonUtils.toUrl(
+                        context: context, type: 2, url: bean.router);
                   },
                   child: Container(
                     width: 310.w,
@@ -192,23 +191,61 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
                     margin: index == jinxuanDatas.length - 1
                         ? EdgeInsets.only(left: 16, right: 16)
                         : EdgeInsets.only(left: 16),
-                    child: CachedNetworkImage(
-                      width: 310.w,
-                      // 设置根据宽度计算高度
-                      height: 152.h,
-                      // 图片地址
-                      imageUrl: CommonUtils.splicingUrl(
-                          "/uploads/2021/1020/fcf6303ab69afa61.jpg"),
-                      // 填充方式为cover
-                      fit: BoxFit.fill,
+                    child: Stack(
+                      children: [
+                        PhysicalModel(
+                          clipBehavior: Clip.antiAlias,
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          color: Colors.transparent,
+                          child: CachedNetworkImage(
+                            width: 310.w,
+                            // 设置根据宽度计算高度
+                            height: 152.h,
+                            // 图片地址
+                            imageUrl: CommonUtils.splicingUrl(bean.bgImg),
+                            // 填充方式为cover
+                            fit: BoxFit.fill,
 
-                      errorWidget: (context, url, error) => new Container(
-                        child: new Image.asset(
-                          'assets/images/home/img_default2.png',
-                          width: 310.w,
-                          height: 152.h,
+                            errorWidget: (context, url, error) => new Container(
+                              child: new Image.asset(
+                                'assets/images/home/img_default2.png',
+                                width: 310.w,
+                                height: 152.h,
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
+                        Positioned(
+                            top: 20,
+                            left: 16,
+                            child: Text(bean.title,
+                                style: TextStyle(
+                                  fontSize: 18.sp,
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.bold,
+                                  color: ColorConstant.WhiteColor,
+                                ))),
+                        Positioned(
+                            left: 16,
+                            bottom: 20,
+                            child: Container(
+                              height: 28,
+                              width: 76,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: Colors.white12,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(20),
+                                ),
+                              ),
+                              child: Text("查看报告",
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: ColorConstant.WhiteColor,
+                                  )),
+                            )),
+                      ],
                     ),
                   ),
                 );
@@ -222,7 +259,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _topBanner,
+        if (null != jinxuanDatas && jinxuanDatas.length > 0) _topBanner,
         Padding(
           padding: EdgeInsets.only(left: 16, top: 24),
           child: Text(
@@ -660,6 +697,38 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
   }
 
   _getReport() {
+    _getReportSummary();
+    _getReportJingXuan();
+  }
+
+  _getReportJingXuan() {
+    Map<String, dynamic> map = new HashMap();
+
+    ///有报告的情况
+    if (collectors.length > 0) {
+      currentSerialNum = collectors[currentCollector].serialNum;
+      map['serial_num'] = currentSerialNum;
+    } else {
+      ///没报告，请求示例报告
+      map['sample'] = genderType == 6 ? "male" : "female";
+    }
+    HttpUtils.requestHttp(
+      ApiConstant.reportJinxuan,
+      parameters: map,
+      method: HttpUtils.GET,
+      onSuccess: (result) async {
+        List l = result;
+        jinxuanDatas.clear();
+        l.forEach((element) {
+          jinxuanDatas.add(JinxuanModel.fromJson(element));
+        });
+        setState(() {});
+      },
+      onError: (code, error) {},
+    );
+  }
+
+  _getReportSummary() {
     Map<String, dynamic> map = new HashMap();
 
     ///有报告的情况

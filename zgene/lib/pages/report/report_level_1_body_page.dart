@@ -88,7 +88,7 @@ class _ReportLevel1BodyPageState extends State<ReportLevel1BodyPage> {
             context: context,
             type: 2,
             url: CommonConstant.ROUT_report_detail +
-                "?itemid=${data.itemid}&id=${widget.id}");
+                "?itemid=${data.itemid}&scope=${widget.id}");
       },
       child: Container(
         color: Colors.transparent,

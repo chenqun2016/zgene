@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/widget/base_widget_title.dart';
@@ -225,6 +226,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
       flexibleSpace: AppBarSpace(),
       centerTitle: true,
       actions: AppBarActions(),
+      systemOverlayStyle: SystemUiOverlayStyle.dark,
     );
     if (appBarHeight == null || appBarHeight == 0.0) {
       return _appbar;

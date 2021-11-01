@@ -110,7 +110,8 @@ class ApiConstant {
   static const String reportList = "/api/v2/report/:id/list";
   //首页我的报告
   static const String reportSummary = "/api/v2/report/summary";
-
+  //首页我的报告-精选
+  static const String reportJinxuan = "/api/v2/report/selected/items";
   //基因报告列表
   static const String reports = "/api/v1/gene/reports";
 

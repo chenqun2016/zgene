@@ -85,7 +85,7 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
     var arguments = ModalRoute.of(context).settings.arguments;
     if (null != arguments && arguments is Map) {
       map['itemid'] = arguments['itemid'];
-      map['id'] = arguments['id'];
+      map['id'] = arguments['scope'];
     }
     if (currentSerialNum != null) {
       map['serial_num'] = currentSerialNum;

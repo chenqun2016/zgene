@@ -8,16 +8,16 @@ import 'package:zgene/pages/report/item/report_result_item_text.dart';
 import 'package:zgene/util/ui_uitls.dart';
 
 ///报告详情页：检测结果tab
-class MyReportResult extends StatefulWidget {
+class ReportResult extends StatefulWidget {
   ReportListDetailModel reportData;
   int topType;
-  MyReportResult({Key key, this.reportData, this.topType}) : super(key: key);
+  ReportResult({Key key, this.reportData, this.topType}) : super(key: key);
 
   @override
-  _MyReportResultState createState() => _MyReportResultState();
+  _ReportResultState createState() => _ReportResultState();
 }
 
-class _MyReportResultState extends State<MyReportResult>
+class _ReportResultState extends State<ReportResult>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;

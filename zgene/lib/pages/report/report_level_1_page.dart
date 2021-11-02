@@ -13,6 +13,7 @@ import 'package:zgene/models/report_summary_model.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/widget/my_inherited_widget.dart';
+import 'package:zgene/widget/progress_page.dart';
 
 import 'report_level_1_body_page.dart';
 
@@ -235,41 +236,43 @@ class _ReportLevel1PageState extends BaseWidgetState<ReportLevel1Page>
       ),
       child: _getTitleView());
 
-  Widget _buildPersistentHeader() => Container(
-      height: 88,
-      margin: EdgeInsets.only(top: persistentHeaderTopMargin),
-      decoration: BoxDecoration(
-        // color: Color.fromARGB(trans < 150 ? 150 : trans, 255, 255, 255),
-        color: Colors.white60,
-        border: Border.all(
-          color: Colors.white,
-          width: 1,
-        ),
-        borderRadius: BorderRadius.only(
-          // topLeft: Radius.circular(25 * (1 - trans / 255)),
-          // topRight: Radius.circular(25 * (1 - trans / 255)),
-          topLeft: Radius.circular(25),
-          topRight: Radius.circular(25),
-        ),
-      ),
-      child: PhysicalModel(
-        clipBehavior: Clip.antiAlias,
-        borderRadius: BorderRadius.only(
-          // topLeft: Radius.circular(25 * (1 - trans / 255)),
-          // topRight: Radius.circular(25 * (1 - trans / 255)),
-          topLeft: Radius.circular(25),
-          topRight: Radius.circular(25),
-        ),
-        color: Colors.transparent,
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10), //可以看源码
-          child: Container(
-            alignment: Alignment.topLeft,
-            width: double.infinity,
-            child: _getTitleView(),
+  Widget _buildPersistentHeader() => tags.length == 0
+      ? Text("")
+      : Container(
+          height: 88,
+          margin: EdgeInsets.only(top: persistentHeaderTopMargin),
+          decoration: BoxDecoration(
+            // color: Color.fromARGB(trans < 150 ? 150 : trans, 255, 255, 255),
+            color: Colors.white60,
+            border: Border.all(
+              color: Colors.white,
+              width: 1,
+            ),
+            borderRadius: BorderRadius.only(
+              // topLeft: Radius.circular(25 * (1 - trans / 255)),
+              // topRight: Radius.circular(25 * (1 - trans / 255)),
+              topLeft: Radius.circular(25),
+              topRight: Radius.circular(25),
+            ),
           ),
-        ),
-      ));
+          child: PhysicalModel(
+            clipBehavior: Clip.antiAlias,
+            borderRadius: BorderRadius.only(
+              // topLeft: Radius.circular(25 * (1 - trans / 255)),
+              // topRight: Radius.circular(25 * (1 - trans / 255)),
+              topLeft: Radius.circular(25),
+              topRight: Radius.circular(25),
+            ),
+            color: Colors.transparent,
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10), //可以看源码
+              child: Container(
+                alignment: Alignment.topLeft,
+                width: double.infinity,
+                child: _getTitleView(),
+              ),
+            ),
+          ));
 
   Widget _getTitleView() {
     return tabs.length > 0 ? _titleTabView() : _titleView();
@@ -341,7 +344,7 @@ class _ReportLevel1PageState extends BaseWidgetState<ReportLevel1Page>
     }
 
     return tags.length == 0
-        ? Text("")
+        ? ProgressPage()
         : Padding(
             padding: EdgeInsets.only(bottom: bottom),
             child: Container(

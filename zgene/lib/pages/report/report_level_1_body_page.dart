@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/models/report_des_model.dart';
-import 'package:zgene/navigator/navigator_util.dart';
+import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/widget/my_inherited_widget.dart';
-
-import 'report_level_2_page.dart';
 
 class ReportLevel1BodyPage extends StatefulWidget {
   final String id;
@@ -85,14 +84,11 @@ class _ReportLevel1BodyPageState extends State<ReportLevel1BodyPage> {
 
     return GestureDetector(
       onTap: () {
-        NavigatorUtil.push(
-            context,
-            ReportLevel2Page(
-              id: widget.id,
-              itemid: data.itemid,
-              type: widget.type,
-              serialNum: widget.serialNum,
-            ));
+        CommonUtils.toUrl(
+            context: context,
+            type: 2,
+            url: CommonConstant.ROUT_report_detail +
+                "?itemid=${data.itemid}&scope=${widget.id}");
       },
       child: Container(
         color: Colors.transparent,

@@ -5,15 +5,15 @@ import 'package:zgene/models/report_list_detail_model.dart';
 import 'package:zgene/util/sp_utils.dart';
 
 ///报告详情页：科学细节tab
-class MyReportScienceDetail extends StatefulWidget {
+class ReportScienceDetail extends StatefulWidget {
   ReportListDetailModel reportData;
-  MyReportScienceDetail({Key key, this.reportData}) : super(key: key);
+  ReportScienceDetail({Key key, this.reportData}) : super(key: key);
 
   @override
-  _MyReportScienceDetailState createState() => _MyReportScienceDetailState();
+  _ReportScienceDetailState createState() => _ReportScienceDetailState();
 }
 
-class _MyReportScienceDetailState extends State<MyReportScienceDetail>
+class _ReportScienceDetailState extends State<ReportScienceDetail>
     with AutomaticKeepAliveClientMixin {
   List<Gene> data;
   var badList = [];

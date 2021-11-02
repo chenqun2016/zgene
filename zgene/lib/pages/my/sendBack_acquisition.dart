@@ -49,6 +49,7 @@ class _SendBackAcquisitionPageState
 
   String sendBackText = CommonConstant.appReceiveAddress;
   // bool isCanOrder = false;
+  bool isCanTouch = true;
 
   bool get isCanOrder {
     return (_nameController.text.isNotEmpty &&
@@ -929,7 +930,10 @@ class _SendBackAcquisitionPageState
                     borderRadius: BorderRadius.circular(40.h)))),
             onPressed: () {
               if (isCanOrder) {
-                reporHttp();
+                if (isCanTouch) {
+                  isCanTouch = false;
+                  reporHttp();
+                }
               }
             },
             child: Container(
@@ -1033,6 +1037,7 @@ class _SendBackAcquisitionPageState
       parameters: map,
       method: HttpUtils.POST,
       onSuccess: (data) {
+        isCanTouch = true;
         EasyLoading.dismiss();
         showDialog(
             context: context,
@@ -1047,6 +1052,7 @@ class _SendBackAcquisitionPageState
             });
       },
       onError: (code, error) {
+        isCanTouch = true;
         EasyLoading.showError(error ?? "");
       },
     );

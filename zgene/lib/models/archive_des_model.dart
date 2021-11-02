@@ -93,36 +93,41 @@ class Archives {
   String template;
   int linkType;
   String linkUrl;
+  int limitCoin;
+  LimitTime limitTime;
 
-  Archives(
-      {this.id,
-      this.createdAt,
-      this.updatedAt,
-      this.cid,
-      this.chid,
-      this.uid,
-      this.title,
-      this.titleShort,
-      this.description,
-      this.keywords,
-      this.seoUrl,
-      this.imageUrl,
-      this.videoUrl,
-      this.audioUrl,
-      this.source,
-      this.sourceUrl,
-      this.author,
-      this.coin,
-      this.sortRank,
-      this.count,
-      this.countComment,
-      this.countDigg,
-      this.duration,
-      this.tags,
-      this.isTop,
-      this.template,
-      this.linkType,
-      this.linkUrl});
+  Archives({
+    this.id,
+    this.createdAt,
+    this.updatedAt,
+    this.cid,
+    this.chid,
+    this.uid,
+    this.title,
+    this.titleShort,
+    this.description,
+    this.keywords,
+    this.seoUrl,
+    this.imageUrl,
+    this.videoUrl,
+    this.audioUrl,
+    this.source,
+    this.sourceUrl,
+    this.author,
+    this.coin,
+    this.sortRank,
+    this.count,
+    this.countComment,
+    this.countDigg,
+    this.duration,
+    this.tags,
+    this.isTop,
+    this.template,
+    this.linkType,
+    this.linkUrl,
+    this.limitCoin,
+    this.limitTime,
+  });
 
   Archives.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -153,6 +158,8 @@ class Archives {
     template = json['template'];
     linkType = json['link_type'];
     linkUrl = json['link_url'];
+    limitCoin = json['limit_coin'];
+    limitTime = LimitTime.fromJson(json["limit_time"]);
   }
 
   Map<String, dynamic> toJson() {
@@ -185,6 +192,8 @@ class Archives {
     data['template'] = this.template;
     data['link_type'] = this.linkType;
     data['link_url'] = this.linkUrl;
+    data['limit_coin'] = this.limitCoin;
+    data['linklimit_time_url'] = this.limitTime;
     return data;
   }
 }
@@ -220,38 +229,42 @@ class Archive {
   String template;
   int linkType;
   String linkUrl;
-
-  Archive(
-      {this.id,
-      this.createdAt,
-      this.updatedAt,
-      this.cid,
-      this.category,
-      this.chid,
-      this.channel,
-      this.uid,
-      this.title,
-      this.titleShort,
-      this.description,
-      this.keywords,
-      this.seoUrl,
-      this.imageUrl,
-      this.videoUrl,
-      this.audioUrl,
-      this.source,
-      this.sourceUrl,
-      this.author,
-      this.coin,
-      this.sortRank,
-      this.count,
-      this.countComment,
-      this.countDigg,
-      this.duration,
-      this.tags,
-      this.isTop,
-      this.template,
-      this.linkType,
-      this.linkUrl});
+  int limitCoin;
+  LimitTime limitTime;
+  Archive({
+    this.id,
+    this.createdAt,
+    this.updatedAt,
+    this.cid,
+    this.category,
+    this.chid,
+    this.channel,
+    this.uid,
+    this.title,
+    this.titleShort,
+    this.description,
+    this.keywords,
+    this.seoUrl,
+    this.imageUrl,
+    this.videoUrl,
+    this.audioUrl,
+    this.source,
+    this.sourceUrl,
+    this.author,
+    this.coin,
+    this.sortRank,
+    this.count,
+    this.countComment,
+    this.countDigg,
+    this.duration,
+    this.tags,
+    this.isTop,
+    this.template,
+    this.linkType,
+    this.linkUrl,
+    this.limitCoin,
+    this.limitTime,
+  });
 
   Archive.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -292,6 +305,8 @@ class Archive {
     template = json['template'];
     linkType = json['link_type'];
     linkUrl = json['link_url'];
+    limitCoin = json["limit_coin"];
+    limitTime = LimitTime.fromJson(json["limit_time"]);
   }
 
   Map<String, dynamic> toJson() {
@@ -456,6 +471,26 @@ class Channel {
     data['title'] = this.title;
     return data;
   }
+}
+
+class LimitTime {
+  LimitTime({
+    this.start,
+    this.end,
+  });
+
+  int start;
+  int end;
+
+  factory LimitTime.fromJson(Map<String, dynamic> json) => LimitTime(
+        start: json["start"],
+        end: json["end"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "start": start,
+        "end": end,
+      };
 }
 
 class Attachment {

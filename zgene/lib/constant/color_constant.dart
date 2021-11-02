@@ -34,7 +34,7 @@ class ColorConstant {
   static const Color PromptGrayColor = Color(0xFF9DA7B6);
   static const Color TextMainColor = Color(0xFF007AF7);
   static const Color TextMainColor_10per = Color(0x19007AF7);
-
+  static const Color TextRedColor = Color(0xFFFC5052);
   static const Color text_30112950 = Color(0x30112950);
   static const Color text_112950 = Color(0xff112950);
   //文字标准灰
@@ -75,7 +75,7 @@ class ColorConstant {
   static const Color bg_017AF6 = Color(0xFF017AF6);
   static const Color bg_42F5D3 = Color(0xFF42F5D3);
   static const Color bg_FFBE00 = Color(0xFFFFBE00);
-
+  static const Color line_Gray = Color(0xFFEEEEEE);
   static const Color bg_2D3142 = Color(0xFF2D3142);
 
   //透明度50%白色

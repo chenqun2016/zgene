@@ -27,8 +27,9 @@ import '../my/my_address_list.dart';
 
 class OrderingPage extends BaseWidget {
   Archive product;
+  bool isInActivity;
 
-  OrderingPage({Key key, this.product}) : super(key: key);
+  OrderingPage({Key key, this.product, this.isInActivity}) : super(key: key);
 
   @override
   BaseWidgetState<BaseWidget> getState() {
@@ -888,7 +889,10 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text("单价：¥${CommonUtils.formatMoney(widget.product.coin)}",
+                    Text(
+                        widget.isInActivity
+                            ? "单价：¥${CommonUtils.formatMoney(widget.product.limitCoin)}"
+                            : "单价：¥${CommonUtils.formatMoney(widget.product.coin)}",
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -972,7 +976,10 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
                   )),
               Expanded(
                   flex: 1,
-                  child: Text("${CommonUtils.formatMoney(widget.product.coin)}",
+                  child: Text(
+                      widget.isInActivity
+                          ? "${CommonUtils.formatMoney(widget.product.limitCoin)}"
+                          : "${CommonUtils.formatMoney(widget.product.coin)}",
                       style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.w500,
@@ -1011,10 +1018,13 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
 
     Map<String, dynamic> map = new HashMap();
     map['pid'] = widget.product.id;
-    map['price'] = widget.product.coin;
+
+    map['price'] =
+        widget.isInActivity ? widget.product.limitCoin : widget.product.coin;
     map['nums'] = 1;
 
-    map['amounts'] = widget.product.coin;
+    map['amounts'] =
+        widget.isInActivity ? widget.product.limitCoin : widget.product.coin;
     map['rcv_name'] = _nameController.text.toString();
     map['rcv_phone'] = _phoneController.text.toString();
     map['province'] = _initProvince;

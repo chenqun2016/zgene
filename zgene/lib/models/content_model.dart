@@ -1,3 +1,5 @@
+import 'package:zgene/models/archive_des_model.dart';
+
 ///内容model
 class ContentModel {
   List<Archives> _archives;
@@ -64,6 +66,8 @@ class Archives {
   dynamic _tags;
   int _linkType;
   String _linkUrl;
+  int _limitCoin;
+  LimitTime _limitTime;
 
   Archives(
       {int id,
@@ -95,6 +99,8 @@ class Archives {
       bool isTop,
       int linkType,
       String linkUrl,
+      int limitCoin,
+      LimitTime limitTime,
       Null tags}) {
     this._id = id;
     this._createdAt = createdAt;
@@ -126,6 +132,8 @@ class Archives {
     this._tags = tags;
     this._linkType = linkType;
     this._linkUrl = linkUrl;
+    this._limitCoin = limitCoin;
+    this._limitTime = limitTime;
   }
 
   int get id => _id;
@@ -188,6 +196,10 @@ class Archives {
   set linkType(int linkType) => _linkType = linkType;
   String get linkUrl => _linkUrl;
   set linkUrl(String linkUrl) => _linkUrl = linkUrl;
+  int get limitCoin => _limitCoin;
+  set limitCoin(int limitCoin) => _limitCoin = limitCoin;
+  LimitTime get limitTime => _limitTime;
+  set limitTime(LimitTime limitTime) => _limitTime = limitTime;
 
   Archives.fromJson(Map<String, dynamic> json) {
     _id = json['id'];
@@ -223,6 +235,10 @@ class Archives {
     _tags = json['tags'];
     _linkType = json['link_type'];
     _linkUrl = json['link_url'];
+    _limitCoin = json['limit_coin'];
+    _limitTime = json['limit_time'] != null
+        ? new LimitTime.fromJson(json['limit_time'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -260,6 +276,42 @@ class Archives {
     data['is_top'] = this._isTop;
     data['link_type'] = this._linkType;
     data['link_url'] = this._linkUrl;
+    data['limit_coin'] = this._limitCoin;
+
+    if (this._limitTime != null) {
+      data['limit_time'] = this._limitTime.toJson();
+    }
+    return data;
+  }
+}
+
+class LimitTime {
+  int _start;
+  int _end;
+
+  LimitTime({
+    int start,
+    int end,
+  }) {
+    this._start = start;
+    this._end = end;
+  }
+
+  int get start => _start;
+  set(int start) => _start = start;
+  int get end => _end;
+  set end(int end) => _end = end;
+
+  LimitTime.fromJson(Map<String, dynamic> json) {
+    _start = json['start'];
+    _end = json['end'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['start'] = this._start;
+    data['end'] = this._end;
+
     return data;
   }
 }

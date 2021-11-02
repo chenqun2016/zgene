@@ -62,6 +62,7 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
       onSuccess: (result) async {
         EasyLoading.dismiss();
         ContentModel contentModel = ContentModel.fromJson(result);
+        print(result);
         if (null != contentModel &&
             null != contentModel.archives &&
             contentModel.archives.length > 0 &&
@@ -124,6 +125,17 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
   }
 
   Widget getItem(Archives bean) {
+    var isInActivity = false;
+    if (bean.limitTime != null) {
+      var time = bean.limitTime.end;
+      if (time >= DateTime.now().millisecondsSinceEpoch / 1000) {
+        try {
+          isInActivity = true;
+        } catch (e) {
+          isInActivity = false;
+        }
+      }
+    }
     return GestureDetector(
       onTap: () {
         Navigator.of(context).pushNamed(CommonConstant.ROUT_buy_detail,
@@ -172,13 +184,38 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
             Positioned(
               left: 136,
               top: 90,
-              child: Text(
-                "¥${CommonUtils.formatMoney(bean.coin)}",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: ColorConstant.Text_FC4C4E,
-                ),
+              right: 106,
+              child: Row(
+                children: [
+                  Text(
+                    isInActivity
+                        ? "¥${CommonUtils.formatMoney(bean.limitCoin)}"
+                        : "¥${CommonUtils.formatMoney(bean.coin)}",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: ColorConstant.Text_FC4C4E,
+                    ),
+                  ),
+                  Offstage(
+                    offstage: !isInActivity,
+                    child: Container(
+                      margin: EdgeInsets.only(left: 6),
+                      // padding: EdgeInsets.only(left: 6),
+                      child: Text(
+                        "¥${CommonUtils.formatMoney(bean.coin)}",
+                        style: TextStyle(
+                          decoration: TextDecoration.lineThrough,
+                          fontSize: 13,
+                          fontWeight: FontWeight.w400,
+                          overflow: TextOverflow.ellipsis,
+                          color: ColorConstant.Text_8E9AB,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(child: Container())
+                ],
               ),
             ),
             Positioned(

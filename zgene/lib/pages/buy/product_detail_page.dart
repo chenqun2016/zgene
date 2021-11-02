@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:collection';
 import 'dart:ui';
 
@@ -15,6 +16,7 @@ import 'package:zgene/pages/buy/ordering_page.dart';
 import 'package:zgene/pages/home/home_getHttp.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
+import 'package:zgene/util/date_utils.dart';
 import 'package:zgene/util/login_base.dart';
 import 'package:zgene/util/platform_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
@@ -37,8 +39,11 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
 
   List<cm.Archives> _productDetailRecommends;
   Archive stepArchive;
+  bool isInActivity = false;
   List<ArchiveTag> tags;
-
+  String countContent; // 倒计时内容
+  Timer _timer;
+  int seconds = 0;
   var id;
 
   ///商品库存
@@ -71,6 +76,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
       method: HttpUtils.GET,
       onSuccess: (result) async {
         ArchiveDesModel model = ArchiveDesModel.fromJson(result);
+
         setState(() {
           stepArchive = model.archive;
         });
@@ -82,8 +88,37 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
   @override
   void dispose() {
     _controller.dispose();
+    cancelTimer();
     super.dispose();
   }
+
+  void cancelTimer() {
+    if (_timer != null) {
+      _timer.cancel();
+      _timer = null;
+    }
+  }
+
+  void startTimer() {
+    //设置 1 秒回调一次
+    const period = const Duration(seconds: 1);
+    _timer = Timer.periodic(period, (timer) {
+      //更新界面
+      setState(() {
+        //秒数减一，因为一秒回调一次
+        seconds--;
+//        print('我在更新界面>>>>>>>>>>>>>> $seconds');
+      });
+      if (seconds == 0) {
+        //倒计时秒数为0，取消定时器
+        print('我被取消了');
+        cancelTimer();
+        // getData();
+      }
+    });
+  }
+
+  // void getData() async {}
 
   @override
   Future rightBtnTap(BuildContext context) {
@@ -93,7 +128,35 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
 
   void getProductDetail() {
     ArchiveGetHttp(int.parse(id), (result) {
+      print(result);
       ArchiveDesModel model = ArchiveDesModel.fromJson(result);
+      if (model.archive.limitTime != null) {
+        var time = model.archive.limitTime.end;
+        // print(time);
+        // print(CusDateUtils.getFormatDataS(
+        //     timeSamp: time, format: "yyyy-MM-dd HH:mm:ss"));
+        // print(11111111);
+        if (time >= DateTime.now().millisecondsSinceEpoch / 1000) {
+          try {
+            var date = CusDateUtils.getFormatDataS(
+                timeSamp: time, format: "yyyy-MM-dd HH:mm:ss");
+            var _diffDate = DateTime.parse(date.toString());
+            //获取当期时间
+            var now = DateTime.now();
+            var twoHours = _diffDate.difference(now);
+            print(twoHours);
+            //获取总秒数，2 分钟为 120 秒
+            seconds = twoHours.inSeconds;
+            print(seconds);
+            isInActivity = true;
+            startTimer();
+          } catch (e) {
+            seconds = 0;
+            isInActivity = false;
+          }
+        }
+      }
+
       setState(() {
         try {
           _productDetail = model.archive;
@@ -193,7 +256,9 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
                           child: Padding(
                         padding: const EdgeInsets.only(bottom: 1.0),
                         child: Text(
-                          "${CommonUtils.formatMoney(_productDetail.coin)}",
+                          isInActivity
+                              ? "${CommonUtils.formatMoney(_productDetail.limitCoin)}"
+                              : "${CommonUtils.formatMoney(_productDetail.coin)}",
                           style: TextStyle(
                             fontSize: 22.sp,
                             fontStyle: FontStyle.normal,
@@ -221,6 +286,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
                                 context,
                                 OrderingPage(
                                   product: _productDetail,
+                                  isInActivity: isInActivity,
                                 ));
                           },
                           child: Text("立即购买",
@@ -303,7 +369,6 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
     return Container(
       alignment: Alignment.topLeft,
       width: double.infinity,
-      padding: EdgeInsets.fromLTRB(16, 20, 16, 22),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
@@ -315,17 +380,59 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            _productDetail.title,
-            style: TextStyle(
-              fontSize: 22.sp,
-              fontStyle: FontStyle.normal,
-              fontWeight: FontWeight.w600,
-              color: ColorConstant.TextMainBlack,
+          Offstage(
+            offstage: !isInActivity,
+            child: Container(
+              height: 55,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image:
+                      AssetImage("assets/images/buy/icon_buy_detail_top.png"),
+                  fit: BoxFit.fill,
+                ),
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                          margin: EdgeInsets.only(top: 18, left: 16),
+                          height: 20,
+                          child: Image(
+                            image: AssetImage(
+                                "assets/images/report/icon_Take_the_time.png"),
+                          )),
+                      Expanded(child: Container()),
+                      Container(
+                          margin: EdgeInsets.only(top: 18, right: 16),
+                          height: 20,
+                          child: takeTheTimeView())
+                    ],
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 16, left: 0, right: 0),
+                    height: 1,
+                    decoration: BoxDecoration(color: ColorConstant.line_Gray),
+                  )
+                ],
+              ),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 12),
+            padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+            child: Text(
+              _productDetail.title,
+              style: TextStyle(
+                fontSize: 22.sp,
+                fontStyle: FontStyle.normal,
+                fontWeight: FontWeight.w600,
+                color: ColorConstant.TextMainBlack,
+              ),
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: 12, bottom: 10),
+            padding: EdgeInsets.only(top: 12, bottom: 10, left: 16, right: 16),
             child: Text(
               _productDetail.description,
               style: TextStyle(
@@ -336,18 +443,45 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
               ),
             ),
           ),
-          Text(
-            "¥${CommonUtils.formatMoney(_productDetail.coin)}",
-            style: TextStyle(
-              fontSize: 22.sp,
-              fontStyle: FontStyle.normal,
-              fontWeight: FontWeight.w600,
-              color: ColorConstant.Text_FC4C4E,
-            ),
+          Row(
+            children: [
+              Container(
+                padding: EdgeInsets.only(left: 16),
+                child: Text(
+                  isInActivity
+                      ? "¥${CommonUtils.formatMoney(_productDetail.limitCoin)}"
+                      : "¥${CommonUtils.formatMoney(_productDetail.coin)}",
+                  style: TextStyle(
+                    fontSize: 22.sp,
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.w600,
+                    color: ColorConstant.Text_FC4C4E,
+                  ),
+                ),
+              ),
+              Offstage(
+                offstage: !isInActivity,
+                child: Container(
+                  margin: EdgeInsets.only(left: 6, right: 16),
+                  // padding: EdgeInsets.only(left: 6),
+                  child: Text(
+                    "¥${CommonUtils.formatMoney(_productDetail.coin)}",
+                    style: TextStyle(
+                      decoration: TextDecoration.lineThrough,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      overflow: TextOverflow.ellipsis,
+                      color: ColorConstant.Text_8E9AB,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
           if (null != tags)
             Padding(
-              padding: const EdgeInsets.only(top: 12),
+              padding: const EdgeInsets.only(
+                  top: 12, left: 16, right: 16, bottom: 14),
               child: Row(
                 children: tags.map((e) => _tagItem(e)).toList(),
               ),
@@ -355,6 +489,165 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
         ],
       ),
     );
+  }
+
+  Widget takeTheTimeView() {
+    return Container(
+        child: Row(
+      children: [
+        Container(
+          height: 20,
+          // width: 20,
+          child: Center(
+            child: Text(
+              "限时折扣",
+              style: TextStyle(
+                color: ColorConstant.TextRedColor,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.only(left: 5),
+          height: 20,
+          width: 20,
+          decoration: BoxDecoration(
+            color: ColorConstant.TextRedColor,
+            borderRadius: BorderRadius.all(
+              Radius.circular(4),
+            ),
+          ),
+          child: Center(
+            child: Text(
+              TimeUtils.constructTime_day(seconds),
+              style: TextStyle(
+                color: ColorConstant.WhiteColor,
+                fontSize: 13,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
+        ),
+        Container(
+          height: 20,
+          width: 20,
+          child: Center(
+            child: Text(
+              "天",
+              style: TextStyle(
+                color: ColorConstant.TextRedColor,
+                fontSize: 12,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
+        ),
+        Container(
+          height: 20,
+          width: 20,
+          decoration: BoxDecoration(
+            color: ColorConstant.TextRedColor,
+            borderRadius: BorderRadius.all(
+              Radius.circular(4),
+            ),
+          ),
+          child: Center(
+            child: Text(
+              TimeUtils.constructTime_hour(seconds),
+              style: TextStyle(
+                color: ColorConstant.WhiteColor,
+                fontSize: 13,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
+        ),
+        Container(
+          height: 20,
+          width: 20,
+          child: Center(
+            child: Text(
+              "时",
+              style: TextStyle(
+                color: ColorConstant.TextRedColor,
+                fontSize: 12,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
+        ),
+        Container(
+          height: 20,
+          width: 20,
+          decoration: BoxDecoration(
+            color: ColorConstant.TextRedColor,
+            borderRadius: BorderRadius.all(
+              Radius.circular(4),
+            ),
+          ),
+          child: Center(
+            child: Text(
+              TimeUtils.constructTime_minute(seconds),
+              style: TextStyle(
+                color: ColorConstant.WhiteColor,
+                fontSize: 13,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
+        ),
+        Container(
+          height: 20,
+          width: 20,
+          child: Center(
+            child: Text(
+              "分",
+              style: TextStyle(
+                color: ColorConstant.TextRedColor,
+                fontSize: 12,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
+        ),
+        Container(
+          height: 20,
+          width: 20,
+          decoration: BoxDecoration(
+            color: ColorConstant.TextRedColor,
+            borderRadius: BorderRadius.all(
+              Radius.circular(4),
+            ),
+          ),
+          child: Center(
+            child: Text(
+              TimeUtils.constructTime_second(seconds),
+              style: TextStyle(
+                color: ColorConstant.WhiteColor,
+                fontSize: 13,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
+        ),
+        Container(
+          height: 20,
+          width: 20,
+          child: Center(
+            child: Text(
+              "秒",
+              style: TextStyle(
+                color: ColorConstant.TextRedColor,
+                fontSize: 12,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
+        ),
+      ],
+    ));
   }
 
   Widget _tagItem(ArchiveTag tag) {

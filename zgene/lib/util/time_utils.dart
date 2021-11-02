@@ -75,4 +75,85 @@ class TimeUtils {
       return false;
     }
   }
+
+  //时间格式化，根据总秒数转换为对应的 hh:mm:ss 格式
+  static String constructTime(int seconds) {
+    int day = seconds ~/ 3600 ~/ 24;
+    int hour = (seconds - (day * 24 * 3600)) ~/ 3600;
+    int minute = seconds % 3600 ~/ 60;
+    int second = seconds % 60;
+    if (day != 0) {
+      // return '$day天$hour小时$minute分$second秒';
+      return formatTime(day) +
+          '天' +
+          formatTime(hour) +
+          "小时" +
+          formatTime(minute) +
+          "分" +
+          formatTime(second) +
+          "秒";
+    } else if (hour != 0) {
+      // return '00天$hour小时$minute分$second秒';
+      return '00天' +
+          formatTime(hour) +
+          "小时" +
+          formatTime(minute) +
+          "分" +
+          formatTime(second) +
+          "秒";
+    } else if (minute != 0) {
+      // return '00天00小时$minute分$second秒';
+      return "00天00小时" + formatTime(minute) + "分" + formatTime(second) + "秒";
+    } else if (second != 0) {
+      // return '00天00小时00分$second秒';
+      return "00天00小时00分" + formatTime(second) + "秒";
+    } else {
+      return '';
+    }
+  }
+
+  static String constructTime_day(int seconds) {
+    int day = seconds ~/ 3600 ~/ 24;
+    int hour = (seconds - (day * 24 * 3600)) ~/ 3600;
+
+    if (day != 0) {
+      return formatTime(day);
+    } else {
+      return '00';
+    }
+  }
+
+  static String constructTime_hour(int seconds) {
+    int day = seconds ~/ 3600 ~/ 24;
+    int hour = (seconds - (day * 24 * 3600)) ~/ 3600;
+
+    if (hour != 0) {
+      return formatTime(hour);
+    } else {
+      return '00';
+    }
+  }
+
+  static String constructTime_minute(int seconds) {
+    int minute = seconds % 3600 ~/ 60;
+    if (minute != 0) {
+      return formatTime(minute);
+    } else {
+      return '00';
+    }
+  }
+
+  static String constructTime_second(int seconds) {
+    int second = seconds % 60;
+    if (second != 0) {
+      return formatTime(second);
+    } else {
+      return '00';
+    }
+  }
+
+  //数字格式化，将 0~9 的时间转换为 00~09
+  static String formatTime(int timeNum) {
+    return timeNum < 10 ? "0" + timeNum.toString() : timeNum.toString();
+  }
 }

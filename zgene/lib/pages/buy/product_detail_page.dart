@@ -149,93 +149,87 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
         left: 0,
         right: 0,
         bottom: 0,
-        child: ClipRect(
-          clipBehavior: Clip.antiAlias,
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
-            child: Container(
-              height: 89,
-              color: Color(0xf5FFFFFF),
-              width: double.infinity,
-              child: Column(
+        child: Container(
+          height: 89,
+          color: Color(0xf8FFFFFF),
+          width: double.infinity,
+          child: Column(
+            children: [
+              Container(
+                height: 1,
+                color: Color(0xffEBEFF1),
+              ),
+              Expanded(
+                  child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Container(
-                    height: 1,
-                    color: Color(0xffEBEFF1),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 38.0),
+                    child: Text(
+                      "应付：",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: ColorConstant.Text_8E9AB,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 2.0),
+                    child: Text(
+                      "¥",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: ColorConstant.MainBlueColor,
+                      ),
+                    ),
                   ),
                   Expanded(
-                      child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 38.0),
-                        child: Text(
-                          "应付：",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: ColorConstant.Text_8E9AB,
-                          ),
-                        ),
+                      child: Padding(
+                    padding: const EdgeInsets.only(bottom: 1.0),
+                    child: Text(
+                      "${CommonUtils.formatMoney(_productDetail.coin)}",
+                      style: TextStyle(
+                        fontSize: 22.sp,
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.w600,
+                        color: ColorConstant.MainBlueColor,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 2.0),
-                        child: Text(
-                          "¥",
+                    ),
+                  )),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 14.0),
+                    child: MaterialButton(
+                      minWidth: 142.w,
+                      height: 55.h,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(40)),
+                      color: ColorConstant.TextMainColor,
+                      onPressed: () {
+                        if (!SpUtils()
+                            .getStorageDefault(SpConstant.IsLogin, false)) {
+                          BaseLogin.login();
+                          return;
+                        }
+                        NavigatorUtil.push(
+                            context,
+                            OrderingPage(
+                              product: _productDetail,
+                            ));
+                      },
+                      child: Text("立即购买",
                           style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: ColorConstant.MainBlueColor,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                          child: Padding(
-                        padding: const EdgeInsets.only(bottom: 1.0),
-                        child: Text(
-                          "${CommonUtils.formatMoney(_productDetail.coin)}",
-                          style: TextStyle(
-                            fontSize: 22.sp,
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.w600,
-                            color: ColorConstant.MainBlueColor,
-                          ),
-                        ),
-                      )),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 14.0),
-                        child: MaterialButton(
-                          minWidth: 142.w,
-                          height: 55.h,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(40)),
-                          color: ColorConstant.TextMainColor,
-                          onPressed: () {
-                            if (!SpUtils()
-                                .getStorageDefault(SpConstant.IsLogin, false)) {
-                              BaseLogin.login();
-                              return;
-                            }
-                            NavigatorUtil.push(
-                                context,
-                                OrderingPage(
-                                  product: _productDetail,
-                                ));
-                          },
-                          child: Text("立即购买",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              )),
-                        ),
-                      ),
-                    ],
-                  ))
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          )),
+                    ),
+                  ),
                 ],
-              ),
-            ),
+              ))
+            ],
           ),
         ));
   }

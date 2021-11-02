@@ -7,11 +7,9 @@ import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/order_list_model.dart';
-import 'package:zgene/models/order_step_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
-import 'package:zgene/util/refresh_config_utils.dart';
 import 'package:zgene/widget/my_stepper.dart';
 
 class OrderStepPage extends BaseWidget {
@@ -153,11 +151,9 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
           );
         },
       ).toList(),
-      // controlsBuilder: (BuildContext context,
-      //     {VoidCallback onStepContinue, VoidCallback onStepCancel}) {
-      //   return Container();
-      // },
-      
+      controlsBuilder: (BuildContext context, ControlsDetails details) {
+        return Container();
+      },
     );
   }
 

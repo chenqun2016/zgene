@@ -76,6 +76,7 @@ class _ReportRusultItem2State extends State<ReportRusultItem2> {
       backgroundWidth: 9,
       animation: true,
       animationDuration: 1000,
+      startAngle: 0,
       percent: e.rate,
       circularStrokeCap: CircularStrokeCap.round,
       progressColor:
@@ -123,9 +124,9 @@ class _ReportRusultItem2State extends State<ReportRusultItem2> {
               height: 24,
               width: 24,
             ),
-            Expanded(
-                child: Padding(
-              padding: const EdgeInsets.only(left: 15.0, top: 14, bottom: 14),
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: 15.0, top: 14, bottom: 14, right: 10),
               child: Text(
                 "$r%的人",
                 style: TextStyle(
@@ -135,16 +136,18 @@ class _ReportRusultItem2State extends State<ReportRusultItem2> {
                     fontWeight: FontWeight.w400,
                     fontSize: 15),
               ),
-            )),
-            Text(
+            ),
+            Expanded(
+                child: Text(
               e.title,
+              textAlign: TextAlign.right,
               style: TextStyle(
                   color: e.title == "和我一样"
                       ? ColorConstant.MainBlueColor
                       : ColorConstant.Text_5E6F88,
                   fontWeight: FontWeight.w400,
                   fontSize: 15),
-            )
+            ))
           ],
         ),
       ],

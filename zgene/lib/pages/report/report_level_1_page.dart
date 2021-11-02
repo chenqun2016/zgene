@@ -345,25 +345,23 @@ class _ReportLevel1PageState extends BaseWidgetState<ReportLevel1Page>
 
     return tags.length == 0
         ? ProgressPage()
-        : Padding(
+        : Container(
             padding: EdgeInsets.only(bottom: bottom),
-            child: Container(
-              margin: EdgeInsets.only(top: 220),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                ),
+            margin: EdgeInsets.only(top: 220),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
               ),
-              child: MyInheritedWidget(
-                data: list,
-                child: ReportLevel1BodyPage(
-                  id: widget.id,
-                  serialNum: widget.serialNum,
-                  type: widget.type,
-                  tags: tags,
-                ),
+            ),
+            child: MyInheritedWidget(
+              data: list,
+              child: ReportLevel1BodyPage(
+                id: widget.id,
+                serialNum: widget.serialNum,
+                type: widget.type,
+                tags: tags,
               ),
             ),
           );

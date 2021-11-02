@@ -218,7 +218,10 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
                         Positioned(
                             top: 20,
                             left: 16,
+                            width: 180,
                             child: Text(bean.title,
+                                maxLines: 3,
+                                overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   fontSize: 18.sp,
                                   fontStyle: FontStyle.normal,

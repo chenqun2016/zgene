@@ -124,8 +124,14 @@ class CommonUtils {
   ///跳转采集引导页
   static toCollectionGuide(BuildContext context, {bool pop}) {
     if (null != pop && pop) {
-      Navigator.of(context)
-          .popAndPushNamed("/article_detail", arguments: "9528267533900");
+      int index = 0;
+      Navigator.of(context).pushNamedAndRemoveUntil("/article_detail", (route) {
+        index++;
+        if (index <= 2) {
+          return false;
+        }
+        return true;
+      }, arguments: "9528267533900");
     } else {
       Navigator.of(context)
           .pushNamed("/article_detail", arguments: "9528267533900");

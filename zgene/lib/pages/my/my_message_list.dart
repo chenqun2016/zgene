@@ -1,4 +1,5 @@
 import 'dart:collection';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
@@ -7,11 +8,9 @@ import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/http/http_utils.dart';
-import 'package:zgene/models/content_model.dart';
 import 'package:zgene/models/message_model.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/date_utils.dart';
-import 'package:zgene/util/refresh_config_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 
 ///我的消息列表
@@ -266,12 +265,11 @@ class _MyMessagePageState extends State<MyMessagePage> {
   Widget get _listView {
     return Container(
       margin: EdgeInsets.only(top: 16),
-      height: MediaQuery.of(context).size.height - 270.h,
       child: ListView.builder(
         itemCount: list.length,
         shrinkWrap: true,
         padding: EdgeInsets.all(0),
-        physics: ScrollPhysics(),
+        physics: NeverScrollableScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
           var content = list[index].content;
           print(index);
@@ -307,23 +305,19 @@ class _MyMessagePageState extends State<MyMessagePage> {
                           children: [
                             Offstage(
                               offstage: list[index].isRead != 1 ? false : true,
-                              child: Positioned(
-                                child: Text("• ",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: ColorConstant.MainRed,
-                                      fontWeight: FontWeight.w500,
-                                    )),
-                              ),
-                            ),
-                            Positioned(
-                              child: Text(content.title,
+                              child: Text("• ",
                                   style: TextStyle(
                                     fontSize: 16,
-                                    color: ColorConstant.TextMainBlack,
+                                    color: ColorConstant.MainRed,
                                     fontWeight: FontWeight.w500,
                                   )),
-                            )
+                            ),
+                            Text(content.title,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: ColorConstant.TextMainBlack,
+                                  fontWeight: FontWeight.w500,
+                                ))
                           ],
                         ),
                         Positioned(

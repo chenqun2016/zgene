@@ -256,6 +256,11 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
           height: 50,
         );
     }
+    if (model.title2 == "") {
+      return Container(
+        height: 50,
+      );
+    }
     return MaterialButton(
       height: 39,
       elevation: 0,

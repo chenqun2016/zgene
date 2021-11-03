@@ -179,6 +179,7 @@ class _VideoNavState extends State<VideoNav>
             children: [
               Text(
                 archives.title,
+                maxLines: 3,
                 style: TextStyle(
                     fontSize: 16,
                     color: index % 2 == 0

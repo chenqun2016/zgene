@@ -45,7 +45,7 @@ class _ReportRusultItem2State extends State<ReportRusultItem2> {
       backgroundWidth: 14,
       animation: true,
       animationDuration: 1000,
-      percent: progress,
+      percent: (progress > 0.95 && progress < 1) ? 0.95 : progress,
       circularStrokeCap: CircularStrokeCap.round,
       progressColor: UiUitls.getColor(index),
       backgroundColor: Colors.transparent,
@@ -77,7 +77,7 @@ class _ReportRusultItem2State extends State<ReportRusultItem2> {
       animation: true,
       animationDuration: 1000,
       startAngle: 0,
-      percent: e.rate,
+      percent: (e.rate > 0.95 && e.rate < 1) ? 0.95 : e.rate,
       circularStrokeCap: CircularStrokeCap.round,
       progressColor:
           data.length <= 3 ? UiUitls.getColor3(index) : UiUitls.getColor(index),

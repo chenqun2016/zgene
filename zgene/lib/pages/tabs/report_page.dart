@@ -55,6 +55,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
   @override
   void dispose() {
     bus.off("ReportPage");
+    bus.off("ReportPageRefush");
     _controller.dispose();
     super.dispose();
   }
@@ -76,6 +77,11 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
             _getReport();
           });
         }
+      }
+    });
+    bus.on("ReportPageRefush", (arg) {
+      if (null != arg) {
+        _getCollector();
       }
     });
 
@@ -116,35 +122,33 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
         _appBar,
         if (collectors.length <= 0) _tip,
         Expanded(
-          // child: EasyRefresh(
-          //   // 是否开启控制结束加载
-          //   enableControlFinishLoad: false,
-          //   firstRefresh: true,
-          //   // 控制器
-          //   bottomBouncing: false,
-          //   controller: _easyController,
-          //   header: RefreshConfigUtils.classicalHeader(),
-          child: SingleChildScrollView(
-            controller: _controller,
-            physics: BouncingScrollPhysics(),
-            padding: EdgeInsets.fromLTRB(0, 0, 0, 100),
-            child: _items(),
+          child: EasyRefresh(
+            // 是否开启控制结束加载
+            enableControlFinishLoad: false,
+            firstRefresh: true,
+            // 控制器
+            bottomBouncing: false,
+            controller: _easyController,
+            header: BallPulseHeader(),
+            child: SingleChildScrollView(
+              controller: _controller,
+              physics: BouncingScrollPhysics(),
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 100),
+              child: _items(),
+            ),
+            //   //下拉刷新事件回调
+            onRefresh: () async {
+              // page = 1;
+              // // 获取数据
+              _getCollector();
+              // await Future.delayed(Duration(seconds: 1), () {
+              // 重置刷新状态 【没错，这里用的是resetLoadState】
+              if (_easyController != null) {
+                _easyController.resetLoadState();
+              }
+              // });
+            },
           ),
-          //   //下拉刷新事件回调
-          //   onRefresh: () async {
-          //     // page = 1;
-          //     // // 获取数据
-          //     cache.clear();
-          //     _getReport();
-          //     _getOwnerReport();
-          //     // await Future.delayed(Duration(seconds: 1), () {
-          //     // 重置刷新状态 【没错，这里用的是resetLoadState】
-          //     if (_easyController != null) {
-          //       _easyController.resetLoadState();
-          //     }
-          //     // });
-          //   },
-          // ),
         ),
       ]),
     );
@@ -495,70 +499,118 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
               topRight: Radius.circular(20), topLeft: Radius.circular(20))),
       builder: (BuildContext context) {
         return Container(
-          padding: EdgeInsets.only(left: 22, top: 20, right: 22),
           height: 230,
           width: double.infinity,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                "切换检测人",
-                style: TextStyle(
-                    fontSize: 18,
-                    color: ColorConstant.TextMainBlack,
-                    fontWeight: FontWeight.w600),
-              ),
-              GestureDetector(
-                onTap: () {
-                  if (genderType == 7) {
-                    setState(() {
-                      genderType = 6;
-                    });
-                    _getReport();
-                  }
-                  Navigator.of(context).pop();
-                },
-                child: Container(
-                  height: 60,
-                  color: Colors.transparent,
-                  margin: EdgeInsets.only(top: 10),
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                  child: Text(
-                    "标准/男",
-                    style: TextStyle(
-                        fontSize: 18,
-                        color: ColorConstant.TextMainBlack,
-                        fontWeight: FontWeight.w600),
-                  ),
+              Padding(
+                padding: const EdgeInsets.only(top: 15.0, bottom: 15),
+                child: Text(
+                  "切换报告",
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: ColorConstant.TextMainBlack,
+                      fontWeight: FontWeight.w600),
                 ),
               ),
-              Divider(
-                height: 1,
-                color: ColorConstant.Divider,
-              ),
-              GestureDetector(
-                onTap: () {
-                  if (genderType == 6) {
-                    setState(() {
-                      genderType = 7;
-                    });
-                    _getReport();
-                  }
-                  Navigator.of(context).pop();
-                },
-                child: Container(
-                    height: 60,
-                    color: Colors.transparent,
-                    width: double.infinity,
-                    alignment: Alignment.center,
-                    child: Text(
-                      "标准/女",
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: ColorConstant.TextMainBlack,
-                          fontWeight: FontWeight.w600),
-                    )),
+              Container(
+                margin: EdgeInsets.only(left: 16, right: 16),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(colors: [
+                    Color(0xFFEDF3F6),
+                    Color(0xFFEBEFF1).withAlpha(1),
+                  ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(16),
+                      topRight: Radius.circular(16)),
+                ),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        if (genderType == 7) {
+                          setState(() {
+                            genderType = 6;
+                          });
+                          _getReport();
+                        }
+                        Navigator.of(context).pop();
+                      },
+                      child: Container(
+                        height: 60,
+                        color: Colors.transparent,
+                        margin: EdgeInsets.only(top: 10),
+                        width: double.infinity,
+                        alignment: Alignment.center,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "标准/男",
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  color: genderType == 6
+                                      ? ColorConstant.TextMainColor
+                                      : ColorConstant.TextMainBlack,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            if (genderType == 6)
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 8.0, top: 2),
+                                child: Icon(
+                                  Icons.check_circle,
+                                  size: 20,
+                                  color: ColorConstant.TextMainColor,
+                                ),
+                              )
+                          ],
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        if (genderType == 6) {
+                          setState(() {
+                            genderType = 7;
+                          });
+                          _getReport();
+                        }
+                        Navigator.of(context).pop();
+                      },
+                      child: Container(
+                          height: 60,
+                          color: Colors.transparent,
+                          width: double.infinity,
+                          alignment: Alignment.center,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "标准/女",
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color: genderType == 7
+                                        ? ColorConstant.TextMainColor
+                                        : ColorConstant.TextMainBlack,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              if (genderType == 7)
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 8.0, top: 2),
+                                  child: Icon(
+                                    Icons.check_circle,
+                                    size: 20,
+                                    color: ColorConstant.TextMainColor,
+                                  ),
+                                )
+                            ],
+                          )),
+                    )
+                  ],
+                ),
               )
             ],
           ),

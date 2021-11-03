@@ -50,6 +50,8 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
   //顶部渐变
   double appBarAlphas = 0;
 
+  var serialNumFromRemote;
+
   ///采集器序列号
 
   @override
@@ -81,7 +83,8 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
     });
     bus.on("ReportPageRefush", (arg) {
       if (null != arg) {
-        _getReport(serialNum: arg);
+        serialNumFromRemote = arg;
+        _getReport();
       }
     });
 
@@ -674,6 +677,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
                         onTap: () {
                           Navigator.of(ctx).pop();
                           currentCollector = index;
+                          serialNumFromRemote = null;
                           _getReport();
                         },
                         child: Container(
@@ -752,16 +756,16 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
     }
   }
 
-  _getReport({String serialNum}) {
-    _getReportSummary(serialNum: serialNum);
-    _getReportJingXuan(serialNum: serialNum);
+  _getReport() {
+    _getReportSummary();
+    _getReportJingXuan();
   }
 
-  _getReportJingXuan({String serialNum}) {
+  _getReportJingXuan() {
     Map<String, dynamic> map = new HashMap();
 
-    if (null != serialNum) {
-      map['serial_num'] = serialNum;
+    if (null != serialNumFromRemote) {
+      map['serial_num'] = serialNumFromRemote;
     } else {
       ///有报告的情况
       if (collectors.length > 0) {
@@ -789,11 +793,11 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
     );
   }
 
-  _getReportSummary({String serialNum}) {
+  _getReportSummary() {
     Map<String, dynamic> map = new HashMap();
 
-    if (null != serialNum) {
-      map['serial_num'] = serialNum;
+    if (null != serialNumFromRemote) {
+      map['serial_num'] = serialNumFromRemote;
     } else {
       ///有报告的情况
       if (collectors.length > 0) {

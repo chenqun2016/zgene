@@ -63,11 +63,11 @@ class NavigatorUtil {
                   ordNum: _order.collectorInfo.serialNum));
         }
         break;
-      case 60:
+      case 70:
         CommonUtils.toUrl(context: context, url: CommonUtils.URL_REPORT);
         Navigator.popUntil(context, (route) => route.isFirst);
         break;
-      case 70:
+      case 80:
         return NavigatorUtil.push(context, MyReportPage());
     }
     return Future(() => 0);

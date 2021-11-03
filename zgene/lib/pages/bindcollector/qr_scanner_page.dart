@@ -338,8 +338,8 @@ class _QRScannerViewState extends State<QRScannerView>
     setState(() {
       this.controller = controller;
     });
-    controller.scannedDataStream.listen((scanData) {
-      controller.pauseCamera();
+    controller.scannedDataStream.listen((scanData) async {
+      await controller.pauseCamera();
       animationController.stop();
       checkNum(scanData.code.toString());
       print(

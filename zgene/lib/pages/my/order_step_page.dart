@@ -53,7 +53,7 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
         steps = stepMap.values.toList();
         if (order.status < 10) {
           _position = 0;
-        } else if (order.status > 70) {
+        } else if (order.status > 80) {
           _position = steps.length - 1;
         } else {
           _position = stepMap.keys.toList().indexOf(order.status);
@@ -102,6 +102,9 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
         print(data);
         OrderListmodel orderModel = OrderListmodel.fromJson(data);
         order = orderModel;
+        if (order.status == 60) {
+          order.status = 70;
+        }
         _initCurrentPosition();
         setState(() {});
       },

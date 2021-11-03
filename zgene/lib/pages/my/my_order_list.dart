@@ -8,7 +8,6 @@ import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/order_list_model.dart';
-import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/date_utils.dart';
@@ -287,6 +286,7 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
                                     "¥${CommonUtils.formatMoney(bean.price)}",
                                     style: TextStyle(
                                       fontSize: 20,
+                                      fontWeight: FontWeight.w600,
                                       color: Color(0xFF112950),
                                     ),
                                   ),
@@ -342,7 +342,7 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
                           ])),
                     ],
                   ),
-                  if (bean.status == 60)
+                  if (bean.status == 60 || bean.status == 70)
                     Container(
                       alignment: Alignment.center,
                       margin: EdgeInsets.only(top: 15),
@@ -362,32 +362,32 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
                         ),
                       ),
                     ),
-                  if (bean.status >= 20 && bean.status <= 70)
-                    Container(
-                      alignment: Alignment.topRight,
-                      height: 32,
-                      margin: EdgeInsets.only(top: 20),
-                      child: RaisedButton(
-                        color: ColorConstant.TextMainColor,
-                        child: Text(
-                          CommonUtils.getOrderStepType(bean.status),
-                          style: TextStyle(
-                            color: ColorConstant.WhiteColor,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16)),
-                        onPressed: () async {
-                          await NavigatorUtil.orderStepNavigator(
-                              context, bean.status, bean);
-
-                          ///刷新状态
-                          getDatas();
-                        },
-                      ),
-                    ),
+                  // if (bean.status >= 20 && bean.status <= 70)
+                  //   Container(
+                  //     alignment: Alignment.topRight,
+                  //     height: 32,
+                  //     margin: EdgeInsets.only(top: 20),
+                  //     child: RaisedButton(
+                  //       color: ColorConstant.TextMainColor,
+                  //       child: Text(
+                  //         CommonUtils.getOrderStepType(bean.status),
+                  //         style: TextStyle(
+                  //           color: ColorConstant.WhiteColor,
+                  //           fontSize: 14,
+                  //           fontWeight: FontWeight.w500,
+                  //         ),
+                  //       ),
+                  //       shape: RoundedRectangleBorder(
+                  //           borderRadius: BorderRadius.circular(16)),
+                  //       onPressed: () async {
+                  //         await NavigatorUtil.orderStepNavigator(
+                  //             context, bean.status, bean);
+                  //
+                  //         ///刷新状态
+                  //         getDatas();
+                  //       },
+                  //     ),
+                  //   ),
                 ],
               ),
             ),

@@ -42,7 +42,7 @@ class _ReportResultItemTextState extends State<ReportResultItemText> {
   }
 
   bool _isHtml() {
-    return text.startsWith('<') && text.endsWith('>');
+    return text.contains('</');
   }
 
   @override

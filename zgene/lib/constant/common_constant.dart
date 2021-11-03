@@ -6,7 +6,7 @@ class CommonConstant {
   //APP名称
   static const String AppName = "Z基因";
 //APP名称
-  static const String AppVer = "1.0.0";
+  static const String AppVer = "2.0.0";
 //隐私政策
   static const String privacy = BASE_API + "/privacy";
 

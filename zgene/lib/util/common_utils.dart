@@ -364,8 +364,9 @@ class CommonUtils {
       case 50:
         return "待检测";
       case 60:
-        return "待出报告";
       case 70:
+        return "待出报告";
+      case 80:
         return "完成";
     }
     return "";
@@ -382,8 +383,9 @@ class CommonUtils {
       case 50:
         return "物流跟踪";
       case 60:
-        return "查看示例报告";
       case 70:
+        return "查看示例报告";
+      case 80:
         return "查看检测报告";
     }
     return "";
@@ -396,8 +398,8 @@ class CommonUtils {
     30: OrderStepModel("待绑定", "", 30),
     40: OrderStepModel("待回寄", "", 40),
     50: OrderStepModel("待检测", "", 50),
-    60: OrderStepModel("待出报告", "", 60),
-    70: OrderStepModel("完成", "", 70),
+    70: OrderStepModel("待出报告", "", 70),
+    80: OrderStepModel("完成", "", 80),
   };
 
   static var reportMap = {

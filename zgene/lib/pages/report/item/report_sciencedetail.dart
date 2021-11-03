@@ -362,18 +362,21 @@ class _ReportScienceDetailState extends State<ReportScienceDetail>
         children: [
           Positioned(
               left: 15,
+              width: 90,
               child: Text(
                 e.geneName,
+                maxLines: 1,
                 style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                     color: ColorConstant.text_112950),
               )),
           Positioned(
-              left: 0,
-              right: 0,
+              left: 105,
+              right: 105,
               child: Text(
                 e.rs,
+                maxLines: 1,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 14,

@@ -41,14 +41,18 @@ class MyDialog extends Dialog {
                         margin: EdgeInsets.only(top: 90.h),
                         child: Column(
                           children: [
-                            Text(
-                              '${this.title}',
-                              style: TextStyle(
-                                fontSize: 20.sp,
-                                color: ColorConstant.TextMainBlack,
-                                fontWeight: FontWeight.w500,
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 10.0, right: 10),
+                              child: Text(
+                                '${this.title}',
+                                style: TextStyle(
+                                  fontSize: 20.sp,
+                                  color: ColorConstant.TextMainBlack,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                textAlign: TextAlign.center,
                               ),
-                              textAlign: TextAlign.center,
                             ),
                             btnView(context),
                           ],

@@ -113,14 +113,6 @@ class UiUitls {
     //1.暂无数据 2.错误 3.没有网络
     String imageUrl, title;
     switch (type) {
-      case 1: //暂无数据
-        imageUrl = "assets/images/img_no_data.png";
-        if (text == null) {
-          title = "暂无内容";
-        } else {
-          title = text;
-        }
-        break;
       case 2: //错误
         imageUrl = "assets/images/img_error.png";
         if (text == null) {
@@ -133,6 +125,14 @@ class UiUitls {
         imageUrl = "assets/images/img_no_net.png";
         if (text == null) {
           title = "网络出错了，点击我再试试看";
+        } else {
+          title = text;
+        }
+        break;
+      default:
+        imageUrl = "assets/images/img_no_data.png";
+        if (text == null) {
+          title = "暂无内容";
         } else {
           title = text;
         }

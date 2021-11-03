@@ -63,6 +63,10 @@ class _ReportResultItemTextState extends State<ReportResultItemText> {
           return Text(text, maxLines: maxLines, style: style);
         return Stack(
           children: <Widget>[
+            // Html(
+            //   data: text,
+            //   shrinkWrap: true,
+            // ),
             Text(text, maxLines: expand ? 1000 : maxLines, style: style),
             if (!expand)
               Positioned(

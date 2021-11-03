@@ -1,19 +1,17 @@
 import 'dart:collection';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/http/http_utils.dart';
-import 'package:zgene/models/my_report_list_page.dart';
 import 'package:zgene/models/report_page_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/my/acquisition_progress.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
-import 'package:zgene/util/refresh_config_utils.dart';
-import 'package:zgene/widget/base_web.dart';
 
 class MyReportPage extends BaseWidget {
   @override
@@ -135,84 +133,97 @@ class _MyReportPageState extends BaseWidgetState {
           print(CommonUtils.splicingImageId(
               "reportbg/" + bean.collectorBatch.productId.toString()));
           return Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(20)),
-                image: DecorationImage(
-                    image: NetworkImage(CommonUtils.splicingImageId(
-                        "reportbg/" +
-                            bean.collectorBatch.productId.toString())))),
             margin: EdgeInsets.fromLTRB(15, 16, 15, 0),
-            padding: EdgeInsets.fromLTRB(30, 26, 0, 24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Stack(
               children: [
-                Text(
-                  bean.targetName == null ? "" : bean.targetName,
-                  style: TextStyle(
-                      fontSize: 26,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
+                CachedNetworkImage(
+                  width: double.infinity,
+                  // 图片地址
+                  imageUrl: CommonUtils.splicingImageId(
+                      "reportbg/" + bean.collectorBatch.productId.toString()),
+                  // 填充方式为cover
+                  fit: BoxFit.fill,
+                  errorWidget: (context, url, error) => Image.asset(
+                    "assets/images/report/icon_baogao1.png",
+                    fit: BoxFit.fill,
+                  ),
                 ),
-                Text(
-                  bean.collectorBatch.productName != null
-                      ? bean.collectorBatch.productName
-                      : "ZGene检测",
-                  style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
-                ),
-                Divider(
-                  height: 20,
-                  color: Colors.transparent,
-                ),
-                Row(
-                  children: [
-                    Text(
-                      "采集器编号：" + (bean.serialNum == null ? "" : bean.serialNum),
-                      style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Expanded(child: Container()),
-                    Container(
-                      margin: EdgeInsets.only(right: 26),
-                      child: MaterialButton(
-                        height: 32,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(17)),
-                        minWidth: 88,
-                        disabledColor: Colors.white,
-                        color: Colors.white,
-                        onPressed: () {
-                          // NavigatorUtil.push(
-                          //     context,
-                          //     BaseWebView(
-                          //       url: ApiConstant.getPDFH5DetailUrl(bean.id),
-                          //       title: "${bean.targetName}的基因检测报告",
-                          //       isShare: false,
-                          //     ));
-                          NavigatorUtil.push(
-                              context,
-                              acqusitionProgressPage(
-                                id: bean.id == null ? 0 : bean.id,
-                                title: (bean.targetName == null
-                                        ? ""
-                                        : bean.targetName) +
-                                    "的检测进度",
-                              ));
-                        },
-                        child: Text(bean.status == 80 ? "查看报告" : "检测进度",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              color: ColorConstant.TextMainColor,
-                            )),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(30, 26, 0, 24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        bean.targetName == null ? "" : bean.targetName,
+                        style: TextStyle(
+                            fontSize: 26,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
                       ),
-                    ),
-                  ],
-                ),
+                      Text(
+                        bean.collectorBatch.productName != null
+                            ? bean.collectorBatch.productName
+                            : "ZGene检测",
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Divider(
+                        height: 20,
+                        color: Colors.transparent,
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            "采集器编号：" +
+                                (bean.serialNum == null ? "" : bean.serialNum),
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Expanded(child: Container()),
+                          Container(
+                            margin: EdgeInsets.only(right: 26),
+                            child: MaterialButton(
+                              height: 32,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(17)),
+                              minWidth: 88,
+                              disabledColor: Colors.white,
+                              color: Colors.white,
+                              onPressed: () {
+                                // NavigatorUtil.push(
+                                //     context,
+                                //     BaseWebView(
+                                //       url: ApiConstant.getPDFH5DetailUrl(bean.id),
+                                //       title: "${bean.targetName}的基因检测报告",
+                                //       isShare: false,
+                                //     ));
+                                NavigatorUtil.push(
+                                    context,
+                                    acqusitionProgressPage(
+                                      id: bean.id == null ? 0 : bean.id,
+                                      title: (bean.targetName == null
+                                              ? ""
+                                              : bean.targetName) +
+                                          "的检测进度",
+                                    ));
+                              },
+                              child: Text(bean.status == 80 ? "查看报告" : "检测进度",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: ColorConstant.TextMainColor,
+                                  )),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                )
               ],
             ),
           );

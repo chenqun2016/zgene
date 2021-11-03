@@ -276,18 +276,24 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(40)),
                           color: ColorConstant.TextMainColor,
-                          onPressed: () {
+                          onPressed: () async {
                             if (!SpUtils()
                                 .getStorageDefault(SpConstant.IsLogin, false)) {
                               BaseLogin.login();
                               return;
                             }
-                            NavigatorUtil.push(
+                            setState(() {
+                              showPicture = false;
+                            });
+                            await NavigatorUtil.push(
                                 context,
                                 OrderingPage(
                                   product: _productDetail,
                                   isInActivity: isInActivity,
                                 ));
+                            setState(() {
+                              showPicture = true;
+                            });
                           },
                           child: Text("立即购买",
                               style: TextStyle(
@@ -306,6 +312,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
         ));
   }
 
+  var showPicture = true;
   Widget get _listview {
     return SingleChildScrollView(
       child: Column(
@@ -314,7 +321,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
           if (null != _productDetail) _products,
           if (null != stepArchive) _stepView,
           if (null != _productDetailRecommends) _contentList,
-          if (null != _productDetail) _picture,
+          if (null != _productDetail && showPicture) _picture,
         ],
       ),
       controller: _controller,

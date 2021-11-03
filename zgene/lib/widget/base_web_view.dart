@@ -13,7 +13,11 @@ class BasePageWebView extends StatefulWidget {
   _WebViewWidgetState createState() => _WebViewWidgetState();
 }
 
-class _WebViewWidgetState extends State<BasePageWebView> {
+class _WebViewWidgetState extends State<BasePageWebView>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
 // 是否显示加载动画
   double _progress = 0;
   String _url = "";

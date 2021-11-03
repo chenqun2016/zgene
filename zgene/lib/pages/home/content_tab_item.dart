@@ -136,22 +136,22 @@ class _ContentTabItemState extends State<ContentTabItem> {
 
   //短的
   Widget _getItemWidgetType2(Archives item) {
-    return Container(
-      decoration: BoxDecoration(
-          color: ColorConstant.bg_F7F7F8,
-          borderRadius: BorderRadius.all(Radius.circular(14))),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          GestureDetector(
-            onTap: () {
-              CommonUtils.toUrl(
-                  context: context,
-                  type: item.linkType,
-                  url: item.linkUrl,
-                  archives: item);
-            },
-            child: PhysicalModel(
+    return GestureDetector(
+      onTap: () {
+        CommonUtils.toUrl(
+            context: context,
+            type: item.linkType,
+            url: item.linkUrl,
+            archives: item);
+      },
+      child: Container(
+        decoration: BoxDecoration(
+            color: ColorConstant.bg_F7F7F8,
+            borderRadius: BorderRadius.all(Radius.circular(14))),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            PhysicalModel(
               color: Colors.transparent,
               borderRadius: BorderRadius.only(
                   topRight: Radius.circular(14), topLeft: Radius.circular(14)),
@@ -167,32 +167,32 @@ class _ContentTabItemState extends State<ContentTabItem> {
                 errorWidget: (context, url, error) => Text(""),
               ),
             ),
-          ),
-          Container(
-            padding: EdgeInsets.fromLTRB(8, 8, 8, 0),
-            child: Text(
-              item.title,
-              style: TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-                color: ColorConstant.TextMainBlack,
+            Container(
+              padding: EdgeInsets.fromLTRB(8, 8, 8, 0),
+              child: Text(
+                item.title,
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                  color: ColorConstant.TextMainBlack,
+                ),
               ),
             ),
-          ),
-          Expanded(
-              child: Container(
-            margin: EdgeInsets.only(left: 8, bottom: 14),
-            alignment: Alignment.bottomLeft,
-            child: Text(
-              "Z基因App",
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-                color: ColorConstant.Text_5E6F88,
+            Expanded(
+                child: Container(
+              margin: EdgeInsets.only(left: 8, bottom: 14),
+              alignment: Alignment.bottomLeft,
+              child: Text(
+                "Z基因App",
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  color: ColorConstant.Text_5E6F88,
+                ),
               ),
-            ),
-          ))
-        ],
+            ))
+          ],
+        ),
       ),
     );
   }

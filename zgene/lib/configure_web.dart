@@ -28,6 +28,8 @@ void webLogin() {
   }
   // 判断是否在微信Webview内
   CommonConstant.isInWechatWeb = js.context.callMethod('InWechatWeb');
+  CommonConstant.isInWechatMini = js.context.callMethod('InWechatMini');
+
   CommonConstant.wechatWebOpenID =
       js.context.callMethod('GetCookie', ['openid']);
 }

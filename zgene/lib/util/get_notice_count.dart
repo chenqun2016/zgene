@@ -15,6 +15,8 @@ class GetNoticeCount {
       parameters: map,
       method: HttpUtils.GET,
       onSuccess: (result) {
+        print("--------------------------");
+        print(result);
         Getuiflut().setLocalBadge(result);
       },
       onError: (code, error) {

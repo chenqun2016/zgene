@@ -141,7 +141,7 @@ class _MyPageState extends BaseWidgetState<MyPage> {
 
   getNoticeCount() {
     Map<String, dynamic> map = new HashMap();
-    map["noticeType"] = 0;
+    map["notice_type"] = 0;
     HttpUtils.requestHttp(
       ApiConstant.userNoticeCount,
       method: HttpUtils.GET,

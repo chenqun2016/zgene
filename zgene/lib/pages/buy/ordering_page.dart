@@ -13,6 +13,7 @@ import 'package:zgene/configure.dart'
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
+import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/address_list_model.dart';
 import 'package:zgene/models/archive_des_model.dart';
@@ -21,6 +22,7 @@ import 'package:zgene/pages/my/my_order_list.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/platform_utils.dart';
+import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 
 import '../my/my_address_list.dart';
@@ -1050,57 +1052,61 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
     if (PlatformUtils.isWeb && CommonConstant.isInWechatWeb) {
       map['open_id'] = CommonConstant.wechatWebOpenID;
     }
+    if (CommonConstant.isInWechatMini) {
+      map['token'] = SpUtils().getStorageDefault(SpConstant.Token, "");
+      webWeixinPay(json.encode(map));
+    } else {
+      HttpUtils.requestHttp(
+        ApiConstant.ordering,
+        parameters: map,
+        method: HttpUtils.POST,
+        onSuccess: (result) async {
+          EasyLoading.dismiss();
 
-    HttpUtils.requestHttp(
-      ApiConstant.ordering,
-      parameters: map,
-      method: HttpUtils.POST,
-      onSuccess: (result) async {
-        EasyLoading.dismiss();
+          log("ordering result==${result}");
+          if (isWeixinPay) {
+            if (PlatformUtils.isWeb && CommonConstant.isInWechatWeb) {
+              // 微信服务号内支付
+              var parms = json.encode(result);
+              webWeixinPay(parms);
+            } else {
+              // APP内支付
+              payWithWeChat(
+                appId: result['appid'],
+                partnerId: result['partnerid'],
+                prepayId: result['prepayid'],
+                packageValue: result['package'],
+                nonceStr: result['noncestr'],
+                timeStamp: result['timestamp'],
+                sign: result['sign'],
+              );
 
-        log("ordering result==${result}");
-        if (isWeixinPay) {
-          if (PlatformUtils.isWeb && CommonConstant.isInWechatWeb) {
-            // 微信服务号内支付
-            var parms = json.encode(result);
-            webWeixinPay(parms);
+              // 监听支付结果
+              weChatResponseEventHandler.listen((event) async {
+                print(event.errCode);
+                // 支付成功
+                if (event.errCode == 0) {
+                  _toOrder();
+                }
+                // 关闭弹窗
+              });
+            }
           } else {
-            // APP内支付
-            payWithWeChat(
-              appId: result['appid'],
-              partnerId: result['partnerid'],
-              prepayId: result['prepayid'],
-              packageValue: result['package'],
-              nonceStr: result['noncestr'],
-              timeStamp: result['timestamp'],
-              sign: result['sign'],
-            );
+            var aliPay = await tobias.aliPay(result['pay_param']);
 
-            // 监听支付结果
-            weChatResponseEventHandler.listen((event) async {
-              print(event.errCode);
-              // 支付成功
-              if (event.errCode == 0) {
-                _toOrder();
-              }
-              // 关闭弹窗
-            });
+            log("aliPay result==${aliPay}");
+
+            // 支付成功
+            if ('9000' == aliPay['resultStatus']) {
+              _toOrder();
+            }
           }
-        } else {
-          var aliPay = await tobias.aliPay(result['pay_param']);
-
-          log("aliPay result==${aliPay}");
-
-          // 支付成功
-          if ('9000' == aliPay['resultStatus']) {
-            _toOrder();
-          }
-        }
-      },
-      onError: (code, error) {
-        UiUitls.showToast(error);
-      },
-    );
+        },
+        onError: (code, error) {
+          UiUitls.showToast(error);
+        },
+      );
+    }
   }
 
   void _toOrder() {

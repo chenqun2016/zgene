@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'dart:io';
+import 'package:http/http.dart' as http;
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
@@ -594,10 +595,10 @@ class _MyInfoPageState extends State<MyInfoPage> {
   Future getImage(bool isTakePhoto) async {
     Navigator.pop(context);
     try {
-      if(!isTakePhoto && PlatformUtils.isAndroid){
-        bool hasPermission =  await ImageCrop.requestPermissions();
-        print("hasPermission=="+hasPermission.toString());
-        if(!hasPermission){
+      if (!isTakePhoto && PlatformUtils.isAndroid) {
+        bool hasPermission = await ImageCrop.requestPermissions();
+        print("hasPermission==" + hasPermission.toString());
+        if (!hasPermission) {
           EasyLoading.showError("请先去设置打开相册权限。");
           return;
         }
@@ -612,7 +613,11 @@ class _MyInfoPageState extends State<MyInfoPage> {
       } else {
         print("成功了");
 
-        cropImage(File(image.path));
+        if (PlatformUtils.isWeb) {
+          getUserAvatar(File(image.path));
+        } else {
+          cropImage(File(image.path));
+        }
       }
     } catch (e) {
       EasyLoading.showError("请先去设置打开相机或相册权限。");
@@ -627,7 +632,6 @@ class _MyInfoPageState extends State<MyInfoPage> {
       print('上传失败');
     } else {
       getUserAvatar(result);
-
       setState(() {});
     }
   }
@@ -661,12 +665,21 @@ class _MyInfoPageState extends State<MyInfoPage> {
 
   getUserAvatar(File file) async {
     String path = file.path;
+    print("这里来了吗");
     var name = path.substring(path.lastIndexOf("/") + 1, path.length);
-    FormData formData = FormData.fromMap({
-      //文件信息
-      "file": await MultipartFile.fromFile(path, filename: name)
-    });
-
+    FormData formData;
+    if (PlatformUtils.isWeb) {
+      formData = FormData.fromMap({
+        //文件信息
+        // "file": await http.MultipartFile.fromBytes(path,filename: name)
+      });
+    } else {
+      formData = FormData.fromMap({
+        //文件信息
+        "file": await MultipartFile.fromFile(path, filename: name)
+      });
+    }
+    print("这44444");
     HttpUtils.requestHttp(
       ApiConstant.userAvatar,
       parameters: formData,

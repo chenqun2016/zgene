@@ -6,6 +6,7 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
+import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/event/event_bus.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/order_list_model.dart';
@@ -13,9 +14,12 @@ import 'package:zgene/models/order_step_model.dart';
 import 'package:zgene/models/report_detail_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/my/sendBack_acquisition.dart';
+import 'package:zgene/pages/tabs/report_page.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/refresh_config_utils.dart';
+import 'package:zgene/util/sp_utils.dart';
+import 'package:zgene/widget/base_web.dart';
 import 'package:zgene/widget/my_stepper.dart';
 
 import 'my_report_page.dart';
@@ -245,7 +249,7 @@ class _OacqusitionProgressPageState
             Container(
               alignment: Alignment.center,
               margin: EdgeInsets.only(top: 10),
-              padding: EdgeInsets.fromLTRB(0, 7, 0, 7),
+              padding: EdgeInsets.fromLTRB(7, 7, 7, 7),
               decoration: BoxDecoration(
                 color: ColorConstant.Text_5FC88F_10per,
                 borderRadius: BorderRadius.all(
@@ -283,7 +287,7 @@ class _OacqusitionProgressPageState
   }
 
   getRightButton(model, context) {
-    if (model.status <= 30 || (model.status >= 50 && model.status < 80)) {
+    if (model.status <= 30) {
       return Container(
         height: 50,
       );
@@ -321,8 +325,38 @@ class _OacqusitionProgressPageState
                     }
                   }
                   break;
+                case 50:
+                  NavigatorUtil.push(
+                      context,
+                      BaseWebView(
+                        url: ApiConstant.getSFH5DetailUrl(order.order.reSfNo),
+                        title: "物流跟踪",
+                        isShare: false,
+                      ));
+                  break;
+                case 60:
+                  NavigatorUtil.push(
+                      context,
+                      BaseWebView(
+                        url: ApiConstant.getSFH5DetailUrl(order.order.reSfNo),
+                        title: "物流跟踪",
+                        isShare: false,
+                      ));
+                  break;
+                case 70:
+                  NavigatorUtil.push(
+                      context,
+                      BaseWebView(
+                        url: ApiConstant.getSFH5DetailUrl(order.order.reSfNo),
+                        title: "物流跟踪",
+                        isShare: false,
+                      ));
+                  break;
                 case 80:
-                  return NavigatorUtil.push(context, MyReportPage());
+                  bus.emit("ReportPageRefush", order.serialNum);
+                  CommonUtils.toUrl(
+                      context: context, url: CommonUtils.URL_REPORT);
+                  Navigator.of(context).popUntil((route) => route.isFirst);
                   break;
                 default:
               }

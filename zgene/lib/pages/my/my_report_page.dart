@@ -6,6 +6,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/event/event_bus.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/report_page_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
@@ -201,6 +202,9 @@ class _MyReportPageState extends BaseWidgetState {
                                 //       title: "${bean.targetName}的基因检测报告",
                                 //       isShare: false,
                                 //     ));
+                                // if (bean.status == 80) {
+                                //
+                                // } else {
                                 NavigatorUtil.push(
                                     context,
                                     acqusitionProgressPage(
@@ -210,6 +214,7 @@ class _MyReportPageState extends BaseWidgetState {
                                               : bean.targetName) +
                                           "的检测进度",
                                     ));
+                                // }
                               },
                               child: Text(bean.status == 80 ? "查看报告" : "检测进度",
                                   style: TextStyle(

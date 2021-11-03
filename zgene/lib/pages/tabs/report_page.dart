@@ -81,7 +81,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
     });
     bus.on("ReportPageRefush", (arg) {
       if (null != arg) {
-        _getCollector();
+        _getReport(serialNum: arg);
       }
     });
 
@@ -674,6 +674,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
                         onTap: () {
                           Navigator.of(ctx).pop();
                           currentCollector = index;
+                          _getReport();
                         },
                         child: Container(
                           width: double.infinity,
@@ -751,22 +752,27 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
     }
   }
 
-  _getReport() {
-    _getReportSummary();
-    _getReportJingXuan();
+  _getReport({String serialNum}) {
+    _getReportSummary(serialNum: serialNum);
+    _getReportJingXuan(serialNum: serialNum);
   }
 
-  _getReportJingXuan() {
+  _getReportJingXuan({String serialNum}) {
     Map<String, dynamic> map = new HashMap();
 
-    ///有报告的情况
-    if (collectors.length > 0) {
-      currentSerialNum = collectors[currentCollector].serialNum;
-      map['serial_num'] = currentSerialNum;
+    if (null != serialNum) {
+      map['serial_num'] = serialNum;
     } else {
-      ///没报告，请求示例报告
-      map['sample'] = genderType == 6 ? "male" : "female";
+      ///有报告的情况
+      if (collectors.length > 0) {
+        currentSerialNum = collectors[currentCollector].serialNum;
+        map['serial_num'] = currentSerialNum;
+      } else {
+        ///没报告，请求示例报告
+        map['sample'] = genderType == 6 ? "male" : "female";
+      }
     }
+
     HttpUtils.requestHttp(
       ApiConstant.reportJinxuan,
       parameters: map,
@@ -783,17 +789,22 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
     );
   }
 
-  _getReportSummary() {
+  _getReportSummary({String serialNum}) {
     Map<String, dynamic> map = new HashMap();
 
-    ///有报告的情况
-    if (collectors.length > 0) {
-      currentSerialNum = collectors[currentCollector].serialNum;
-      map['serial_num'] = currentSerialNum;
+    if (null != serialNum) {
+      map['serial_num'] = serialNum;
     } else {
-      ///没报告，请求示例报告
-      map['sample'] = genderType == 6 ? "male" : "female";
+      ///有报告的情况
+      if (collectors.length > 0) {
+        currentSerialNum = collectors[currentCollector].serialNum;
+        map['serial_num'] = currentSerialNum;
+      } else {
+        ///没报告，请求示例报告
+        map['sample'] = genderType == 6 ? "male" : "female";
+      }
     }
+
     HttpUtils.requestHttp(
       ApiConstant.reportSummary,
       parameters: map,

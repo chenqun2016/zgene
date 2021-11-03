@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
+import 'package:zgene/event/event_bus.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/pages/my/my_address_list.dart';
 import 'package:zgene/pages/my/show_selectPicker.dart';
@@ -1048,7 +1049,7 @@ class _SendBackAcquisitionPageState
                 tureText: "确认",
               );
             }).then((value) => {
-              if (value) {Navigator.pop(context)}
+              if (value) {Navigator.pop(context, 1)}
             });
       },
       onError: (code, error) {

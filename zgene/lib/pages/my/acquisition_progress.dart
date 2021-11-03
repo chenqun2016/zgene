@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/constant/common_constant.dart';
+import 'package:zgene/event/event_bus.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/order_list_model.dart';
 import 'package:zgene/models/order_step_model.dart';
@@ -49,6 +51,18 @@ class _OacqusitionProgressPageState
     _easyController = EasyRefreshController();
     _initCurrentPosition();
     super.pageWidgetInitState();
+    // bus.on(CommonConstant.refreshACPross, (arg) {
+    //   getHttp();
+    //   _easyController.resetLoadState();
+    // });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    // eventBus.destroy();
+    // bus.off(CommonConstant.refreshACPross);
   }
 
   void _initCurrentPosition() {
@@ -287,12 +301,25 @@ class _OacqusitionProgressPageState
 
               switch (model.status) {
                 case 40:
-                  NavigatorUtil.push(
+                  // NavigatorUtil.push(
+                  //     context,
+                  //     SendBackAcquisitionPage(
+                  //         ordId: order.id,
+                  //         ordName: order.targetName,
+                  //         ordNum: order.serialNum));
+                  final result = await Navigator.push(
                       context,
-                      SendBackAcquisitionPage(
-                          ordId: order.id,
-                          ordName: order.targetName,
-                          ordNum: order.serialNum));
+                      MaterialPageRoute(
+                          builder: (context) => SendBackAcquisitionPage(
+                              ordId: order.id,
+                              ordName: order.targetName,
+                              ordNum: order.serialNum)));
+                  if (result != null) {
+                    getHttp();
+                    if (_easyController != null) {
+                      _easyController.resetLoadState();
+                    }
+                  }
                   break;
                 case 80:
                   return NavigatorUtil.push(context, MyReportPage());

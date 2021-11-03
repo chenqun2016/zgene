@@ -30,7 +30,7 @@ class _QRScannerViewState extends State<QRScannerView>
   QRViewController controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
-  double cutOutTopOffset = 200;
+  double cutOutTopOffset = 160;
   var _image;
   double scanArea = 0;
   Animation<double> animation;
@@ -142,7 +142,7 @@ class _QRScannerViewState extends State<QRScannerView>
                 color: Colors.white70),
           ),
           Divider(
-            height: 55,
+            height: 20,
           ),
           _buildLight(),
           Expanded(

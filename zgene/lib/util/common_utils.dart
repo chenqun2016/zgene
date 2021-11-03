@@ -73,6 +73,8 @@ class CommonUtils {
     if (postion < 0) {
       return t;
     }
+    print("--------------------");
+    print(t);
     if (t.contains(".")) {
       String t1 = t.split(".").last;
       if (t1.length >= postion) {
@@ -104,7 +106,28 @@ class CommonUtils {
 
   // 服务器数据除以1000
   static String formatMoney(int money) {
-    return formartNum(money / 1000, 2);
+    // return formartNum(money / 1000, 2);
+    return subNumberText((money / 1000).toString());
+  }
+
+  static String subNumberText(String result) {
+    if (result == null) {
+      return "";
+    }
+    if (result.contains(".")) {
+      // 是小数
+      while (true) {
+        if (result.substring(result.length - 1, result.length) == '0')
+          result = result.substring(0, result.length - 1);
+        else {
+          if (result.endsWith(".")) {
+            result = result.substring(0, result.length - 1);
+          }
+          break;
+        }
+      }
+    }
+    return result;
   }
 
   static EventBus _eventBus;

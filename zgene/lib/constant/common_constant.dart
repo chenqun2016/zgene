@@ -25,6 +25,8 @@ class CommonConstant {
   //iOSAppId
   static const String refreshMine = "refreshMine";
 
+  //iOSAppId
+  static const String refreshACPross = "refreshACPross";
   //通知
   static const String WxCode = "WxCode";
   static const String WxCodeSet = "WxCodeSet";

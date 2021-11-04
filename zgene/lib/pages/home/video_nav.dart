@@ -6,6 +6,7 @@ import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/home/home_getHttp.dart';
 import 'package:zgene/pages/home/video_page.dart';
 import 'package:zgene/util/common_utils.dart';
+import 'package:zgene/util/screen_utils.dart';
 
 class VideoNav extends StatefulWidget {
   @override
@@ -80,7 +81,8 @@ class _VideoNavState extends State<VideoNav>
                   child: new CachedNetworkImage(
                     // width: 80,
                     // 设置根据宽度计算高度
-                    height: 169,
+                    height:
+                        (169 / 343) * (MediaQuery.of(context).size.width - 30),
                     // 图片地址
                     imageUrl: CommonUtils.splicingUrl(aloneList[0].imageUrl),
                     // 填充方式为cover
@@ -153,7 +155,7 @@ class _VideoNavState extends State<VideoNav>
               archives: archives);
         },
         child: Container(
-          height: 153,
+          height: (153 / 165) * ((MediaQuery.of(context).size.width - 30) / 2),
           margin: EdgeInsets.only(top: 17),
           padding: EdgeInsets.all(20),
           decoration: BoxDecoration(

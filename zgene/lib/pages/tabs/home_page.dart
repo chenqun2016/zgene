@@ -147,13 +147,13 @@ class _HomePageState extends BaseWidgetState<HomePage> {
   Widget get _banner {
     return Container(
       padding: EdgeInsets.only(left: 15, right: 15),
-      height: 168,
+      height: (168 / 343) * (MediaQuery.of(context).size.width - 30),
       child: Swiper(
         itemCount: bannerList.length,
         autoplay: true,
         loop: false,
         itemWidth: double.infinity,
-        itemHeight: 168,
+        itemHeight: (168 / 343) * (MediaQuery.of(context).size.width - 30),
         itemBuilder: (BuildContext context, int index) {
           Archives archives = bannerList[index];
           return GestureDetector(

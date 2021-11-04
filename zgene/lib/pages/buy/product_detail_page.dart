@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/api_constant.dart';
@@ -49,6 +50,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
 
   ///商品库存
   int stock = 0;
+  List images = [];
   var colors = [
     ColorConstant.TextMainColor,
     Color(0xFF25D3B2),
@@ -169,6 +171,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
           _productDetail = model.archive;
           tags = _productDetail.tags;
           stock = model.addon?.stock;
+          images = model.addon?.images;
         } catch (e) {
           print(e);
         }
@@ -321,11 +324,26 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
 
   var showPicture = true;
   Widget get _listview {
+    double h = 348;
+    if (null != tags && tags.length > 0) {
+      h += 20;
+    }
+    if (isInActivity) {
+      h += 55;
+    }
     return SingleChildScrollView(
       child: Column(
         children: [
-          if (null != _productDetail) _banner,
-          if (null != _productDetail) _products,
+          Container(
+            height: h,
+            child: Stack(
+              children: [
+                if (null != images && null != _productDetail) _banner,
+                if (null != _productDetail)
+                  Positioned(top: 186, left: 0, right: 0, child: _products),
+              ],
+            ),
+          ),
           if (null != stepArchive) _stepView,
           if (null != _productDetailRecommends) _contentList,
           if (null != _productDetail && showPicture) _picture,
@@ -338,43 +356,31 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
   }
 
   Widget get _banner {
-    return ClipRect(
-      child: Container(
-        margin: EdgeInsets.only(left: 17, right: 17, top: 10),
-        height: 170,
-        alignment: Alignment.topCenter,
-        child: Hero(
-          tag: _productDetail.id.toString(),
-          child: FadeInImage.assetNetwork(
-              placeholder: 'assets/images/home/img_default2.png',
-              image: CommonUtils.splicingUrl(_productDetail.imageUrl),
-              width: double.infinity,
-              height: 192,
-              fadeInDuration: TimeUtils.fadeInDuration(),
-              fadeOutDuration: TimeUtils.fadeOutDuration(),
-              fit: BoxFit.cover,
-              alignment: Alignment.topCenter,
-              imageErrorBuilder: (context, error, stackTrace) {
-                return Text("");
-              }),
-        ),
-        // new CachedNetworkImage(
-        //   width: 343,
-        //   // 设置根据宽度计算高度
-        //   height: 192,
-        //   // 图片地址
-        //   imageUrl: CommonUtils.splicingUrl(_productDetail.imageUrl),
-        //   // 填充方式为cover
-        //   fit: BoxFit.fill,
-        //
-        //   errorWidget: (context, url, error) => new Container(
-        //     child: new Image.asset(
-        //       'assets/images/home/img_default2.png',
-        //       height: 343,
-        //       width: 192,
-        //     ),
-        //   ),
-        // ),
+    return Container(
+      margin: EdgeInsets.only(left: 17, right: 17, top: 10),
+      height: 192,
+      alignment: Alignment.topCenter,
+      child: Swiper(
+        itemCount: images.length,
+        autoplay: true,
+        loop: false,
+        itemWidth: double.infinity,
+        itemHeight: 192,
+        itemBuilder: (BuildContext context, int index) {
+          return CachedNetworkImage(
+            width: double.infinity,
+            // 设置根据宽度计算高度
+            height: 192,
+            // 图片地址
+            imageUrl: CommonUtils.splicingUrl(images[index]),
+            // 填充方式为cover
+            fit: BoxFit.fill,
+
+            errorWidget: (context, url, error) => Container(),
+          );
+        },
+        pagination:
+            SwiperPagination(margin: const EdgeInsets.fromLTRB(10, 10, 10, 30)),
       ),
     );
   }
@@ -383,6 +389,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
     return Container(
       alignment: Alignment.topLeft,
       width: double.infinity,
+      padding: EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
@@ -689,7 +696,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
   }
 
   Widget get _stepView => Container(
-        margin: EdgeInsets.only(top: 16),
+        margin: EdgeInsets.only(top: 8),
         child: InkWell(
           onTap: () {
             CommonUtils.toUrl(
@@ -716,7 +723,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
     return Container(
       color: Colors.white,
       width: double.infinity,
-      margin: EdgeInsets.only(top: 16),
+      margin: EdgeInsets.only(top: 8),
       child: PlatformUtils.isWeb
           ? CachedNetworkImage(
               width: double.infinity,
@@ -745,7 +752,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
   }
 
   get _contentList => Container(
-        margin: EdgeInsets.only(top: 10),
+        margin: EdgeInsets.only(top: 8),
         color: Colors.white,
         child: ListView.builder(
           itemCount: _productDetailRecommends.length,

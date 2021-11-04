@@ -103,13 +103,23 @@ class _ReportResultState extends State<ReportResult>
 
         ///人群占比
         if (null != widget.reportData.distribution)
-          _buildSliverItem(context, index++, "人群占比",
-              ReportRusultItem2(distribution: widget.reportData.distribution)),
+          _buildSliverItem(
+              context,
+              index++,
+              "人群占比",
+              ReportRusultItem2(
+                distribution: widget.reportData.distribution,
+                tag: widget.reportData.tag,
+              )),
 
         ///人群占比  不同的接口参数
         if (null != distribution)
-          _buildSliverItem(context, index++, "人群占比",
-              ReportRusultItem2(distribution: distribution)),
+          _buildSliverItem(
+              context,
+              index++,
+              "人群占比",
+              ReportRusultItem2(
+                  distribution: distribution, tag: widget.reportData.tag)),
 
         ///疾病报告 ；疾病报告
         if (null != widget.reportData.disDesc)
@@ -263,7 +273,7 @@ class _ReportResultState extends State<ReportResult>
           ),
           Container(
             width: double.infinity,
-            padding: EdgeInsets.all(15),
+            padding: EdgeInsets.only(top: 15, bottom: 15),
             margin: EdgeInsets.only(left: 15, right: 15),
             decoration: BoxDecoration(
               color: Colors.white,

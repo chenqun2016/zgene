@@ -432,7 +432,7 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
                               color: Colors.white,
                               width: 2,
                             ),
-                            color: ColorConstant.bg_42F5D3,
+                            color: ColorConstant.bg_24D780,
                             borderRadius: BorderRadius.all(
                               Radius.circular(8),
                             ),
@@ -451,7 +451,7 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
                           shape: BoxShape.circle,
                           border: Border.all(
                             color: tag == -1
-                                ? ColorConstant.bg_42F5D3
+                                ? ColorConstant.bg_24D780
                                 : (tag == 0
                                     ? ColorConstant.bg_017AF6
                                     : ColorConstant.bg_FD7A7A),
@@ -488,7 +488,7 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
                 Text(
                   "有益",
                   style: TextStyle(
-                      color: ColorConstant.bg_42F5D3,
+                      color: ColorConstant.bg_24D780,
                       fontWeight: FontWeight.w500,
                       fontSize: 12),
                 )

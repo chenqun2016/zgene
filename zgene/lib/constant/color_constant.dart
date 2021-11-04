@@ -77,6 +77,10 @@ class ColorConstant {
   static const Color bg_FFBE00 = Color(0xFFFFBE00);
   static const Color line_Gray = Color(0xFFEEEEEE);
   static const Color bg_2D3142 = Color(0xFF2D3142);
+  static const Color bg_24D780 = Color(0xFF24D780);
+
+  static const Color bg_B57AFD = Color(0xFFB57AFD);
+  static const Color bg_FFDD00 = Color(0xFFFFDD00);
 
   //透明度50%白色
   static const Color WhiteColor7F = Color(0x7FFFFFFF);

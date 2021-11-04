@@ -31,7 +31,7 @@ class _ReportResultItem1State extends State<ReportResultItem1> {
     var space = (maxRisk - minRisk) / 3;
     var color;
     if (risk < space + minRisk) {
-      color = ColorConstant.bg_42F5D3;
+      color = ColorConstant.bg_24D780;
     } else if (risk < space * 2 + minRisk) {
       color = ColorConstant.bg_017AF6;
     } else {
@@ -55,7 +55,7 @@ class _ReportResultItem1State extends State<ReportResultItem1> {
                       color: Colors.white,
                       width: 2,
                     ),
-                    color: ColorConstant.bg_42F5D3,
+                    color: ColorConstant.bg_24D780,
                     borderRadius: BorderRadius.all(
                       Radius.circular(8),
                     ),

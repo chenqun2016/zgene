@@ -499,51 +499,72 @@ class UiUitls {
   }
 
   static String getReportResultCircle(int color) {
-    if (0 == color % 4) {
+    if (0 == color % 6) {
       return "assets/images/report/icon_report_item_green.png";
     }
-    if (1 == color % 4) {
+    if (1 == color % 6) {
       return "assets/images/report/icon_report_item_blue.png";
     }
-    if (2 == color % 4) {
+    if (2 == color % 6) {
       return "assets/images/report/icon_report_item_yellow.png";
     }
-    return "assets/images/report/icon_report_item_red.png";
+    if (3 == color % 6) {
+      return "assets/images/report/icon_report_item_red.png";
+    }
+    if (4 == color % 6) {
+      return "assets/images/report/icon_report_item_zi.png";
+    }
+    if (5 == color % 6) {
+      return "assets/images/report/icon_report_item_orange.png";
+    }
+    return "assets/images/report/icon_report_item_green.png";
   }
 
   static String getReportResultCircle3(int color) {
-    if (0 == color % 4) {
+    if (0 == color % 3) {
       return "assets/images/report/icon_report_item_green.png";
     }
-    if (1 == color % 4) {
+    if (1 == color % 3) {
       return "assets/images/report/icon_report_item_blue.png";
     }
     return "assets/images/report/icon_report_item_red.png";
   }
 
   static Color getColor(int index) {
-    if (0 == index % 4) {
+    if (0 == index % 6) {
       //绿色
-      return ColorConstant.bg_42F5D3;
+      return ColorConstant.bg_24D780;
     }
-    if (1 == index % 4) {
+    if (1 == index % 6) {
       //蓝色
       return ColorConstant.bg_017AF6;
     }
-    if (2 == index % 4) {
+    if (2 == index % 6) {
       //黄色
       return ColorConstant.bg_FFBE00;
     }
-    //橙色
-    return ColorConstant.bg_FD7A7A;
+    if (3 == index % 6) {
+      //黄色
+      return ColorConstant.bg_FD7A7A;
+    }
+    if (4 == index % 6) {
+      //黄色
+      return ColorConstant.bg_B57AFD;
+    }
+    if (5 == index % 6) {
+      //黄色
+      return ColorConstant.bg_FFDD00;
+    }
+    //绿色
+    return ColorConstant.bg_24D780;
   }
 
   static Color getColor3(int index) {
-    if (0 == index % 4) {
+    if (0 == index % 3) {
       //绿色
-      return ColorConstant.bg_42F5D3;
+      return ColorConstant.bg_24D780;
     }
-    if (1 == index % 4) {
+    if (1 == index % 3) {
       //蓝色
       return ColorConstant.bg_017AF6;
     }

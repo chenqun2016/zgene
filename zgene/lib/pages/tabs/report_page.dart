@@ -781,6 +781,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
         ApiConstant.collector_list,
         method: HttpUtils.GET,
         parameters: map,
+        isNeedCache: true,
         onSuccess: (result) async {
           List l = result;
           l.forEach((element) {
@@ -825,6 +826,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
     HttpUtils.requestHttp(
       ApiConstant.reportJinxuan,
       parameters: map,
+      isNeedCache: true,
       method: HttpUtils.GET,
       onSuccess: (result) async {
         List l = result;
@@ -854,6 +856,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
       ApiConstant.reportSummary,
       parameters: map,
       method: HttpUtils.GET,
+      isNeedCache: true,
       onSuccess: (result) async {
         List l = result;
         categories.clear();

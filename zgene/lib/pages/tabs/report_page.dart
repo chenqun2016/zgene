@@ -474,7 +474,8 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
                     ),
                   if (collectors.length > 0)
                     TextSpan(
-                      text: "青春版",
+                      text: _getSerialName(
+                          collectors[currentCollector].serialNum),
                       style: TextStyle(
                         fontSize: 16.sp,
                         fontStyle: FontStyle.normal,
@@ -516,6 +517,19 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
         ],
       ),
     );
+  }
+
+  String _getSerialName(String serialNum) {
+    if (null != serialNum) {
+      var substring = serialNum.substring(0, 1);
+      if ("J" == substring) {
+        return "健康版";
+      }
+      if ("B" == substring) {
+        return "全基因";
+      }
+    }
+    return "青春版";
   }
 
   // 弹出底部菜单列表模态对话框

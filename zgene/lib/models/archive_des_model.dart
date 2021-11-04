@@ -159,7 +159,9 @@ class Archives {
     linkType = json['link_type'];
     linkUrl = json['link_url'];
     limitCoin = json['limit_coin'];
-    limitTime = LimitTime.fromJson(json["limit_time"]);
+    limitTime = json["limit_time"] != null
+        ? LimitTime.fromJson(json["limit_time"])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -306,7 +308,9 @@ class Archive {
     linkType = json['link_type'];
     linkUrl = json['link_url'];
     limitCoin = json["limit_coin"];
-    limitTime = LimitTime.fromJson(json["limit_time"]);
+    limitTime = json["limit_time"] != null
+        ? LimitTime.fromJson(json["limit_time"])
+        : null;
   }
 
   Map<String, dynamic> toJson() {

@@ -695,7 +695,8 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
             CommonUtils.toUrl(
                 context: context,
                 type: stepArchive.linkType,
-                url: stepArchive.linkUrl);
+                url: stepArchive.linkUrl,
+                archives: stepArchive);
           },
           child: CachedNetworkImage(
             width: double.infinity,

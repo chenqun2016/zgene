@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
+import 'package:zgene/event/event_bus.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/archive_des_model.dart';
 import 'package:zgene/models/content_model.dart' as cm;
@@ -89,6 +90,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
   void dispose() {
     _controller.dispose();
     cancelTimer();
+    bus.off("listMustRefresh");
     super.dispose();
   }
 
@@ -114,7 +116,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
         print('我被取消了');
         cancelTimer();
         // getData();
-
+        bus.emit("listMustRefresh");
         getProductDetail();
       }
     });

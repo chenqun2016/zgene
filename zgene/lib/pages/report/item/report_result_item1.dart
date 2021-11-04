@@ -38,149 +38,153 @@ class _ReportResultItem1State extends State<ReportResultItem1> {
       color = ColorConstant.bg_FD7A7A;
     }
 
-    return Column(
-      children: [
-        Container(
-          height: 36,
-          child: Stack(
-            children: [
-              Positioned(
-                top: 24,
-                child: Container(
-                  width: width * 2 / 3,
-                  height: 10,
-                  clipBehavior: Clip.antiAlias,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.white,
-                      width: 2,
-                    ),
-                    color: ColorConstant.bg_24D780,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(8),
-                    ),
-                  ),
-                ),
-              ),
-              Positioned(
+    return Padding(
+      padding: const EdgeInsets.only(left: 15, right: 15),
+      child: Column(
+        children: [
+          Container(
+            height: 36,
+            child: Stack(
+              children: [
+                Positioned(
                   top: 24,
-                  right: 0,
                   child: Container(
                     width: width * 2 / 3,
                     height: 10,
-                    padding: EdgeInsets.zero,
                     clipBehavior: Clip.antiAlias,
                     decoration: BoxDecoration(
                       border: Border.all(
                         color: Colors.white,
                         width: 2,
                       ),
-                      color: ColorConstant.bg_017AF6,
+                      color: ColorConstant.bg_24D780,
                       borderRadius: BorderRadius.all(
                         Radius.circular(8),
                       ),
                     ),
-                  )),
-              Positioned(
-                  top: 24,
-                  right: 0,
-                  child: LayoutBuilder(
-                    builder: (_, zone) {
-                      return Container(
-                        width: width * 1 / 3,
-                        height: 10,
-                        clipBehavior: Clip.antiAlias,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.white,
-                            width: 2,
-                          ),
-                          color: ColorConstant.bg_FD7A7A,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(8),
-                          ),
+                  ),
+                ),
+                Positioned(
+                    top: 24,
+                    right: 0,
+                    child: Container(
+                      width: width * 2 / 3,
+                      height: 10,
+                      padding: EdgeInsets.zero,
+                      clipBehavior: Clip.antiAlias,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.white,
+                          width: 2,
                         ),
-                      );
-                    },
-                  )),
-              Positioned(
-                  left: left,
-                  top: 0,
-                  child: Column(
-                    children: [
-                      ClipPath(
-                        clipper: ShapeBorderClipper(shape: _StarShapeBorder()),
-                        child: Container(
-                          alignment: Alignment.center,
-                          padding: EdgeInsets.fromLTRB(6, 3, 6, 5),
-                          constraints: BoxConstraints(
-                            minWidth: 30,
-                          ),
-                          color: color,
-                          // decoration: BoxDecoration(
-                          //   image: DecorationImage(
-                          //     image: AssetImage(
-                          //         "assets/images/report/icon_qipao.png"),
-                          //     fit: BoxFit.cover,
-                          //   ),
-                          // ),
-                          child: Text(
-                            widget.risk.toString(),
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 10),
-                          ),
+                        color: ColorConstant.bg_017AF6,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(8),
                         ),
                       ),
-                      Container(
-                          height: 14,
-                          width: 14,
-                          margin: EdgeInsets.only(top: 2),
+                    )),
+                Positioned(
+                    top: 24,
+                    right: 0,
+                    child: LayoutBuilder(
+                      builder: (_, zone) {
+                        return Container(
+                          width: width * 1 / 3,
+                          height: 10,
+                          clipBehavior: Clip.antiAlias,
                           decoration: BoxDecoration(
-                            shape: BoxShape.circle,
                             border: Border.all(
-                              color: color,
-                              width: 4,
+                              color: Colors.white,
+                              width: 2,
                             ),
-                            color: ColorConstant.WhiteColor,
-                          ))
-                    ],
-                  ))
-            ],
+                            color: ColorConstant.bg_FD7A7A,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(8),
+                            ),
+                          ),
+                        );
+                      },
+                    )),
+                Positioned(
+                    left: left,
+                    top: 0,
+                    child: Column(
+                      children: [
+                        ClipPath(
+                          clipper:
+                              ShapeBorderClipper(shape: _StarShapeBorder()),
+                          child: Container(
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.fromLTRB(6, 3, 6, 5),
+                            constraints: BoxConstraints(
+                              minWidth: 30,
+                            ),
+                            color: color,
+                            // decoration: BoxDecoration(
+                            //   image: DecorationImage(
+                            //     image: AssetImage(
+                            //         "assets/images/report/icon_qipao.png"),
+                            //     fit: BoxFit.cover,
+                            //   ),
+                            // ),
+                            child: Text(
+                              widget.risk.toString(),
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 10),
+                            ),
+                          ),
+                        ),
+                        Container(
+                            height: 14,
+                            width: 14,
+                            margin: EdgeInsets.only(top: 2),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: color,
+                                width: 4,
+                              ),
+                              color: ColorConstant.WhiteColor,
+                            ))
+                      ],
+                    ))
+              ],
+            ),
           ),
-        ),
-        Divider(
-          height: 10,
-          color: Colors.transparent,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              widget.minRisk.toString(),
-              style: TextStyle(
-                  color: ColorConstant.Text_5E6F88,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14),
-            ),
-            Text(
-              ((widget.minRisk + widget.maxRisk) / 2).toStringAsFixed(3),
-              style: TextStyle(
-                  color: ColorConstant.Text_5E6F88,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14),
-            ),
-            Text(
-              widget.maxRisk.toString(),
-              style: TextStyle(
-                  color: ColorConstant.Text_5E6F88,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14),
-            )
-          ],
-        )
-      ],
+          Divider(
+            height: 10,
+            color: Colors.transparent,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                widget.minRisk.toString(),
+                style: TextStyle(
+                    color: ColorConstant.Text_5E6F88,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14),
+              ),
+              Text(
+                ((widget.minRisk + widget.maxRisk) / 2).toStringAsFixed(3),
+                style: TextStyle(
+                    color: ColorConstant.Text_5E6F88,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14),
+              ),
+              Text(
+                widget.maxRisk.toString(),
+                style: TextStyle(
+                    color: ColorConstant.Text_5E6F88,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14),
+              )
+            ],
+          )
+        ],
+      ),
     );
   }
 }

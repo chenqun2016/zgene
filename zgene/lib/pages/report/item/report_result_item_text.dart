@@ -50,7 +50,7 @@ class _ReportResultItemTextState extends State<ReportResultItemText> {
     return Container(
       width: double.infinity,
       padding: _isHtml() ? EdgeInsets.fromLTRB(5, 0, 5, 0) : EdgeInsets.all(15),
-      margin: EdgeInsets.only(left: 0, right: 0),
+      margin: EdgeInsets.only(left: 15, right: 15),
       decoration: BoxDecoration(
         color: Colors.white,
         gradient: expand ? gradient2 : gradient1,
@@ -79,7 +79,7 @@ class _ReportResultItemTextState extends State<ReportResultItemText> {
                     ),
                   )
                 : SizedBox(
-                    height: 100,
+                    height: 102,
                     child: Html(
                       data: text,
                       shrinkWrap: true,

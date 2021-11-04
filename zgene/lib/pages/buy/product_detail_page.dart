@@ -760,7 +760,10 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
       child: GestureDetector(
         onTap: () {
           CommonUtils.toUrl(
-              context: context, type: item.linkType, url: item.linkUrl);
+              context: context,
+              type: item.linkType,
+              url: item.linkUrl,
+              archives: item);
         },
         child: PhysicalModel(
           color: Colors.transparent,

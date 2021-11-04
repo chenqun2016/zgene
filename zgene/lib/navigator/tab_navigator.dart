@@ -33,7 +33,9 @@ class _TabNavigatorState extends State<TabNavigator> {
       switch (event.type) {
         case 100: //切换tab
           if (event.msg == 2) {
-            reportpage.id = event.arg;
+            reportpage.id = event.arg["id"];
+            reportpage.scope = event.arg["scope"];
+            reportpage.serialNum = event.arg["serialNum"];
             bus.emit("ReportPage", event.arg);
           }
           if (event.msg == 1) {

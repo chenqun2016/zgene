@@ -30,8 +30,9 @@ var currentSerialNum;
 ///首页报告
 class ReportPage extends BaseWidget {
   String id;
-
-  ReportPage({Key key, this.id}) : super(key: key) {
+  String scope;
+  String serialNum;
+  ReportPage({Key key}) : super(key: key) {
     print("ReportPage super  ");
   }
 
@@ -52,12 +53,13 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
 
   var serialNumFromRemote;
 
+  var scope;
+
   ///采集器序列号
 
   @override
   void dispose() {
     bus.off("ReportPage");
-    bus.off("ReportPageRefush");
     _controller.dispose();
     super.dispose();
   }
@@ -66,25 +68,50 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
   void pageWidgetInitState() {
     UmengUtils.onEvent(StatisticsConstant.TAB3_REPORT,
         {StatisticsConstant.KEY_UMENG_L2: StatisticsConstant.TAB3_REPORT_IMP});
-
+    scope = widget.scope;
+    serialNumFromRemote = widget.serialNum;
     if (null != widget.id) {
       genderType = int.parse(widget.id);
     }
     bus.on("ReportPage", (arg) {
       if (null != arg) {
-        int argType = int.parse(arg);
-        if (genderType != argType) {
-          setState(() {
-            genderType = argType;
-            _getReport();
-          });
+        try {
+          var argType = arg["id"];
+          if (null != argType) {
+            argType = int.parse(arg["id"]);
+            if (genderType != argType) {
+              setState(() {
+                genderType = argType;
+                _getReport();
+              });
+            }
+          }
+          var scope = arg["scope"];
+          if (null != scope) {
+            categories.forEach((e) {
+              if (e.code == scope) {
+                NavigatorUtil.push(
+                    context,
+                    ReportLevel1Page(
+                      type: genderType == 6 ? "male" : "female",
+                      id: e.code,
+                      summaryModel: e,
+                      serialNum: collectors.length > 0
+                          ? collectors[currentCollector].serialNum
+                          : null,
+                    ));
+              }
+            });
+          }
+
+          var serialNum = arg["serialNum"];
+          if (null != serialNum) {
+            serialNumFromRemote = serialNum;
+            _getCollector();
+          }
+        } catch (e) {
+          print("数据转化失败" + e);
         }
-      }
-    });
-    bus.on("ReportPageRefush", (arg) {
-      if (null != arg) {
-        serialNumFromRemote = arg;
-        _getReport();
       }
     });
 
@@ -100,8 +127,6 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
     _controller.addListener(() {
       _onScroll(_controller.offset);
     });
-
-    _getCollector();
   }
 
   _onScroll(offset) {
@@ -454,7 +479,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
                         fontSize: 16.sp,
                         fontStyle: FontStyle.normal,
                         fontWeight: FontWeight.bold,
-                        color: ColorConstant.Text_5FC88F,
+                        color: ColorConstant.TextMainColor,
                       ),
                     ),
                 ])),
@@ -677,7 +702,6 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
                         onTap: () {
                           Navigator.of(ctx).pop();
                           currentCollector = index;
-                          serialNumFromRemote = null;
                           _getReport();
                         },
                         child: Container(
@@ -743,6 +767,11 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
             var reportPageModel = ReportPageModel.fromJson(element);
             if (reportPageModel.status == 80) {
               collectors.add(reportPageModel);
+              if (null != serialNumFromRemote &&
+                  serialNumFromRemote == reportPageModel.serialNum) {
+                currentCollector = collectors.indexOf(reportPageModel);
+                serialNumFromRemote = null;
+              }
             }
           });
           _getReport();
@@ -764,17 +793,13 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
   _getReportJingXuan() {
     Map<String, dynamic> map = new HashMap();
 
-    if (null != serialNumFromRemote) {
-      map['serial_num'] = serialNumFromRemote;
+    ///有报告的情况
+    if (collectors.length > 0) {
+      currentSerialNum = collectors[currentCollector].serialNum;
+      map['serial_num'] = currentSerialNum;
     } else {
-      ///有报告的情况
-      if (collectors.length > 0) {
-        currentSerialNum = collectors[currentCollector].serialNum;
-        map['serial_num'] = currentSerialNum;
-      } else {
-        ///没报告，请求示例报告
-        map['sample'] = genderType == 6 ? "male" : "female";
-      }
+      ///没报告，请求示例报告
+      map['sample'] = genderType == 6 ? "male" : "female";
     }
 
     HttpUtils.requestHttp(
@@ -796,17 +821,13 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
   _getReportSummary() {
     Map<String, dynamic> map = new HashMap();
 
-    if (null != serialNumFromRemote) {
-      map['serial_num'] = serialNumFromRemote;
+    ///有报告的情况
+    if (collectors.length > 0) {
+      currentSerialNum = collectors[currentCollector].serialNum;
+      map['serial_num'] = currentSerialNum;
     } else {
-      ///有报告的情况
-      if (collectors.length > 0) {
-        currentSerialNum = collectors[currentCollector].serialNum;
-        map['serial_num'] = currentSerialNum;
-      } else {
-        ///没报告，请求示例报告
-        map['sample'] = genderType == 6 ? "male" : "female";
-      }
+      ///没报告，请求示例报告
+      map['sample'] = genderType == 6 ? "male" : "female";
     }
 
     HttpUtils.requestHttp(
@@ -817,7 +838,21 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
         List l = result;
         categories.clear();
         l.forEach((element) {
-          categories.add(ReportSummaryModel.fromJson(element));
+          var reportSummaryModel = ReportSummaryModel.fromJson(element);
+          categories.add(reportSummaryModel);
+          if (null != scope && scope == reportSummaryModel.code) {
+            scope = null;
+            NavigatorUtil.push(
+                context,
+                ReportLevel1Page(
+                  type: genderType == 6 ? "male" : "female",
+                  id: reportSummaryModel.code,
+                  summaryModel: reportSummaryModel,
+                  serialNum: collectors.length > 0
+                      ? collectors[currentCollector].serialNum
+                      : null,
+                ));
+          }
         });
         setState(() {});
       },

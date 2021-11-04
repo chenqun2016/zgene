@@ -107,13 +107,15 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
       setState(() {
         //秒数减一，因为一秒回调一次
         seconds--;
-//        print('我在更新界面>>>>>>>>>>>>>> $seconds');
+        // print('我在更新界面>>>>>>>>>>>>>> $seconds');
       });
       if (seconds == 0) {
         //倒计时秒数为0，取消定时器
         print('我被取消了');
         cancelTimer();
         // getData();
+
+        getProductDetail();
       }
     });
   }
@@ -131,15 +133,18 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
       print(result);
       ArchiveDesModel model = ArchiveDesModel.fromJson(result);
       if (model.archive.limitTime != null) {
-        var time = model.archive.limitTime.end;
+        var endtime = model.archive.limitTime.end;
+        var starttime = model.archive.limitTime.start;
+
         // print(time);
         // print(CusDateUtils.getFormatDataS(
         //     timeSamp: time, format: "yyyy-MM-dd HH:mm:ss"));
         // print(11111111);
-        if (time >= DateTime.now().millisecondsSinceEpoch / 1000) {
+        if (starttime <= DateTime.now().millisecondsSinceEpoch / 1000 &&
+            endtime >= DateTime.now().millisecondsSinceEpoch / 1000) {
           try {
             var date = CusDateUtils.getFormatDataS(
-                timeSamp: time, format: "yyyy-MM-dd HH:mm:ss");
+                timeSamp: endtime, format: "yyyy-MM-dd HH:mm:ss");
             var _diffDate = DateTime.parse(date.toString());
             //获取当期时间
             var now = DateTime.now();

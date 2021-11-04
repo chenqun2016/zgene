@@ -127,8 +127,11 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
   Widget getItem(Archives bean) {
     var isInActivity = false;
     if (bean.limitTime != null) {
-      var time = bean.limitTime.end;
-      if (time >= DateTime.now().millisecondsSinceEpoch / 1000) {
+      var endtime = bean.limitTime.end;
+      var starttime = bean.limitTime.start;
+
+      if (starttime <= DateTime.now().millisecondsSinceEpoch / 1000 &&
+          endtime >= DateTime.now().millisecondsSinceEpoch / 1000) {
         try {
           isInActivity = true;
         } catch (e) {

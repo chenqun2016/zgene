@@ -354,6 +354,7 @@ class _ReportScienceDetailState extends State<ReportScienceDetail>
   }
 
   Widget _getItem1Item(Gene e) {
+    print(e);
     return Container(
       width: double.infinity,
       height: 40,
@@ -385,24 +386,18 @@ class _ReportScienceDetailState extends State<ReportScienceDetail>
               )),
           Positioned(
               right: 25,
-              child: Text.rich(TextSpan(children: [
-                TextSpan(
-                    text: "C/",
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: e.repute == "bad"
-                            ? ColorConstant.bg_EA4335
-                            : ColorConstant.text_112950)),
-                TextSpan(
-                    text: "C",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14.0,
-                        color: e.repute == "bad"
-                            ? ColorConstant.bg_EA4335
-                            : ColorConstant.text_112950)),
-              ])))
+              width: 80,
+              child: Text(
+                e.geneRef,
+                maxLines: 1,
+                textAlign: TextAlign.right,
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: e.repute == "bad"
+                        ? ColorConstant.bg_EA4335
+                        : ColorConstant.text_112950),
+              ))
         ],
       ),
     );

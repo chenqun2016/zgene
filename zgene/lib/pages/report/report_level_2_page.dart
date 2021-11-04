@@ -342,8 +342,13 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
   ///第二种 title
   Widget _buildTitle2() {
     var width = MediaQuery.of(context).size.width - 80;
+    var tag = 0;
+    try {
+      tag = int.parse(reportData.tag);
+    } catch (e) {
+      print(e);
+    }
 
-    var tag = int.parse(reportData.tag);
     var progress;
     if (tag == -1) {
       progress = width * 83 / 100 - 7;

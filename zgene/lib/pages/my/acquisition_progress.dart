@@ -5,24 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
-import 'package:zgene/constant/common_constant.dart';
-import 'package:zgene/constant/sp_constant.dart';
-import 'package:zgene/event/event_bus.dart';
 import 'package:zgene/http/http_utils.dart';
-import 'package:zgene/models/order_list_model.dart';
-import 'package:zgene/models/order_step_model.dart';
 import 'package:zgene/models/report_detail_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/my/sendBack_acquisition.dart';
-import 'package:zgene/pages/tabs/report_page.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
-import 'package:zgene/util/refresh_config_utils.dart';
-import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/widget/base_web.dart';
 import 'package:zgene/widget/my_stepper.dart';
-
-import 'my_report_page.dart';
 
 class acqusitionProgressPage extends BaseWidget {
   int id;
@@ -353,9 +343,12 @@ class _OacqusitionProgressPageState
                       ));
                   break;
                 case 80:
-                  bus.emit("ReportPageRefush", order.serialNum);
+                  // bus.emit("ReportPageRefush", order.serialNum);
                   CommonUtils.toUrl(
-                      context: context, url: CommonUtils.URL_REPORT);
+                      context: context,
+                      url: CommonUtils.URL_REPORT +
+                          "?serialNum=" +
+                          order.serialNum);
                   Navigator.of(context).popUntil((route) => route.isFirst);
                   break;
                 default:

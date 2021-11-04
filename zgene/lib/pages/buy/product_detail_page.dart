@@ -695,7 +695,8 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
             CommonUtils.toUrl(
                 context: context,
                 type: stepArchive.linkType,
-                url: stepArchive.linkUrl);
+                url: stepArchive.linkUrl,
+                archives: stepArchive);
           },
           child: CachedNetworkImage(
             width: double.infinity,
@@ -767,7 +768,10 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
       child: GestureDetector(
         onTap: () {
           CommonUtils.toUrl(
-              context: context, type: item.linkType, url: item.linkUrl);
+              context: context,
+              type: item.linkType,
+              url: item.linkUrl,
+              archives: item);
         },
         child: PhysicalModel(
           color: Colors.transparent,

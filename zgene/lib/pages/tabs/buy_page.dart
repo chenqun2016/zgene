@@ -53,16 +53,17 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
   }
 
   Future<void> HomeGetHttp() async {
-    bool isNetWorkAvailable = await CommonUtils.isNetWorkAvailable();
-    if (!isNetWorkAvailable) {
-      return;
-    }
+    // bool isNetWorkAvailable = await CommonUtils.isNetWorkAvailable();
+    // if (!isNetWorkAvailable) {
+    //   return;
+    // }
 
     Map<String, dynamic> map = new HashMap();
     map['chid'] = 5;
     HttpUtils.requestHttp(
       ApiConstant.contentList,
       parameters: map,
+      isNeedCache: true,
       method: HttpUtils.GET,
       onSuccess: (result) async {
         EasyLoading.dismiss();
@@ -124,7 +125,7 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
         : ListView(
             shrinkWrap: true,
             physics: BouncingScrollPhysics(),
-            padding: EdgeInsets.only(top: 0, bottom: 80),
+            padding: EdgeInsets.only(top: 0, bottom: 90),
             children: _products?.map((e) => getItem(e))?.toList(),
           );
   }

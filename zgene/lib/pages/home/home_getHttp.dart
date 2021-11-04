@@ -10,7 +10,7 @@ typedef _CallBack = void Function(dynamic result);
 Future<void> HomeGetHttp(int type, _CallBack callback) async {
   bool isNetWorkAvailable = await CommonUtils.isNetWorkAvailable();
   if (!isNetWorkAvailable) {
-    return;
+    //   return;
   }
 
   Map<String, dynamic> map = new HashMap();
@@ -19,6 +19,7 @@ Future<void> HomeGetHttp(int type, _CallBack callback) async {
   HttpUtils.requestHttp(
     ApiConstant.contentList,
     parameters: map,
+    isNeedCache: true,
     method: HttpUtils.GET,
     onSuccess: (result) async {
       if (callback != null) {
@@ -56,13 +57,14 @@ Future<void> CategoriesGetHttp(int type, _CallBack callback) async {
 Future<void> ArchiveGetHttp(var id, _CallBack callback) async {
   bool isNetWorkAvailable = await CommonUtils.isNetWorkAvailable();
   if (!isNetWorkAvailable) {
-    return;
+    // return;
   }
   ;
 
   HttpUtils.requestHttp(
     ApiConstant.contentDetail + "/${id}",
     method: HttpUtils.GET,
+    isNeedCache: true,
     onSuccess: (result) async {
       EasyLoading.dismiss();
       if (callback != null) {

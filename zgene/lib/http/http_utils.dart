@@ -113,12 +113,14 @@ class HttpUtils {
   /// request Get、Post 请/求
   //url 请求链接
   //parameters 请求参数
+  //isNeedCache 是否需要缓存
   //method 请求方式
   //onSuccess 成功回调
   //onError 失败回调
   static void requestHttp(String url,
       {parameters,
       method,
+      isNeedCache = false,
       Function(dynamic t) onSuccess,
       Function(int code, String error) onError}) async {
     parameters = parameters ?? {"": ""};
@@ -126,6 +128,7 @@ class HttpUtils {
 
     intiateHttp(
       method,
+      isNeedCache,
       url,
       parameters: parameters,
       onSuccess: (data) {
@@ -135,6 +138,7 @@ class HttpUtils {
       },
       onError: (code, error) {
         if (null != onError) {
+          // onSuccess(data);
           onError(code, error);
         }
       },
@@ -144,13 +148,15 @@ class HttpUtils {
   ///http请求
   static void intiateHttp<T>(
     String method,
+    bool isNeedCache,
     String url, {
     parameters,
-    Function(T) onSuccess,
+    Interceptor Function(T) onSuccess,
     Function(int code, String error) onError,
   }) async {
     ///定义请求参数
     ///
+
     parameters = parameters ?? {};
     try {
       parameters.forEach((key, value) {
@@ -199,14 +205,20 @@ class HttpUtils {
 
       if (code == 0) {
         onSuccess(result);
+        if (isNeedCache) {
+          SpUtils().setStorage(url + parameters.toString() + "Cache", result);
+        }
       } else {
         onError(code ?? 0, msg ?? "");
       }
       log('响应数据：' + response.toString());
     } catch (e) {
       print('请求出错：' + e.toString());
-      // EasyLoading.showError("网络开小差啦，请稍后重试");
-      // onError(0, e.toString());
+
+      if (isNeedCache) {
+        onSuccess(SpUtils()
+            .getStorageDefault(url + parameters.toString() + "Cache", []));
+      }
     }
   }
 }

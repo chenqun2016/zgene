@@ -99,7 +99,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
             // NotificationCenter.instance
             //     .postNotification(NotificationName.WxCode, code);
             bus.emit(CommonConstant.WxCode, code);
-
             // wxLoginHttp(code);
             // showToast("用户同意授权成功");
           } else if (errCode == -4) {

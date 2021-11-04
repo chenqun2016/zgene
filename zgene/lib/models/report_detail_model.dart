@@ -157,7 +157,7 @@ class Order {
     this.billInfo,
     this.prodInfo,
     this.revAddress,
-    this.sendAddress,
+    // this.sendAddress,
   });
 
   int id;
@@ -184,7 +184,7 @@ class Order {
   BillInfo billInfo;
   ProdInfo prodInfo;
   Address revAddress;
-  Address sendAddress;
+  // Address sendAddress;
 
   factory Order.fromJson(Map<String, dynamic> json) => Order(
         id: json["id"],
@@ -211,7 +211,7 @@ class Order {
         billInfo: BillInfo.fromJson(json["bill_info"]),
         prodInfo: ProdInfo.fromJson(json["prod_info"]),
         revAddress: Address.fromJson(json["rev_address"]),
-        sendAddress: Address.fromJson(json["send_address"]),
+        // sendAddress: Address.fromJson(json["send_address"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -239,7 +239,7 @@ class Order {
         "bill_info": billInfo.toJson(),
         "prod_info": prodInfo.toJson(),
         "rev_address": revAddress.toJson(),
-        "send_address": sendAddress.toJson(),
+        // "send_address": sendAddress.toJson(),
       };
 }
 

@@ -163,17 +163,14 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
             Positioned(
               left: 16,
               top: 16,
-              child: Hero(
-                tag: bean.id.toString(),
-                child: CachedNetworkImage(
-                  width: 104,
-                  // 设置根据宽度计算高度
-                  height: 104,
-                  // 图片地址
-                  imageUrl: CommonUtils.splicingUrl(bean.imageUrl),
-                  // 填充方式为cover
-                  fit: BoxFit.cover,
-                ),
+              child: CachedNetworkImage(
+                width: 104,
+                // 设置根据宽度计算高度
+                height: 104,
+                // 图片地址
+                imageUrl: CommonUtils.splicingUrl(bean.imageUrl),
+                // 填充方式为cover
+                fit: BoxFit.cover,
               ),
             ),
             Positioned(

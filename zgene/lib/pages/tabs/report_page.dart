@@ -7,6 +7,7 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/constant/statistics_constant.dart';
 import 'package:zgene/event/event_bus.dart';
@@ -60,6 +61,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
   @override
   void dispose() {
     bus.off("ReportPage");
+    bus.off(CommonConstant.refreshMine);
     _controller.dispose();
     super.dispose();
   }
@@ -113,6 +115,10 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
           print("数据转化失败" + e);
         }
       }
+    });
+    bus.on(CommonConstant.refreshMine, (event) {
+      print("refreshReport");
+      _getCollector();
     });
 
     super.pageWidgetInitState();
@@ -765,6 +771,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
 
   ///查看是否登录，时候有报告
   void _getCollector() async {
+    collectors.clear();
     if (SpUtils().getStorageDefault(SpConstant.IsLogin, false)) {
       Map<String, dynamic> map = new HashMap();
       map['page'] = 1;
@@ -776,7 +783,6 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
         parameters: map,
         onSuccess: (result) async {
           List l = result;
-          collectors.clear();
           l.forEach((element) {
             var reportPageModel = ReportPageModel.fromJson(element);
             if (reportPageModel.status == 80) {

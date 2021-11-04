@@ -324,11 +324,26 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
 
   var showPicture = true;
   Widget get _listview {
+    double h = 348;
+    if (null != tags && tags.length > 0) {
+      h += 20;
+    }
+    if (isInActivity) {
+      h += 55;
+    }
     return SingleChildScrollView(
       child: Column(
         children: [
-          if (null != images && null != _productDetail) _banner,
-          if (null != _productDetail) _products,
+          Container(
+            height: h,
+            child: Stack(
+              children: [
+                if (null != images && null != _productDetail) _banner,
+                if (null != _productDetail)
+                  Positioned(top: 186, left: 0, right: 0, child: _products),
+              ],
+            ),
+          ),
           if (null != stepArchive) _stepView,
           if (null != _productDetailRecommends) _contentList,
           if (null != _productDetail && showPicture) _picture,
@@ -341,35 +356,31 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
   }
 
   Widget get _banner {
-    return ClipRect(
-      child: Container(
-        margin: EdgeInsets.only(left: 17, right: 17, top: 10),
-        height: 170,
-        alignment: Alignment.topCenter,
-        child: Hero(
-          tag: _productDetail.id.toString(),
-          child: Swiper(
-            itemCount: images.length,
-            autoplay: true,
-            loop: false,
-            itemWidth: double.infinity,
-            itemHeight: 192,
-            itemBuilder: (BuildContext context, int index) {
-              return CachedNetworkImage(
-                width: double.infinity,
-                // 设置根据宽度计算高度
-                height: 192,
-                // 图片地址
-                imageUrl: CommonUtils.splicingUrl(images[index]),
-                // 填充方式为cover
-                fit: BoxFit.fill,
+    return Container(
+      margin: EdgeInsets.only(left: 17, right: 17, top: 10),
+      height: 192,
+      alignment: Alignment.topCenter,
+      child: Swiper(
+        itemCount: images.length,
+        autoplay: true,
+        loop: false,
+        itemWidth: double.infinity,
+        itemHeight: 192,
+        itemBuilder: (BuildContext context, int index) {
+          return CachedNetworkImage(
+            width: double.infinity,
+            // 设置根据宽度计算高度
+            height: 192,
+            // 图片地址
+            imageUrl: CommonUtils.splicingUrl(images[index]),
+            // 填充方式为cover
+            fit: BoxFit.fill,
 
-                errorWidget: (context, url, error) => Container(),
-              );
-            },
-            pagination: SwiperPagination(),
-          ),
-        ),
+            errorWidget: (context, url, error) => Container(),
+          );
+        },
+        pagination:
+            SwiperPagination(margin: const EdgeInsets.fromLTRB(10, 10, 10, 30)),
       ),
     );
   }
@@ -378,6 +389,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
     return Container(
       alignment: Alignment.topLeft,
       width: double.infinity,
+      padding: EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(

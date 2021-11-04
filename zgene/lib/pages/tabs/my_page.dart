@@ -33,6 +33,7 @@ import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/login_base.dart';
 import 'package:zgene/util/screen_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
+import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/util/umeng_utils.dart';
 
 class MyPage extends BaseWidget {
@@ -775,7 +776,8 @@ class _MyPageState extends BaseWidgetState<MyPage> {
         break;
       case 9: //联系客服
         umentType = StatisticsConstant.MY_PAGE_SERVICE;
-        NavigatorUtil.push(context, contantUsPage());
+        // NavigatorUtil.push(context, contantUsPage());
+        UiUitls.showChatH5(context);
         break;
       case 10: //常见问题
         umentType = StatisticsConstant.MY_PAGE_PROBLEM;

@@ -142,7 +142,7 @@ class _MyAddressListPageState extends BaseWidgetState<MyAddressListPage> {
               children: [
                 Container(
                   constraints: BoxConstraints(
-                    maxWidth: ScreenUtils.screenW(context) - 165.w,
+                    maxWidth: ScreenUtils.screenW(context) - 185.w,
                   ),
                   child: Text(
                     content.rcvName,

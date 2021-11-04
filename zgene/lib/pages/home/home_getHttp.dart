@@ -8,10 +8,10 @@ import 'package:zgene/util/common_utils.dart';
 typedef _CallBack = void Function(dynamic result);
 
 Future<void> HomeGetHttp(int type, _CallBack callback) async {
-  bool isNetWorkAvailable = await CommonUtils.isNetWorkAvailable();
-  if (!isNetWorkAvailable) {
-    return;
-  }
+  // bool isNetWorkAvailable = await CommonUtils.isNetWorkAvailable();
+  // if (!isNetWorkAvailable) {
+  //   return;
+  // }
 
   Map<String, dynamic> map = new HashMap();
   map['cid'] =
@@ -19,6 +19,7 @@ Future<void> HomeGetHttp(int type, _CallBack callback) async {
   HttpUtils.requestHttp(
     ApiConstant.contentList,
     parameters: map,
+    isNeedCache: true,
     method: HttpUtils.GET,
     onSuccess: (result) async {
       if (callback != null) {

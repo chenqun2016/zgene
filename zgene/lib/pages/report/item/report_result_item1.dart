@@ -52,13 +52,12 @@ class _ReportResultItem1State extends State<ReportResultItem1> {
                   clipBehavior: Clip.antiAlias,
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: Colors.white,
+                      color: Colors.red,
                       width: 2,
                     ),
                     color: ColorConstant.bg_42F5D3,
                     borderRadius: BorderRadius.all(
                       Radius.circular(8),
-                    
                     ),
                   ),
                 ),

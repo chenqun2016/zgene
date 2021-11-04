@@ -9,6 +9,7 @@ import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/statistics_constant.dart';
+import 'package:zgene/event/event_bus.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/content_model.dart';
 import 'package:zgene/util/base_widget.dart';
@@ -39,11 +40,15 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
     backImgPath = "assets/images/mine/img_bg_my.png";
     _easyController = EasyRefreshController();
     HomeGetHttp();
+    bus.on("listMustRefresh", (arg) {
+      HomeGetHttp();
+    });
   }
 
   @override
   void dispose() {
     //为了避免内存泄露，需要调用_controller.dispose
+    bus.off("listMustRefresh");
     super.dispose();
   }
 
@@ -127,8 +132,11 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
   Widget getItem(Archives bean) {
     var isInActivity = false;
     if (bean.limitTime != null) {
-      var time = bean.limitTime.end;
-      if (time >= DateTime.now().millisecondsSinceEpoch / 1000) {
+      var endtime = bean.limitTime.end;
+      var starttime = bean.limitTime.start;
+
+      if (starttime <= DateTime.now().millisecondsSinceEpoch / 1000 &&
+          endtime >= DateTime.now().millisecondsSinceEpoch / 1000) {
         try {
           isInActivity = true;
         } catch (e) {

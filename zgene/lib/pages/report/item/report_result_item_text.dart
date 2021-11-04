@@ -64,33 +64,30 @@ class _ReportResultItemTextState extends State<ReportResultItemText> {
         );
         painter.layout(maxWidth: size.maxWidth);
         if (!painter.didExceedMaxLines)
-          return _isHtml()
-              ? Html(
-                  data: text,
-                  shrinkWrap: true,
-                )
-              : Text(text, maxLines: maxLines, style: style);
+          return Html(
+            data: text,
+            shrinkWrap: true,
+          );
+        // : Text(text, maxLines: maxLines, style: style);
         return Stack(
           children: <Widget>[
-            _isHtml()
-                ? expand
-                    ? SizedBox(
-                        child: Html(
-                          data: text,
-                          shrinkWrap: true,
-                        ),
-                      )
-                    : SizedBox(
-                        height: 104,
-                        child: Html(
-                          data: text,
-                          shrinkWrap: true,
-                        ),
-                      )
-                : Text(text, maxLines: expand ? 1000 : maxLines, style: style),
+            expand
+                ? SizedBox(
+                    child: Html(
+                      data: text,
+                      shrinkWrap: true,
+                    ),
+                  )
+                : SizedBox(
+                    height: 100,
+                    child: Html(
+                      data: text,
+                      shrinkWrap: true,
+                    ),
+                  ),
             if (!expand)
               Positioned(
-                  right: _isHtml() ? 5 : 0,
+                  right: 5,
                   bottom: 0,
                   child: GestureDetector(
                     onTap: () => setState(() {

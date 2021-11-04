@@ -39,8 +39,9 @@ class Addon {
   int aid;
   int stock;
   List<Archives> archives;
+  List<String> images;
 
-  Addon({this.aid, this.stock, this.archives});
+  Addon({this.aid, this.stock, this.archives, this.images});
 
   Addon.fromJson(Map<String, dynamic> json) {
     stock = json['stock'];
@@ -51,6 +52,12 @@ class Addon {
         archives.add(new Archives.fromJson(v));
       });
     }
+    if (json['images'] != null) {
+      images = new List<String>();
+      json['images'].forEach((v) {
+        images.add(v);
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -59,6 +66,9 @@ class Addon {
     data['stock'] = this.stock;
     if (this.archives != null) {
       data['archives'] = this.archives.map((v) => v.toJson()).toList();
+    }
+    if (null != this.images) {
+      data['archives'] = images;
     }
     return data;
   }

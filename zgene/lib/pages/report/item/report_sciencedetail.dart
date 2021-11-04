@@ -257,14 +257,14 @@ class _ReportScienceDetailState extends State<ReportScienceDetail>
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Text(
-                  " 共检测的点位 ",
+                  " 共检测的位点 ",
                   style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w500,
                       color: ColorConstant.Text_5E6F88),
                 ),
                 Text(
-                  "风险变异的点位",
+                  "风险变异的位点",
                   style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w500,

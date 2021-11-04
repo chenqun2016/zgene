@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/api_constant.dart';
@@ -49,6 +50,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
 
   ///商品库存
   int stock = 0;
+  List images = [];
   var colors = [
     ColorConstant.TextMainColor,
     Color(0xFF25D3B2),
@@ -169,6 +171,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
           _productDetail = model.archive;
           tags = _productDetail.tags;
           stock = model.addon?.stock;
+          images = model.addon?.images;
         } catch (e) {
           print(e);
         }
@@ -324,7 +327,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          if (null != _productDetail) _banner,
+          if (null != images && null != _productDetail) _banner,
           if (null != _productDetail) _products,
           if (null != stepArchive) _stepView,
           if (null != _productDetailRecommends) _contentList,
@@ -345,36 +348,28 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
         alignment: Alignment.topCenter,
         child: Hero(
           tag: _productDetail.id.toString(),
-          child: FadeInImage.assetNetwork(
-              placeholder: 'assets/images/home/img_default2.png',
-              image: CommonUtils.splicingUrl(_productDetail.imageUrl),
-              width: double.infinity,
-              height: 192,
-              fadeInDuration: TimeUtils.fadeInDuration(),
-              fadeOutDuration: TimeUtils.fadeOutDuration(),
-              fit: BoxFit.cover,
-              alignment: Alignment.topCenter,
-              imageErrorBuilder: (context, error, stackTrace) {
-                return Text("");
-              }),
+          child: Swiper(
+            itemCount: images.length,
+            autoplay: true,
+            loop: false,
+            itemWidth: double.infinity,
+            itemHeight: 192,
+            itemBuilder: (BuildContext context, int index) {
+              return CachedNetworkImage(
+                width: double.infinity,
+                // 设置根据宽度计算高度
+                height: 192,
+                // 图片地址
+                imageUrl: CommonUtils.splicingUrl(images[index]),
+                // 填充方式为cover
+                fit: BoxFit.fill,
+
+                errorWidget: (context, url, error) => Container(),
+              );
+            },
+            pagination: SwiperPagination(),
+          ),
         ),
-        // new CachedNetworkImage(
-        //   width: 343,
-        //   // 设置根据宽度计算高度
-        //   height: 192,
-        //   // 图片地址
-        //   imageUrl: CommonUtils.splicingUrl(_productDetail.imageUrl),
-        //   // 填充方式为cover
-        //   fit: BoxFit.fill,
-        //
-        //   errorWidget: (context, url, error) => new Container(
-        //     child: new Image.asset(
-        //       'assets/images/home/img_default2.png',
-        //       height: 343,
-        //       width: 192,
-        //     ),
-        //   ),
-        // ),
       ),
     );
   }
@@ -689,7 +684,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
   }
 
   Widget get _stepView => Container(
-        margin: EdgeInsets.only(top: 16),
+        margin: EdgeInsets.only(top: 8),
         child: InkWell(
           onTap: () {
             CommonUtils.toUrl(
@@ -716,7 +711,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
     return Container(
       color: Colors.white,
       width: double.infinity,
-      margin: EdgeInsets.only(top: 16),
+      margin: EdgeInsets.only(top: 8),
       child: PlatformUtils.isWeb
           ? CachedNetworkImage(
               width: double.infinity,
@@ -745,7 +740,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
   }
 
   get _contentList => Container(
-        margin: EdgeInsets.only(top: 10),
+        margin: EdgeInsets.only(top: 8),
         color: Colors.white,
         child: ListView.builder(
           itemCount: _productDetailRecommends.length,

@@ -6,7 +6,8 @@ import 'package:zgene/util/ui_uitls.dart';
 
 class ReportRusultItem2 extends StatefulWidget {
   List<Distribution> distribution;
-  ReportRusultItem2({Key key, this.distribution}) : super(key: key);
+  var tag;
+  ReportRusultItem2({Key key, this.distribution, this.tag}) : super(key: key);
 
   @override
   _ReportRusultItem2State createState() => _ReportRusultItem2State();
@@ -71,7 +72,7 @@ class _ReportRusultItem2State extends State<ReportRusultItem2> {
   Widget _circleItem(Distribution e) {
     var index = data.indexOf(e);
     return CircularPercentIndicator(
-      radius: 70.0,
+      radius: 80.0,
       lineWidth: 10.0,
       backgroundWidth: 9,
       animation: true,
@@ -106,51 +107,62 @@ class _ReportRusultItem2State extends State<ReportRusultItem2> {
   Widget _item(Distribution e) {
     var index = data.indexOf(e);
     var r = (e.rate * 100).toStringAsFixed(2);
-    return Column(
-      children: [
-        if (0 != index)
-          Container(
-            height: 1,
-            margin: EdgeInsets.only(left: 40),
-            color: Color(0x32B2BAC6),
-          ),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Image.asset(
-              data.length <= 3
-                  ? UiUitls.getReportResultCircle3(index)
-                  : UiUitls.getReportResultCircle(index),
-              height: 24,
-              width: 24,
+    return Padding(
+      padding: const EdgeInsets.only(left: 10.0, right: 15),
+      child: Column(
+        children: [
+          if (0 != index)
+            Container(
+              height: 1,
+              margin: EdgeInsets.only(left: 40),
+              color: Color(0x32B2BAC6),
             ),
-            Padding(
-              padding: const EdgeInsets.only(
-                  left: 15.0, top: 14, bottom: 14, right: 10),
-              child: Text(
-                "$r%的人",
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset(
+                data.length <= 3
+                    ? UiUitls.getReportResultCircle3(index)
+                    : UiUitls.getReportResultCircle(index),
+                height: 24,
+                width: 24,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: 6, top: 14, bottom: 14, right: 10),
+                child: Text(
+                  "$r%的人",
+                  style: TextStyle(
+                      color: _getColor(e, index),
+                      fontWeight: FontWeight.w400,
+                      fontSize: 15),
+                ),
+              ),
+              Expanded(
+                  child: Text(
+                e.title,
+                textAlign: TextAlign.right,
                 style: TextStyle(
-                    color: e.title == "和我一样"
-                        ? ColorConstant.MainBlueColor
-                        : ColorConstant.Text_5E6F88,
+                    color: _getColor(e, index),
                     fontWeight: FontWeight.w400,
                     fontSize: 15),
-              ),
-            ),
-            Expanded(
-                child: Text(
-              e.title,
-              textAlign: TextAlign.right,
-              style: TextStyle(
-                  color: e.title == "和我一样"
-                      ? ColorConstant.MainBlueColor
-                      : ColorConstant.Text_5E6F88,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 15),
-            ))
-          ],
-        ),
-      ],
+              ))
+            ],
+          ),
+        ],
+      ),
     );
+  }
+
+  Color _getColor(Distribution e, index) {
+    var color =
+        data.length <= 3 ? UiUitls.getColor3(index) : UiUitls.getColor(index);
+    if (e.title == "和我一样") {
+      return color;
+    }
+    if (null != e.tag && null != widget.tag && (e.tag == widget.tag)) {
+      return color;
+    }
+    return ColorConstant.Text_5E6F88;
   }
 }

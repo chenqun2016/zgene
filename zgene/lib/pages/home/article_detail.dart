@@ -174,6 +174,7 @@ class _ArticleDetailViewState extends State<ArticleDetailView> {
                                 }
                               },
                               onWebViewCreated: (controller) {
+                                print("11111111111111111111111+++++++");
                                 CommonUtils.addJavaScriptHandler(
                                     controller, context);
                               },

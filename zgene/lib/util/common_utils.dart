@@ -163,14 +163,13 @@ class CommonUtils {
 
   ///公共跳转链接
   static toUrl({context, String url, type, archives}) {
-    print("000000000000000000000");
-
     print("url==$url+type==${type.toString()}");
     var eventBus = getInstance();
 
     if (url == URL_BUY) {
       //购买
       //跳到购买
+
       eventBus.fire(MsgEvent(100, 1));
     } else if (url == URL_MY) {
       //我的
@@ -438,7 +437,6 @@ class CommonUtils {
         callback: (List<dynamic> args) {
           try {
             print("JavaScriptHandler == navigate");
-            print("00000000000000000000000000000");
             if (null != args && args.length >= 2) {
               CommonUtils.toUrl(context: context, url: args[1], type: args[0]);
               if (args[1] == CommonUtils.URL_BUY ||

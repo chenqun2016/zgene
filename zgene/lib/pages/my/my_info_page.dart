@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'dart:io';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -515,7 +516,12 @@ class _MyInfoPageState extends State<MyInfoPage> {
         Navigator.pop(context, null);
         break;
       case 2: //头像
-        _pickImage();
+        if (!PlatformUtils.isWeb) {
+          _pickImage();
+        } else {
+          EasyLoading.showError("暂时不支持更换头像哦");
+        }
+
         break;
       case 3: //用户名称
         final result = await Navigator.push(

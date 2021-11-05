@@ -116,9 +116,11 @@ class _ExploreNavState extends State<ExploreNav> {
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                              fontSize: 14,
-                              color: ColorConstant.TextMainBlack,
-                              fontWeight: FontWeight.bold),
+                            fontSize: 14,
+                            color: ColorConstant.TextMainBlack,
+                            fontWeight: FontWeight.bold,
+                            height: 1.3,
+                          ),
                         )),
                     Text(
                       archives.keywords,

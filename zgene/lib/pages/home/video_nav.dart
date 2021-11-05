@@ -183,11 +183,13 @@ class _VideoNavState extends State<VideoNav>
                 archives.title,
                 maxLines: 3,
                 style: TextStyle(
-                    fontSize: 16,
-                    color: index % 2 == 0
-                        ? ColorConstant.Text_776359
-                        : ColorConstant.Text_64747F,
-                    fontWeight: FontWeight.bold),
+                  fontSize: 16,
+                  color: index % 2 == 0
+                      ? ColorConstant.Text_776359
+                      : ColorConstant.Text_64747F,
+                  fontWeight: FontWeight.bold,
+                  height: 1.3,
+                ),
               ),
               Expanded(
                 child: Text(""),

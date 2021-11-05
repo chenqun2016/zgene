@@ -118,6 +118,7 @@ class _ExploreNavState extends State<ExploreNav> {
                           style: TextStyle(
                               fontSize: 14.5,
                               color: ColorConstant.TextMainBlack,
+                              height: 1.3,
                               fontWeight: FontWeight.bold),
                         )),
                     Text(

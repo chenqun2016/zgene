@@ -438,6 +438,7 @@ class CommonUtils {
         callback: (List<dynamic> args) {
           try {
             print("JavaScriptHandler == navigate");
+            print("00000000000000000000000000000");
             if (null != args && args.length >= 2) {
               CommonUtils.toUrl(context: context, url: args[1], type: args[0]);
               if (args[1] == CommonUtils.URL_BUY ||

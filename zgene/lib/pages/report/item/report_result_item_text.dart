@@ -79,7 +79,7 @@ class _ReportResultItemTextState extends State<ReportResultItemText> {
                     ),
                   )
                 : SizedBox(
-                    height: 102,
+                    height: 117,
                     child: Html(
                       data: text,
                       shrinkWrap: true,

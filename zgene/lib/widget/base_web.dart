@@ -1,6 +1,7 @@
 import 'package:easy_web_view/easy_web_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/util/common_utils.dart';
@@ -30,7 +31,7 @@ class _BaseWebViewState extends State<BaseWebView> {
   // final Map arguments;
   String _url = "";
   static ValueKey key = ValueKey('key_0');
-
+  WebViewController _webViewController;
   @override
   void initState() {
     super.initState();
@@ -167,6 +168,18 @@ class _BaseWebViewState extends State<BaseWebView> {
                                 webNavigationDelegate: (_) => false
                                     ? WebNavigationDecision.prevent
                                     : WebNavigationDecision.navigate,
+                                // webNavigationDelegate: (request) {
+                                //   print('blocking navigation to $request}');
+
+                                //   if (request.url
+                                //       .startsWith('http://webview')) {
+                                //     //拦截以js://webview 开始的链接 说明页面执行了这个链接的跳转操作，也就是页面按钮被点击了。那么执行相关的flutter操作。
+                                //     print('blocking navigation to $request}');
+                                //   }
+
+                                //   return WebNavigationDecision.prevent;
+                                // },
+
                                 // width: 100,
                                 // height: 100,
                               )
@@ -182,6 +195,8 @@ class _BaseWebViewState extends State<BaseWebView> {
                                     onLoadStart:
                                         (InAppWebViewController controller,
                                             Uri url) {
+                                      print(
+                                          "1111111111111111111111188888888888888");
                                       print("url== == " + url.path.toString());
                                     },
                                     // 加载进度变化事件.
@@ -196,6 +211,9 @@ class _BaseWebViewState extends State<BaseWebView> {
                                     },
                                     onLoadError:
                                         (controller, url, code, message) {
+                                      print(
+                                          "11111111111111111111111999999999999");
+
                                       print("webview error == " + message);
                                     },
                                     androidOnPermissionRequest:

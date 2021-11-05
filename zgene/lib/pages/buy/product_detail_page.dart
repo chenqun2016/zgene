@@ -805,7 +805,10 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
     return InkWell(
       onTap: () {
         CommonUtils.toUrl(
-            context: context, type: item.linkType, url: item.linkUrl);
+            context: context,
+            type: item.linkType,
+            url: item.linkUrl,
+            archives: item);
       },
       child: Container(
         margin: EdgeInsets.only(top: 16),

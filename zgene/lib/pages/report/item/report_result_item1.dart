@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/widget/star_shape_border.dart';
 
 ///患病倍数
 class ReportResultItem1 extends StatefulWidget {
@@ -111,8 +112,7 @@ class _ReportResultItem1State extends State<ReportResultItem1> {
                     child: Column(
                       children: [
                         ClipPath(
-                          clipper:
-                              ShapeBorderClipper(shape: _StarShapeBorder()),
+                          clipper: ShapeBorderClipper(shape: StarShapeBorder()),
                           child: Container(
                             alignment: Alignment.center,
                             padding: EdgeInsets.fromLTRB(6, 3, 6, 5),
@@ -186,39 +186,5 @@ class _ReportResultItem1State extends State<ReportResultItem1> {
         ],
       ),
     );
-  }
-}
-
-class _StarShapeBorder extends ShapeBorder {
-  final Path _path = Path();
-
-  @override
-  EdgeInsetsGeometry get dimensions => null;
-
-  @override
-  Path getInnerPath(Rect rect, {TextDirection textDirection}) {
-    return null;
-  }
-
-  @override
-  Path getOuterPath(Rect rect, {TextDirection textDirection}) =>
-      nStarPath(rect);
-
-  @override
-  void paint(Canvas canvas, Rect rect, {TextDirection textDirection}) {}
-
-  Path nStarPath(Rect rect) {
-    _path.addRRect(RRect.fromLTRBR(
-        rect.left, rect.top, rect.right, rect.bottom - 3, Radius.circular(10)));
-    _path.moveTo(rect.right / 2, rect.bottom);
-    _path.lineTo(rect.right / 2 + 3, rect.bottom - 3);
-    _path.lineTo(rect.right / 2 - 3, rect.bottom - 3);
-    _path.close();
-    return _path;
-  }
-
-  @override
-  ShapeBorder scale(double t) {
-    return null;
   }
 }

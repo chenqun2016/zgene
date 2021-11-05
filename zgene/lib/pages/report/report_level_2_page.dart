@@ -12,6 +12,7 @@ import 'package:zgene/pages/report/item/report_sciencedetail.dart';
 import 'package:zgene/pages/tabs/report_page.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/widget/progress_page.dart';
+import 'package:zgene/widget/star_shape_border.dart';
 
 ///报告详情页
 class ReportLevel2Page extends BaseWidget {
@@ -178,7 +179,7 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
                   if (topType == 0)
                     persistentHeaderTopMargin = 100 + painter.height;
                   else
-                    persistentHeaderTopMargin = 120 + painter.height;
+                    persistentHeaderTopMargin = 125 + painter.height;
 
                   print("height== ${painter.height}");
                   print(
@@ -351,11 +352,11 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
 
     var progress;
     if (tag == -1) {
-      progress = width * 83 / 100 - 7;
+      progress = width * 83 / 100 - 16;
     } else if (tag == 0) {
-      progress = width * 50 / 100 - 7;
+      progress = width * 50 / 100 - 16;
     } else {
-      progress = width * 17 / 100 - 7;
+      progress = width * 17 / 100 - 16;
     }
 
     return Container(
@@ -372,17 +373,17 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
           topRight: Radius.circular(16),
         ),
       ),
-      padding: EdgeInsets.fromLTRB(0, 25, 0, 0),
+      padding: EdgeInsets.fromLTRB(0, 6, 0, 0),
       margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
       child: Column(
         children: [
           Container(
             padding: EdgeInsets.only(left: 20, right: 20),
-            height: 20,
+            height: 45,
             child: Stack(
               children: [
                 Positioned(
-                  top: 4,
+                  top: 26,
                   child: Container(
                     width: width * 2 / 3,
                     height: 10,
@@ -400,7 +401,7 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
                   ),
                 ),
                 Positioned(
-                    top: 4,
+                    top: 26,
                     right: 0,
                     child: Container(
                       width: width * 2 / 3,
@@ -419,7 +420,7 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
                       ),
                     )),
                 Positioned(
-                    top: 4,
+                    top: 26,
                     right: 0,
                     child: LayoutBuilder(
                       builder: (_, zone) {
@@ -440,25 +441,77 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
                         );
                       },
                     )),
+                // Positioned(
+                //     left: progress,
+                //     top: 0,
+                //     child: Container(
+                //         height: 14,
+                //         width: 14,
+                //         margin: EdgeInsets.only(top: 2),
+                //         decoration: BoxDecoration(
+                //           shape: BoxShape.circle,
+                //           border: Border.all(
+                //             color: tag == -1
+                //                 ? ColorConstant.bg_24D780
+                //                 : (tag == 0
+                //                 ? ColorConstant.bg_017AF6
+                //                 : ColorConstant.bg_FD7A7A),
+                //             width: 4,
+                //           ),
+                //           color: ColorConstant.WhiteColor,
+                //         ))),
                 Positioned(
                     left: progress,
                     top: 0,
-                    child: Container(
-                        height: 14,
-                        width: 14,
-                        margin: EdgeInsets.only(top: 2),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
+                    child: Column(
+                      children: [
+                        ClipPath(
+                          clipper: ShapeBorderClipper(shape: StarShapeBorder()),
+                          child: Container(
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.fromLTRB(6, 2, 6, 6),
+                            constraints: BoxConstraints(
+                              minWidth: 30,
+                            ),
                             color: tag == -1
                                 ? ColorConstant.bg_24D780
                                 : (tag == 0
                                     ? ColorConstant.bg_017AF6
                                     : ColorConstant.bg_FD7A7A),
-                            width: 4,
+                            // decoration: BoxDecoration(
+                            //   image: DecorationImage(
+                            //     image: AssetImage(
+                            //         "assets/images/report/icon_qipao.png"),
+                            //     fit: BoxFit.cover,
+                            //   ),
+                            // ),
+                            child: Text(
+                              "我",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 10),
+                            ),
                           ),
-                          color: ColorConstant.WhiteColor,
-                        )))
+                        ),
+                        Container(
+                            height: 14,
+                            width: 14,
+                            margin: EdgeInsets.only(top: 2),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: tag == -1
+                                    ? ColorConstant.bg_24D780
+                                    : (tag == 0
+                                        ? ColorConstant.bg_017AF6
+                                        : ColorConstant.bg_FD7A7A),
+                                width: 4,
+                              ),
+                              color: ColorConstant.WhiteColor,
+                            ))
+                      ],
+                    ))
               ],
             ),
           ),

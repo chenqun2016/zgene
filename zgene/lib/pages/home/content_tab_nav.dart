@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/models/category_model.dart';
 import 'package:zgene/pages/home/content_tab_item.dart';
+import 'package:zgene/pages/home/home_getHttp.dart';
 import 'package:zgene/widget/my_inherited_widget.dart';
 
 class ContentListNav extends StatefulWidget {
@@ -16,21 +18,27 @@ class _ContentListNavState extends State<ContentListNav>
   @override
   bool get wantKeepAlive => true;
 
-  final tabs = ['精选', '基因研究院', '用户测评'];
   TabController _tabController;
 
-  List contentList = [1, 2, 3, 4, 5, 6, 7];
   int index = 0;
+  List categories;
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(vsync: this, length: tabs.length);
-    _tabController.addListener(() {
-      if (_tabController.animation?.value == _tabController.index) {
-        setState(() {
-          index = _tabController.index;
-        });
-      }
+
+    CategoriesGetHttp(28, (result) {
+      categories = CategoryModel.fromJson(result).categories;
+      print("categories==" + categories.toString());
+
+      _tabController = TabController(vsync: this, length: categories.length);
+      _tabController.addListener(() {
+        if (_tabController.animation?.value == _tabController.index) {
+          setState(() {
+            index = _tabController.index;
+          });
+        }
+      });
+      setState(() {});
     });
   }
 
@@ -42,20 +50,22 @@ class _ContentListNavState extends State<ContentListNav>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top: 16, left: 15, right: 15),
-      padding: EdgeInsets.only(top: 10, bottom: 10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(
-          Radius.circular(20),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [_buildTabBar(), _buildTableBarView()],
-      ),
-    );
+    return (null != categories && categories.length > 0)
+        ? Container(
+            margin: EdgeInsets.only(top: 16, left: 15, right: 15),
+            padding: EdgeInsets.only(top: 10, bottom: 10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(
+                Radius.circular(20),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [_buildTabBar(), _buildTableBarView()],
+            ),
+          )
+        : Container();
   }
 
   Widget _buildTabBar() => TabBar(
@@ -71,10 +81,10 @@ class _ContentListNavState extends State<ContentListNav>
         indicatorSize: TabBarIndicatorSize.label,
         indicatorPadding: EdgeInsets.fromLTRB(4, 0, 4, 0),
         indicatorColor: ColorConstant.TextMainColor,
-        tabs: tabs.map((e) => Tab(text: e)).toList(),
+        tabs: categories.map((e) => Tab(text: e.categoryName)).toList(),
       );
 
   Widget _buildTableBarView() {
-    return MyInheritedWidget(data: index, child: ContentTabItem());
+    return MyInheritedWidget(data: categories[index], child: ContentTabItem());
   }
 }

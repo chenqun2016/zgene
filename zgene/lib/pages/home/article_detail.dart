@@ -99,28 +99,31 @@ class _ArticleDetailViewState extends State<ArticleDetailView> {
                     color: ColorConstant.MainBlack),
               ),
               actions: <Widget>[
-                IconButton(
-                    icon: Image(
-                      image: AssetImage(
-                          "assets/images/home/icon_article_detail.png"),
-                    ),
-                    onPressed: () {
-                      print(CommonUtils.splicingUrl(SpUtils()
-                          .getStorageDefault(SpConstant.appShareIcon, "")
-                          .toString()));
-                      ShareUtils.showSheet(
-                          context: context,
-                          shareTitle: _title,
-                          shareContent: SpUtils()
-                              .getStorageDefault(
-                                  SpConstant.appShareSubtitle, "")
-                              .toString(),
-                          shareUrl: ApiConstant.getH5ShareUrl(id.toString()),
-                          shareType: 1,
-                          shareImageUrl: CommonUtils.splicingUrl(SpUtils()
-                              .getStorageDefault(SpConstant.appShareIcon, "")
-                              .toString()));
-                    }),
+                Offstage(
+                  offstage: PlatformUtils.isWeb,
+                  child: IconButton(
+                      icon: Image(
+                        image: AssetImage(
+                            "assets/images/home/icon_article_detail.png"),
+                      ),
+                      onPressed: () {
+                        print(CommonUtils.splicingUrl(SpUtils()
+                            .getStorageDefault(SpConstant.appShareIcon, "")
+                            .toString()));
+                        ShareUtils.showSheet(
+                            context: context,
+                            shareTitle: _title,
+                            shareContent: SpUtils()
+                                .getStorageDefault(
+                                    SpConstant.appShareSubtitle, "")
+                                .toString(),
+                            shareUrl: ApiConstant.getH5ShareUrl(id.toString()),
+                            shareType: 1,
+                            shareImageUrl: CommonUtils.splicingUrl(SpUtils()
+                                .getStorageDefault(SpConstant.appShareIcon, "")
+                                .toString()));
+                      }),
+                ),
               ],
             ),
             body: Column(

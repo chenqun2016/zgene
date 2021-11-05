@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:zgene/constant/api_constant.dart';
+import 'package:zgene/http/http_utils.dart';
+import 'package:zgene/models/userInfo_model.dart';
 import 'package:zgene/pages/login/main_login.dart';
 
 import '../main.dart';
@@ -15,6 +18,13 @@ class BaseLogin {
     Global.navigatorKey.currentState.pushAndRemoveUntil(
         new MaterialPageRoute(
             builder: (BuildContext context) => MainLoginPage()),
+        (route) => true);
+    // }
+  }
+
+  static bindPhone() {
+    Global.navigatorKey.currentState.pushAndRemoveUntil(
+        new MaterialPageRoute(builder: (BuildContext context) => bindPhone()),
         (route) => true);
     // }
   }

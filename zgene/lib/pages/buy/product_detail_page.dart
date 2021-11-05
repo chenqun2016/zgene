@@ -374,8 +374,10 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
             errorWidget: (context, url, error) => Container(),
           );
         },
-        pagination:
-            SwiperPagination(margin: const EdgeInsets.fromLTRB(10, 10, 10, 30)),
+        pagination: images.length > 1
+            ? SwiperPagination(
+                margin: const EdgeInsets.fromLTRB(10, 10, 10, 30))
+            : null,
       ),
     );
   }

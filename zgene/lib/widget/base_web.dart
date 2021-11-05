@@ -109,30 +109,33 @@ class _BaseWebViewState extends State<BaseWebView> {
                 ),
                 actions: <Widget>[
                   Offstage(
-                    offstage: !widget.isShare,
-                    child: IconButton(
-                        icon: Image(
-                          image: AssetImage(
-                              "assets/images/home/icon_article_detail.png"),
-                        ),
-                        onPressed: () {
-                          print(CommonUtils.splicingUrl(SpUtils()
-                              .getStorageDefault(SpConstant.appShareIcon, "")
-                              .toString()));
-                          ShareUtils.showSheet(
-                              context: context,
-                              shareTitle: widget.title,
-                              shareContent: SpUtils()
-                                  .getStorageDefault(
-                                      SpConstant.appShareSubtitle, "")
-                                  .toString(),
-                              shareUrl: _uri.toString(),
-                              shareType: 1,
-                              shareImageUrl: CommonUtils.splicingUrl(SpUtils()
-                                  .getStorageDefault(
-                                      SpConstant.appShareIcon, "")
-                                  .toString()));
-                        }),
+                    offstage: PlatformUtils.isWeb,
+                    child: Offstage(
+                      offstage: !widget.isShare,
+                      child: IconButton(
+                          icon: Image(
+                            image: AssetImage(
+                                "assets/images/home/icon_article_detail.png"),
+                          ),
+                          onPressed: () {
+                            print(CommonUtils.splicingUrl(SpUtils()
+                                .getStorageDefault(SpConstant.appShareIcon, "")
+                                .toString()));
+                            ShareUtils.showSheet(
+                                context: context,
+                                shareTitle: widget.title,
+                                shareContent: SpUtils()
+                                    .getStorageDefault(
+                                        SpConstant.appShareSubtitle, "")
+                                    .toString(),
+                                shareUrl: _uri.toString(),
+                                shareType: 1,
+                                shareImageUrl: CommonUtils.splicingUrl(SpUtils()
+                                    .getStorageDefault(
+                                        SpConstant.appShareIcon, "")
+                                    .toString()));
+                          }),
+                    ),
                   ),
                 ],
               ),

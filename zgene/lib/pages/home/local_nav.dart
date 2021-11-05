@@ -134,7 +134,10 @@ class _LocalNavState extends State<LocalNav>
           ),
           Text(
             archives.title,
-            style: TextStyle(fontSize: 13, color: ColorConstant.TextMainBlack),
+            style: TextStyle(
+                fontSize: 13,
+                color: ColorConstant.TextMainBlack,
+                fontWeight: FontWeight.w600),
           )
         ],
       ),

@@ -72,7 +72,7 @@ class _ContentTabItemState extends State<ContentTabItem> {
             children: [
               Padding(
                 padding: const EdgeInsets.only(
-                    left: 16, right: 16, top: 15, bottom: 15),
+                    left: 15, right: 15, top: 15, bottom: 15),
                 child: StaggeredGridView.countBuilder(
                   crossAxisCount: 2,
                   itemCount: datas.length,
@@ -85,8 +85,17 @@ class _ContentTabItemState extends State<ContentTabItem> {
                   physics: NeverScrollableScrollPhysics(),
                   staggeredTileBuilder: (int index) =>
                       datas[index].viewStyle == 1
-                          ? StaggeredTile.extent(2, 185)
-                          : StaggeredTile.extent(1, 200),
+                          ? StaggeredTile.extent(
+                              2,
+                              (152 / 312) *
+                                      (MediaQuery.of(context).size.width - 60) +
+                                  33)
+                          : StaggeredTile.extent(
+                              1,
+                              (112 / 148) *
+                                      (MediaQuery.of(context).size.width - 76) /
+                                      2 +
+                                  90),
                 ),
               ),
               if (null != oriDatas && oriDatas.length > 5)
@@ -162,7 +171,8 @@ class _ContentTabItemState extends State<ContentTabItem> {
               child: new CachedNetworkImage(
                 width: double.infinity,
                 // 设置根据宽度计算高度
-                height: 112,
+                height:
+                    (112 / 148) * (MediaQuery.of(context).size.width - 76) / 2,
                 // 图片地址
                 imageUrl: CommonUtils.splicingUrl(item.imageUrl),
                 // 填充方式为cover
@@ -174,8 +184,10 @@ class _ContentTabItemState extends State<ContentTabItem> {
               padding: EdgeInsets.fromLTRB(8, 8, 8, 0),
               child: Text(
                 item.title,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                  fontSize: 13,
+                  fontSize: 13.5,
                   fontWeight: FontWeight.w600,
                   color: ColorConstant.TextMainBlack,
                 ),
@@ -253,7 +265,7 @@ class _ContentTabItemState extends State<ContentTabItem> {
               child: new CachedNetworkImage(
                 width: double.infinity,
                 // 设置根据宽度计算高度
-                height: 152,
+                height: (152 / 312) * (MediaQuery.of(context).size.width - 60),
                 // 图片地址
                 imageUrl: CommonUtils.splicingUrl(item.imageUrl),
                 // 填充方式为cover

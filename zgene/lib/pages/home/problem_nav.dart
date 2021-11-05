@@ -1,16 +1,9 @@
-import 'dart:collection';
-
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
-import 'package:zgene/constant/common_constant.dart';
-import 'package:zgene/event/event_bus.dart';
-import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/content_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/home/home_getHttp.dart';
-import 'package:zgene/util/common_utils.dart';
-import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/widget/base_web.dart';
 
 class ProblemNav extends StatefulWidget {
@@ -87,8 +80,8 @@ class _ProblemNavState extends State<ProblemNav>
       if (contentList.indexOf(element) != 0) {
         items.add(Padding(
           padding: EdgeInsets.only(
-            left: 10,
-            right: 10,
+            left: 16,
+            right: 16,
           ),
           child: Divider(),
         ));
@@ -112,7 +105,7 @@ class _ProblemNavState extends State<ProblemNav>
                 showTitle: "常见问题"));
       },
       child: Container(
-        padding: EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 10),
+        padding: EdgeInsets.only(left: 16, top: 10, right: 10, bottom: 10),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [

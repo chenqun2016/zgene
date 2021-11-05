@@ -131,6 +131,7 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
   }
 
   Widget getItem(Archives bean) {
+    var indexOf = _products.indexOf(bean);
     var isInActivity = false;
     if (bean.limitTime != null) {
       var endtime = bean.limitTime.end;
@@ -251,11 +252,10 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
               child: Container(
                 alignment: Alignment.center,
                 padding:
-                    EdgeInsets.only(left: 16, right: 16, top: 4, bottom: 4),
+                    EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage("assets/images/buy/img_product_bg.png"),
-                      fit: BoxFit.fill),
+                      image: _getProductBg(indexOf), fit: BoxFit.fill),
                   borderRadius: BorderRadius.all(Radius.circular(20)),
                 ),
                 child: Text(
@@ -304,5 +304,17 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
         ],
       ),
     );
+  }
+
+  _getProductBg(int indexOf) {
+    switch (indexOf % 3) {
+      case 0:
+        return AssetImage("assets/images/buy/img_product_bg.png");
+      case 1:
+        return AssetImage("assets/images/buy/img_bg02.png");
+      default:
+        return AssetImage("assets/images/buy/img_bg03.png");
+        break;
+    }
   }
 }

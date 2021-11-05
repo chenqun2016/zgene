@@ -153,6 +153,10 @@ class _MyPageState extends BaseWidgetState<MyPage> {
             count = result;
           });
           print(result);
+        } else {
+          setState(() {
+            count = 0;
+          });
         }
       },
       onError: (code, error) {
@@ -162,6 +166,8 @@ class _MyPageState extends BaseWidgetState<MyPage> {
   }
 
   setData() {
+    print("oioioioioioioioioioi");
+    getNoticeCount();
     userName = spUtils.getStorageDefault(SpConstant.UserName, "").toString();
     avatarImg = spUtils.getStorageDefault(SpConstant.UserAvatar, "").toString();
     userIntro = spUtils.getStorageDefault(SpConstant.userIntro, "").toString();

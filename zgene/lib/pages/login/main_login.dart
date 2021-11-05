@@ -470,7 +470,6 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
     if (!isAgreePrivacy) {
       enterThe = true;
       setState(() {});
-
       return;
     }
     enterThe = false;

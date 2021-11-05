@@ -716,8 +716,8 @@ class _MyPageState extends BaseWidgetState<MyPage> {
         break;
       case 2: //个人信息
         // NavigatorUtil.push(context, MyInfoPage());
-        if (userInfo.id != null) {
-          if (spUtils.getStorageDefault(SpConstant.IsLogin, false)) {
+        if (spUtils.getStorageDefault(SpConstant.IsLogin, false)) {
+          if (userInfo.id != null) {
             final result = await Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -727,13 +727,14 @@ class _MyPageState extends BaseWidgetState<MyPage> {
               setData();
             }
           } else {
-            umentType = StatisticsConstant.MY_PAGE_LOGIN;
-            BaseLogin.login();
+            EasyLoading.showError("个人信息获取失败，请稍后再试。");
+            getHttp();
           }
         } else {
-          EasyLoading.showError("个人信息获取失败，请稍后再试。");
-          getHttp();
+          umentType = StatisticsConstant.MY_PAGE_LOGIN;
+          BaseLogin.login();
         }
+
         break;
       case 3: //我的订单
         umentType = StatisticsConstant.MY_PAGE_ORDER;

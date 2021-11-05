@@ -116,7 +116,7 @@ class _ExploreNavState extends State<ExploreNav> {
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 14.5,
                               color: ColorConstant.TextMainBlack,
                               fontWeight: FontWeight.bold),
                         )),

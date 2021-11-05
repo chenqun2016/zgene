@@ -118,6 +118,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
     });
     bus.on(CommonConstant.refreshMine, (event) {
       print("refreshReport");
+      currentSerialNum = null;
       _getCollector();
     });
 

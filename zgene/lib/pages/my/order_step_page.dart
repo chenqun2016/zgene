@@ -228,7 +228,8 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
   }
 
   _isButtomActive(model) {
-    return steps.indexOf(model) == _position;
+    ///待绑定状态可以跟踪物流
+    return steps.indexOf(model) == _position || order.status == 30;
   }
 
   getRightButton(model, context) {

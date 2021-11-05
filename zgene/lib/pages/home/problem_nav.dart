@@ -80,8 +80,8 @@ class _ProblemNavState extends State<ProblemNav>
       if (contentList.indexOf(element) != 0) {
         items.add(Padding(
           padding: EdgeInsets.only(
-            left: 10,
-            right: 10,
+            left: 16,
+            right: 16,
           ),
           child: Divider(),
         ));

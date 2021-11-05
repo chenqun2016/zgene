@@ -6,7 +6,6 @@ import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/home/home_getHttp.dart';
 import 'package:zgene/pages/home/video_page.dart';
 import 'package:zgene/util/common_utils.dart';
-import 'package:zgene/util/screen_utils.dart';
 
 class VideoNav extends StatefulWidget {
   @override
@@ -198,7 +197,7 @@ class _VideoNavState extends State<VideoNav>
                   Text(
                     "去看看",
                     style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 14.5,
                         color: index % 2 == 0
                             ? ColorConstant.Text_776359
                             : ColorConstant.Text_64747F,

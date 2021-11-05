@@ -457,6 +457,8 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
             padding: EdgeInsets.only(top: 12, bottom: 10, left: 16, right: 16),
             child: Text(
               _productDetail.description,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 fontSize: 15.sp,
                 fontStyle: FontStyle.normal,
@@ -758,7 +760,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
         child: ListView.builder(
           itemCount: _productDetailRecommends.length,
           shrinkWrap: true,
-          padding: EdgeInsets.all(15),
+          padding: EdgeInsets.fromLTRB(15, 5, 15, 15),
           physics: NeverScrollableScrollPhysics(),
           itemBuilder: (BuildContext context, int index) {
             var productDetailRecommend = _productDetailRecommends[index];
@@ -788,7 +790,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
           child: new CachedNetworkImage(
             width: double.infinity,
             // 设置根据宽度计算高度
-            height: 168,
+            height: (168 / 345) * (MediaQuery.of(context).size.width - 30),
             // 图片地址
             imageUrl: CommonUtils.splicingUrl(item.imageUrl),
             // 填充方式为cover
@@ -821,6 +823,8 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
                 right: 150,
                 child: Text(
                   item.title,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w600,

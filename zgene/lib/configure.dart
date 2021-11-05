@@ -9,3 +9,5 @@ void webWeixinPay(parms) {}
 void webWeixinLogin() {}
 
 void webShowToast(msg) {}
+
+void webWeixinScanCode(callback) {}

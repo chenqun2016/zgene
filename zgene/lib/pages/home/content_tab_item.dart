@@ -6,6 +6,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/http/http_utils.dart';
+import 'package:zgene/models/category_model.dart';
 import 'package:zgene/models/content_model.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/widget/my_inherited_widget.dart';
@@ -18,8 +19,6 @@ class ContentTabItem extends StatefulWidget {
 }
 
 class _ContentTabItemState extends State<ContentTabItem> {
-  List types = [28, 29, 30];
-  int indexOf = 0;
   List<Archives> oriDatas;
   List<Archives> datas;
   int pageSize = 50;
@@ -27,16 +26,16 @@ class _ContentTabItemState extends State<ContentTabItem> {
   @override
   void initState() {
     super.initState();
-    getHttp();
   }
 
   getHttp() {
+    model = MyInheritedWidget.of(context);
     Map<String, dynamic> map = new HashMap();
-    map['cid'] = types[indexOf];
-    if (28 == types[indexOf]) {
-      map['tag'] = '精选';
-      map['page_size'] = pageSize;
-    }
+    map['cid'] = model.id;
+    // if (28 == model.id) {
+    //   map['tag'] = '精选';
+    // }
+    map['page_size'] = pageSize;
 
     HttpUtils.requestHttp(
       ApiConstant.contentList,
@@ -60,9 +59,13 @@ class _ContentTabItemState extends State<ContentTabItem> {
     );
   }
 
+  var model;
   @override
   Widget build(BuildContext context) {
-    indexOf = MyInheritedWidget.of(context);
+    if (null == model) {
+      getHttp();
+    }
+
     return datas == null
         ? Text("")
         : Column(
@@ -163,7 +166,7 @@ class _ContentTabItemState extends State<ContentTabItem> {
                 // 图片地址
                 imageUrl: CommonUtils.splicingUrl(item.imageUrl),
                 // 填充方式为cover
-                fit: BoxFit.fill,
+                fit: BoxFit.cover,
                 errorWidget: (context, url, error) => Text(""),
               ),
             ),
@@ -183,7 +186,7 @@ class _ContentTabItemState extends State<ContentTabItem> {
               margin: EdgeInsets.only(left: 8, bottom: 14),
               alignment: Alignment.bottomLeft,
               child: Text(
-                "Z基因App",
+                item.category?.categoryName,
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
@@ -204,26 +207,25 @@ class _ContentTabItemState extends State<ContentTabItem> {
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            if (indexOf == 0)
-              Container(
-                margin: EdgeInsets.only(right: 9),
-                padding: EdgeInsets.fromLTRB(7, 1, 7, 3),
-                decoration: BoxDecoration(
-                  color: ColorConstant.Text_5FC88F,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(4),
-                  ),
-                ),
-                child: Text(
-                  item.category.categoryName,
-                  style: TextStyle(
-                    fontSize: 10,
-                    fontStyle: FontStyle.normal,
-                    fontWeight: FontWeight.w500,
-                    color: ColorConstant.WhiteColor,
-                  ),
-                ),
-              ),
+            // Container(
+            //   margin: EdgeInsets.only(right: 9),
+            //   padding: EdgeInsets.fromLTRB(7, 1, 7, 3),
+            //   decoration: BoxDecoration(
+            //     color: ColorConstant.Text_5FC88F,
+            //     borderRadius: BorderRadius.all(
+            //       Radius.circular(4),
+            //     ),
+            //   ),
+            //   child: Text(
+            //     item.category.categoryName,
+            //     style: TextStyle(
+            //       fontSize: 10,
+            //       fontStyle: FontStyle.normal,
+            //       fontWeight: FontWeight.w500,
+            //       color: ColorConstant.WhiteColor,
+            //     ),
+            //   ),
+            // ),
             Text(
               item.title,
               style: TextStyle(
@@ -272,9 +274,9 @@ class _ContentTabItemState extends State<ContentTabItem> {
     print("didChangeDependencies==" +
         MyInheritedWidget.of(context, listen: false).toString());
 
-    var index = MyInheritedWidget.of(context, listen: false);
-    if (index != indexOf) {
-      indexOf = index;
+    Categories categories = MyInheritedWidget.of(context, listen: false);
+    if (null == model || categories.id != model.id) {
+      model = categories;
       getHttp();
     }
   }

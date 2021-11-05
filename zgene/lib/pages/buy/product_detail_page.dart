@@ -193,6 +193,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
             contentModel.archives.length > 0) {
           setState(() {
             _productDetailRecommends = contentModel.archives;
+            print("_productDetailRecommends");
           });
         }
       },
@@ -828,6 +829,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
               bottom: 5,
               child: Text(
                 //TODO
+                // item.category?.categoryName,
                 "Z基因研究院",
                 style: TextStyle(
                   fontSize: 12,
@@ -850,7 +852,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
                   // 图片地址
                   imageUrl: CommonUtils.splicingUrl(item.imageUrl),
                   // 填充方式为cover
-                  fit: BoxFit.fill,
+                  fit: BoxFit.cover,
                 ),
               ),
             )

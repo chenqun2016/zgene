@@ -423,6 +423,9 @@ class _QRScannerViewState extends State<QRScannerView>
       if (null != value && !value) {
         await NavigatorUtil.push(context, contantUsPage());
       }
+      if (PlatformUtils.isWeb) {
+        _webScan();
+      }
       controller.resumeCamera();
       animationController.forward();
     });

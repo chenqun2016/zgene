@@ -23,9 +23,12 @@ class BaseLogin {
   }
 
   static bindPhone() {
+    print("登录2");
     Global.navigatorKey.currentState.pushAndRemoveUntil(
         new MaterialPageRoute(builder: (BuildContext context) => bindPhone()),
         (route) => true);
+    print("登录3");
+
     // }
   }
 }

@@ -39,6 +39,8 @@ void webLogin() {
         UserInfoModel userInfoModel = UserInfoModel.fromJson(data);
         userInfo = userInfoModel;
         if (userInfo.mobile == "") {
+          print("登录1");
+
           BaseLogin.bindPhone();
         }
       },

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:scan/scan.dart';
-import 'package:zgene/configure_web.dart';
+// import 'package:zgene/configure_web.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/http/http_utils.dart';
@@ -223,7 +223,6 @@ class _QRScannerViewState extends State<QRScannerView>
   }
 
   _webScan() {
-    print("1111111");
     webWeixinScanCode();
   }
 

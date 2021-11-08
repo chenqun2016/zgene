@@ -1,6 +1,6 @@
 import 'dart:collection';
 import 'dart:developer';
-
+import 'dart:js' as js;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -102,6 +102,7 @@ class _QRScannerViewState extends State<QRScannerView>
 
   @override
   Widget build(BuildContext context) {
+    js.context["scanCallback"] = scanCallback;
     return Scaffold(
       body: Stack(
         alignment: Alignment.topCenter,
@@ -224,6 +225,11 @@ class _QRScannerViewState extends State<QRScannerView>
 
   _webScan() {
     webWeixinScanCode();
+  }
+
+  void scanCallback(num) {
+    print("js调用flutter扫码回调");
+    checkNum(num);
   }
 
   Text buildTitle() {
@@ -416,6 +422,9 @@ class _QRScannerViewState extends State<QRScannerView>
         }).then((value) async {
       if (null != value && !value) {
         await NavigatorUtil.push(context, contantUsPage());
+      }
+      if (PlatformUtils.isWeb) {
+        _webScan();
       }
       controller.resumeCamera();
       animationController.forward();

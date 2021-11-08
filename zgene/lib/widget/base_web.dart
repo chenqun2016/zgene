@@ -157,41 +157,41 @@ class _BaseWebViewState extends State<BaseWebView> {
                       Expanded(
                         // 官方代码
                         child: PlatformUtils.isWeb
-                            // ? webView.WebView(
-                            //     initialUrl: _url,
-                            //     javascriptMode:
-                            //         webView.JavascriptMode.unrestricted,
-                            //   )
-
-                            ? EasyWebView(
-                                onLoaded: () {
-                                  print('Loaded: $_url');
-                                },
-                                src: _url,
-                                isHtml: false,
-                                isMarkdown: false,
-                                convertToWidgets: false,
-                                widgetsTextSelectable: false,
-                                key: key,
-                                webNavigationDelegate: (_) => false
-                                    ? WebNavigationDecision.prevent
-                                    : WebNavigationDecision.navigate,
-
-                                // webNavigationDelegate: (request) {
-                                //   print(Url);
-                                //   print('blocking navigation to $request}');
-
-                                //   // if (request.url.startsWith('http://webview')) {
-                                //   //   //拦截以js://webview 开始的链接 说明页面执行了这个链接的跳转操作，也就是页面按钮被点击了。那么执行相关的flutter操作。
-                                //   //   print('blocking navigation to $request}');
-                                //   // }
-
-                                //   return WebNavigationDecision.prevent;
-                                // },
-
-                                // width: 100,
-                                // height: 100,
+                            ? webView.WebView(
+                                initialUrl: _url,
+                                javascriptMode:
+                                    webView.JavascriptMode.unrestricted,
                               )
+
+                            // ? EasyWebView(
+                            //     onLoaded: () {
+                            //       print('Loaded: $_url');
+                            //     },
+                            //     src: _url,
+                            //     isHtml: false,
+                            //     isMarkdown: false,
+                            //     convertToWidgets: false,
+                            //     widgetsTextSelectable: false,
+                            //     key: key,
+                            //     webNavigationDelegate: (_) => false
+                            //         ? WebNavigationDecision.prevent
+                            //         : WebNavigationDecision.navigate,
+
+                            //     // webNavigationDelegate: (request) {
+                            //     //   print(Url);
+                            //     //   print('blocking navigation to $request}');
+
+                            //     //   // if (request.url.startsWith('http://webview')) {
+                            //     //   //   //拦截以js://webview 开始的链接 说明页面执行了这个链接的跳转操作，也就是页面按钮被点击了。那么执行相关的flutter操作。
+                            //     //   //   print('blocking navigation to $request}');
+                            //     //   // }
+
+                            //     //   return WebNavigationDecision.prevent;
+                            //     // },
+
+                            //     // width: 100,
+                            //     // height: 100,
+                            //   )
                             : _uri == null
                                 ? Text("")
                                 : InAppWebView(

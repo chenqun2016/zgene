@@ -80,8 +80,6 @@ class _OacqusitionProgressPageState
       }
       // }
 
-      print("_initCurrentPosition/${order.status}/" + stepMap.toString());
-      print(_position);
     }
   }
 
@@ -247,7 +245,7 @@ class _OacqusitionProgressPageState
                 ),
               ),
               child: Text(
-                "您的样本正在检测中，基因报告约在15天完成",
+                "实验室收到样本后会进行上机检测，基因报告约在15天完成。",
                 style: TextStyle(
                   color: ColorConstant.Text_5FC88F,
                   fontWeight: FontWeight.w500,
@@ -265,6 +263,12 @@ class _OacqusitionProgressPageState
   }
 
   _isButtomActive(model) {
+    print(steps.indexOf(model));
+    print(_position);
+
+    if (steps.indexOf(model) == 1 && _position == 2) {
+      return true;
+    }
     return steps.indexOf(model) == _position;
   }
 
@@ -277,7 +281,7 @@ class _OacqusitionProgressPageState
   }
 
   getRightButton(model, context) {
-    if (model.status <= 30) {
+    if (model.status <= 30 || (model.status >= 50 && model.status < 80)) {
       return Container(
         height: 50,
       );
@@ -292,7 +296,6 @@ class _OacqusitionProgressPageState
           ? () async {
               // await NavigatorUtil.orderStepNavigator(
               //     context, model.status, order);
-
               switch (model.status) {
                 case 40:
                   // NavigatorUtil.push(
@@ -301,6 +304,16 @@ class _OacqusitionProgressPageState
                   //         ordId: order.id,
                   //         ordName: order.targetName,
                   //         ordNum: order.serialNum));
+                  if ((steps.indexOf(model) == 1 && _position == 2)) {
+                    NavigatorUtil.push(
+                        context,
+                        BaseWebView(
+                          url: ApiConstant.getSFH5DetailUrl(order.order.reSfNo),
+                          title: "物流跟踪",
+                          isShare: false,
+                        ));
+                    break;
+                  }
                   final result = await Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -315,15 +328,15 @@ class _OacqusitionProgressPageState
                     }
                   }
                   break;
-                case 50:
-                  NavigatorUtil.push(
-                      context,
-                      BaseWebView(
-                        url: ApiConstant.getSFH5DetailUrl(order.order.reSfNo),
-                        title: "物流跟踪",
-                        isShare: false,
-                      ));
-                  break;
+                // case 50:
+                //   NavigatorUtil.push(
+                //       context,
+                //       BaseWebView(
+                //         url: ApiConstant.getSFH5DetailUrl(order.order.reSfNo),
+                //         title: "物流跟踪",
+                //         isShare: false,
+                //       ));
+                //   break;
                 case 60:
                   NavigatorUtil.push(
                       context,
@@ -356,7 +369,12 @@ class _OacqusitionProgressPageState
               getHttp();
             }
           : null,
-      child: Text(model.title2,
+      child: Text(
+          (steps.indexOf(model) == 1 && _position == 2)
+              ? "物流跟踪"
+              : ((_position == 3 && steps.indexOf(model) == 1)
+                  ? "物流跟踪"
+                  : model.title2),
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w500,

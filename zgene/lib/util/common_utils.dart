@@ -403,7 +403,7 @@ class CommonUtils {
   static var reportMap = {
     30: OrderStepModel("绑定成功", "", 30),
     40: OrderStepModel("待回寄", "立即回寄", 40),
-    50: OrderStepModel("收到样本", "物流跟踪", 50),
+    50: OrderStepModel("样本分析", "物流跟踪", 50),
     // 60: OrderStepModel("待出报告", "查看示例报告", 60),
     80: OrderStepModel("生成报告", "查看报告", 80),
   };

@@ -3,9 +3,11 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/constant/statistics_constant.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/content_model.dart';
 import 'package:zgene/util/common_utils.dart';
+import 'package:zgene/util/umeng_utils.dart';
 
 class CourseNav extends StatefulWidget {
   const CourseNav({Key key}) : super(key: key);
@@ -96,6 +98,10 @@ class _CourseNavState extends State<CourseNav>
     Archives archives = contentList[index];
     return GestureDetector(
       onTap: () {
+        UmengUtils.onEvent(StatisticsConstant.HOME_CONTENT, {
+          StatisticsConstant.KEY_UMENG_L2:
+              StatisticsConstant.HOME_CONTENT_ + "${archives.title}"
+        });
         CommonUtils.toUrl(
             context: context,
             type: archives.linkType,

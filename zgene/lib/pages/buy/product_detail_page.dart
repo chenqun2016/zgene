@@ -9,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
+import 'package:zgene/constant/statistics_constant.dart';
 import 'package:zgene/event/event_bus.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/archive_des_model.dart';
@@ -24,6 +25,7 @@ import 'package:zgene/util/platform_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/time_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
+import 'package:zgene/util/umeng_utils.dart';
 import 'package:zgene/widget/base_web_view.dart';
 
 ///产品详情页面
@@ -128,6 +130,9 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
 
   @override
   Future rightBtnTap(BuildContext context) {
+    UmengUtils.onEvent(StatisticsConstant.PRODUCTS_BUY, {
+      StatisticsConstant.KEY_UMENG_L2: StatisticsConstant.BUY_DETAILS_SERVICE
+    });
     UiUitls.showChatH5(context);
     return super.rightBtnTap(context);
   }

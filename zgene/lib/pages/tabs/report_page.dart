@@ -344,6 +344,10 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
         if ("更多报告" == bean.name) {
           return;
         }
+        UmengUtils.onEvent(StatisticsConstant.REPORT_PAGE, {
+          StatisticsConstant.KEY_UMENG_L2:
+              StatisticsConstant.REPORT_PAGE_ + "${bean.code}"
+        });
         NavigatorUtil.push(
             context,
             ReportLevel1Page(

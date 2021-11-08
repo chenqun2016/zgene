@@ -84,7 +84,7 @@ class _ReportResultItemTextState extends State<ReportResultItemText> {
                 : Column(
                     children: [
                       SizedBox(
-                        height: 99,
+                        height: 117,
                         child: Html(
                           data: text,
                           shrinkWrap: true,

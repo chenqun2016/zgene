@@ -148,6 +148,10 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
     }
     return GestureDetector(
       onTap: () {
+        UmengUtils.onEvent(StatisticsConstant.PRODUCTS_BUY, {
+          StatisticsConstant.KEY_UMENG_L2:
+              StatisticsConstant.BUY_LIST_ + "${bean.title}"
+        });
         Navigator.of(context).pushNamed(CommonConstant.ROUT_buy_detail,
             arguments: bean.id.toString());
       },
@@ -292,6 +296,10 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
           ),
           GestureDetector(
             onTap: () {
+              UmengUtils.onEvent(StatisticsConstant.PRODUCTS_BUY, {
+                StatisticsConstant.KEY_UMENG_L2:
+                    StatisticsConstant.BUY_LIST_TOP_SERVICE
+              });
               UiUitls.showChatH5(context);
             },
             child: Image.asset(

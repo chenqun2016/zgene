@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:scan/scan.dart';
+// import 'package:zgene/configure_web.dart';
 import 'package:zgene/constant/api_constant.dart';
+import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/bindcollector/bind_collector_page.dart';
@@ -16,6 +18,8 @@ import 'package:zgene/util/dia_log.dart';
 import 'package:zgene/util/platform_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/widget/my_qr_scanner_overlay_shape.dart';
+import 'package:zgene/configure.dart'
+    if (dart.library.html) 'package:zgene/configure_web.dart';
 
 class QRScannerView extends StatefulWidget {
   @override
@@ -46,6 +50,10 @@ class _QRScannerViewState extends State<QRScannerView>
   @override
   void initState() {
     super.initState();
+    if (PlatformUtils.isWeb) {
+      _webScan();
+      return;
+    }
     try {
       UiUitls.loadImageFromAssets("assets/images/mine/img_saomiao.png")
           .then((value) => setState(() {
@@ -214,6 +222,10 @@ class _QRScannerViewState extends State<QRScannerView>
     );
   }
 
+  _webScan() {
+    webWeixinScanCode();
+  }
+
   Text buildTitle() {
     return Text(
       "扫码绑定",
@@ -325,7 +337,7 @@ class _QRScannerViewState extends State<QRScannerView>
       overlay: MyQrScannerOverlayShape(
           image: _image,
           cutOutTopOffset: cutOutTopOffset,
-          borderColor: Colors.red,
+          borderColor: ColorConstant.Alpha4cBlack,
           borderRadius: 10,
           borderLength: 10,
           borderWidth: 10,

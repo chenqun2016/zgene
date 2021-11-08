@@ -10,4 +10,4 @@ void webWeixinLogin() {}
 
 void webShowToast(msg) {}
 
-void webWeixinScanCode(callback) {}
+void webWeixinScanCode() {}

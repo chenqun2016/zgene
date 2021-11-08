@@ -283,7 +283,7 @@ class _ReportResultState extends State<ReportResult>
           ),
           Container(
             width: double.infinity,
-            padding: EdgeInsets.only(top: 15, bottom: 15),
+            padding: EdgeInsets.only(top: 15, bottom: 0),
             margin: EdgeInsets.only(left: 15, right: 15),
             decoration: BoxDecoration(
               color: Colors.white,

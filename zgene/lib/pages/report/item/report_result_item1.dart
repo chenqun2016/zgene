@@ -39,7 +39,8 @@ class _ReportResultItem1State extends State<ReportResultItem1> {
       color = ColorConstant.bg_FD7A7A;
     }
 
-    return Padding(
+    return Container(
+      margin: EdgeInsets.only(bottom: 15),
       padding: const EdgeInsets.only(left: 15, right: 15),
       child: Column(
         children: [

@@ -23,19 +23,22 @@ class _ReportRusultItem2State extends State<ReportRusultItem2> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 10.0, bottom: 30),
-          child: data.length >= 4
-              ? _circleFourItem()
-              : Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: data.map<Widget>((e) => _circleItem(e)).toList(),
-                ),
-        ),
-        ...data.map<Widget>((e) => _item(e)).toList(),
-      ],
+    return Container(
+      margin: EdgeInsets.only(bottom: 15),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 10.0, bottom: 30),
+            child: data.length >= 4
+                ? _circleFourItem()
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: data.map<Widget>((e) => _circleItem(e)).toList(),
+                  ),
+          ),
+          ...data.map<Widget>((e) => _item(e)).toList(),
+        ],
+      ),
     );
   }
 

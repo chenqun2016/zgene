@@ -47,69 +47,69 @@ class _ReportResultItemTextState extends State<ReportResultItemText> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: _isHtml() ? EdgeInsets.fromLTRB(5, 0, 5, 0) : EdgeInsets.all(15),
-      margin: EdgeInsets.only(left: 15, right: 15),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        gradient: expand ? gradient2 : gradient1,
-        borderRadius: BorderRadius.all(Radius.circular(15)),
-      ),
-      child: LayoutBuilder(builder: (context, size) {
-        final painter = TextPainter(
-          text: TextSpan(text: text, style: style),
-          maxLines: maxLines,
-          textDirection: TextDirection.ltr,
-        );
-        painter.layout(maxWidth: size.maxWidth);
-        if (!painter.didExceedMaxLines)
-          return Html(
-            data: text,
-            shrinkWrap: true,
-          );
-        // : Text(text, maxLines: maxLines, style: style);
-        return Stack(
-          children: <Widget>[
-            expand
-                ? SizedBox(
-                    child: Html(
-                      data: text,
-                      shrinkWrap: true,
-                    ),
+    return Stack(
+      children: [
+        Container(
+          width: double.infinity,
+          padding: _isHtml()
+              ? EdgeInsets.fromLTRB(5, 0, 5, expand ? 0 : 10)
+              : EdgeInsets.all(15),
+          margin:
+              EdgeInsets.only(left: 15, right: 15, bottom: expand ? 15 : 25),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            gradient: expand ? gradient2 : gradient1,
+            borderRadius: BorderRadius.all(Radius.circular(15)),
+          ),
+          child: LayoutBuilder(builder: (context, size) {
+            final painter = TextPainter(
+              text: TextSpan(text: text, style: style),
+              maxLines: maxLines,
+              textDirection: TextDirection.ltr,
+            );
+            painter.layout(maxWidth: size.maxWidth);
+            if (!painter.didExceedMaxLines) {
+              expand = true;
+              return Html(
+                data: text,
+                shrinkWrap: true,
+              );
+              // : Text(text, maxLines: maxLines, style: style);
+            }
+            return expand
+                ? Html(
+                    data: text,
+                    shrinkWrap: true,
                   )
-                : SizedBox(
-                    height: 117,
-                    child: Html(
-                      data: text,
-                      shrinkWrap: true,
-                    ),
-                  ),
-            if (!expand)
-              Positioned(
-                  right: 5,
-                  bottom: 0,
-                  child: GestureDetector(
-                    onTap: () => setState(() {
-                      expand = !expand;
-                    }),
-                    child: Container(
-                      color: Colors.white,
-                      child: Row(
-                        children: [
-                          Text(" ...  "),
-                          Image.asset(
-                            "assets/images/report/icon_jiantou_down.png",
-                            height: 18,
-                            width: 18,
-                          )
-                        ],
+                : Column(
+                    children: [
+                      SizedBox(
+                        height: 99,
+                        child: Html(
+                          data: text,
+                          shrinkWrap: true,
+                        ),
                       ),
-                    ),
-                  )),
-          ],
-        );
-      }),
+                    ],
+                  );
+          }),
+        ),
+        if (!expand)
+          Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: GestureDetector(
+                onTap: () => setState(() {
+                  expand = !expand;
+                }),
+                child: Image.asset(
+                  "assets/images/report/report_jiantou.png",
+                  height: 40,
+                  width: 40,
+                ),
+              )),
+      ],
     );
   }
 }

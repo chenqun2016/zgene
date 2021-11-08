@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/constant/statistics_constant.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/category_model.dart';
 import 'package:zgene/models/content_model.dart';
 import 'package:zgene/util/common_utils.dart';
+import 'package:zgene/util/umeng_utils.dart';
 import 'package:zgene/widget/my_inherited_widget.dart';
 
 class ContentTabItem extends StatefulWidget {
@@ -150,6 +152,10 @@ class _ContentTabItemState extends State<ContentTabItem> {
   Widget _getItemWidgetType2(Archives item) {
     return GestureDetector(
       onTap: () {
+        UmengUtils.onEvent(StatisticsConstant.HOME_CONTENT, {
+          StatisticsConstant.KEY_UMENG_L2:
+              StatisticsConstant.HOME_CONTENT_ + "${item.title}"
+        });
         CommonUtils.toUrl(
             context: context,
             type: item.linkType,
@@ -252,6 +258,10 @@ class _ContentTabItemState extends State<ContentTabItem> {
           margin: EdgeInsets.only(top: 10),
           child: GestureDetector(
             onTap: () {
+              UmengUtils.onEvent(StatisticsConstant.HOME_CONTENT, {
+                StatisticsConstant.KEY_UMENG_L2:
+                    StatisticsConstant.HOME_CONTENT_ + "${item.title}"
+              });
               CommonUtils.toUrl(
                   context: context,
                   type: item.linkType,

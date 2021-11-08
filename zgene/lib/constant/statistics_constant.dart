@@ -82,6 +82,9 @@ class StatisticsConstant {
   ///二级事件ID:报告二级页面购买按钮点击
   static const String REPORT_PAGE2_BUYBTN = "report_page2_buybtn";
 
+  ///二级事件ID:报告项目分类点击
+  static const String REPORT_PAGE_ = "report_page_";
+
   ///***************************个人中心*************************************
   ///一级事件ID:个人中心
   static const String MY_PAGE = "my_page";
@@ -130,4 +133,27 @@ class StatisticsConstant {
 
   ///二级事件ID:我的-关于Z基因点击
   static const String MY_PAGE_ABOUTUS = "my_page_aboutus";
+
+  ///***************************首页内容区域*************************************
+  ///一级事件ID:首页内容区域
+  static const String HOME_CONTENT = "home_content";
+
+  ///二级事件ID:首页[文章标题]内容点击数
+  static const String HOME_CONTENT_ = "home_content_";
+
+  ///二级事件ID:首页内容-[内容分类]点击
+  static const String HOME_COLUMN_ = "home_column_";
+
+  ///***************************产品购买页************************************
+  ///一级事件ID:产品购买
+  static const String PRODUCTS_BUY = "products_buy";
+
+  ///二级事件ID:产品购买列表-[XX商品]点击
+  static const String BUY_LIST_ = "buy_list_";
+
+  ///二级事件ID:产品购买列表页顶部客服icon点击
+  static const String BUY_LIST_TOP_SERVICE = "buy_list_top_service";
+
+  ///二级事件ID:产品详情页顶部客服icon点击
+  static const String BUY_DETAILS_SERVICE = "buy_details_service";
 }

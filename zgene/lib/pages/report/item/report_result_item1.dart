@@ -21,12 +21,12 @@ class _ReportResultItem1State extends State<ReportResultItem1> {
     var minRisk = widget.minRisk;
     var maxRisk = widget.maxRisk;
     var risk = widget.risk;
-    double left = (risk - minRisk) / (maxRisk - minRisk) * width - 17;
+    double left = (risk - minRisk) / (maxRisk - minRisk) * width - 20;
     if (left < 0) {
       left = 0;
     }
-    if (left > width - 34) {
-      left = width - 34;
+    if (left > width - 40) {
+      left = width - 40;
     }
     print("left==" + left.toString() + "/width==" + width.toString());
     var space = (maxRisk - minRisk) / 3;

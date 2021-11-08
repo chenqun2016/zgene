@@ -14,6 +14,7 @@ import 'package:zgene/event/event_bus.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/jinxuan_model.dart';
 import 'package:zgene/models/report_page_model.dart';
+import 'package:zgene/models/report_sample_model.dart';
 import 'package:zgene/models/report_summary_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/report/report_level_1_page.dart';
@@ -56,7 +57,8 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
 
   var scope;
 
-  ///采集器序列号
+  ///示例报告 男，女
+  List<ReportSampleModel> reportSamples = [];
 
   @override
   void dispose() {
@@ -84,7 +86,9 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
             if (genderType != argType) {
               setState(() {
                 genderType = argType;
-                _getReport();
+                Map<String, dynamic> map = new HashMap();
+                map['sample'] = genderType == 6 ? "male" : "female";
+                _getReportContent(map);
               });
             }
           }
@@ -155,7 +159,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
     return Container(
       child: Column(children: <Widget>[
         _appBar,
-        if (collectors.length <= 0) _tip,
+        if (collectors.length <= 0 && reportSamples.length > 0) _tip,
         Expanded(
           child: EasyRefresh(
             // 是否开启控制结束加载
@@ -424,7 +428,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "此示例报告[标准/${genderType == 7 ? "女" : "男"}]，请以真实检测数据为准。",
+              reportSamples[sampleReportIndex].msg,
               style: TextStyle(
                   fontSize: 13,
                   color: ColorConstant.TextMainColor,
@@ -494,33 +498,34 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
               ),
             ),
           ),
-          Positioned(
-            right: 16.w,
-            top: MediaQuery.of(context).padding.top,
-            child: GestureDetector(
-              onTap: () async {
-                UmengUtils.onEvent(StatisticsConstant.REPORT_PAGE, {
-                  StatisticsConstant.KEY_UMENG_L2:
-                      StatisticsConstant.REPORT_PAGE_GENDER
-                });
-                if (collectors.length > 0) {
-                  await _switchReport();
-                } else {
-                  await _showModalBottomSheet();
-                }
-              },
-              child: Container(
-                height: 55.h,
-                child: Center(
-                  child: Image.asset(
-                    "assets/images/report/icon_qiehuan.png",
-                    height: 36,
-                    width: 36,
+          if (collectors.length > 0 || reportSamples.length > 0)
+            Positioned(
+              right: 16.w,
+              top: MediaQuery.of(context).padding.top,
+              child: GestureDetector(
+                onTap: () async {
+                  UmengUtils.onEvent(StatisticsConstant.REPORT_PAGE, {
+                    StatisticsConstant.KEY_UMENG_L2:
+                        StatisticsConstant.REPORT_PAGE_GENDER
+                  });
+                  if (collectors.length > 0) {
+                    await _switchReport();
+                  } else {
+                    await _showModalBottomSheet();
+                  }
+                },
+                child: Container(
+                  height: 55.h,
+                  child: Center(
+                    child: Image.asset(
+                      "assets/images/report/icon_qiehuan.png",
+                      height: 36,
+                      width: 36,
+                    ),
                   ),
                 ),
               ),
-            ),
-          )
+            )
         ],
       ),
     );
@@ -539,6 +544,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
     return "青春版";
   }
 
+  var sampleReportIndex = 0;
   // 弹出底部菜单列表模态对话框
   Future<int> _showModalBottomSheet() async {
     return await showModalBottomSheet<int>(
@@ -575,90 +581,59 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
                       topRight: Radius.circular(16)),
                 ),
                 child: Column(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        if (genderType == 7) {
-                          setState(() {
-                            genderType = 6;
-                          });
-                          _getReport();
-                        }
-                        Navigator.of(context).pop();
-                      },
-                      child: Container(
-                        height: 60,
-                        color: Colors.transparent,
-                        margin: EdgeInsets.only(top: 10),
-                        width: double.infinity,
-                        alignment: Alignment.center,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "标准/男",
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  color: genderType == 6
-                                      ? ColorConstant.TextMainColor
-                                      : ColorConstant.TextMainBlack,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            if (genderType == 6)
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 8.0, top: 2),
-                                child: Icon(
-                                  Icons.check_circle,
-                                  size: 20,
-                                  color: ColorConstant.TextMainColor,
-                                ),
-                              )
-                          ],
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        if (genderType == 6) {
-                          setState(() {
-                            genderType = 7;
-                          });
-                          _getReport();
-                        }
-                        Navigator.of(context).pop();
-                      },
-                      child: Container(
-                          height: 60,
-                          color: Colors.transparent,
-                          width: double.infinity,
-                          alignment: Alignment.center,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "标准/女",
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    color: genderType == 7
-                                        ? ColorConstant.TextMainColor
-                                        : ColorConstant.TextMainBlack,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              if (genderType == 7)
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.only(left: 8.0, top: 2),
-                                  child: Icon(
-                                    Icons.check_circle,
-                                    size: 20,
-                                    color: ColorConstant.TextMainColor,
+                  children: reportSamples
+                      .map((e) => GestureDetector(
+                            onTap: () {
+                              sampleReportIndex = reportSamples.indexOf(e);
+                              if (e.sex == 'female') {
+                                genderType = 7;
+                              }
+                              if (e.sex == 'male') {
+                                genderType = 6;
+                              }
+                              setState(() {});
+                              Map<String, dynamic> map = new HashMap();
+                              map['sample'] = e.sex;
+                              _getReportContent(map);
+                              Navigator.of(context).pop();
+                            },
+                            child: Container(
+                              height: 60,
+                              color: Colors.transparent,
+                              margin: EdgeInsets.only(top: 10),
+                              width: double.infinity,
+                              alignment: Alignment.center,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "${e.name}",
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        color: e.sex ==
+                                                (genderType == 6
+                                                    ? "male"
+                                                    : "female")
+                                            ? ColorConstant.TextMainColor
+                                            : ColorConstant.TextMainBlack,
+                                        fontWeight: FontWeight.w600),
                                   ),
-                                )
-                            ],
-                          )),
-                    )
-                  ],
+                                  if (e.sex ==
+                                      (genderType == 6 ? "male" : "female"))
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 8.0, top: 2),
+                                      child: Icon(
+                                        Icons.check_circle,
+                                        size: 20,
+                                        color: ColorConstant.TextMainColor,
+                                      ),
+                                    )
+                                ],
+                              ),
+                            ),
+                          ))
+                      .toList(),
                 ),
               )
             ],
@@ -701,7 +676,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
                 ),
               ),
               Container(
-                height: height - 56,
+                height: height - 57,
                 margin: EdgeInsets.only(left: 16, right: 16),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(colors: [
@@ -809,22 +784,46 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
   }
 
   _getReport() {
-    _getReportSummary();
-    _getReportJingXuan();
-  }
-
-  _getReportJingXuan() {
     Map<String, dynamic> map = new HashMap();
 
     ///有报告的情况
     if (collectors.length > 0) {
       currentSerialNum = collectors[currentCollector].serialNum;
       map['serial_num'] = currentSerialNum;
+
+      _getReportContent(map);
     } else {
       ///没报告，请求示例报告
       map['sample'] = genderType == 6 ? "male" : "female";
+      HttpUtils.requestHttp(
+        ApiConstant.reportSample,
+        isNeedCache: true,
+        method: HttpUtils.GET,
+        onSuccess: (result) async {
+          List l = result;
+          reportSamples.clear();
+          l.forEach((element) {
+            var reportSampleModel = ReportSampleModel.fromJson(element);
+            reportSamples.add(reportSampleModel);
+            if ((genderType == 6 ? 'male' : 'female') ==
+                reportSampleModel.sex) {
+              sampleReportIndex = l.indexOf(element);
+            }
+          });
+          _getReportContent(map);
+          // setState(() {});
+        },
+        onError: (code, error) {},
+      );
     }
+  }
 
+  _getReportContent(map) {
+    _getReportSummary(map);
+    _getReportJingXuan(map);
+  }
+
+  _getReportJingXuan(Map map) {
     HttpUtils.requestHttp(
       ApiConstant.reportJinxuan,
       parameters: map,
@@ -842,18 +841,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
     );
   }
 
-  _getReportSummary() {
-    Map<String, dynamic> map = new HashMap();
-
-    ///有报告的情况
-    if (collectors.length > 0) {
-      currentSerialNum = collectors[currentCollector].serialNum;
-      map['serial_num'] = currentSerialNum;
-    } else {
-      ///没报告，请求示例报告
-      map['sample'] = genderType == 6 ? "male" : "female";
-    }
-
+  _getReportSummary(Map map) {
     HttpUtils.requestHttp(
       ApiConstant.reportSummary,
       parameters: map,

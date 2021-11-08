@@ -51,7 +51,7 @@ class PlayerWithControls extends StatelessWidget {
                 Widget? widget,
               ) =>
                   AnimatedOpacity(
-                opacity: notifier.hideStuff ? 0.0 : 0.8,
+                opacity: notifier.hideStuff ? 0.0 : 0.2,
                 duration: const Duration(
                   milliseconds: 250,
                 ),

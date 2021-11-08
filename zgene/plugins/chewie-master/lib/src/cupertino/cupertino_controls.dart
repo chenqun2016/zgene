@@ -8,13 +8,13 @@ import 'package:chewie/src/chewie_player.dart';
 import 'package:chewie/src/chewie_progress_colors.dart';
 import 'package:chewie/src/cupertino/cupertino_progress_bar.dart';
 import 'package:chewie/src/helpers/utils.dart';
+import 'package:chewie/src/models/subtitle_model.dart';
 import 'package:chewie/src/notifiers/index.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
-import 'package:chewie/src/models/subtitle_model.dart';
 
 class CupertinoControls extends StatefulWidget {
   const CupertinoControls({
@@ -570,13 +570,14 @@ class _CupertinoControlsState extends State<CupertinoControls>
       _startHideTimer();
     }
 
-    if (chewieController.showControlsOnInitialize) {
-      _initTimer = Timer(const Duration(milliseconds: 200), () {
-        setState(() {
-          notifier.hideStuff = false;
-        });
-      });
-    }
+    ///开始就显示控制按钮
+    // if (chewieController.showControlsOnInitialize) {
+    //   _initTimer = Timer(const Duration(milliseconds: 200), () {
+    //     setState(() {
+    //       notifier.hideStuff = false;
+    //     });
+    //   });
+    // }
   }
 
   void _onExpandCollapse() {

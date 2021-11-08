@@ -52,10 +52,12 @@ dependencies:
   flutter_easyrefresh: 2.2.1
   flutter_pickers: ^2.1.1
   # easy_web_view2: ^0.0.3
+  # flutter_webview_plugin: ^0.3.11
   easy_web_view: 
     git:
       url: https://gitee.com/benshar-com/easy_web_view.git
       ref: master
+  # easy_web_view: ^1.5.0
   fluwx: ^3.6.1+1
   sign_in_with_apple: ^3.1.0
   event_bus: ^2.0.0

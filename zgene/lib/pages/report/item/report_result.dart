@@ -21,6 +21,7 @@ class _ReportResultState extends State<ReportResult>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
+  var renqunzhanbi;
 
   ///人群占比  3个圈
   List<Distribution> distribution;
@@ -58,6 +59,15 @@ class _ReportResultState extends State<ReportResult>
           rate:
               double.parse(widget.reportData.predisposition.upRate.toString()),
           title: "比我高"));
+    }
+
+    if (null != widget.reportData.distribution) {
+      widget.reportData.distribution.forEach((element) {
+        if (widget.reportData.tag == element.tag) {
+          var per = (element.rate * 100).toStringAsFixed(2);
+          renqunzhanbi = "$per%的人和我一样";
+        }
+      });
     }
     super.initState();
   }
@@ -106,7 +116,7 @@ class _ReportResultState extends State<ReportResult>
           _buildSliverItem(
               context,
               index++,
-              "人群占比",
+              renqunzhanbi + "",
               ReportRusultItem2(
                 distribution: widget.reportData.distribution,
                 tag: widget.reportData.tag,

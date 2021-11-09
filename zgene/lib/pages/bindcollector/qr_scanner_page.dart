@@ -427,8 +427,11 @@ class _QRScannerViewState extends State<QRScannerView>
         // await NavigatorUtil.push(context, contantUsPage());
         UiUitls.showChatH5(context);
       }
-      if (PlatformUtils.isWeb) {
+      if (PlatformUtils.isWeb && value) {
         _webScan();
+      }
+      if (PlatformUtils.isWeb && null != value) {
+        Navigator.pop(context);
       }
       controller.resumeCamera();
       animationController.forward();

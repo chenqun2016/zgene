@@ -11,3 +11,5 @@ void webWeixinLogin() {}
 void webShowToast(msg) {}
 
 void webWeixinScanCode() {}
+
+void webScanCallback(scanCallback) {}

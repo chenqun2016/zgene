@@ -30,21 +30,20 @@ void webLogin() {
     var spUtils = SpUtils();
     spUtils.setStorage(SpConstant.Token, res);
     spUtils.setStorage(SpConstant.IsLogin, true);
-    UserInfoModel userInfo = UserInfoModel();
-    HttpUtils.requestHttp(
-      ApiConstant.userInfo,
-      method: HttpUtils.GET,
-      onSuccess: (data) {
-        print(data);
-        UserInfoModel userInfoModel = UserInfoModel.fromJson(data);
-        userInfo = userInfoModel;
-        if (userInfo.mobile == "") {
-          print("登录1");
+    // UserInfoModel userInfo = UserInfoModel();
+    // HttpUtils.requestHttp(
+    //   ApiConstant.userInfo,
+    //   method: HttpUtils.GET,
+    //   onSuccess: (data) {
+    //     print(data);
+    //     UserInfoModel userInfoModel = UserInfoModel.fromJson(data);
+    //     userInfo = userInfoModel;
+    //     if (userInfo.mobile == "") {
 
-          BaseLogin.bindPhone();
-        }
-      },
-    );
+    //       BaseLogin.bindPhone();
+    //     }
+    //   },
+    // );
   }
   // 判断是否在微信Webview内
   CommonConstant.isInWechatWeb = js.context.callMethod('InWechatWeb');
@@ -68,4 +67,8 @@ void webShowToast(msg) {
 
 void webWeixinScanCode() {
   js.context.callMethod('WxScanCode');
+}
+
+void webScanCallback(scanCallback) {
+  js.context["scanCallback"] = scanCallback;
 }

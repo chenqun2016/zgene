@@ -30,7 +30,10 @@ class _ReportResultState extends State<ReportResult>
     ///人群占比  3个圈
     if (null != widget.reportData.lowRate &&
         null != widget.reportData.sameRate &&
-        null != widget.reportData.upRate) {
+        null != widget.reportData.upRate &&
+        (widget.reportData.lowRate != 0 ||
+            widget.reportData.sameRate != 0 ||
+            widget.reportData.upRate != 0)) {
       distribution = [];
       distribution.add(Distribution(
           rate: double.parse(widget.reportData.lowRate.toString()),
@@ -45,7 +48,10 @@ class _ReportResultState extends State<ReportResult>
     if (null != widget.reportData.predisposition &&
         null != widget.reportData.predisposition.lowRate &&
         null != widget.reportData.predisposition.sameRate &&
-        null != widget.reportData.predisposition.upRate) {
+        null != widget.reportData.predisposition.upRate &&
+        (widget.reportData.predisposition.lowRate != 0 ||
+            widget.reportData.predisposition.sameRate != 0 ||
+            widget.reportData.predisposition.upRate != 0)) {
       distribution = [];
       distribution.add(Distribution(
           rate:
@@ -84,7 +90,10 @@ class _ReportResultState extends State<ReportResult>
         if (widget.topType == 0 &&
             null != widget.reportData.risk &&
             null != widget.reportData.minRisk &&
-            null != widget.reportData.maxRisk)
+            null != widget.reportData.maxRisk &&
+            (widget.reportData.risk != 0 ||
+                widget.reportData.minRisk != 0 ||
+                widget.reportData.maxRisk != 0))
           _buildSliverItem(
               context,
               index++,
@@ -100,7 +109,10 @@ class _ReportResultState extends State<ReportResult>
             null != widget.reportData.predisposition &&
             null != widget.reportData.predisposition.risk &&
             null != widget.reportData.predisposition.minRisk &&
-            null != widget.reportData.predisposition.maxRisk)
+            null != widget.reportData.predisposition.maxRisk &&
+            (widget.reportData.predisposition.risk != 0 ||
+                widget.reportData.predisposition.minRisk != 0 ||
+                widget.reportData.predisposition.maxRisk != 0))
           _buildSliverItem(
               context,
               index++,

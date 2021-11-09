@@ -24,10 +24,12 @@ class BaseLogin {
   }
 
   static bindPhone() {
-    Global.navigatorKey.currentState.pushAndRemoveUntil(
-        new MaterialPageRoute(
-            builder: (BuildContext context) => BindPhoneLoginPage()),
-        (route) => true);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Global.navigatorKey.currentState.pushAndRemoveUntil(
+          new MaterialPageRoute(
+              builder: (BuildContext context) => BindPhoneLoginPage()),
+          (route) => true);
+    });
 
     // }
   }

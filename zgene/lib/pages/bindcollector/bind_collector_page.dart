@@ -12,7 +12,6 @@ import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/navigator/navigator_util.dart';
-import 'package:zgene/pages/my/my_contant_us.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/dia_log.dart';
@@ -50,6 +49,7 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
   var birthText = "请选择您的生日";
   bool hasBirth = false;
 
+  bool hasName = false;
   @override
   void pageWidgetInitState() {
     super.pageWidgetInitState();
@@ -60,6 +60,23 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
 
     _textEditingController = new TextEditingController();
     _nameEditingController = new TextEditingController();
+    _nameEditingController.addListener(() {
+      if (null != _nameEditingController.text &&
+          _nameEditingController.text.isNotEmpty &&
+          _nameEditingController.text.length > 1) {
+        if (!hasName) {
+          setState(() {
+            hasName = true;
+          });
+        }
+      } else {
+        if (hasName) {
+          setState(() {
+            hasName = false;
+          });
+        }
+      }
+    });
 
     currentSex = sex[0];
 
@@ -345,10 +362,15 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
                       controller: _nameEditingController,
                       keyboardType: TextInputType.multiline,
                       // controller: _textEditingController,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(
+                            RegExp("[a-zA-Z]|[\u4e00-\u9fa5]")),
+                        LengthLimitingTextInputFormatter(10), //最大长度
+                      ],
                       maxLines: 1,
                       textAlign: TextAlign.right,
                       decoration: InputDecoration(
-                        hintText: "检测对象",
+                        hintText: "检测对象（限2~10个中文、英文）",
                         border: InputBorder.none,
                         isCollapsed: true,
                         hintStyle: TextStyle(
@@ -500,7 +522,7 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
             minWidth: double.infinity,
             disabledColor: Colors.white,
             color: ColorConstant.TextMainColor,
-            onPressed: (_nameEditingController.text.isNotEmpty && hasBirth)
+            onPressed: (hasName && hasBirth)
                 ? () {
                     _bindcollector();
                   }
@@ -509,7 +531,7 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
-                  color: (_nameEditingController.text.isNotEmpty && hasBirth)
+                  color: (hasName && hasBirth)
                       ? Colors.white
                       : ColorConstant.Divider,
                 )),

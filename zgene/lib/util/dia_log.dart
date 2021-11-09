@@ -116,10 +116,10 @@ class MyDialog extends Dialog {
             height: 55.h,
             child: OutlinedButton(
                 style: ButtonStyle(
-                    side: MaterialStateProperty.all(
-                        BorderSide(width: 0, color: ColorConstant.WhiteColor)),
+                    side: MaterialStateProperty.all(BorderSide(
+                        width: 1, color: ColorConstant.TextMainColor)),
                     backgroundColor:
-                        MaterialStateProperty.all(ColorConstant.Text_B2BAC6),
+                        MaterialStateProperty.all(ColorConstant.WhiteColor),
                     shape: MaterialStateProperty.all(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(40.h)))),
                 onPressed: () {
@@ -136,7 +136,7 @@ class MyDialog extends Dialog {
                           fontSize: 18.sp,
                           fontStyle: FontStyle.normal,
                           fontWeight: FontWeight.w600,
-                          color: ColorConstant.WhiteColor,
+                          color: ColorConstant.TextMainColor,
                         ),
                       ),
                     ),

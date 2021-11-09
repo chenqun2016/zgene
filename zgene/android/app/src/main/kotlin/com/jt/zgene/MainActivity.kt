@@ -11,7 +11,7 @@ import io.flutter.plugin.common.MethodChannel
 
 class MainActivity : FlutterActivity() {
     private val CHANNEL = "com.jt.zgene.MethodChannel"
-    private var methodChannel : MethodChannel? = null
+    private var methodChannel: MethodChannel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,13 +47,25 @@ class MainActivity : FlutterActivity() {
         if (null != intent) {
             val url = intent.getStringExtra("url")
             val type = intent.getStringExtra("type")
-            Log.d("--------------", "url = " + url + ",type = " + type+"brand=="+ Build.MANUFACTURER+"/"+Build.BRAND)
+            Log.d(
+                "--------------",
+                "url = " + url + ",type = " + type + "brand==" + Build.MANUFACTURER + "/" + Build.BRAND
+            )
             if (null != url && url.isNotEmpty()) {
                 intent.putExtra("url", "")
                 intent.putExtra("type", "")
                 val map = mapOf("url" to url, "type" to type)
                 methodChannel?.invokeMethod("onPushData", map)
             }
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        try {
+            Thread.sleep(200)
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
         }
     }
 }

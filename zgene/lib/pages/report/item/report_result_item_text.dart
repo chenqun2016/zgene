@@ -13,7 +13,7 @@ class ReportResultItemText extends StatefulWidget {
 
 class _ReportResultItemTextState extends State<ReportResultItemText> {
   bool expand = false;
-  int maxLines = 5;
+  int maxLines = 6;
   final style = TextStyle(
       fontSize: 15,
       overflow: TextOverflow.ellipsis,
@@ -94,6 +94,24 @@ class _ReportResultItemTextState extends State<ReportResultItemText> {
                   );
           }),
         ),
+        if (!expand)
+          Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                height: 65,
+                margin: EdgeInsets.only(bottom: 3),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  gradient: LinearGradient(colors: [
+                    Colors.white,
+                    Colors.white,
+                    Colors.white.withAlpha(0),
+                  ], begin: Alignment.bottomCenter, end: Alignment.topCenter),
+                ),
+                width: double.infinity,
+              )),
         if (!expand)
           Positioned(
               bottom: 0,

@@ -80,5 +80,5 @@ void webPlayVideoInWxMini(url) {
 }
 
 void weNavJump(navigateJump) {
-  js.context["navigate"] = navigateJump;
+  js.context["baseWebNavigate"] = navigateJump;
 }

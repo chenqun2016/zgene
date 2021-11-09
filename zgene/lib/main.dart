@@ -26,6 +26,7 @@ import 'package:zgene/util/chineseCupertino.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/get_notice_count.dart';
 import 'package:zgene/util/getui_Utils.dart';
+import 'package:zgene/util/login_base.dart';
 import 'package:zgene/util/platform_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
@@ -111,6 +112,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         }
       });
     } else {
+      // BaseLogin.bindPhone();
       webLogin();
     }
     if (PlatformUtils.isIOS) {

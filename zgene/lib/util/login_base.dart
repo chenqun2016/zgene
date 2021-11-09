@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/userInfo_model.dart';
+import 'package:zgene/pages/login/bindPhone_login.dart';
 import 'package:zgene/pages/login/main_login.dart';
 
 import '../main.dart';
@@ -23,11 +24,10 @@ class BaseLogin {
   }
 
   static bindPhone() {
-    print("登录2");
     Global.navigatorKey.currentState.pushAndRemoveUntil(
-        new MaterialPageRoute(builder: (BuildContext context) => bindPhone()),
+        new MaterialPageRoute(
+            builder: (BuildContext context) => BindPhoneLoginPage()),
         (route) => true);
-    print("登录3");
 
     // }
   }

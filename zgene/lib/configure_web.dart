@@ -75,6 +75,10 @@ void webScanCallback(scanCallback) {
   js.context["scanCallback"] = scanCallback;
 }
 
-void webPlayVideoInWxMini(url){
+void webPlayVideoInWxMini(url) {
   js.context.callMethod('playVideoInWxMini', [url]);
+}
+
+void weNavJump(navigateJump) {
+  js.context["navigate"] = navigateJump;
 }

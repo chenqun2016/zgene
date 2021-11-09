@@ -33,4 +33,13 @@ class BaseLogin {
 
     // }
   }
+
+  // static routingJump() {
+  //   Global.navigatorKey.currentState.pushAndRemoveUntil(
+  //       new MaterialPageRoute(
+  //           builder: (BuildContext context) => BindPhoneLoginPage()),
+  //       (route) => true);
+
+  //   // }
+  // }
 }

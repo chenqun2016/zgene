@@ -12,6 +12,8 @@ import 'package:zgene/util/platform_utils.dart';
 import 'package:zgene/util/share_utils.dart'
     if (dart.library.html) 'package:zgene/util/share_utils_web.dart';
 import 'package:zgene/util/sp_utils.dart';
+import 'package:zgene/configure.dart'
+    if (dart.library.html) 'package:zgene/configure_web.dart';
 
 //基础webview
 class BaseWebView extends StatefulWidget {
@@ -69,6 +71,8 @@ class _BaseWebViewState extends State<BaseWebView> {
   @override
   Widget build(BuildContext context) {
     print("ssssddd");
+    weNavJump(navigateJump);
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -162,6 +166,7 @@ class _BaseWebViewState extends State<BaseWebView> {
                             //     javascriptMode:
                             //         webView.JavascriptMode.unrestricted,
                             //   )
+                            // ? webviewx()
 
                             ? EasyWebView(
                                 onLoaded: () {
@@ -275,5 +280,23 @@ class _BaseWebViewState extends State<BaseWebView> {
     setState(() {
       _uri = uri1;
     });
+  }
+
+  void navigateJump(args) {
+    print("js调用flutter跳转");
+    try {
+      print("JavaScriptHandler == navigate");
+      if (null != args && args.length >= 2) {
+        CommonUtils.toUrl(context: context, url: args[1], type: args[0]);
+        if (args[1] == CommonUtils.URL_BUY ||
+            args[1] == CommonUtils.URL_MY ||
+            (args[1].contains(CommonUtils.URL_REPORT) &&
+                !args[1].contains("_"))) {
+          Navigator.pop(context);
+        }
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 }

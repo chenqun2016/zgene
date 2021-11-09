@@ -76,6 +76,7 @@ dependencies:
   percent_indicator: ^3.4.0
   flutter_html:
     path: plugins/flutter_html-master
+  webviewx: ^0.2.1
 
 dev_dependencies:
   flutter_test:

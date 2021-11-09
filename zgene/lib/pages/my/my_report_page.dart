@@ -154,21 +154,28 @@ class _MyReportPageState extends BaseWidgetState {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        bean.targetName == null ? "" : bean.targetName,
-                        style: TextStyle(
-                            fontSize: 26,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
+                      Container(
+                        width: MediaQuery.of(context).size.width - 70,
+                        child: Text(
+                          bean.targetName == null ? "" : bean.targetName,
+                          maxLines: 1,
+                          style: TextStyle(
+                              fontSize: 26,
+                              color: Colors.white,
+                              overflow: TextOverflow.ellipsis,
+                              fontWeight: FontWeight.bold),
+                        ),
                       ),
-                      Text(
-                        bean.collectorBatch.productName != null
-                            ? bean.collectorBatch.productName
-                            : "ZGene检测",
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
+                      Container(
+                        child: Text(
+                          bean.collectorBatch.productName != null
+                              ? bean.collectorBatch.productName
+                              : "ZGene检测",
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold),
+                        ),
                       ),
                       Divider(
                         height: 20,

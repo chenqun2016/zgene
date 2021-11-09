@@ -274,12 +274,15 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      "恭喜 ${_nameEditingController.text.toString()} 绑定成功！",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: ColorConstant.TextMainBlack,
+                    Container(
+                      width: MediaQuery.of(context).size.width - 60,
+                      child: Text(
+                        "恭喜 ${_nameEditingController.text.toString()} 绑定成功！",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: ColorConstant.TextMainBlack,
+                        ),
                       ),
                     ),
                     // Container(

@@ -312,12 +312,15 @@ class _MyMessagePageState extends State<MyMessagePage> {
                                     fontWeight: FontWeight.w500,
                                   )),
                             ),
-                            Text(content.title,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: ColorConstant.TextMainBlack,
-                                  fontWeight: FontWeight.w500,
-                                ))
+                            Container(
+                              width: MediaQuery.of(context).size.width - 150,
+                              child: Text(content.title,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: ColorConstant.TextMainBlack,
+                                    fontWeight: FontWeight.w500,
+                                  )),
+                            )
                           ],
                         ),
                         Positioned(

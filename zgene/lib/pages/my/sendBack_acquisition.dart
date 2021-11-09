@@ -186,6 +186,7 @@ class _SendBackAcquisitionPageState
               ),
               Container(
                 margin: EdgeInsets.only(top: 20.h, left: 12.w),
+                width: MediaQuery.of(context).size.width - 100,
                 child: Text(
                   "姓名：" + widget.ordName,
                   textAlign: TextAlign.left,

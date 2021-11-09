@@ -25,26 +25,28 @@ void configureApp() {
 
 void webLogin() {
   // 如果是web则需要进行一些js操作
-  // var res = js.context.callMethod('GetCookie', ['jwt']);
-  // if (res != null) {
-  var spUtils = SpUtils();
-  // spUtils.setStorage(SpConstant.Token, res);
-  spUtils.setStorage(SpConstant.IsLogin, true);
-  UserInfoModel userInfo = UserInfoModel();
-  HttpUtils.requestHttp(
-    ApiConstant.userInfo,
-    method: HttpUtils.GET,
-    onSuccess: (data) {
-      print(data);
-      UserInfoModel userInfoModel = UserInfoModel.fromJson(data);
-      userInfo = userInfoModel;
-      if (userInfo.mobile == "") {
-        print(1111111111111);
-        BaseLogin.bindPhone();
-      }
-    },
-  );
-  // }
+  var res = js.context.callMethod('GetCookie', ['jwt']);
+  if (res != null) {
+    var spUtils = SpUtils();
+    spUtils.setStorage(SpConstant.Token, res);
+    spUtils.setStorage(SpConstant.IsLogin, true);
+    UserInfoModel userInfo = UserInfoModel();
+    HttpUtils.requestHttp(
+      ApiConstant.userInfo,
+      method: HttpUtils.GET,
+      onSuccess: (data) {
+        print(data);
+        print("微信登录成功获取用户信息");
+
+        UserInfoModel userInfoModel = UserInfoModel.fromJson(data);
+        userInfo = userInfoModel;
+        if (userInfo.mobile == "" || userInfo.mobile == null) {
+          print("进入绑定手机号");
+          BaseLogin.bindPhone();
+        }
+      },
+    );
+  }
   // 判断是否在微信Webview内
   CommonConstant.isInWechatWeb = js.context.callMethod('InWechatWeb');
   CommonConstant.isInWechatMini = js.context.callMethod('InWechatMini');

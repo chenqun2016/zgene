@@ -55,6 +55,7 @@
     <script>
         var inWechatWeb = false;
         var inWechatMini = false; // 是否是微信小程序
+        let timer;
 
         // GetCookie 获取Cookie
         function GetCookie(name) {
@@ -68,41 +69,52 @@
             return null;
         }
 
-        fetch('/wechat/js')
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (data) {
-                if (data.code === 0) {
-                    wx.config({
-                        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-                        appId: data.result.app_id, // 必填，公众号的唯一标识
-                        timestamp: data.result.timestamp, // 必填，生成签名的时间戳
-                        nonceStr: data.result.nonce_str, // 必填，生成签名的随机串
-                        signature: data.result.signature,// 必填，签名
-                        jsApiList: [
-                            'scanQRCode'
-                        ] // 必填，需要使用的JS接口列表
-                    });
+        setWxConfig();
 
-                    wx.ready(function () {
-                        console.log("wx.ready");
-                    });
+        function setWxConfig() {
+            fetch('/wechat/js')
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (data) {
+                    console.log('/wechat/js', data)
+                    if (data.code === 0) {
+                        wx.config({
+                            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                            appId: data.result.app_id, // 必填，公众号的唯一标识
+                            timestamp: data.result.timestamp, // 必填，生成签名的时间戳
+                            nonceStr: data.result.nonce_str, // 必填，生成签名的随机串
+                            signature: data.result.signature,// 必填，签名
+                            jsApiList: [
+                                'scanQRCode'
+                            ] // 必填，需要使用的JS接口列表
+                        });
 
-                    wx.error(function (res) {
-                        console.log("wx.error", res);
-                    });
-                }
-            });
+                        wx.ready(function () {
+                            console.log("wx.ready");
+                        });
 
-        function WxScanCode(callback) {
-            console.log("123123123123");
+                        wx.error(function (res) {
+                            console.log("wx.error", res);
+                            timer = setTimeout(() => {
+                                setWxConfig();
+                            }, 3000)
+                        });
+                    }
+                });
+        }
+
+        function WxScanCode() {
+            console.log('进入扫码')
             wx.scanQRCode({
                 needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
                 scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
                 success: function (res) {
                     console.log('WxScanCodeResult', res)
-                    callback(res.resultStr); // 当needResult 为 1 时，扫码返回的结果
+                    scanCallback(res.resultStr ? res.resultStr : '扫码失败'); // 当needResult 为 1 时，扫码返回的结果
+                },
+                fail: err => {
+                    console.log('扫码失败：', err)
                 }
             });
         }

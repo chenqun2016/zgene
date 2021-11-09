@@ -159,7 +159,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
     return Container(
       child: Column(children: <Widget>[
         _appBar,
-        if (collectors.length <= 0 && reportSamples.length > 1) _tip,
+        if (collectors.length <= 0 && reportSamples.length > 0) _tip,
         Expanded(
           child: EasyRefresh(
             // 是否开启控制结束加载
@@ -502,7 +502,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
               ),
             ),
           ),
-          if (collectors.length > 0 || reportSamples.length > 0)
+          if (collectors.length > 0 || reportSamples.length > 1)
             Positioned(
               right: 16.w,
               top: MediaQuery.of(context).padding.top,

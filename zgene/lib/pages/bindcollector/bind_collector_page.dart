@@ -16,6 +16,7 @@ import 'package:zgene/pages/my/my_contant_us.dart';
 import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/dia_log.dart';
+import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/widget/base_web.dart';
 import 'package:zgene/widget/my_stepper.dart';
 
@@ -607,7 +608,8 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
                   TextStyle(color: ColorConstant.TextMainColor, fontSize: 14),
               recognizer: TapGestureRecognizer()
                 ..onTap = () {
-                  NavigatorUtil.push(context, contantUsPage());
+                  UiUitls.showChatH5(context);
+                  // NavigatorUtil.push(context, contantUsPage());
                 },
             ),
           ])),
@@ -668,7 +670,8 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
               );
             }).then((value) async {
           if (null != value && !value) {
-            NavigatorUtil.push(context, contantUsPage());
+            // NavigatorUtil.push(context, contantUsPage());
+            UiUitls.showChatH5(context);
           }
         });
       },

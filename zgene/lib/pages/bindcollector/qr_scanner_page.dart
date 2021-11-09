@@ -51,6 +51,7 @@ class _QRScannerViewState extends State<QRScannerView>
   void initState() {
     super.initState();
     if (PlatformUtils.isWeb) {
+      print("????????");
       _webScan();
       return;
     }
@@ -203,7 +204,9 @@ class _QRScannerViewState extends State<QRScannerView>
             onTap: () async {
               controller.pauseCamera();
               animationController.stop();
-              await NavigatorUtil.push(context, contantUsPage());
+              // await NavigatorUtil.push(context, contantUsPage());
+              UiUitls.showChatH5(context);
+
               controller.resumeCamera();
               animationController.forward();
             },
@@ -421,7 +424,8 @@ class _QRScannerViewState extends State<QRScannerView>
           );
         }).then((value) async {
       if (null != value && !value) {
-        await NavigatorUtil.push(context, contantUsPage());
+        // await NavigatorUtil.push(context, contantUsPage());
+        UiUitls.showChatH5(context);
       }
       if (PlatformUtils.isWeb) {
         _webScan();

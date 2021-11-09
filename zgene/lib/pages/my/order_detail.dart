@@ -15,6 +15,7 @@ import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/date_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/time_utils.dart';
+import 'package:zgene/util/ui_uitls.dart';
 
 import 'my_contant_us.dart';
 
@@ -458,7 +459,8 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
         NavigatorUtil.orderStepNavigator(context, _model.status, _model);
         break;
       case 2: //联系客服
-        NavigatorUtil.push(context, contantUsPage());
+        // NavigatorUtil.push(context, contantUsPage());
+        UiUitls.showChatH5(context);
         break;
       case 3: //售后规则
         _showRule();

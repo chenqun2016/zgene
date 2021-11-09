@@ -5,7 +5,7 @@ import 'package:zgene/util/ui_uitls.dart';
 
 class BindStep1 extends StatefulWidget {
   var onChangeNextButtomState;
-  BindStep1(Function(bool canNext) onChangeNextButtomState){
+  BindStep1(Function(bool canNext) onChangeNextButtomState) {
     this.onChangeNextButtomState = onChangeNextButtomState;
   }
 
@@ -124,7 +124,7 @@ class _BindStep1State extends State<BindStep1> {
                     fontWeight: FontWeight.w500,
                     color: ColorConstant.TextMainBlack,
                   ),
-                  onChanged: (str){
+                  onChanged: (str) {
                     widget.onChangeNextButtomState(str.isNotEmpty);
                   },
                   onSubmitted: (value) {

@@ -53,7 +53,9 @@ class _CommonQusListPageState extends BaseWidgetState<CommonQusListPage> {
   @override
   Future rightBtnTap(BuildContext context) {
     // TODO: implement rightBtnTap
-    NavigatorUtil.push(context, contantUsPage());
+    // NavigatorUtil.push(context, contantUsPage());
+    UiUitls.showChatH5(context);
+
     return super.rightBtnTap(context);
   }
 

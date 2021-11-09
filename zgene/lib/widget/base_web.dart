@@ -284,8 +284,9 @@ class _BaseWebViewState extends State<BaseWebView> {
 
   void navigateJump(args) {
     print("js调用flutter跳转");
+    print(args);
     try {
-      print("JavaScriptHandler == navigate");
+      print("navigate try");
       if (null != args && args.length >= 2) {
         CommonUtils.toUrl(context: context, url: args[1], type: args[0]);
         if (args[1] == CommonUtils.URL_BUY ||
@@ -296,6 +297,7 @@ class _BaseWebViewState extends State<BaseWebView> {
         }
       }
     } catch (e) {
+      print("navigate catch");
       print(e);
     }
   }

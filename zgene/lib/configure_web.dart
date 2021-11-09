@@ -69,3 +69,7 @@ void webShowToast(msg) {
 void webWeixinScanCode() {
   js.context.callMethod('WxScanCode');
 }
+
+void webScanCallback(scanCallback) {
+  js.context["scanCallback"] = scanCallback;
+}

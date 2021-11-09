@@ -1,12 +1,12 @@
 import 'dart:collection';
 import 'dart:developer';
-import 'dart:js' as js;
+// import 'dart:js' as js;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:scan/scan.dart';
-// import 'package:zgene/configure_web.dart';
+
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/http/http_utils.dart';
@@ -102,7 +102,7 @@ class _QRScannerViewState extends State<QRScannerView>
 
   @override
   Widget build(BuildContext context) {
-    js.context["scanCallback"] = scanCallback;
+    webScanCallback(scanCallback);
     return Scaffold(
       body: Stack(
         alignment: Alignment.topCenter,

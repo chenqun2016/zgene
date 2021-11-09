@@ -39,168 +39,169 @@
 </head>
 
 <body
-        style="position: fixed; inset: 0px; overflow: hidden; padding: 0px; margin: 0px; user-select: none; touch-action: none; font: 14px sans-serif; color: red;">
-<!-- This script installs service_worker.js to provide PWA functionality to
+    style="position: fixed; inset: 0px; overflow: hidden; padding: 0px; margin: 0px; user-select: none; touch-action: none; font: 14px sans-serif; color: red;">
+    <!-- This script installs service_worker.js to provide PWA functionality to
      application. For more information, see:
      https://developers.google.com/web/fundamentals/primers/service-workers -->
-<script src="js/vconsole.min.js"></script>
-<script>
-    // 测试环境开启调试
-    if (window.location.host == "test.z-gene.cn") {
-        const vConsole = new VConsole();
-    }
-</script>
-<script src="//cdn.jsdelivr.net/npm/jsqr@1.3.1/dist/jsQR.min.js"></script>
-<script src="//res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
-<script>
-    var inWechatWeb = false;
-    var inWechatMini = false; // 是否是微信小程序
-
-    // GetCookie 获取Cookie
-    function GetCookie(name) {
-        var nameEQ = name + "=";
-        var ca = document.cookie.split(';');
-        for (var i = 0; i < ca.length; i++) {
-            var c = ca[i];
-            while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    <script src="js/vconsole.min.js"></script>
+    <script>
+        // 测试环境开启调试
+        if (window.location.host == "test.z-gene.cn") {
+            const vConsole = new VConsole();
         }
-        return null;
-    }
+    </script>
+    <script src="//cdn.jsdelivr.net/npm/jsqr@1.3.1/dist/jsQR.min.js"></script>
+    <script src="//res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+    <script>
+        var inWechatWeb = false;
+        var inWechatMini = false; // 是否是微信小程序
 
-    fetch('/wechat/js')
-        .then(function (response) {
-            return response.json();
-        })
-        .then(function (data) {
-            if (data.code === 0) {
-                wx.config({
-                    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-                    appId: data.result.app_id, // 必填，公众号的唯一标识
-                    timestamp: data.result.timestamp, // 必填，生成签名的时间戳
-                    nonceStr: data.result.nonce_str, // 必填，生成签名的随机串
-                    signature: data.result.signature,// 必填，签名
-                    jsApiList: [
-                        'scanQRCode'
-                    ] // 必填，需要使用的JS接口列表
-                });
-
-                wx.ready(function () {
-                    console.log("wx.ready");
-                });
-
-                wx.error(function (res) {
-                    console.log("wx.error", res);
-                });
+        // GetCookie 获取Cookie
+        function GetCookie(name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
             }
-        });
+            return null;
+        }
 
-    function WxScanCode(callback) {
-        wx.scanQRCode({
-            needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
-            scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
-            success: function (res) {
-                console.log('WxScanCodeResult', res)
-                callback(res.resultStr); // 当needResult 为 1 时，扫码返回的结果
+        fetch('/wechat/js')
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                if (data.code === 0) {
+                    wx.config({
+                        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                        appId: data.result.app_id, // 必填，公众号的唯一标识
+                        timestamp: data.result.timestamp, // 必填，生成签名的时间戳
+                        nonceStr: data.result.nonce_str, // 必填，生成签名的随机串
+                        signature: data.result.signature,// 必填，签名
+                        jsApiList: [
+                            'scanQRCode'
+                        ] // 必填，需要使用的JS接口列表
+                    });
+
+                    wx.ready(function () {
+                        console.log("wx.ready");
+                    });
+
+                    wx.error(function (res) {
+                        console.log("wx.error", res);
+                    });
+                }
+            });
+
+        function WxScanCode(callback) {
+            console.log("123123123123");
+            wx.scanQRCode({
+                needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+                scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+                success: function (res) {
+                    console.log('WxScanCodeResult', res)
+                    callback(res.resultStr); // 当needResult 为 1 时，扫码返回的结果
+                }
+            });
+        }
+
+        var ua = navigator.userAgent.toLowerCase();
+        window.onload = function () {
+            if (ua.match(/MicroMessenger/i) == "micromessenger") {
+                inWechatWeb = true;
+            } else {
+                inWechatWeb = false;
             }
-        });
-    }
+        };
 
-    var ua = navigator.userAgent.toLowerCase();
-    window.onload = function () {
-        if (ua.match(/MicroMessenger/i) == "micromessenger") {
-            inWechatWeb = true;
+        let useHtml = true;
+        if (ua.match(/iPhone OS 15/i) == "iphone os 15") {
+            // 如果是IOS15，则采用canvaskit，否则无法打开
+            // HTMLCanvasElement.prototype.getContext = function (orig) {
+            //   return function (type) {
+            //     return type !== "webgl2" ? orig.apply(this, arguments) : null
+            //   }
+            // }(HTMLCanvasElement.prototype.getContext)
+        }
+
+        if (ua.match(/miniProgram/i) == "miniprogram") {
+            // 通过UA判断小程序
+            inWechatMini = true;
+        }
+
+        if (useHtml) {
+            window.flutterWebRenderer = "html";
         } else {
-            inWechatWeb = false;
-        }
-    };
-
-    let useHtml = true;
-    if (ua.match(/iPhone OS 15/i) == "iphone os 15") {
-        // 如果是IOS15，则采用canvaskit，否则无法打开
-        // HTMLCanvasElement.prototype.getContext = function (orig) {
-        //   return function (type) {
-        //     return type !== "webgl2" ? orig.apply(this, arguments) : null
-        //   }
-        // }(HTMLCanvasElement.prototype.getContext)
-    }
-
-    if (ua.match(/miniProgram/i) == "miniprogram") {
-        // 通过UA判断小程序
-        inWechatMini = true;
-    }
-
-    if (useHtml) {
-        window.flutterWebRenderer = "html";
-    } else {
-        window.flutterWebRenderer = "canvaskit";
-    }
-
-    var isShowing = false;
-
-    function showToast(msg, time = 3000) {
-        var outDiv = document.createElement("div")
-        outDiv.style.position = "absolute";
-        outDiv.style.marginTop = "70%";
-        outDiv.style.zIndex = 99999;
-        outDiv.style.left = 0;
-        outDiv.style.right = 0;
-        outDiv.style.textAlign = "center";
-        outDiv.innerHTML = `<div style="background: #E6F2FF;border-radius: 8px;color: #1877F2;padding: 8px;margin: auto;display: inline-block;">${msg}</div>`;
-
-        if (isShowing) {
-            return
+            window.flutterWebRenderer = "canvaskit";
         }
 
-        document.querySelector("body").append(outDiv);
-        isShowing = true;
+        var isShowing = false;
 
-        setTimeout(function () {
-            outDiv.remove();
-            isShowing = false;
-        }, time);
-    }
+        function showToast(msg, time = 3000) {
+            var outDiv = document.createElement("div")
+            outDiv.style.position = "absolute";
+            outDiv.style.marginTop = "70%";
+            outDiv.style.zIndex = 99999;
+            outDiv.style.left = 0;
+            outDiv.style.right = 0;
+            outDiv.style.textAlign = "center";
+            outDiv.innerHTML = `<div style="background: #E6F2FF;border-radius: 8px;color: #1877F2;padding: 8px;margin: auto;display: inline-block;">${msg}</div>`;
 
-    function InWechatWeb() {
-        return inWechatWeb;
-    }
+            if (isShowing) {
+                return
+            }
 
-    function InWechatMini() {
-        return inWechatMini;
-    }
+            document.querySelector("body").append(outDiv);
+            isShowing = true;
 
-    function JumpLogin() {
-        location.href = "/wechat/login";
-    }
-
-    var serviceWorkerVersion = null;
-    var scriptLoaded = false;
-
-    function loadMainDartJs() {
-        if (scriptLoaded) {
-            return;
+            setTimeout(function () {
+                outDiv.remove();
+                isShowing = false;
+            }, time);
         }
-        scriptLoaded = true;
-        var scriptTag = document.createElement('script');
-        scriptTag.src = 'main.dart.js';
-        scriptTag.type = 'application/javascript';
-        document.body.append(scriptTag);
-    }
 
-    function WeixinPay(parms) {
-        console.log('parms', parms)
-        let res = JSON.parse(parms);
-        console.log('res', res)
+        function InWechatWeb() {
+            return inWechatWeb;
+        }
 
-        if (inWechatMini) {
-            let tmp = encodeURIComponent(parms);
-            // console.log("[WeixinPay]tmp=",tmp);
-            // 在小程序里面支付
-            wx.miniProgram.redirectTo({url: `/pages/pay/index?parms=${tmp}`});
-        } else if (inWechatWeb) {
-            // 微信web支付
-            WeixinJSBridge.invoke(
-                'getBrandWCPayRequest', {
+        function InWechatMini() {
+            return inWechatMini;
+        }
+
+        function JumpLogin() {
+            location.href = "/wechat/login";
+        }
+
+        var serviceWorkerVersion = null;
+        var scriptLoaded = false;
+
+        function loadMainDartJs() {
+            if (scriptLoaded) {
+                return;
+            }
+            scriptLoaded = true;
+            var scriptTag = document.createElement('script');
+            scriptTag.src = 'main.dart.js';
+            scriptTag.type = 'application/javascript';
+            document.body.append(scriptTag);
+        }
+
+        function WeixinPay(parms) {
+            console.log('parms', parms)
+            let res = JSON.parse(parms);
+            console.log('res', res)
+
+            if (inWechatMini) {
+                let tmp = encodeURIComponent(parms);
+                // console.log("[WeixinPay]tmp=",tmp);
+                // 在小程序里面支付
+                wx.miniProgram.redirectTo({ url: `/pages/pay/index?parms=${tmp}` });
+            } else if (inWechatWeb) {
+                // 微信web支付
+                WeixinJSBridge.invoke(
+                    'getBrandWCPayRequest', {
                     "appId": res["appid"],     //公众号ID，由商户传入
                     "timeStamp": `${res["timestamp"]}`,         //时间戳，自1970年以来的秒数
                     "nonceStr": res["noncestr"], //随机串
@@ -208,115 +209,115 @@
                     "signType": "RSA",         //微信签名方式：
                     "paySign": res["sign"] //微信签名
                 },
-                function (res) {
-                    if (res.err_msg == "get_brand_wcpay_request:ok") {
-                        // 使用以上方式判断前端返回,微信团队郑重提示：
-                        //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
-                        // alert("ok");
-                        location.href = "/webapp/#/push_order_page";
-                    }
-                });
+                    function (res) {
+                        if (res.err_msg == "get_brand_wcpay_request:ok") {
+                            // 使用以上方式判断前端返回,微信团队郑重提示：
+                            //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+                            // alert("ok");
+                            location.href = "/webapp/#/push_order_page";
+                        }
+                    });
+            }
+            // WeixinJSBridge.invoke(
+            //   'getBrandWCPayRequest', {
+            //   "appId": res["appid"],     //公众号ID，由商户传入
+            //   "timeStamp": res["timestamp"],         //时间戳，自1970年以来的秒数
+            //   "nonceStr": res["noncestr"], //随机串
+            //   "package": res["package"],
+            //   "signType": "RSA",         //微信签名方式：
+            //   "paySign": res["sign"] //微信签名
+            // },
+            //   function (res) {
+            //     if (res.err_msg == "get_brand_wcpay_request:ok") {
+            //       // 使用以上方式判断前端返回,微信团队郑重提示：
+            //       //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+            //       // alert("ok");
+            //       location.href = "/webapp/#/my_order";
+            //     }
+            //   });
         }
-        // WeixinJSBridge.invoke(
-        //   'getBrandWCPayRequest', {
-        //   "appId": res["appid"],     //公众号ID，由商户传入
-        //   "timeStamp": res["timestamp"],         //时间戳，自1970年以来的秒数
-        //   "nonceStr": res["noncestr"], //随机串
-        //   "package": res["package"],
-        //   "signType": "RSA",         //微信签名方式：
-        //   "paySign": res["sign"] //微信签名
-        // },
-        //   function (res) {
-        //     if (res.err_msg == "get_brand_wcpay_request:ok") {
-        //       // 使用以上方式判断前端返回,微信团队郑重提示：
-        //       //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
-        //       // alert("ok");
-        //       location.href = "/webapp/#/my_order";
-        //     }
-        //   });
-    }
 
 
-    if ('serviceWorker' in navigator) {
-        // Service workers are supported. Use them.
-        window.addEventListener('load', function () {
-            // Wait for registration to finish before dropping the <script> tag.
-            // Otherwise, the browser will load the script multiple times,
-            // potentially different versions.
-            var serviceWorkerUrl = 'flutter_service_worker.js?v=' + serviceWorkerVersion;
-            navigator.serviceWorker.register(serviceWorkerUrl)
-                .then((reg) => {
-                    function waitForActivation(serviceWorker) {
-                        serviceWorker.addEventListener('statechange', () => {
-                            if (serviceWorker.state == 'activated') {
-                                console.log('Installed new service worker.');
-                                loadMainDartJs();
+        if ('serviceWorker' in navigator) {
+            // Service workers are supported. Use them.
+            window.addEventListener('load', function () {
+                // Wait for registration to finish before dropping the <script> tag.
+                // Otherwise, the browser will load the script multiple times,
+                // potentially different versions.
+                var serviceWorkerUrl = 'flutter_service_worker.js?v=' + serviceWorkerVersion;
+                navigator.serviceWorker.register(serviceWorkerUrl)
+                    .then((reg) => {
+                        function waitForActivation(serviceWorker) {
+                            serviceWorker.addEventListener('statechange', () => {
+                                if (serviceWorker.state == 'activated') {
+                                    console.log('Installed new service worker.');
+                                    loadMainDartJs();
+                                }
+                            });
+                        }
+
+                        if (!reg.active && (reg.installing || reg.waiting)) {
+                            // No active web worker and we have installed or are installing
+                            // one for the first time. Simply wait for it to activate.
+                            if (typeof reg.installing !== "undefined") {
+                                waitForActivation(reg.installing);
+                            } else {
+                                waitForActivation(reg.waiting);
                             }
-                        });
-                    }
-
-                    if (!reg.active && (reg.installing || reg.waiting)) {
-                        // No active web worker and we have installed or are installing
-                        // one for the first time. Simply wait for it to activate.
-                        if (typeof reg.installing !== "undefined") {
+                        } else if (!reg.active.scriptURL.endsWith(serviceWorkerVersion)) {
+                            // When the app updates the serviceWorkerVersion changes, so we
+                            // need to ask the service worker to update.
+                            console.log('New service worker available.');
+                            reg.update();
                             waitForActivation(reg.installing);
                         } else {
-                            waitForActivation(reg.waiting);
+                            // Existing service worker is still good.
+                            console.log('Loading app from service worker.');
+                            loadMainDartJs();
                         }
-                    } else if (!reg.active.scriptURL.endsWith(serviceWorkerVersion)) {
-                        // When the app updates the serviceWorkerVersion changes, so we
-                        // need to ask the service worker to update.
-                        console.log('New service worker available.');
-                        reg.update();
-                        waitForActivation(reg.installing);
-                    } else {
-                        // Existing service worker is still good.
-                        console.log('Loading app from service worker.');
+                    });
+
+                // If service worker doesn't succeed in a reasonable amount of time,
+                // fallback to plaint <script> tag.
+                setTimeout(() => {
+                    if (!scriptLoaded) {
+                        console.warn(
+                            'Failed to load app from service worker. Falling back to plain <script> tag.',
+                        );
                         loadMainDartJs();
                     }
-                });
-
-            // If service worker doesn't succeed in a reasonable amount of time,
-            // fallback to plaint <script> tag.
-            setTimeout(() => {
-                if (!scriptLoaded) {
-                    console.warn(
-                        'Failed to load app from service worker. Falling back to plain <script> tag.',
-                    );
-                    loadMainDartJs();
-                }
-            }, 4000);
-        });
-    } else {
-        // Service workers not supported. Just drop the <script> tag.
-        loadMainDartJs();
-    }
-
-    // 微信小程序
-    wx.miniProgram.getEnv(function (res) {
-        console.log("WeixinJSBridgeReady ready");
-        console.log(res.miniprogram) // true
-        setTimeout(function () {
-            console.log("postMessage");
-            wx.miniProgram.navigateBack({delta: 1})
-            wx.miniProgram.postMessage({
-                data: JSON.stringify({
-                    action: 'vibrateShort',
-                })
+                }, 4000);
             });
-        }, 5000);
-    })
-
-    setTimeout(function () {
-        // 支持调用flutter内的方法
-        if (typeof window.helloDart !== "undefined") {
-            window.helloDart();
+        } else {
+            // Service workers not supported. Just drop the <script> tag.
+            loadMainDartJs();
         }
 
-    }, 5000);
-</script>
-    <img class="center" src="splash/img/light-1x.png"/>
-</picture>
+        // 微信小程序
+        wx.miniProgram.getEnv(function (res) {
+            console.log("WeixinJSBridgeReady ready");
+            console.log(res.miniprogram) // true
+            setTimeout(function () {
+                console.log("postMessage");
+                wx.miniProgram.navigateBack({ delta: 1 })
+                wx.miniProgram.postMessage({
+                    data: JSON.stringify({
+                        action: 'vibrateShort',
+                    })
+                });
+            }, 5000);
+        })
+
+        setTimeout(function () {
+            // 支持调用flutter内的方法
+            if (typeof window.helloDart !== "undefined") {
+                window.helloDart();
+            }
+
+        }, 5000);
+    </script>
+    <img class="center" src="splash/img/light-1x.png" />
+    </picture>
 </body>
 
 </html>

@@ -119,6 +119,10 @@
             });
         }
 
+        function playVideoInWxMini(url) {
+            wx.miniProgram.navigateTo({url:`/pages/video/video?videoUrl=${url}`})
+        }
+
         var ua = navigator.userAgent.toLowerCase();
         window.onload = function () {
             if (ua.match(/MicroMessenger/i) == "micromessenger") {

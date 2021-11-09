@@ -74,3 +74,7 @@ void webWeixinScanCode() {
 void webScanCallback(scanCallback) {
   js.context["scanCallback"] = scanCallback;
 }
+
+void webPlayVideoInWxMini(url){
+  js.context.callMethod('playVideoInWxMini', [url]);
+}

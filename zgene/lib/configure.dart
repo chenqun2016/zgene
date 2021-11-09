@@ -13,3 +13,5 @@ void webShowToast(msg) {}
 void webWeixinScanCode() {}
 
 void webScanCallback(scanCallback) {}
+
+void webPlayVideoInWxMini(url) {}

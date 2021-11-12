@@ -57,6 +57,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
   @override
   void initState() {
     super.initState();
+    print("lifecycle-initState--" + widget.toStringShort());
     listeningController = ScrollController();
     listeningController.addListener(() {
       if (listeningController.position.pixels.toInt() < APPBAR_SCORLL_OFFSET) {
@@ -77,7 +78,26 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
   @override
   void dispose() {
     super.dispose();
+    print("lifecycle-dispose--" + widget.toStringShort());
     // FocusScope.of(context).requestFocus(FocusNode());
+  }
+
+  @override
+  void didChangeDependencies() {
+    print("lifecycle-didChangeDependencies--" + widget.toStringShort());
+    super.didChangeDependencies();
+  }
+
+  @override
+  void didUpdateWidget(covariant T oldWidget) {
+    print("lifecycle-didUpdateWidget--" + widget.toStringShort());
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void deactivate() {
+    print("lifecycle-deactivate--" + widget.toStringShort());
+    super.deactivate();
   }
 
   void pageWidgetInitState() {}
@@ -302,6 +322,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
 
   @override
   Widget build(BuildContext context) {
+    print("lifecycle-build--" + widget.toStringShort());
     super.build(context);
     // selfContext = context;
     ScreenUtil.init(

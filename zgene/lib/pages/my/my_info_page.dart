@@ -1,8 +1,9 @@
 import 'dart:collection';
 import 'dart:io';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:http/http.dart' as http;
 
+import 'package:base/http/http_utils.dart';
+import 'package:base/util/platform_utils.dart';
+import 'package:base/util/sp_utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -13,17 +14,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
-import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/userInfo_model.dart';
-import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/my/my_editor_name.dart';
 import 'package:zgene/pages/my/my_introduction.dart';
 import 'package:zgene/util/common_utils.dart';
-import 'package:zgene/util/platform_utils.dart';
 import 'package:zgene/util/screen_utils.dart';
-import 'package:zgene/util/sp_utils.dart';
-import 'package:zgene/util/time_utils.dart';
-import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/widget/camer_crop_image_route.dart';
 
 ///我的资料

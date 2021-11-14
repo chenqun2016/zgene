@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:base/http/http_utils.dart';
 import 'package:base/widget/base_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
-import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/pages/my/my_address_list.dart';
 import 'package:zgene/pages/my/show_selectPicker.dart';
 import 'package:zgene/util/common_utils.dart';

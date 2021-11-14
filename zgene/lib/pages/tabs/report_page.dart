@@ -1,6 +1,8 @@
 import 'dart:collection';
 
 import 'package:base/event/event_bus.dart';
+import 'package:base/http/http_utils.dart';
+import 'package:base/util/sp_utils.dart';
 import 'package:base/widget/base_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,7 +14,6 @@ import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/constant/statistics_constant.dart';
-import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/jinxuan_model.dart';
 import 'package:zgene/models/report_page_model.dart';
 import 'package:zgene/models/report_sample_model.dart';
@@ -20,7 +21,6 @@ import 'package:zgene/models/report_summary_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/report/report_level_1_page.dart';
 import 'package:zgene/util/common_utils.dart';
-import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/umeng_utils.dart';
 
 ///7 : 女    6：男

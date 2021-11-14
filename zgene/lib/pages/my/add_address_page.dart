@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:base/http/http_utils.dart';
 import 'package:base/widget/base_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,7 +9,6 @@ import 'package:flutter_pickers/pickers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
-import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/address_list_model.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/isChina_phone.dart';

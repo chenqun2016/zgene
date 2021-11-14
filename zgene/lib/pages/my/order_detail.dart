@@ -1,5 +1,7 @@
 import 'dart:collection';
 
+import 'package:base/http/http_utils.dart';
+import 'package:base/util/sp_utils.dart';
 import 'package:base/widget/base_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,12 +10,10 @@ import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
-import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/order_list_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/date_utils.dart';
-import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 
 ///订单详情

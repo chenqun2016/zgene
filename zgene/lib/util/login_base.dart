@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:zgene/constant/api_constant.dart';
-import 'package:zgene/http/http_utils.dart';
-import 'package:zgene/models/userInfo_model.dart';
 import 'package:zgene/pages/login/bindPhone_login.dart';
 import 'package:zgene/pages/login/main_login.dart';
 
 import '../main.dart';
-import '../constant/common_constant.dart';
 
 class BaseLogin {
   static login() {

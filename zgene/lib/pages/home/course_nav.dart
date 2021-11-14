@@ -1,10 +1,10 @@
 import 'dart:collection';
 
+import 'package:base/http/http_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/statistics_constant.dart';
-import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/content_model.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/umeng_utils.dart';

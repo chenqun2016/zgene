@@ -2,6 +2,9 @@ import 'dart:collection';
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:base/http/http_utils.dart';
+import 'package:base/util/platform_utils.dart';
+import 'package:base/util/sp_utils.dart';
 import 'package:base/widget/base_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,14 +18,11 @@ import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
-import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/address_list_model.dart';
 import 'package:zgene/models/archive_des_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/my/my_order_list.dart';
 import 'package:zgene/util/common_utils.dart';
-import 'package:zgene/util/platform_utils.dart';
-import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 
 import '../my/my_address_list.dart';

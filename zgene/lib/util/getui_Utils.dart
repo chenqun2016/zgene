@@ -2,12 +2,11 @@ import 'dart:convert';
 // import 'dart:ffi';
 import 'dart:io';
 
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:base/util/platform_utils.dart';
+import 'package:base/util/sp_utils.dart';
 import 'package:getuiflut/getuiflut.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
-import 'package:zgene/util/platform_utils.dart';
-import 'package:zgene/util/sp_utils.dart';
 
 import 'common_utils.dart';
 

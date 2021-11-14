@@ -1,4 +1,7 @@
 import 'package:base/event/event_bus.dart';
+import 'package:base/http/http_utils.dart';
+import 'package:base/util/platform_utils.dart';
+import 'package:base/util/sp_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,7 +14,6 @@ import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/config_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
-import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/setting_model.dart';
 import 'package:zgene/pages/bindcollector/qr_scanner_page.dart';
 import 'package:zgene/pages/buy/product_detail_page.dart';
@@ -27,8 +29,6 @@ import 'package:zgene/util/chineseCupertino.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/get_notice_count.dart';
 import 'package:zgene/util/getui_Utils.dart';
-import 'package:zgene/util/platform_utils.dart';
-import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/widget/restart_widget.dart';
 

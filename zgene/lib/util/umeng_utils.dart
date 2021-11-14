@@ -1,6 +1,6 @@
+import 'package:base/util/platform_utils.dart';
 import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 import 'package:zgene/constant/config_constant.dart';
-import 'package:zgene/util/platform_utils.dart';
 
 ///友盟统计工具类
 class UmengUtils {

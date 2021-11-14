@@ -1,4 +1,4 @@
-import 'package:zgene/constant/sp_constant.dart';
+import 'package:base/constant/sp_constant.dart';
 
 ///app公共常量
 class CommonConstant {

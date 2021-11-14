@@ -1,16 +1,13 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:base/constant/sp_constant.dart';
+import 'package:base/http/base_response.dart';
+import 'package:base/util/platform_utils.dart';
+import 'package:base/util/sp_utils.dart';
 import 'package:device_info/device_info.dart';
 import 'package:dio/dio.dart';
 import 'package:package_info/package_info.dart';
-import 'package:zgene/constant/common_constant.dart';
-import 'package:zgene/constant/sp_constant.dart';
-import 'package:zgene/util/login_base.dart';
-import 'package:zgene/util/platform_utils.dart';
-import 'package:zgene/util/sp_utils.dart';
-
-import 'base_response.dart';
 
 ///网络请求工具类
 class HttpUtils {
@@ -19,7 +16,7 @@ class HttpUtils {
   //需要登录错误码
   static const int _needLoginCode = 20201;
 
-  static Dio _dio;
+  static Dio? _dio;
 
   /// http request methods
   static const String GET = 'get';
@@ -32,8 +29,8 @@ class HttpUtils {
   static Future<Dio> createInstance() async {
     if (_dio == null) {
       var spUtils = SpUtils();
-      String model, vendor, udid, authorization, version;
-      int os, uid;
+      String? model, vendor, udid, authorization, version;
+      int? os, uid;
       //不是是第一次打开
       if (!spUtils.getStorageDefault(SpConstant.SpIsFirst, true)) {
         //获取设备信息
@@ -68,16 +65,16 @@ class HttpUtils {
       }
 
       var platform = "app";
-      if (CommonConstant.isInWechatWeb) {
-        platform = "gzh";
-        if (CommonConstant.isInWechatMini) {
-          platform = "mini";
-        }
-      }
+      // if (CommonConstant.isInWechatWeb) {
+      //   platform = "gzh";
+      //   if (CommonConstant.isInWechatMini) {
+      //     platform = "mini";
+      //   }
+      // }
 
       /// 全局属性：请求前缀、连接超时时间、响应超时时间
       var options = BaseOptions(
-          baseUrl: CommonConstant.BASE_API,
+          baseUrl: SpConstant.DevelopApi,
           //连接时间为5秒
           connectTimeout: CONNECTTIMEOUT,
           //响应时间为3秒
@@ -99,9 +96,9 @@ class HttpUtils {
           //共有三种方式json,bytes(响应字节),stream（响应流）,plain
           responseType: ResponseType.json);
 
-      _dio = new Dio(options);
+      _dio = Dio(options);
     }
-    return _dio;
+    return _dio!;
   }
 
   /// 清空 dio 对象
@@ -121,8 +118,8 @@ class HttpUtils {
       {parameters,
       method,
       isNeedCache = false,
-      Function(dynamic t) onSuccess,
-      Function(int code, String error) onError}) async {
+      Function(dynamic t)? onSuccess,
+      Function(int code, String error)? onError}) async {
     parameters = parameters ?? {"": ""};
     method = method ?? 'GET';
 
@@ -151,8 +148,8 @@ class HttpUtils {
     bool isNeedCache,
     String url, {
     parameters,
-    Interceptor Function(T) onSuccess,
-    Function(int code, String error) onError,
+    Function(T)? onSuccess,
+    Function(int code, String error)? onError,
   }) async {
     ///定义请求参数
     ///
@@ -189,14 +186,14 @@ class HttpUtils {
       }
       var responseString = json.decode(response.toString());
       var responseResult = BaseResponse.fromJson(responseString);
-      int code = responseResult.code;
-      String msg = responseResult.msg;
+      int? code = responseResult.code;
+      String? msg = responseResult.msg;
       dynamic result = responseResult.result;
       print(responseResult.code);
       switch (code) {
         case _needLoginCode:
           // EasyLoading.dismiss();
-          BaseLogin.login();
+          // BaseLogin.login();
           // onError(code ?? 0, "");
           return;
         default:
@@ -204,20 +201,27 @@ class HttpUtils {
       }
 
       if (code == 0) {
-        onSuccess(result);
+        if (null != onSuccess) {
+          onSuccess(result);
+        }
+
         if (isNeedCache) {
           SpUtils().setStorage(url + parameters.toString() + "Cache", result);
         }
       } else {
-        onError(code ?? 0, msg ?? "");
+        if (null != onError) {
+          onError(code ?? 0, msg ?? "");
+        }
       }
       log('响应数据：' + response.toString());
     } catch (e) {
       print('请求出错：' + e.toString());
 
       if (isNeedCache) {
-        onSuccess(SpUtils()
-            .getStorageDefault(url + parameters.toString() + "Cache", []));
+        if (null != onSuccess) {
+          onSuccess(SpUtils()
+              .getStorageDefault(url + parameters.toString() + "Cache", []));
+        }
       }
     }
   }

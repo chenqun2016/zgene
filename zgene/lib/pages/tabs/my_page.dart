@@ -1,6 +1,8 @@
 import 'dart:collection';
 
 import 'package:base/event/event_bus.dart';
+import 'package:base/http/http_utils.dart';
+import 'package:base/util/sp_utils.dart';
 import 'package:base/widget/base_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,7 +14,6 @@ import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/constant/statistics_constant.dart';
-import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/content_model.dart';
 import 'package:zgene/models/msg_event.dart';
 import 'package:zgene/models/userInfo_model.dart';
@@ -31,7 +32,6 @@ import 'package:zgene/pages/my/sendBack_acquisition.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/login_base.dart';
 import 'package:zgene/util/screen_utils.dart';
-import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/util/umeng_utils.dart';
 

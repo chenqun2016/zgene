@@ -1,6 +1,9 @@
 import 'dart:collection';
 
 import 'package:base/event/event_bus.dart';
+import 'package:base/http/http_utils.dart';
+import 'package:base/util/platform_utils.dart';
+import 'package:base/util/sp_utils.dart';
 // import 'dart:ffi';
 
 import 'package:base/widget/base_widget.dart';
@@ -18,12 +21,9 @@ import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/constant/statistics_constant.dart';
-import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/pages/login/bindPhone_login.dart';
 import 'package:zgene/pages/login/phone_login.dart';
 import 'package:zgene/util/notification_utils.dart';
-import 'package:zgene/util/platform_utils.dart';
-import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/umeng_utils.dart';
 import 'package:zgene/widget/base_web.dart';
 

@@ -11,6 +11,12 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_screenutil: ^5.0.0+2
+  dio: ^4.0.0
+  device_info: ^2.0.2
+  package_info: ^2.0.2
+  fluttertoast: ^8.0.8
+  shared_preferences: ^2.0.6
+
 
 dev_dependencies:
   flutter_test:

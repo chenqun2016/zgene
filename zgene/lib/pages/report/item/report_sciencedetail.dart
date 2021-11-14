@@ -1,8 +1,8 @@
+import 'package:base/util/sp_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/models/report_list_detail_model.dart';
-import 'package:zgene/util/sp_utils.dart';
 
 ///报告详情页：科学细节tab
 class ReportScienceDetail extends StatefulWidget {

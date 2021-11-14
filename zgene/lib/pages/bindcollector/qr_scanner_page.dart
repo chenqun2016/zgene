@@ -1,25 +1,24 @@
 import 'dart:collection';
 import 'dart:developer';
+
+import 'package:base/http/http_utils.dart';
+import 'package:base/util/platform_utils.dart';
 // import 'dart:js' as js;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:scan/scan.dart';
-
-import 'package:zgene/constant/api_constant.dart';
-import 'package:zgene/constant/color_constant.dart';
-import 'package:zgene/http/http_utils.dart';
-import 'package:zgene/navigator/navigator_util.dart';
-import 'package:zgene/pages/bindcollector/bind_collector_page.dart';
-import 'package:zgene/pages/my/my_contant_us.dart';
-import 'package:zgene/util/common_utils.dart';
-import 'package:zgene/util/dia_log.dart';
-import 'package:zgene/util/platform_utils.dart';
-import 'package:zgene/util/ui_uitls.dart';
-import 'package:zgene/widget/my_qr_scanner_overlay_shape.dart';
 import 'package:zgene/configure.dart'
     if (dart.library.html) 'package:zgene/configure_web.dart';
+import 'package:zgene/constant/api_constant.dart';
+import 'package:zgene/constant/color_constant.dart';
+import 'package:zgene/navigator/navigator_util.dart';
+import 'package:zgene/pages/bindcollector/bind_collector_page.dart';
+import 'package:zgene/util/common_utils.dart';
+import 'package:zgene/util/dia_log.dart';
+import 'package:zgene/util/ui_uitls.dart';
+import 'package:zgene/widget/my_qr_scanner_overlay_shape.dart';
 
 class QRScannerView extends StatefulWidget {
   @override

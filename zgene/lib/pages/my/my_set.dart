@@ -1,6 +1,8 @@
 import 'dart:collection';
 
 import 'package:base/event/event_bus.dart';
+import 'package:base/http/http_utils.dart';
+import 'package:base/util/sp_utils.dart';
 import 'package:base/widget/base_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -9,12 +11,10 @@ import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
-import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/my/my_address_list.dart';
 import 'package:zgene/pages/my/my_change_phone.dart';
 import 'package:zgene/util/dia_log.dart';
-import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/widget/base_web.dart';
 
 import 'account_security.dart';

@@ -1,10 +1,10 @@
 import 'dart:io';
 
+import 'package:base/util/sp_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/navigator/tab_navigator.dart';
 import 'package:zgene/util/screen_utils.dart';
-import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/util/umeng_utils.dart';
 

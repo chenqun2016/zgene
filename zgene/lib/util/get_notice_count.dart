@@ -1,10 +1,10 @@
 import 'dart:collection';
 
+import 'package:base/http/http_utils.dart';
+import 'package:base/util/sp_utils.dart';
 import 'package:getuiflut/getuiflut.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
-import 'package:zgene/http/http_utils.dart';
-import 'package:zgene/util/sp_utils.dart';
 
 class GetNoticeCount {
   static obtain() {

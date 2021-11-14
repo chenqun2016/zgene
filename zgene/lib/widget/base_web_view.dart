@@ -1,7 +1,7 @@
+import 'package:base/util/platform_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:zgene/constant/color_constant.dart';
-import 'package:zgene/util/platform_utils.dart';
 
 ///封装的WebView
 class BasePageWebView extends StatefulWidget {

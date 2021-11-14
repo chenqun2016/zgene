@@ -5,6 +5,16 @@ class SpConstant {
   static const String ProductionApi = "https://www.z-gene.cn";
   //开发环境
   static const String DevelopApi = "https://test.z-gene.cn";
+
+  //是否是第一次打开
+  static const String SpIsFirst = "sp_is_first";
+  //设备唯一id
+  static const String AppUdid = "AppUdid";
+  //token
+  static const String Token = "token";
+  //用户uid
+  static const String Uid = "uid";
+
   //短信服务状态
   static const String SvcMsgStatus = "svc_msg_status";
   //主颜色
@@ -45,12 +55,8 @@ class SpConstant {
   //报告详情：检测限制
   static const String appGeneReportLimit = "app_gene_report_limit";
   //--End:Z基因项目相关配置接口
-  //token
-  static const String Token = "token";
   //登录状态
   static const String IsLogin = "isLogin";
-  //用户uid
-  static const String Uid = "uid";
   //用户信息
   static const String UserName = "userName";
   //用户头像
@@ -63,12 +69,8 @@ class SpConstant {
   static const String isBindWx = "isBindWx";
   //用户金币
   static const String UserCoins = "userCoins";
-  //是否是第一次打开
-  static const String SpIsFirst = "sp_is_first";
   //广告appid
   static const String adAppId = "app_id";
-  //设备唯一id
-  static const String AppUdid = "AppUdid";
 
   static const String AppName = "Z基因";
 }

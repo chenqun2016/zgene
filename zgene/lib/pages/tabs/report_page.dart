@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:base/widget/base_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,6 @@ import 'package:zgene/models/report_sample_model.dart';
 import 'package:zgene/models/report_summary_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/report/report_level_1_page.dart';
-import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/umeng_utils.dart';

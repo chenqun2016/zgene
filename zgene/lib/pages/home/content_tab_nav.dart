@@ -1,3 +1,4 @@
+import 'package:base/widget/my_inherited_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/color_constant.dart';
@@ -6,7 +7,6 @@ import 'package:zgene/models/category_model.dart';
 import 'package:zgene/pages/home/content_tab_item.dart';
 import 'package:zgene/pages/home/home_getHttp.dart';
 import 'package:zgene/util/umeng_utils.dart';
-import 'package:zgene/widget/my_inherited_widget.dart';
 
 class ContentListNav extends StatefulWidget {
   const ContentListNav({Key key}) : super(key: key);

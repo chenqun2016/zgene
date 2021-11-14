@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:base/widget/base_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluwx/fluwx.dart';
@@ -12,7 +13,6 @@ import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/my/my_address_list.dart';
 import 'package:zgene/pages/my/my_change_phone.dart';
-import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/dia_log.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/widget/base_web.dart';

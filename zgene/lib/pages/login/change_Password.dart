@@ -1,22 +1,20 @@
 import 'dart:async';
 import 'dart:collection';
 
+import 'package:base/widget/base_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/api_constant.dart';
-import 'package:zgene/constant/app_notification.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/login/set_passwoed.dart';
-import 'package:zgene/util/base_widget.dart';
-import 'package:zgene/util/notification_utils.dart';
-import 'package:zgene/util/phonetextFild_input.dart';
 import 'package:zgene/util/isChina_phone.dart';
+import 'package:zgene/util/phonetextFild_input.dart';
 import 'package:zgene/util/sp_utils.dart';
 
 class ChangePasswordPage extends BaseWidget {

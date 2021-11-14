@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:ui';
 
+import 'package:base/widget/base_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,6 @@ import 'package:zgene/models/content_model.dart' as cm;
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/buy/ordering_page.dart';
 import 'package:zgene/pages/home/home_getHttp.dart';
-import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/date_utils.dart';
 import 'package:zgene/util/login_base.dart';

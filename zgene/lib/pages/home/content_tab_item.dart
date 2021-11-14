@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:base/widget/my_inherited_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -11,7 +12,6 @@ import 'package:zgene/models/category_model.dart';
 import 'package:zgene/models/content_model.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/umeng_utils.dart';
-import 'package:zgene/widget/my_inherited_widget.dart';
 
 class ContentTabItem extends StatefulWidget {
   const ContentTabItem({Key key}) : super(key: key);

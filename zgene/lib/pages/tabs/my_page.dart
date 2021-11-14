@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:base/widget/base_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,6 @@ import 'package:zgene/pages/bindcollector/qr_scanner_page.dart';
 import 'package:zgene/pages/home/home_getHttp.dart';
 import 'package:zgene/pages/my/my_about_z.dart';
 import 'package:zgene/pages/my/my_commonQus.dart';
-import 'package:zgene/pages/my/my_contant_us.dart';
 import 'package:zgene/pages/my/my_info_page.dart';
 import 'package:zgene/pages/my/my_message_list.dart';
 import 'package:zgene/pages/my/my_order_list.dart';
@@ -28,7 +28,6 @@ import 'package:zgene/pages/my/my_order_local.dart';
 import 'package:zgene/pages/my/my_report_page.dart';
 import 'package:zgene/pages/my/my_set.dart';
 import 'package:zgene/pages/my/sendBack_acquisition.dart';
-import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/login_base.dart';
 import 'package:zgene/util/screen_utils.dart';

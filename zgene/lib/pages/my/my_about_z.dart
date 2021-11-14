@@ -1,6 +1,6 @@
+import 'package:base/widget/base_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:launch_review/launch_review.dart';
@@ -9,14 +9,9 @@ import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/config_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/navigator/navigator_util.dart';
-import 'package:zgene/pages/login/change_Password.dart';
 import 'package:zgene/pages/my/my_about_us.dart';
-import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/sp_utils.dart';
-import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/widget/base_web.dart';
-
-import 'my_address_list.dart';
 
 class AboutZPage extends BaseWidget {
   @override

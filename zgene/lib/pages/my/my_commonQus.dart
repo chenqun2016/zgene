@@ -1,17 +1,14 @@
+import 'package:base/widget/base_widget.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/models/content_model.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/home/home_getHttp.dart';
-import 'package:zgene/util/base_widget.dart';
 import 'package:zgene/util/screen_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/widget/base_web.dart';
-
-import 'my_contant_us.dart';
 
 class CommonQusListPage extends BaseWidget {
   @override

@@ -1,14 +1,15 @@
+import 'package:base/widget/my_inherited_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:zgene/constant/color_constant.dart';
-import 'package:zgene/widget/base_widget_title.dart';
-import 'package:zgene/widget/my_inherited_widget.dart';
+
+import '../constant/color_constant.dart';
+import 'base_widget_title.dart';
 
 const int APPBAR_SCORLL_OFFSET = 100;
 
 abstract class BaseWidget extends StatefulWidget {
-  BaseWidget({Key key}) : super(key: key);
+  BaseWidget({Key? key}) : super(key: key);
   @override
   BaseWidgetState createState() => getState();
   BaseWidgetState getState();
@@ -50,7 +51,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
   //顶部渐变
   double appBarAlpha = 0;
   //顶部渐变监听ScrollController
-  ScrollController listeningController;
+  late ScrollController listeningController;
   dynamic data = {};
 
   int trans = 0;
@@ -122,7 +123,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
   }
 
   /// 配置页面底部bottomNavigationBar
-  Widget viewBottomNavigationBar() {
+  Widget? viewBottomNavigationBar() {
     return null;
   }
 
@@ -132,17 +133,17 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
   }
 
   /// 配置页面头部的 bottom
-  PreferredSizeWidget AppBarBottom() {
+  PreferredSizeWidget? AppBarBottom() {
     return null;
   }
 
   /// 配置页面头部内容
-  Widget AppBarSpace() {
+  Widget? AppBarSpace() {
     return null;
   }
 
   /// 设置头部右上角icon
-  List<Widget> AppBarActions() {
+  List<Widget>? AppBarActions() {
     return null;
   }
 
@@ -193,7 +194,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
   }
 
   /// 顶部右侧自定义按键的响应事件
-  Future rightBtnTap(BuildContext context) {}
+  Future? rightBtnTap(BuildContext context) {}
 
   /// 配置页面头部返回
   Widget customHeaderBack() {
@@ -239,7 +240,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
   }
 
 // AppBar 的widget
-  Widget _viewAppBar() {
+  PreferredSizeWidget? _viewAppBar() {
     final _appbar = AppBar(
       title: AppBarTitle(),
       bottom: AppBarBottom(),

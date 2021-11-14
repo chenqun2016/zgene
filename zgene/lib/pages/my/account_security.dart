@@ -1,13 +1,10 @@
+import 'package:base/widget/base_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/login/change_Password.dart';
 import 'package:zgene/pages/my/cancellation_account.dart';
-import 'package:zgene/util/base_widget.dart';
-import 'package:zgene/util/ui_uitls.dart';
-
-import 'my_address_list.dart';
 
 class accountSecurityPage extends BaseWidget {
   @override

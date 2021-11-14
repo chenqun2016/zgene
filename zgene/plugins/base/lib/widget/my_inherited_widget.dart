@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class MyInheritedWidget extends InheritedWidget {
   MyInheritedWidget({
-    Key key,
-    @required this.data,
-    @required Widget child,
+    Key? key,
+    required this.data,
+    required Widget child,
   }) : super(key: key, child: child);
   final dynamic data; //需要在子树中共享的数据，保存点击次数
 

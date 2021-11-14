@@ -1,10 +1,10 @@
+import 'package:base/widget/my_inherited_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/models/report_des_model.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
-import 'package:zgene/widget/my_inherited_widget.dart';
 
 class ReportLevel1BodyPage extends StatefulWidget {
   final String id;

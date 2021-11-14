@@ -1,21 +1,20 @@
+import 'package:base/constant/color_constant.dart';
+import 'package:base/widget/base_widget.dart';
+import 'package:base/widget/my_inherited_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:zgene/constant/color_constant.dart';
-import 'package:zgene/util/base_widget.dart';
-
-import 'my_inherited_widget.dart';
 
 class BaseWidgetTitle extends StatefulWidget {
   bool isShowBack;
-  Widget customHeaderBack;
+  Widget? customHeaderBack;
   String pageWidgetTitle;
-  Widget headerRightBtn;
+  Widget? headerRightBtn;
 
   BaseWidgetTitle(
-      {Key key,
-      this.isShowBack,
+      {Key? key,
+      required this.isShowBack,
       this.customHeaderBack,
-      this.pageWidgetTitle,
+      required this.pageWidgetTitle,
       this.headerRightBtn})
       : super(key: key);
 
@@ -26,7 +25,7 @@ class BaseWidgetTitle extends StatefulWidget {
 class _BaseWidgetTitleState extends State<BaseWidgetTitle> {
   @override
   Widget build(BuildContext context) {
-    double alpha = 255 * (MyInheritedWidget.of(context) / APPBAR_SCORLL_OFFSET);
+    var alpha = 255 * (MyInheritedWidget.of(context) / APPBAR_SCORLL_OFFSET);
     return Container(
       decoration: BoxDecoration(
         color: Color.fromARGB(alpha.toInt(), 255, 255, 255),

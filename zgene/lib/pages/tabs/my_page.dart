@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:base/event/event_bus.dart';
 import 'package:base/widget/base_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,7 +12,6 @@ import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/constant/statistics_constant.dart';
-import 'package:zgene/event/event_bus.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/content_model.dart';
 import 'package:zgene/models/msg_event.dart';

@@ -1,3 +1,4 @@
+import 'package:base/event/event_bus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,7 +13,6 @@ import 'package:zgene/constant/config_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/models/setting_model.dart';
-import 'package:zgene/models/userInfo_model.dart';
 import 'package:zgene/pages/bindcollector/qr_scanner_page.dart';
 import 'package:zgene/pages/buy/product_detail_page.dart';
 import 'package:zgene/pages/home/article_detail.dart';
@@ -27,14 +27,12 @@ import 'package:zgene/util/chineseCupertino.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/get_notice_count.dart';
 import 'package:zgene/util/getui_Utils.dart';
-import 'package:zgene/util/login_base.dart';
 import 'package:zgene/util/platform_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/widget/restart_widget.dart';
 
 import 'configure.dart' if (dart.library.html) 'configure_web.dart';
-import 'event/event_bus.dart';
 import 'pages/login/main_login.dart';
 import 'pages/my/my_address_list.dart';
 import 'pages/my/my_commonQus.dart';

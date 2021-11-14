@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 
+import 'package:base/event/event_bus.dart';
 import 'package:base/widget/base_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,6 @@ import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/constant/statistics_constant.dart';
-import 'package:zgene/event/event_bus.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/util/isChina_phone.dart';
 import 'package:zgene/util/phonetextFild_input.dart';

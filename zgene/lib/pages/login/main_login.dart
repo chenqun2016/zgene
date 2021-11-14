@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:base/event/event_bus.dart';
 // import 'dart:ffi';
 
 import 'package:base/widget/base_widget.dart';
@@ -17,7 +18,6 @@ import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/constant/statistics_constant.dart';
-import 'package:zgene/event/event_bus.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/pages/login/bindPhone_login.dart';
 import 'package:zgene/pages/login/phone_login.dart';

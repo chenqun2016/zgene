@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:base/event/event_bus.dart';
 import 'package:base/widget/base_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -8,7 +9,6 @@ import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
-import 'package:zgene/event/event_bus.dart';
 import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/my/my_address_list.dart';

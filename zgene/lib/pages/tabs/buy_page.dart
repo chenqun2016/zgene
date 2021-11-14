@@ -18,9 +18,9 @@ import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/util/umeng_utils.dart';
 
 ///首页购买页面
-class BuyPage extends BaseWidget {
+class BuyPage extends StatefulWidget {
   @override
-  _BuyPageState getState() => _BuyPageState();
+  _BuyPageState createState() => _BuyPageState();
 }
 
 class _BuyPageState extends BaseWidgetState<BuyPage> {
@@ -29,8 +29,8 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
   List _products;
 
   @override
-  void pageWidgetInitState() {
-    super.pageWidgetInitState();
+  void customInitState() {
+    super.customInitState();
     UmengUtils.onEvent(StatisticsConstant.TAB2_BUY,
         {StatisticsConstant.KEY_UMENG_L2: StatisticsConstant.TAB2_BUY_IMP});
     showBaseHead = false;
@@ -85,7 +85,7 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
   }
 
   @override
-  Widget viewPageBody(BuildContext context) {
+  Widget customBuildBody(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
       child: Column(

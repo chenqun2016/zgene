@@ -16,17 +16,17 @@ import 'package:zgene/pages/my/my_new_phone.dart';
 import 'package:zgene/util/phonetextFild_input.dart';
 import 'package:zgene/util/sp_utils.dart';
 
-class ChangePhonePage extends BaseWidget {
+class ChangePhonePage extends StatefulWidget {
   @override
-  BaseWidgetState getState() {
+  BaseWidgetState createState() {
     return _ChangePhonePageState();
   }
 }
 
 class _ChangePhonePageState extends BaseWidgetState<ChangePhonePage> {
   @override
-  void pageWidgetInitState() {
-    super.pageWidgetInitState();
+  void customInitState() {
+    super.customInitState();
     showHead = true;
     backImgPath = "assets/images/login/icon_bindingPhone_back.png";
   }
@@ -79,7 +79,7 @@ class _ChangePhonePageState extends BaseWidgetState<ChangePhonePage> {
   }
 
   @override
-  Widget viewPageBody(BuildContext context) {
+  Widget customBuildBody(BuildContext context) {
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

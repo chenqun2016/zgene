@@ -13,12 +13,12 @@ import 'package:zgene/models/address_list_model.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/isChina_phone.dart';
 
-class AddAddressPage extends BaseWidget {
+class AddAddressPage extends StatefulWidget {
   AddressListModel model;
   AddAddressPage({Key key, this.model}) : super(key: key);
 
   @override
-  BaseWidgetState<BaseWidget> getState() {
+  BaseWidgetState createState() {
     return AddAddressPageState();
   }
 }
@@ -52,14 +52,14 @@ class AddAddressPageState extends BaseWidgetState<AddAddressPage> {
   }
 
   @override
-  void pageWidgetInitState() {
+  void customInitState() {
     pageWidgetTitle = "添加收货地址";
     backImgPath = "assets/images/mine/img_bg_my.png";
-    super.pageWidgetInitState();
+    super.customInitState();
   }
 
   @override
-  Widget viewPageBody(BuildContext context) {
+  Widget customBuildBody(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [

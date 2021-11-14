@@ -12,9 +12,9 @@ import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/widget/my_stepper.dart';
 
-class OrderStepPage extends BaseWidget {
+class OrderStepPage extends StatefulWidget {
   @override
-  BaseWidgetState<BaseWidget> getState() {
+  BaseWidgetState createState() {
     return _OrderStepPageState();
   }
 }
@@ -29,7 +29,7 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
   Map stepMap = Map();
 
   @override
-  void pageWidgetInitState() {
+  void customInitState() {
     customRightBtnText = "采集引导";
     pageWidgetTitle = "订单流程";
     backImgPath = "assets/images/mine/img_bg_my.png";
@@ -37,7 +37,7 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
 
     _easyController = EasyRefreshController();
     _initCurrentPosition();
-    super.pageWidgetInitState();
+    super.customInitState();
   }
 
   void _initCurrentPosition() {
@@ -65,12 +65,12 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
   }
 
   @override
-  rightBtnTap(BuildContext context) {
+  customRightBtnTap(BuildContext context) {
     CommonUtils.toCollectionGuide(context);
   }
 
   @override
-  Widget viewPageBody(BuildContext context) {
+  Widget customBuildBody(BuildContext context) {
     //获取路由传的参数
     orderId = ModalRoute.of(context).settings.arguments;
     return EasyRefresh(

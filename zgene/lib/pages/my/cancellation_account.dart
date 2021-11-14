@@ -6,9 +6,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 
-class cancellationAccountPage extends BaseWidget {
+class cancellationAccountPage extends StatefulWidget {
   @override
-  BaseWidgetState getState() {
+  BaseWidgetState createState() {
     return _cancellationAccountPageState();
   }
 }
@@ -16,8 +16,8 @@ class cancellationAccountPage extends BaseWidget {
 class _cancellationAccountPageState
     extends BaseWidgetState<cancellationAccountPage> {
   @override
-  void pageWidgetInitState() {
-    super.pageWidgetInitState();
+  void customInitState() {
+    super.customInitState();
     showHead = true;
     backImgPath = "assets/images/login/icon_cancel_account_back.png";
     pageWidgetTitle = "注销账号";
@@ -31,7 +31,7 @@ class _cancellationAccountPageState
   var textStyle;
 
   @override
-  Widget viewPageBody(BuildContext context) {
+  Widget customBuildBody(BuildContext context) {
     return Container(
       width: double.infinity,
       height: MediaQuery.of(context).size.height - 100,

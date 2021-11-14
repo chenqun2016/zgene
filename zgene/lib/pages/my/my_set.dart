@@ -20,9 +20,9 @@ import 'package:zgene/widget/base_web.dart';
 import 'account_security.dart';
 
 ///我的设置
-class MySetPage extends BaseWidget {
+class MySetPage extends StatefulWidget {
   @override
-  BaseWidgetState getState() {
+  BaseWidgetState createState() {
     return _MySetPageState();
   }
 }
@@ -54,7 +54,7 @@ class _MySetPageState extends BaseWidgetState<MySetPage> {
   }
 
   @override
-  Widget viewPageBody(BuildContext context) {
+  Widget customBuildBody(BuildContext context) {
     return Container(
       width: double.infinity,
       height: MediaQuery.of(context).size.height - 100,

@@ -13,9 +13,9 @@ import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/my/acquisition_progress.dart';
 import 'package:zgene/util/common_utils.dart';
 
-class MyReportPage extends BaseWidget {
+class MyReportPage extends StatefulWidget {
   @override
-  BaseWidgetState<BaseWidget> getState() => _MyReportPageState();
+  BaseWidgetState createState() => _MyReportPageState();
 }
 
 class _MyReportPageState extends BaseWidgetState {
@@ -23,8 +23,8 @@ class _MyReportPageState extends BaseWidgetState {
   List list = [];
 
   @override
-  void pageWidgetInitState() {
-    super.pageWidgetInitState();
+  void customInitState() {
+    super.customInitState();
     pageWidgetTitle = "检测报告";
     backImgPath = "assets/images/mine/img_bg_my.png";
     isListPage = true;
@@ -68,7 +68,7 @@ class _MyReportPageState extends BaseWidgetState {
   }
 
   @override
-  Widget viewPageBody(BuildContext context) {
+  Widget customBuildBody(BuildContext context) {
     return EasyRefresh(
       // 是否开启控制结束加载
       enableControlFinishLoad: false,

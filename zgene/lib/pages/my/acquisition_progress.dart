@@ -14,14 +14,14 @@ import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/widget/base_web.dart';
 import 'package:zgene/widget/my_stepper.dart';
 
-class acqusitionProgressPage extends BaseWidget {
+class acqusitionProgressPage extends StatefulWidget {
   int id;
   String title;
 
   acqusitionProgressPage({Key key, this.id, this.title}) : super(key: key);
 
   @override
-  BaseWidgetState<BaseWidget> getState() {
+  BaseWidgetState createState() {
     return _OacqusitionProgressPageState();
   }
 }
@@ -37,14 +37,14 @@ class _OacqusitionProgressPageState
   Map stepMap = Map();
 
   @override
-  void pageWidgetInitState() {
+  void customInitState() {
     customRightBtnText = "采集引导";
     pageWidgetTitle = widget.title;
     backImgPath = "assets/images/mine/img_bg_my.png";
     isListPage = true;
     _easyController = EasyRefreshController();
     _initCurrentPosition();
-    super.pageWidgetInitState();
+    super.customInitState();
     // bus.on(CommonConstant.refreshACPross, (arg) {
     //   getHttp();
     //   _easyController.resetLoadState();
@@ -84,12 +84,12 @@ class _OacqusitionProgressPageState
   }
 
   @override
-  rightBtnTap(BuildContext context) {
+  customRightBtnTap(BuildContext context) {
     CommonUtils.toCollectionGuide(context);
   }
 
   @override
-  Widget viewPageBody(BuildContext context) {
+  Widget customBuildBody(BuildContext context) {
     //获取路由传的参数
     return EasyRefresh(
       // 是否开启控制结束加载

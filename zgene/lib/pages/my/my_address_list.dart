@@ -16,13 +16,13 @@ import 'package:zgene/util/screen_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 
 ///我的地址列表
-class MyAddressListPage extends BaseWidget {
+class MyAddressListPage extends StatefulWidget {
   //0为带参选择页面 1为正常进入
   bool isSelectFrom;
   MyAddressListPage({Key key, this.isSelectFrom}) : super(key: key);
 
   @override
-  BaseWidgetState getState() {
+  BaseWidgetState createState() {
     return _MyAddressListPageState();
   }
 }
@@ -49,7 +49,7 @@ class _MyAddressListPageState extends BaseWidgetState<MyAddressListPage> {
   }
 
   @override
-  Widget viewPageBody(BuildContext context) {
+  Widget customBuildBody(BuildContext context) {
     return errorCode != 0
         ? UiUitls.getErrorPage(
             context: context,
@@ -268,7 +268,7 @@ class _MyAddressListPageState extends BaseWidgetState<MyAddressListPage> {
   }
 
   @override
-  rightBtnTap(BuildContext context) async {
+  customRightBtnTap(BuildContext context) async {
     final result = await Navigator.push(
         context, MaterialPageRoute(builder: (context) => AddAddressPage()));
     if (result != null) {

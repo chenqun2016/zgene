@@ -13,17 +13,17 @@ import 'package:zgene/util/phonetextFild_input.dart';
 
 import 'getVFCode_login.dart';
 
-class PhoneLoginPage extends BaseWidget {
+class PhoneLoginPage extends StatefulWidget {
   @override
-  BaseWidgetState getState() {
+  BaseWidgetState createState() {
     return _PhoneLoginPageState();
   }
 }
 
 class _PhoneLoginPageState extends BaseWidgetState<PhoneLoginPage> {
   @override
-  void pageWidgetInitState() {
-    super.pageWidgetInitState();
+  void customInitState() {
+    super.customInitState();
     showHead = true;
     backImgPath = "assets/images/login/icon_phoneLogin_back.png";
   }
@@ -58,7 +58,7 @@ class _PhoneLoginPageState extends BaseWidgetState<PhoneLoginPage> {
   bool canGetCode = false;
 
   @override
-  Widget viewPageBody(BuildContext context) {
+  Widget customBuildBody(BuildContext context) {
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

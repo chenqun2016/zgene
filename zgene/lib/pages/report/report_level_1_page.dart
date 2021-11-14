@@ -18,7 +18,7 @@ import 'package:zgene/widget/progress_page.dart';
 import 'report_level_1_body_page.dart';
 
 ///报告列表页
-class ReportLevel1Page extends BaseWidget {
+class ReportLevel1Page extends StatefulWidget {
   final String id;
   String serialNum;
   final ReportSummaryModel summaryModel;
@@ -28,7 +28,7 @@ class ReportLevel1Page extends BaseWidget {
       : super(key: key);
 
   @override
-  BaseWidgetState<ReportLevel1Page> getState() => _ReportLevel1PageState();
+  BaseWidgetState<ReportLevel1Page> createState() => _ReportLevel1PageState();
 }
 
 class _ReportLevel1PageState extends BaseWidgetState<ReportLevel1Page>
@@ -42,8 +42,8 @@ class _ReportLevel1PageState extends BaseWidgetState<ReportLevel1Page>
   var tabs = [];
 
   @override
-  void pageWidgetInitState() {
-    super.pageWidgetInitState();
+  void customInitState() {
+    super.customInitState();
     showBaseHead = false;
     showHead = true;
     isListPage = true;
@@ -205,7 +205,7 @@ class _ReportLevel1PageState extends BaseWidgetState<ReportLevel1Page>
     }
   }
 
-  Widget viewPageBody(BuildContext context) {
+  Widget customBuildBody(BuildContext context) {
     return Stack(
       children: [
         SingleChildScrollView(

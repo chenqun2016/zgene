@@ -13,17 +13,17 @@ import 'package:zgene/util/phonetextFild_input.dart';
 
 import 'getVFCode_login.dart';
 
-class SetPasswordPage extends BaseWidget {
+class SetPasswordPage extends StatefulWidget {
   @override
-  BaseWidgetState getState() {
+  BaseWidgetState createState() {
     return _SetPasswordPageState();
   }
 }
 
 class _SetPasswordPageState extends BaseWidgetState<SetPasswordPage> {
   @override
-  void pageWidgetInitState() {
-    super.pageWidgetInitState();
+  void customInitState() {
+    super.customInitState();
     showHead = true;
     backImgPath = "assets/images/login/icon_phoneLogin_back.png";
   }
@@ -58,7 +58,7 @@ class _SetPasswordPageState extends BaseWidgetState<SetPasswordPage> {
   bool canGetCode = false;
 
   @override
-  Widget viewPageBody(BuildContext context) {
+  Widget customBuildBody(BuildContext context) {
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

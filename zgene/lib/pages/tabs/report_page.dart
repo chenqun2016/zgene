@@ -30,7 +30,7 @@ var genderType = 7;
 var currentSerialNum;
 
 ///首页报告
-class ReportPage extends BaseWidget {
+class ReportPage extends StatefulWidget {
   String id;
   String scope;
   String serialNum;
@@ -39,7 +39,7 @@ class ReportPage extends BaseWidget {
   }
 
   @override
-  BaseWidgetState<BaseWidget> getState() => _ReportPageState();
+  BaseWidgetState createState() => _ReportPageState();
 }
 
 class _ReportPageState extends BaseWidgetState<ReportPage> {
@@ -69,7 +69,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
   }
 
   @override
-  void pageWidgetInitState() {
+  void customInitState() {
     UmengUtils.onEvent(StatisticsConstant.TAB3_REPORT,
         {StatisticsConstant.KEY_UMENG_L2: StatisticsConstant.TAB3_REPORT_IMP});
     scope = widget.scope;
@@ -126,7 +126,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
       _getCollector();
     });
 
-    super.pageWidgetInitState();
+    super.customInitState();
     showBaseHead = false;
     showHead = false;
     isListPage = true;
@@ -155,7 +155,7 @@ class _ReportPageState extends BaseWidgetState<ReportPage> {
   }
 
   @override
-  Widget viewPageBody(BuildContext context) {
+  Widget customBuildBody(BuildContext context) {
     return Container(
       child: Column(children: <Widget>[
         _appBar,

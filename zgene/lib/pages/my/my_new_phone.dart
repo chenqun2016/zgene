@@ -17,17 +17,17 @@ import 'package:zgene/util/isChina_phone.dart';
 import 'package:zgene/util/phonetextFild_input.dart';
 import 'package:zgene/util/sp_utils.dart';
 
-class MyNewPhonePage extends BaseWidget {
+class MyNewPhonePage extends StatefulWidget {
   @override
-  BaseWidgetState getState() {
+  BaseWidgetState createState() {
     return _MyNewPhonePageState();
   }
 }
 
 class _MyNewPhonePageState extends BaseWidgetState<MyNewPhonePage> {
   @override
-  void pageWidgetInitState() {
-    super.pageWidgetInitState();
+  void customInitState() {
+    super.customInitState();
     showHead = true;
     backImgPath = "assets/images/login/icon_bindingPhone_back.png";
   }
@@ -79,7 +79,7 @@ class _MyNewPhonePageState extends BaseWidgetState<MyNewPhonePage> {
   }
 
   @override
-  Widget viewPageBody(BuildContext context) {
+  Widget customBuildBody(BuildContext context) {
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

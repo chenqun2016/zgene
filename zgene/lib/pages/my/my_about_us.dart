@@ -8,17 +8,17 @@ import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/util/sp_utils.dart';
 
-class AboutUsPage extends BaseWidget {
+class AboutUsPage extends StatefulWidget {
   @override
-  BaseWidgetState getState() {
+  BaseWidgetState createState() {
     return _AboutUsPageState();
   }
 }
 
 class _AboutUsPageState extends BaseWidgetState<AboutUsPage> {
   @override
-  void pageWidgetInitState() {
-    super.pageWidgetInitState();
+  void customInitState() {
+    super.customInitState();
     showHead = true;
     backImgPath = "assets/images/mine/icon_about_us_back.png";
     pageWidgetTitle = "关于我们";
@@ -33,7 +33,7 @@ class _AboutUsPageState extends BaseWidgetState<AboutUsPage> {
   var isNew = true;
 
   @override
-  Widget viewPageBody(BuildContext context) {
+  Widget customBuildBody(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: 24.h),
       width: double.infinity,

@@ -7,17 +7,17 @@ import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/util/sp_utils.dart';
 
-class contantUsPage extends BaseWidget {
+class contantUsPage extends StatefulWidget {
   @override
-  BaseWidgetState getState() {
+  BaseWidgetState createState() {
     return _contantUsPageState();
   }
 }
 
 class _contantUsPageState extends BaseWidgetState<contantUsPage> {
   @override
-  void pageWidgetInitState() {
-    super.pageWidgetInitState();
+  void customInitState() {
+    super.customInitState();
     showHead = true;
     backImgPath = "assets/images/mine/icon_contant_us_back.png";
     pageWidgetTitle = "联系客服";
@@ -31,7 +31,7 @@ class _contantUsPageState extends BaseWidgetState<contantUsPage> {
   var textStyle;
 
   @override
-  Widget viewPageBody(BuildContext context) {
+  Widget customBuildBody(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: 18.h),
       width: double.infinity,

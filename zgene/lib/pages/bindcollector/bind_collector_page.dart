@@ -19,12 +19,12 @@ import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/widget/base_web.dart';
 import 'package:zgene/widget/my_stepper.dart';
 
-class BindCollectorPage extends BaseWidget {
+class BindCollectorPage extends StatefulWidget {
   ///扫码页传过来的采集码，有值的情况跳过第0步，直接到第1步。
   final String num;
 
   @override
-  BaseWidgetState getState() {
+  BaseWidgetState createState() {
     return _BindCollectorPageState();
   }
 
@@ -51,8 +51,8 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
 
   bool hasName = false;
   @override
-  void pageWidgetInitState() {
-    super.pageWidgetInitState();
+  void customInitState() {
+    super.customInitState();
     backImgPath = "assets/images/mine/img_bg_my.png";
     pageWidgetTitle = "绑定采集器";
     showHead = true;
@@ -94,7 +94,7 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
   ///第0和2步可以直接关闭页面
   ///第1步需要判断是返回到第0步还是直接关闭页面
   @override
-  Future myBackClick() {
+  Future customBackClick() {
     if (_position == 1) {
       showDialog(
           context: context,
@@ -130,13 +130,13 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
   }
 
   @override
-  Future rightBtnTap(BuildContext context) {
+  Future customRightBtnTap(BuildContext context) {
     CommonUtils.toCollectionGuide(context);
-    return super.rightBtnTap(context);
+    return super.customRightBtnTap(context);
   }
 
   @override
-  Widget viewPageBody(BuildContext context) {
+  Widget customBuildBody(BuildContext context) {
     return WillPopScope(
         child: Container(
           width: double.infinity,
@@ -149,7 +149,7 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
           ),
         ),
         onWillPop: () async {
-          return myBackClick();
+          return customBackClick();
         });
   }
 

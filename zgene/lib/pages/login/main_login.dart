@@ -27,17 +27,17 @@ import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/umeng_utils.dart';
 import 'package:zgene/widget/base_web.dart';
 
-class MainLoginPage extends BaseWidget {
+class MainLoginPage extends StatefulWidget {
   @override
-  BaseWidgetState getState() {
+  BaseWidgetState createState() {
     return _MainLoginPageState();
   }
 }
 
 class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
   @override
-  void pageWidgetInitState() {
-    super.pageWidgetInitState();
+  void customInitState() {
+    super.customInitState();
     showHead = true;
     setWantKeepAlive = true;
     backImgPath = "assets/images/login/icon_mainLogin_backImg.png";
@@ -54,11 +54,6 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
   }
 
   @override
-  void pageDataInitState() {
-    super.pageDataInitState();
-  }
-
-  @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
@@ -71,7 +66,7 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
 
 //
   @override
-  Widget viewPageBody(BuildContext context) {
+  Widget customBuildBody(BuildContext context) {
     // 当前widget的具体内容
     return Container(
         child: Center(

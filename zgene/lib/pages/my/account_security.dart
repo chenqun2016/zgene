@@ -6,17 +6,17 @@ import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/login/change_Password.dart';
 import 'package:zgene/pages/my/cancellation_account.dart';
 
-class accountSecurityPage extends BaseWidget {
+class accountSecurityPage extends StatefulWidget {
   @override
-  BaseWidgetState getState() {
+  BaseWidgetState createState() {
     return _accountSecurityPageState();
   }
 }
 
 class _accountSecurityPageState extends BaseWidgetState<accountSecurityPage> {
   @override
-  void pageWidgetInitState() {
-    super.pageWidgetInitState();
+  void customInitState() {
+    super.customInitState();
     showHead = true;
     backImgPath = "assets/images/mine/icon_account_Secutity_back.png";
     pageWidgetTitle = "账号安全";
@@ -30,7 +30,7 @@ class _accountSecurityPageState extends BaseWidgetState<accountSecurityPage> {
   var textStyle;
 
   @override
-  Widget viewPageBody(BuildContext context) {
+  Widget customBuildBody(BuildContext context) {
     return Container(
       padding: EdgeInsets.fromLTRB(16, 20.h, 16, 20.h),
       margin: EdgeInsets.fromLTRB(15, 5, 15, 8),

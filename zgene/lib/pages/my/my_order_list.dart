@@ -14,9 +14,9 @@ import 'package:zgene/util/date_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 
 ///我的订单列表
-class MyOrderListPage extends BaseWidget {
+class MyOrderListPage extends StatefulWidget {
   @override
-  BaseWidgetState getState() {
+  BaseWidgetState createState() {
     return _MyOrderListState();
   }
 }
@@ -65,7 +65,7 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
   }
 
   @override
-  Widget viewPageBody(BuildContext context) {
+  Widget customBuildBody(BuildContext context) {
     return errorCode != 0
         ? UiUitls.getErrorPage(
             context: context,
@@ -398,7 +398,7 @@ class _MyOrderListState extends BaseWidgetState<MyOrderListPage> {
   }
 
   @override
-  rightBtnTap(BuildContext context) {
+  customRightBtnTap(BuildContext context) {
     CommonUtils.toCollectionGuide(context);
   }
 

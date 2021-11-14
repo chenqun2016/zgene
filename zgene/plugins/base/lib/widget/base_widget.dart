@@ -8,14 +8,7 @@ import 'base_widget_title.dart';
 
 const int APPBAR_SCORLL_OFFSET = 100;
 
-abstract class BaseWidget extends StatefulWidget {
-  BaseWidget({Key? key}) : super(key: key);
-  @override
-  BaseWidgetState createState() => getState();
-  BaseWidgetState getState();
-}
-
-abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
+abstract class BaseWidgetState<T extends StatefulWidget> extends State<T>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => setWantKeepAlive;
@@ -72,8 +65,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
         }
       }
     });
-    pageWidgetInitState();
-    pageDataInitState();
+    customInitState();
   }
 
   @override
@@ -101,8 +93,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
     super.deactivate();
   }
 
-  void pageWidgetInitState() {}
-  void pageDataInitState() {}
+  void customInitState() {}
 
   Widget viewCustomHeadBody() {
     return showHead
@@ -118,37 +109,37 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
   }
 
   /// 页面视图的主体部分
-  Widget viewPageBody(BuildContext context) {
+  Widget customBuildBody(BuildContext context) {
     return Container();
   }
 
   /// 配置页面底部bottomNavigationBar
-  Widget? viewBottomNavigationBar() {
+  Widget? customBottomNavigationBar() {
     return null;
   }
 
   /// 配置页面头部标题
-  Widget AppBarTitle() {
+  Widget customAppBarTitle() {
     return Text(pageWidgetTitle);
   }
 
   /// 配置页面头部的 bottom
-  PreferredSizeWidget? AppBarBottom() {
+  PreferredSizeWidget? customAppBarBottom() {
     return null;
   }
 
   /// 配置页面头部内容
-  Widget? AppBarSpace() {
+  Widget? customAppBarSpace() {
     return null;
   }
 
   /// 设置头部右上角icon
-  List<Widget>? AppBarActions() {
+  List<Widget>? customAppBarActions() {
     return null;
   }
 
   /// 顶部返回和实体返回按键的响应事件
-  Future myBackClick() {
+  Future customBackClick() {
     Navigator.pop(context);
     return Future.value(true);
   }
@@ -159,7 +150,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
       return Center(
         child: InkWell(
           onTap: () {
-            rightBtnTap(context);
+            customRightBtnTap(context);
           },
           child: Text(
             customRightBtnText,
@@ -177,7 +168,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
     } else if (customRightBtnImg != "") {
       return MaterialButton(
           onPressed: () {
-            rightBtnTap(context);
+            customRightBtnTap(context);
           },
           padding: EdgeInsets.zero,
           height: 40.h,
@@ -194,13 +185,13 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
   }
 
   /// 顶部右侧自定义按键的响应事件
-  Future? rightBtnTap(BuildContext context) {}
+  Future? customRightBtnTap(BuildContext context) {}
 
   /// 配置页面头部返回
   Widget customHeaderBack() {
     return IconButton(
         onPressed: () {
-          myBackClick();
+          customBackClick();
         },
         icon: Image(
           image: AssetImage("assets/images/icon_base_backArrow.png"),
@@ -242,11 +233,11 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
 // AppBar 的widget
   PreferredSizeWidget? _viewAppBar() {
     final _appbar = AppBar(
-      title: AppBarTitle(),
-      bottom: AppBarBottom(),
-      flexibleSpace: AppBarSpace(),
+      title: customAppBarTitle(),
+      bottom: customAppBarBottom(),
+      flexibleSpace: customAppBarSpace(),
       centerTitle: true,
-      actions: AppBarActions(),
+      actions: customAppBarActions(),
       systemOverlayStyle: SystemUiOverlayStyle.dark,
     );
     if (appBarHeight == null || appBarHeight == 0.0) {
@@ -280,7 +271,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
                         padding: EdgeInsets.all(0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [viewPageBody(context)],
+                          children: [customBuildBody(context)],
                         ),
                       ),
                     )
@@ -309,7 +300,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
                     height: MediaQuery.of(context).size.height -
                         ((showBaseHead || showHead) ? 55.h : 0) -
                         MediaQuery.of(context).padding.top,
-                    child: viewPageBody(context)))
+                    child: customBuildBody(context)))
           ],
         ),
         Positioned(
@@ -371,7 +362,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
               //       : null,
               child: customBodyView(),
             )),
-        bottomNavigationBar: viewBottomNavigationBar(),
+        bottomNavigationBar: customBottomNavigationBar(),
       ),
     ]);
   }

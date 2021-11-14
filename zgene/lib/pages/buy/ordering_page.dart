@@ -27,14 +27,14 @@ import 'package:zgene/util/ui_uitls.dart';
 
 import '../my/my_address_list.dart';
 
-class OrderingPage extends BaseWidget {
+class OrderingPage extends StatefulWidget {
   Archive product;
   bool isInActivity;
 
   OrderingPage({Key key, this.product, this.isInActivity}) : super(key: key);
 
   @override
-  BaseWidgetState<BaseWidget> getState() {
+  BaseWidgetState createState() {
     return _OrderingPageState();
   }
 }
@@ -100,18 +100,18 @@ class _OrderingPageState extends BaseWidgetState<OrderingPage> {
   }
 
   @override
-  void pageWidgetInitState() {
+  void customInitState() {
     showBaseHead = false;
     pageWidgetTitle = "填写订单";
     showHead = true;
     isListPage = true;
     backImgPath = "assets/images/mine/img_bg_my.png";
 
-    super.pageWidgetInitState();
+    super.customInitState();
   }
 
   @override
-  Widget viewPageBody(BuildContext context) {
+  Widget customBuildBody(BuildContext context) {
     return Stack(
       children: [
         Padding(

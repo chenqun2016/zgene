@@ -10,9 +10,9 @@ import 'package:zgene/util/screen_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/widget/base_web.dart';
 
-class CommonQusListPage extends BaseWidget {
+class CommonQusListPage extends StatefulWidget {
   @override
-  BaseWidgetState getState() {
+  BaseWidgetState createState() {
     return _CommonQusListPageState();
   }
 }
@@ -48,16 +48,16 @@ class _CommonQusListPageState extends BaseWidgetState<CommonQusListPage> {
   }
 
   @override
-  Future rightBtnTap(BuildContext context) {
+  Future customRightBtnTap(BuildContext context) {
     // TODO: implement rightBtnTap
     // NavigatorUtil.push(context, contantUsPage());
     UiUitls.showChatH5(context);
 
-    return super.rightBtnTap(context);
+    return super.customRightBtnTap(context);
   }
 
   @override
-  Widget viewPageBody(BuildContext context) {
+  Widget customBuildBody(BuildContext context) {
     return errorCode != 0
         ? UiUitls.getErrorPage(
             context: context,

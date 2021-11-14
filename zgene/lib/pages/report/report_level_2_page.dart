@@ -15,11 +15,11 @@ import 'package:zgene/widget/progress_page.dart';
 import 'package:zgene/widget/star_shape_border.dart';
 
 ///报告详情页
-class ReportLevel2Page extends BaseWidget {
+class ReportLevel2Page extends StatefulWidget {
   ReportLevel2Page({Key key}) : super(key: key);
 
   @override
-  BaseWidgetState<ReportLevel2Page> getState() => _ReportLevel2PageState();
+  BaseWidgetState<ReportLevel2Page> createState() => _ReportLevel2PageState();
 }
 
 class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
@@ -38,8 +38,8 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
   ReportListDetailModel reportData;
 
   @override
-  void pageWidgetInitState() {
-    super.pageWidgetInitState();
+  void customInitState() {
+    super.customInitState();
     showBaseHead = false;
     showHead = true;
     isListPage = true;
@@ -152,7 +152,7 @@ class _ReportLevel2PageState extends BaseWidgetState<ReportLevel2Page>
   }
 
   bool firstGetData = true;
-  Widget viewPageBody(BuildContext context) {
+  Widget customBuildBody(BuildContext context) {
     if (firstGetData) {
       firstGetData = false;
       _getDatas(context);

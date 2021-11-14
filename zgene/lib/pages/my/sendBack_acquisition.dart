@@ -18,7 +18,7 @@ import 'package:zgene/util/dia_log.dart';
 import 'package:zgene/util/isChina_phone.dart';
 import 'package:zgene/util/screen_utils.dart';
 
-class SendBackAcquisitionPage extends BaseWidget {
+class SendBackAcquisitionPage extends StatefulWidget {
   int ordId;
   String ordName;
   String ordNum;
@@ -27,7 +27,7 @@ class SendBackAcquisitionPage extends BaseWidget {
       : super(key: key);
 
   @override
-  BaseWidgetState getState() {
+  BaseWidgetState createState() {
     return _SendBackAcquisitionPageState();
   }
 }
@@ -39,8 +39,8 @@ class _SendBackAcquisitionPageState
   TextEditingController _addressController = new TextEditingController();
 
   @override
-  void pageWidgetInitState() {
-    super.pageWidgetInitState();
+  void customInitState() {
+    super.customInitState();
     showHead = true;
     backImgPath = "assets/images/mine/icon_sendBack_acquisitionBack.png";
     pageWidgetTitle = "回寄采集器";
@@ -61,7 +61,7 @@ class _SendBackAcquisitionPageState
   }
 
   @override
-  Widget viewPageBody(BuildContext context) {
+  Widget customBuildBody(BuildContext context) {
     return Container(
       child: Column(
         children: [
@@ -1060,7 +1060,7 @@ class _SendBackAcquisitionPageState
   }
 
   @override
-  Future rightBtnTap(BuildContext context) {
+  Future customRightBtnTap(BuildContext context) {
     CommonUtils.toCollectionGuide(context);
   }
 }

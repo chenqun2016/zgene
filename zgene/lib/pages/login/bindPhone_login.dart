@@ -19,17 +19,17 @@ import 'package:zgene/util/phonetextFild_input.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/umeng_utils.dart';
 
-class BindPhoneLoginPage extends BaseWidget {
+class BindPhoneLoginPage extends StatefulWidget {
   @override
-  BaseWidgetState getState() {
+  BaseWidgetState createState() {
     return _BindPhoneLoginPageState();
   }
 }
 
 class _BindPhoneLoginPageState extends BaseWidgetState<BindPhoneLoginPage> {
   @override
-  void pageWidgetInitState() {
-    super.pageWidgetInitState();
+  void customInitState() {
+    super.customInitState();
     showHead = true;
     backImgPath = "assets/images/login/icon_bindingPhone_back.png";
   }
@@ -81,7 +81,7 @@ class _BindPhoneLoginPageState extends BaseWidgetState<BindPhoneLoginPage> {
   }
 
   @override
-  Future myBackClick() {
+  Future customBackClick() {
     // print(1333);
     var spUtils = SpUtils();
     spUtils.setStorage(SpConstant.Token, "");
@@ -94,11 +94,11 @@ class _BindPhoneLoginPageState extends BaseWidgetState<BindPhoneLoginPage> {
 
     //清除用户信息
     // TODO: implement myBackClick
-    return super.myBackClick();
+    return super.customBackClick();
   }
 
   @override
-  Widget viewPageBody(BuildContext context) {
+  Widget customBuildBody(BuildContext context) {
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

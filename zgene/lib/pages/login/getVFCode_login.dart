@@ -17,20 +17,20 @@ import 'package:zgene/http/http_utils.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/umeng_utils.dart';
 
-class GetVFCodeLoginPage extends BaseWidget {
+class GetVFCodeLoginPage extends StatefulWidget {
   String phoneText;
   GetVFCodeLoginPage({Key key, this.phoneText}) : super(key: key);
 
   @override
-  BaseWidgetState getState() {
+  BaseWidgetState createState() {
     return _GetVFCodeLoginPageState();
   }
 }
 
 class _GetVFCodeLoginPageState extends BaseWidgetState<GetVFCodeLoginPage> {
   @override
-  void pageWidgetInitState() {
-    super.pageWidgetInitState();
+  void customInitState() {
+    super.customInitState();
     showHead = true;
     backImgPath = "assets/images/login/icon_login_getVFCode_back.png";
   }
@@ -68,7 +68,7 @@ class _GetVFCodeLoginPageState extends BaseWidgetState<GetVFCodeLoginPage> {
   }
 
   @override
-  Widget viewPageBody(BuildContext context) {
+  Widget customBuildBody(BuildContext context) {
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

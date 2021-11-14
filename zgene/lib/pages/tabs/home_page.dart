@@ -20,9 +20,9 @@ import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/util/umeng_utils.dart';
 
 ///首页
-class HomePage extends BaseWidget {
+class HomePage extends StatefulWidget {
   @override
-  BaseWidgetState<BaseWidget> getState() {
+  BaseWidgetState createState() {
     return _HomePageState();
   }
 }
@@ -38,7 +38,7 @@ class _HomePageState extends BaseWidgetState<HomePage> {
   ScrollController _controller = new ScrollController();
 
   @override
-  void pageWidgetInitState() {
+  void customInitState() {
     UiUitls.setBlackTextStatus();
     UmengUtils.onEvent(StatisticsConstant.TAB1_HOME,
         {StatisticsConstant.KEY_UMENG_L2: StatisticsConstant.TAB1_HOME_IMP});
@@ -54,7 +54,7 @@ class _HomePageState extends BaseWidgetState<HomePage> {
       _onScroll(_controller.offset);
     });
     getHttp();
-    super.pageWidgetInitState();
+    super.customInitState();
   }
 
   @override
@@ -65,7 +65,7 @@ class _HomePageState extends BaseWidgetState<HomePage> {
   }
 
   @override
-  Widget viewPageBody(BuildContext context) {
+  Widget customBuildBody(BuildContext context) {
     return Stack(
       children: <Widget>[
         Padding(

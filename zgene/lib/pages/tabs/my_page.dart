@@ -35,9 +35,9 @@ import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/util/umeng_utils.dart';
 
-class MyPage extends BaseWidget {
+class MyPage extends StatefulWidget {
   @override
-  BaseWidgetState getState() {
+  BaseWidgetState createState() {
     return _MyPageState();
   }
 }
@@ -48,8 +48,8 @@ class _MyPageState extends BaseWidgetState<MyPage> {
   List bannerList = [];
 
   @override
-  void pageWidgetInitState() {
-    super.pageWidgetInitState();
+  void customInitState() {
+    super.customInitState();
     UmengUtils.onEvent(StatisticsConstant.TAB4_MY,
         {StatisticsConstant.KEY_UMENG_L2: StatisticsConstant.TAB4_MY_IMP});
     showHead = false;
@@ -183,7 +183,7 @@ class _MyPageState extends BaseWidgetState<MyPage> {
 
 // assets/images/mine/img_bg_my.png
   @override
-  Widget viewPageBody(BuildContext context) {
+  Widget customBuildBody(BuildContext context) {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.fromLTRB(16, 0, 16, 0),

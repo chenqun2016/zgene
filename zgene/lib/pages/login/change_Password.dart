@@ -17,17 +17,17 @@ import 'package:zgene/util/isChina_phone.dart';
 import 'package:zgene/util/phonetextFild_input.dart';
 import 'package:zgene/util/sp_utils.dart';
 
-class ChangePasswordPage extends BaseWidget {
+class ChangePasswordPage extends StatefulWidget {
   @override
-  BaseWidgetState getState() {
+  BaseWidgetState createState() {
     return _ChangePasswordPageState();
   }
 }
 
 class _ChangePasswordPageState extends BaseWidgetState<ChangePasswordPage> {
   @override
-  void pageWidgetInitState() {
-    super.pageWidgetInitState();
+  void customInitState() {
+    super.customInitState();
     showHead = true;
     backImgPath = "assets/images/login/icon_bindingPhone_back.png";
   }
@@ -79,7 +79,7 @@ class _ChangePasswordPageState extends BaseWidgetState<ChangePasswordPage> {
   }
 
   @override
-  Widget viewPageBody(BuildContext context) {
+  Widget customBuildBody(BuildContext context) {
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -17,9 +17,9 @@ import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
 
 ///订单详情
-class OrderDetailPage extends BaseWidget {
+class OrderDetailPage extends StatefulWidget {
   @override
-  BaseWidgetState getState() {
+  BaseWidgetState createState() {
     return _OrderDetailState();
   }
 }
@@ -39,7 +39,7 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
   var orderId = "";
 
   @override
-  Widget viewPageBody(BuildContext context) {
+  Widget customBuildBody(BuildContext context) {
     //获取路由传的参数
     orderId = ModalRoute.of(context).settings.arguments;
     if (null != _model)

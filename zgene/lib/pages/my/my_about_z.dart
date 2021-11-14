@@ -13,17 +13,17 @@ import 'package:zgene/pages/my/my_about_us.dart';
 import 'package:zgene/util/sp_utils.dart';
 import 'package:zgene/widget/base_web.dart';
 
-class AboutZPage extends BaseWidget {
+class AboutZPage extends StatefulWidget {
   @override
-  BaseWidgetState getState() {
+  BaseWidgetState createState() {
     return _AboutZPageState();
   }
 }
 
 class _AboutZPageState extends BaseWidgetState<AboutZPage> {
   @override
-  void pageWidgetInitState() {
-    super.pageWidgetInitState();
+  void customInitState() {
+    super.customInitState();
     showHead = true;
     backImgPath = "assets/images/mine/icon_about_us_back.png";
     pageWidgetTitle = "关于Z基因";
@@ -45,7 +45,7 @@ class _AboutZPageState extends BaseWidgetState<AboutZPage> {
   var isNew = true;
 
   @override
-  Widget viewPageBody(BuildContext context) {
+  Widget customBuildBody(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: 24.h),
       width: double.infinity,

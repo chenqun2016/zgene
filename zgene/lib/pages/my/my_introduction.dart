@@ -1,7 +1,5 @@
+import 'package:base/constant/color_constant.dart';
 import 'package:flutter/material.dart';
-import 'package:zgene/constant/color_constant.dart';
-import 'package:zgene/models/userInfo_model.dart';
-import 'package:zgene/util/ui_uitls.dart';
 
 ///编辑姓名
 class MyIntroductionPage extends StatefulWidget {

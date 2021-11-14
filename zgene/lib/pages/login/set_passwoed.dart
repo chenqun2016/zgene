@@ -1,14 +1,14 @@
 import 'dart:collection';
 
+import 'package:base/constant/color_constant.dart';
 import 'package:base/http/http_utils.dart';
+import 'package:base/util/phone_utils.dart';
 import 'package:base/widget/base_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/api_constant.dart';
-import 'package:zgene/constant/color_constant.dart';
-import 'package:zgene/util/isChina_phone.dart';
 import 'package:zgene/util/phonetextFild_input.dart';
 
 import 'getVFCode_login.dart';
@@ -225,7 +225,7 @@ class _SetPasswordPageState extends BaseWidgetState<SetPasswordPage> {
   void getVerifyCode() {
     var number = _phoneText.replaceAll(new RegExp(r"\s+\b|\b\s"), "");
 
-    if (!isPhoneUtils.isChinaPhoneLegal(number)) {
+    if (!PhoneUtils.isChinaPhoneLegal(number)) {
       _phoneErrorText = "请填写正确格式的手机号！";
       setState(() {});
       return;

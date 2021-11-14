@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:base/constant/color_constant.dart';
 import 'package:base/event/event_bus.dart';
 import 'package:base/http/http_utils.dart';
 import 'package:base/navigator/navigator_util.dart';
@@ -11,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/api_constant.dart';
-import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/constant/statistics_constant.dart';

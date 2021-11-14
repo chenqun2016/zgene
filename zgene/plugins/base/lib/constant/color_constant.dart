@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 ///
 ///
 class ColorConstant {
+  //主题颜色
+  static int THEME_COLOR = 0xFF2E9CF9;
   //背景标准透明
   static const Color BackMainColor = Color(0xFFF3F5F6);
   //背景标准透明

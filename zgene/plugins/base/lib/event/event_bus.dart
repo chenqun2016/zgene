@@ -1,7 +1,7 @@
 //订阅者回调签名
 typedef void EventCallback(arg);
 
-////事件总线
+///事件总线
 class EventBus {
   //私有构造函数
   EventBus._internal();

@@ -3,29 +3,30 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+///适配苹果手机中文
 class ChineseCupertinoLocalizations implements CupertinoLocalizations {
   final materialDelegate = GlobalMaterialLocalizations.delegate;
   final widgetsDelegate = GlobalWidgetsLocalizations.delegate;
   final local = const Locale('zh');
 
-  MaterialLocalizations ml;
+  MaterialLocalizations? ml;
 
   Future init() async {
     ml = await materialDelegate.load(local);
-    print(ml.pasteButtonLabel);
+    print(ml!.pasteButtonLabel);
   }
 
   @override
-  String get alertDialogLabel => ml.alertDialogLabel;
+  String get alertDialogLabel => ml!.alertDialogLabel;
 
   @override
-  String get anteMeridiemAbbreviation => ml.anteMeridiemAbbreviation;
+  String get anteMeridiemAbbreviation => ml!.anteMeridiemAbbreviation;
 
   @override
-  String get copyButtonLabel => ml.copyButtonLabel;
+  String get copyButtonLabel => ml!.copyButtonLabel;
 
   @override
-  String get cutButtonLabel => ml.cutButtonLabel;
+  String get cutButtonLabel => ml!.cutButtonLabel;
 
   @override
   DatePickerDateOrder get datePickerDateOrder => DatePickerDateOrder.mdy;
@@ -51,7 +52,7 @@ class ChineseCupertinoLocalizations implements CupertinoLocalizations {
 
   @override
   String datePickerMediumDate(DateTime date) {
-    return ml.formatMediumDate(date);
+    return ml!.formatMediumDate(date);
   }
 
   @override
@@ -75,13 +76,13 @@ class ChineseCupertinoLocalizations implements CupertinoLocalizations {
   }
 
   @override
-  String get pasteButtonLabel => ml.pasteButtonLabel;
+  String get pasteButtonLabel => ml!.pasteButtonLabel;
 
   @override
-  String get postMeridiemAbbreviation => ml.postMeridiemAbbreviation;
+  String get postMeridiemAbbreviation => ml!.postMeridiemAbbreviation;
 
   @override
-  String get selectAllButtonLabel => ml.selectAllButtonLabel;
+  String get selectAllButtonLabel => ml!.selectAllButtonLabel;
 
   @override
   String timerPickerHour(int hour) {
@@ -131,7 +132,7 @@ class ChineseCupertinoLocalizations implements CupertinoLocalizations {
   String get searchTextFieldPlaceholderLabel => throw UnimplementedError();
 
   @override
-  String tabSemanticsLabel({int tabIndex, int tabCount}) {
+  String tabSemanticsLabel({int? tabIndex, int? tabCount}) {
     // TODO: implement tabSemanticsLabel
     throw UnimplementedError();
   }

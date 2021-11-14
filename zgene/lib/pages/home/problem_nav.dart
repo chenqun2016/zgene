@@ -1,7 +1,7 @@
+import 'package:base/constant/color_constant.dart';
 import 'package:base/navigator/navigator_util.dart';
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/api_constant.dart';
-import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/models/content_model.dart';
 import 'package:zgene/pages/home/home_getHttp.dart';
 import 'package:zgene/widget/base_web.dart';

@@ -1,19 +1,19 @@
 import 'dart:collection';
 
+import 'package:base/constant/color_constant.dart';
 import 'package:base/http/http_utils.dart';
+import 'package:base/util/date_utils.dart';
 import 'package:base/util/sp_utils.dart';
 import 'package:base/widget/base_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/api_constant.dart';
-import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/models/order_list_model.dart';
+import 'package:zgene/util/chat_robot_utils.dart';
 import 'package:zgene/util/common_utils.dart';
-import 'package:zgene/util/date_utils.dart';
-import 'package:zgene/util/ui_uitls.dart';
 
 ///订单详情
 class OrderDetailPage extends StatefulWidget {
@@ -456,7 +456,7 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
         break;
       case 2: //联系客服
         // NavigatorUtil.push(context, contantUsPage());
-        UiUitls.showChatH5(context);
+        ChatRobotUtils.showChatH5(context);
         break;
       case 3: //售后规则
         _showRule();

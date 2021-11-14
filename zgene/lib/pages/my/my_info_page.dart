@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'dart:io';
 
+import 'package:base/constant/color_constant.dart';
 import 'package:base/http/http_utils.dart';
 import 'package:base/util/platform_utils.dart';
 import 'package:base/util/sp_utils.dart';
@@ -12,7 +13,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_crop/image_crop.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:zgene/constant/api_constant.dart';
-import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/models/userInfo_model.dart';
 import 'package:zgene/pages/my/my_editor_name.dart';

@@ -1,7 +1,9 @@
 import 'package:base/event/event_bus.dart';
 import 'package:base/http/http_utils.dart';
+import 'package:base/util/chinese_cupertino.dart';
 import 'package:base/util/platform_utils.dart';
 import 'package:base/util/sp_utils.dart';
+import 'package:base/util/ui_uitls.dart';
 import 'package:base/widget/restart_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,11 +28,9 @@ import 'package:zgene/pages/splash_page.dart';
 import 'package:zgene/pages/tabs/buy_page.dart';
 import 'package:zgene/pages/tabs/report_page.dart';
 import 'package:zgene/plugin/method_channel_plugin.dart';
-import 'package:zgene/util/chineseCupertino.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/get_notice_count.dart';
 import 'package:zgene/util/getui_Utils.dart';
-import 'package:zgene/util/ui_uitls.dart';
 
 import 'configure.dart' if (dart.library.html) 'configure_web.dart';
 import 'pages/login/main_login.dart';

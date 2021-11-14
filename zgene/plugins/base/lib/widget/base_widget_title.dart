@@ -4,6 +4,7 @@ import 'package:base/widget/my_inherited_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+///页面基类title
 class BaseWidgetTitle extends StatefulWidget {
   bool isShowBack;
   Widget? customHeaderBack;

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
 
+import 'package:base/constant/color_constant.dart';
 import 'package:dio/dio.dart';
 // import 'package:divms/constant/config_constant.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,6 @@ import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:fluwx/fluwx.dart';
 // import 'package:jshare_flutter_plugin/jshare_flutter_plugin.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/config_constant.dart';
 import 'package:zgene/constant/statistics_constant.dart';
 

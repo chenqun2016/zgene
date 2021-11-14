@@ -1,19 +1,19 @@
+import 'package:base/constant/color_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:zgene/constant/color_constant.dart';
-import 'package:zgene/util/screen_utils.dart';
 
 typedef _CallBack = void Function();
 
-class MyDialog extends Dialog {
+///自定义Dialog
+class CustomDialog extends Dialog {
   // final _CallBack callback;
   final String title;
   final String img;
-  final String tureText;
-  final String falseText;
+  final String? tureText;
+  final String? falseText;
 
   // 构造函数赋值
-  MyDialog(
+  CustomDialog(
       {this.title = "",
       this.img = "",
       this.tureText = null,
@@ -62,7 +62,7 @@ class MyDialog extends Dialog {
                   ))),
           Positioned(
             top: 214.h,
-            left: (ScreenUtils.screenW(context) - 110.w) / 2,
+            left: (MediaQuery.of(context).size.width - 110.w) / 2,
             child: Image(
               image: AssetImage('${this.img}'),
               height: 110.w,

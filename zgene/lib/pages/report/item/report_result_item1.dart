@@ -1,5 +1,5 @@
+import 'package:base/constant/color_constant.dart';
 import 'package:flutter/material.dart';
-import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/widget/star_shape_border.dart';
 
 ///患病倍数

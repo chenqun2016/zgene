@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+///状态管理
 class MyInheritedWidget extends InheritedWidget {
   MyInheritedWidget({
     Key? key,

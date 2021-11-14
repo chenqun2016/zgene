@@ -1,7 +1,7 @@
+import 'package:base/constant/color_constant.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/statistics_constant.dart';
 import 'package:zgene/models/content_model.dart';
 import 'package:zgene/util/common_utils.dart';

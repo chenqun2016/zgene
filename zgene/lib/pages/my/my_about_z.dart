@@ -1,3 +1,4 @@
+import 'package:base/constant/color_constant.dart';
 import 'package:base/navigator/navigator_util.dart';
 import 'package:base/util/sp_utils.dart';
 import 'package:base/widget/base_widget.dart';
@@ -6,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:launch_review/launch_review.dart';
-import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/config_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';

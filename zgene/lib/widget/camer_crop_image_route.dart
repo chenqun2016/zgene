@@ -1,12 +1,11 @@
 import 'dart:io';
 
-import 'package:dio/dio.dart';
+import 'package:base/constant/color_constant.dart';
 // import 'package:divms/router/router_navigatorUtils.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:image_crop/image_crop.dart';
-import 'package:zgene/constant/color_constant.dart';
 
 class CropImageRoute extends StatefulWidget {
   CropImageRoute(this.image);

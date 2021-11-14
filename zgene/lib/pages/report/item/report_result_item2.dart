@@ -1,8 +1,8 @@
+import 'package:base/constant/color_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/models/report_list_detail_model.dart';
-import 'package:zgene/util/ui_uitls.dart';
+import 'package:zgene/util/image_color_utils.dart';
 
 class ReportRusultItem2 extends StatefulWidget {
   List<Distribution> distribution;
@@ -51,7 +51,7 @@ class _ReportRusultItem2State extends State<ReportRusultItem2> {
       animationDuration: 1000,
       percent: (progress > 0.95 && progress < 1) ? 0.95 : progress,
       circularStrokeCap: CircularStrokeCap.round,
-      progressColor: UiUitls.getColor(index),
+      progressColor: ImageColorUtils.getColor(index),
       backgroundColor: Colors.transparent,
     );
   }
@@ -83,11 +83,12 @@ class _ReportRusultItem2State extends State<ReportRusultItem2> {
       startAngle: 0,
       percent: (e.rate > 0.95 && e.rate < 1) ? 0.95 : e.rate,
       circularStrokeCap: CircularStrokeCap.round,
-      progressColor:
-          data.length <= 3 ? UiUitls.getColor3(index) : UiUitls.getColor(index),
+      progressColor: data.length <= 3
+          ? ImageColorUtils.getColor3(index)
+          : ImageColorUtils.getColor(index),
       backgroundColor: (data.length <= 3
-              ? UiUitls.getColor3(index)
-              : UiUitls.getColor(index))
+              ? ImageColorUtils.getColor3(index)
+              : ImageColorUtils.getColor(index))
           .withAlpha(50),
       center: Text.rich(TextSpan(children: [
         TextSpan(
@@ -125,8 +126,8 @@ class _ReportRusultItem2State extends State<ReportRusultItem2> {
             children: [
               Image.asset(
                 data.length <= 3
-                    ? UiUitls.getReportResultCircle3(index)
-                    : UiUitls.getReportResultCircle(index),
+                    ? ImageColorUtils.getReportResultCircle3(index)
+                    : ImageColorUtils.getReportResultCircle(index),
                 height: 24,
                 width: 24,
               ),
@@ -158,8 +159,9 @@ class _ReportRusultItem2State extends State<ReportRusultItem2> {
   }
 
   Color _getColor(Distribution e, index) {
-    var color =
-        data.length <= 3 ? UiUitls.getColor3(index) : UiUitls.getColor(index);
+    var color = data.length <= 3
+        ? ImageColorUtils.getColor3(index)
+        : ImageColorUtils.getColor(index);
     if (e.title == "和我一样") {
       return color;
     }

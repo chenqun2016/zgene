@@ -1,9 +1,12 @@
 import 'dart:collection';
 import 'dart:developer';
 
+import 'package:base/constant/color_constant.dart';
 import 'package:base/http/http_utils.dart';
 import 'package:base/navigator/navigator_util.dart';
 import 'package:base/util/platform_utils.dart';
+import 'package:base/util/ui_uitls.dart';
+import 'package:base/widget/custom_dialog.dart';
 // import 'dart:js' as js;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,11 +16,10 @@ import 'package:scan/scan.dart';
 import 'package:zgene/configure.dart'
     if (dart.library.html) 'package:zgene/configure_web.dart';
 import 'package:zgene/constant/api_constant.dart';
-import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/pages/bindcollector/bind_collector_page.dart';
+import 'package:zgene/util/chat_robot_utils.dart';
 import 'package:zgene/util/common_utils.dart';
-import 'package:zgene/util/dia_log.dart';
-import 'package:zgene/util/ui_uitls.dart';
+import 'package:zgene/util/image_color_utils.dart';
 import 'package:zgene/widget/my_qr_scanner_overlay_shape.dart';
 
 class QRScannerView extends StatefulWidget {
@@ -55,7 +57,7 @@ class _QRScannerViewState extends State<QRScannerView>
       return;
     }
     try {
-      UiUitls.loadImageFromAssets("assets/images/mine/img_saomiao.png")
+      ImageColorUtils.loadImageFromAssets("assets/images/mine/img_saomiao.png")
           .then((value) => setState(() {
                 _image = value;
                 print("_image == " + _image.toString());
@@ -204,7 +206,7 @@ class _QRScannerViewState extends State<QRScannerView>
               controller.pauseCamera();
               animationController.stop();
               // await NavigatorUtil.push(context, contantUsPage());
-              UiUitls.showChatH5(context);
+              ChatRobotUtils.showChatH5(context);
 
               controller.resumeCamera();
               animationController.forward();
@@ -415,7 +417,7 @@ class _QRScannerViewState extends State<QRScannerView>
     showDialog(
         context: context,
         builder: (context) {
-          return MyDialog(
+          return CustomDialog(
             title: error,
             img: "assets/images/mine/icon_delete_address.png",
             tureText: "重新扫描",
@@ -424,7 +426,7 @@ class _QRScannerViewState extends State<QRScannerView>
         }).then((value) async {
       if (null != value && !value) {
         // await NavigatorUtil.push(context, contantUsPage());
-        UiUitls.showChatH5(context);
+        ChatRobotUtils.showChatH5(context);
       }
       if (PlatformUtils.isWeb && value) {
         _webScan();

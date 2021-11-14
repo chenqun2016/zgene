@@ -1,3 +1,5 @@
+import 'package:base/constant/color_constant.dart';
+import 'package:base/util/ui_uitls.dart';
 import 'package:base/widget/base_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:card_swiper/card_swiper.dart';
@@ -5,7 +7,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/statistics_constant.dart';
 import 'package:zgene/models/content_model.dart';
 import 'package:zgene/pages/home/content_tab_nav.dart';
@@ -16,7 +17,6 @@ import 'package:zgene/pages/home/local_nav.dart';
 import 'package:zgene/pages/home/problem_nav.dart';
 import 'package:zgene/pages/home/video_nav.dart';
 import 'package:zgene/util/common_utils.dart';
-import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/util/umeng_utils.dart';
 
 ///首页

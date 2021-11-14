@@ -1,8 +1,7 @@
+import 'package:base/constant/color_constant.dart';
+import 'package:base/util/date_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_pickers/pickers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:zgene/constant/color_constant.dart';
-import 'package:zgene/util/date_utils.dart';
 import 'package:zgene/util/screen_utils.dart';
 
 typedef _CallBack = void Function(String timeStr, String reportStr);

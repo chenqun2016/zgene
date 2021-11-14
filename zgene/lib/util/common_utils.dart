@@ -1,3 +1,4 @@
+import 'package:base/constant/color_constant.dart';
 import 'package:base/navigator/navigator_util.dart';
 import 'package:base/util/sp_utils.dart';
 import 'package:connectivity/connectivity.dart';
@@ -7,7 +8,6 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zgene/constant/api_constant.dart';
-import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/models/msg_event.dart';

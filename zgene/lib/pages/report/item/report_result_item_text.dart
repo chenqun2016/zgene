@@ -1,7 +1,7 @@
+import 'package:base/constant/color_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:zgene/constant/color_constant.dart';
 
 class ReportResultItemText extends StatefulWidget {
   String text;

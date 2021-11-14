@@ -1,6 +1,6 @@
+import 'package:base/constant/color_constant.dart';
 import 'package:base/event/event_bus.dart';
 import 'package:flutter/material.dart';
-import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/statistics_constant.dart';
 import 'package:zgene/models/msg_event.dart';

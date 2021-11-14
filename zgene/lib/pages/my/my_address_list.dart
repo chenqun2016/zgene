@@ -1,7 +1,9 @@
 import 'dart:collection';
 
 import 'package:base/http/http_utils.dart';
+import 'package:base/util/ui_uitls.dart';
 import 'package:base/widget/base_widget.dart';
+import 'package:base/widget/custom_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -11,9 +13,7 @@ import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/models/address_list_model.dart';
 import 'package:zgene/pages/my/add_address_page.dart';
 import 'package:zgene/util/common_utils.dart';
-import 'package:zgene/util/dia_log.dart';
 import 'package:zgene/util/screen_utils.dart';
-import 'package:zgene/util/ui_uitls.dart';
 
 ///我的地址列表
 class MyAddressListPage extends StatefulWidget {
@@ -187,7 +187,7 @@ class _MyAddressListPageState extends BaseWidgetState<MyAddressListPage> {
                     showDialog(
                         context: context,
                         builder: (context) {
-                          return MyDialog(
+                          return CustomDialog(
                             title: "确认删除该地址吗?",
                             img: "assets/images/mine/icon_delete_address.png",
                             falseText: "取消",

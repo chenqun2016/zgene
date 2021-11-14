@@ -4,8 +4,8 @@ import 'package:base/util/sp_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/navigator/tab_navigator.dart';
+import 'package:zgene/util/agreement_utils.dart';
 import 'package:zgene/util/screen_utils.dart';
-import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/util/umeng_utils.dart';
 
 ///app启动页
@@ -27,7 +27,7 @@ class _SplashPageState extends State<SplashPage> {
     if (isFirst) {
       WidgetsBinding.instance.addPostFrameCallback((callback) {
         ///显示协议弹窗
-        UiUitls.showAgreement2(context, onAgree: () {
+        AgreementUtils.showAgreement2(context, onAgree: () {
           initOther();
           SpUtils().setStorage(SpConstant.SpIsFirst, false);
           isFirst = false;

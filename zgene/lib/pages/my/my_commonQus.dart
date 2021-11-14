@@ -1,13 +1,14 @@
+import 'package:base/constant/color_constant.dart';
 import 'package:base/navigator/navigator_util.dart';
+import 'package:base/util/ui_uitls.dart';
 import 'package:base/widget/base_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/api_constant.dart';
-import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/models/content_model.dart';
 import 'package:zgene/pages/home/home_getHttp.dart';
+import 'package:zgene/util/chat_robot_utils.dart';
 import 'package:zgene/util/screen_utils.dart';
-import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/widget/base_web.dart';
 
 class CommonQusListPage extends StatefulWidget {
@@ -51,7 +52,7 @@ class _CommonQusListPageState extends BaseWidgetState<CommonQusListPage> {
   Future customRightBtnTap(BuildContext context) {
     // TODO: implement rightBtnTap
     // NavigatorUtil.push(context, contantUsPage());
-    UiUitls.showChatH5(context);
+    ChatRobotUtils.showChatH5(context);
 
     return super.customRightBtnTap(context);
   }

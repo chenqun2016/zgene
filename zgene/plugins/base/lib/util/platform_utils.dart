@@ -1,6 +1,8 @@
 import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 
+///平台判断工具类
 class PlatformUtils {
   static bool _isWeb() {
     return kIsWeb == true;

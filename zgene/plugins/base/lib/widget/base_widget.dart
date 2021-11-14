@@ -8,6 +8,7 @@ import 'base_widget_title.dart';
 
 const int APPBAR_SCORLL_OFFSET = 100;
 
+///页面基类
 abstract class BaseWidgetState<T extends StatefulWidget> extends State<T>
     with AutomaticKeepAliveClientMixin {
   @override

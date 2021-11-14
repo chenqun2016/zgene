@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 
+import 'package:base/constant/color_constant.dart';
 import 'package:base/event/event_bus.dart';
 import 'package:base/http/http_utils.dart';
 import 'package:base/util/sp_utils.dart';
@@ -11,7 +12,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/api_constant.dart';
-import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/constant/statistics_constant.dart';

@@ -1,11 +1,11 @@
+import 'package:base/constant/color_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/models/report_list_detail_model.dart';
 import 'package:zgene/pages/report/item/report_result_item1.dart';
 import 'package:zgene/pages/report/item/report_result_item2.dart';
 import 'package:zgene/pages/report/item/report_result_item_text.dart';
-import 'package:zgene/util/ui_uitls.dart';
+import 'package:zgene/util/image_color_utils.dart';
 
 ///报告详情页：检测结果tab
 class ReportResult extends StatefulWidget {
@@ -265,7 +265,7 @@ class _ReportResultState extends State<ReportResult>
               alignment: Alignment.centerLeft,
               children: [
                 Image.asset(
-                  UiUitls.getReportDetailIndexIcon(index),
+                  ImageColorUtils.getReportDetailIndexIcon(index),
                   height: 60,
                   width: 60,
                   fit: BoxFit.fitWidth,

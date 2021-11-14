@@ -1,9 +1,9 @@
+import 'package:base/constant/color_constant.dart';
 import 'package:base/widget/base_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 
 class cancellationAccountPage extends StatefulWidget {

@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:base/constant/color_constant.dart';
 import 'package:base/event/event_bus.dart';
 import 'package:base/http/http_utils.dart';
 import 'package:base/navigator/navigator_util.dart';
@@ -11,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/api_constant.dart';
-import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/constant/statistics_constant.dart';
@@ -29,10 +29,10 @@ import 'package:zgene/pages/my/my_order_local.dart';
 import 'package:zgene/pages/my/my_report_page.dart';
 import 'package:zgene/pages/my/my_set.dart';
 import 'package:zgene/pages/my/sendBack_acquisition.dart';
+import 'package:zgene/util/chat_robot_utils.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/login_base.dart';
 import 'package:zgene/util/screen_utils.dart';
-import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/util/umeng_utils.dart';
 
 class MyPage extends StatefulWidget {
@@ -783,7 +783,7 @@ class _MyPageState extends BaseWidgetState<MyPage> {
       case 9: //联系客服
         umentType = StatisticsConstant.MY_PAGE_SERVICE;
         // NavigatorUtil.push(context, contantUsPage());
-        UiUitls.showChatH5(context);
+        ChatRobotUtils.showChatH5(context);
         break;
       case 10: //常见问题
         umentType = StatisticsConstant.MY_PAGE_PROBLEM;

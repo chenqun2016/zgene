@@ -149,7 +149,7 @@ class CusDateUtils {
   ///结果:[2019年07月11, 2019年07月12, 2019年07月13, 2019年07月14, 2019年07月15, 2019年07月16, 2019年07月17, 2019年07月18, 2019年07月19, 2019年07月20, 2019年07月21, 2019年07月22, 2019年07月23, 2019年07月24, 2019年07月25, 2019年07月26, 2019年07月27, 2019年07月28, 2019年07月29, 2019年07月30, 2019年07月31, 2019年08月01, 2019年08月02, 2019年08月03, 2019年08月04, 2019年08月05, 2019年08月06, 2019年08月07, 2019年08月08, 2019年08月09, 2019年08月10, 2019年08月11, 2019年08月12, 2019年08月13, 2019年08月14, 2019年08月15, 2019年08月16, 2019年08月17, 2019年08月18, 2019年08月19, 2019年08月20, 2019年08月21, 2019年08月22, 2019年08月23, 2019年08月24, 2019年08月25, 2019年08月26, 2019年08月27, 2019年08月28, 2019年08月29]
   static List<String> getTimeBetweenStartTimeAndEnd(
       String startTime, String endTime, String format) {
-    var mDataList = List<String>();
+    var mDataList = <String>[];
     //记录往后每一天的时间搓，用来和最后一天到做对比。这样就能知道什么时候停止了。
     int allTimeEnd = 0;
     //记录当前到个数(相当于天数)
@@ -175,7 +175,7 @@ class CusDateUtils {
   ///结果:[2019年07月11, 2019年07月12, 2019年07月13, 2019年07月14, 2019年07月15, 2019年07月16, 2019年07月17, 2019年07月18, 2019年07月19, 2019年07月20, 2019年07月21, 2019年07月22, 2019年07月23, 2019年07月24, 2019年07月25, 2019年07月26, 2019年07月27, 2019年07月28, 2019年07月29, 2019年07月30, 2019年07月31, 2019年08月01, 2019年08月02, 2019年08月03, 2019年08月04, 2019年08月05, 2019年08月06, 2019年08月07, 2019年08月08, 2019年08月09, 2019年08月10, 2019年08月11, 2019年08月12, 2019年08月13, 2019年08月14, 2019年08月15, 2019年08月16, 2019年08月17, 2019年08月18, 2019年08月19, 2019年08月20, 2019年08月21, 2019年08月22, 2019年08月23, 2019年08月24, 2019年08月25, 2019年08月26, 2019年08月27, 2019年08月28, 2019年08月29]
   static List<String> getRangeTime(
       DateTime startData, DateTime endData, String format) {
-    var mDataList = List<String>();
+    var mDataList = <String>[];
     //记录往后每一天的时间搓，用来和最后一天到做对比。这样就能知道什么时候停止了。
     int allTimeEnd = 0;
     //记录当前到个数(相当于天数)
@@ -205,7 +205,7 @@ class CusDateUtils {
   ///结果:[2019年07月11, 2019年07月12, 2019年07月13, 2019年07月14, 2019年07月15, 2019年07月16, 2019年07月17, 2019年07月18, 2019年07月19, 2019年07月20, 2019年07月21]
   static List<String> getTimeStartTimeAndEnd(
       {startTime: String, dayNumber: int, format: String}) {
-    var mDataList = List<String>();
+    var mDataList = <String>[];
     //记录往后每一天的时间搓，用来和最后一天到做对比。这样就能知道什么时候停止了。
     int allTimeEnd = 0;
     //记录当前到个数(相当于天数)
@@ -235,7 +235,9 @@ class CusDateUtils {
     DateTime startData = DateTime.parse(startTime);
     var mothFormatFlag = new DateFormat(format);
     var dateTime = new DateTime.fromMillisecondsSinceEpoch(
-        startData.millisecondsSinceEpoch + dayNumber * 24 * 60 * 60 * 1000);
+        dayNumber * 24 * 60 * 60 * 1000.toInt() +
+                startData.millisecondsSinceEpoch ??
+            0);
     String nowMoth = mothFormatFlag.format(dateTime);
     date.add(nowMoth);
     return date;
@@ -275,7 +277,7 @@ class CusDateUtils {
   ///输入时间格式
   static List<TimeData> getTimeStartTimeAndEndTime(
       {startTime: int, dayNumber: int, format: String}) {
-    var mDataList = List<TimeData>();
+    var mDataList = <TimeData>[];
     //记录往后每一天的时间搓，用来和最后一天到做对比。这样就能知道什么时候停止了。
     int allTimeEnd = 0;
     //记录当前到个数(相当于天数)
@@ -492,6 +494,6 @@ class CusDateUtils {
 }
 
 class TimeData {
-  String dataTime;
-  int week;
+  String? dataTime;
+  int? week;
 }

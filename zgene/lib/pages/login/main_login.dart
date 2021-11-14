@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:base/constant/color_constant.dart';
 import 'package:base/event/event_bus.dart';
 import 'package:base/http/http_utils.dart';
 import 'package:base/util/platform_utils.dart';
@@ -17,7 +18,6 @@ import 'package:zgene/configure.dart'
     if (dart.library.html) 'package:zgene/configure_web.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/app_notification.dart';
-import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/constant/statistics_constant.dart';

@@ -1,10 +1,10 @@
+import 'package:base/constant/color_constant.dart';
 import 'package:base/widget/my_inherited_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/models/report_des_model.dart';
 import 'package:zgene/util/common_utils.dart';
-import 'package:zgene/util/ui_uitls.dart';
+import 'package:zgene/util/image_color_utils.dart';
 
 class ReportLevel1BodyPage extends StatefulWidget {
   final String id;
@@ -107,7 +107,7 @@ class _ReportLevel1BodyPageState extends State<ReportLevel1BodyPage> {
                 ),
               ),
               Image.asset(
-                UiUitls.getAssetIcon(item.color),
+                ImageColorUtils.getAssetIcon(item.color),
                 width: 22,
                 height: 22,
               ),

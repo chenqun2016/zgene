@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:base/constant/color_constant.dart';
 import 'package:base/event/event_bus.dart';
 import 'package:base/http/http_utils.dart';
 import 'package:base/widget/base_widget.dart';
@@ -9,12 +10,11 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/api_constant.dart';
-import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/statistics_constant.dart';
 import 'package:zgene/models/content_model.dart';
+import 'package:zgene/util/chat_robot_utils.dart';
 import 'package:zgene/util/common_utils.dart';
-import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/util/umeng_utils.dart';
 
 ///首页购买页面
@@ -300,7 +300,7 @@ class _BuyPageState extends BaseWidgetState<BuyPage> {
                 StatisticsConstant.KEY_UMENG_L2:
                     StatisticsConstant.BUY_LIST_TOP_SERVICE
               });
-              UiUitls.showChatH5(context);
+              ChatRobotUtils.showChatH5(context);
             },
             child: Image.asset(
               "assets/images/buy/icon_kefu.png",

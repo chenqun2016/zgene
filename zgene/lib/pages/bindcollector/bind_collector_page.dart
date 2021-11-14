@@ -1,8 +1,10 @@
 import 'dart:collection';
 
+import 'package:base/constant/color_constant.dart';
 import 'package:base/http/http_utils.dart';
 import 'package:base/navigator/navigator_util.dart';
 import 'package:base/widget/base_widget.dart';
+import 'package:base/widget/custom_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -11,11 +13,9 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_pickers/pickers.dart';
 import 'package:flutter_pickers/time_picker/model/pduration.dart';
 import 'package:zgene/constant/api_constant.dart';
-import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
+import 'package:zgene/util/chat_robot_utils.dart';
 import 'package:zgene/util/common_utils.dart';
-import 'package:zgene/util/dia_log.dart';
-import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/widget/base_web.dart';
 import 'package:zgene/widget/my_stepper.dart';
 
@@ -99,7 +99,7 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
       showDialog(
           context: context,
           builder: (context) {
-            return MyDialog(
+            return CustomDialog(
               title: "还未绑定成功，下次绑定该采集器时还需再次填写信息，确定返回吗?",
               img: "assets/images/mine/icon_delete_address.png",
               tureText: "确认",
@@ -633,7 +633,7 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
                   TextStyle(color: ColorConstant.TextMainColor, fontSize: 14),
               recognizer: TapGestureRecognizer()
                 ..onTap = () {
-                  UiUitls.showChatH5(context);
+                  ChatRobotUtils.showChatH5(context);
                   // NavigatorUtil.push(context, contantUsPage());
                 },
             ),
@@ -687,7 +687,7 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
         showDialog(
             context: context,
             builder: (context) {
-              return MyDialog(
+              return CustomDialog(
                 title: error.toString(),
                 img: "assets/images/mine/icon_delete_address.png",
                 tureText: "重新输入",
@@ -696,7 +696,7 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
             }).then((value) async {
           if (null != value && !value) {
             // NavigatorUtil.push(context, contantUsPage());
-            UiUitls.showChatH5(context);
+            ChatRobotUtils.showChatH5(context);
           }
         });
       },

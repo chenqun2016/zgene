@@ -1,4 +1,4 @@
-///返回数据统一封装的
+///返回数据统一封装的类
 class BaseResponse {
   int? code;
   String? msg;

@@ -1,8 +1,8 @@
+import 'package:base/constant/color_constant.dart';
+import 'package:base/util/ui_uitls.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:zgene/constant/color_constant.dart';
-import 'package:zgene/util/ui_uitls.dart';
 
 class BindStep3 extends StatefulWidget {
   var name = "陈陈";

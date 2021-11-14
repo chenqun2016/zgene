@@ -2,9 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:base/constant/color_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:zgene/constant/color_constant.dart';
 
 // TODO(dragostis): Missing functionality:
 //   * mobile horizontal mode with adding/removing steps

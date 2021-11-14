@@ -1,7 +1,10 @@
 import 'dart:collection';
 
+import 'package:base/constant/color_constant.dart';
 import 'package:base/http/http_utils.dart';
+import 'package:base/util/phone_utils.dart';
 import 'package:base/widget/base_widget.dart';
+import 'package:base/widget/custom_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,13 +12,10 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_pickers/pickers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/api_constant.dart';
-import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/pages/my/my_address_list.dart';
 import 'package:zgene/pages/my/show_selectPicker.dart';
 import 'package:zgene/util/common_utils.dart';
-import 'package:zgene/util/dia_log.dart';
-import 'package:zgene/util/isChina_phone.dart';
 import 'package:zgene/util/screen_utils.dart';
 
 class SendBackAcquisitionPage extends StatefulWidget {
@@ -57,7 +57,7 @@ class _SendBackAcquisitionPageState
         sendBackAddress.isNotEmpty &&
         _addressController.text.isNotEmpty &&
         reportTime.isNotEmpty &&
-        isPhoneUtils.isChinaPhoneLegal(_phoneController.text));
+        PhoneUtils.isChinaPhoneLegal(_phoneController.text));
   }
 
   @override
@@ -1043,7 +1043,7 @@ class _SendBackAcquisitionPageState
         showDialog(
             context: context,
             builder: (context) {
-              return MyDialog(
+              return CustomDialog(
                 title: "您已成功预约",
                 img: "assets/images/mine/icon_mydialog_success.png",
                 tureText: "确认",

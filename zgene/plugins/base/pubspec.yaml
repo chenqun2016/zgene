@@ -10,6 +10,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   flutter_screenutil: ^5.0.0+2
   dio: ^4.0.0
   device_info: ^2.0.2

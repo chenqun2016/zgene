@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:base/constant/color_constant.dart';
 import 'package:base/http/http_utils.dart';
 import 'package:base/navigator/navigator_util.dart';
 import 'package:base/widget/base_widget.dart';
@@ -7,7 +8,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:zgene/constant/api_constant.dart';
-import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/models/report_detail_model.dart';
 import 'package:zgene/pages/my/sendBack_acquisition.dart';
 import 'package:zgene/util/common_utils.dart';

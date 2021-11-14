@@ -2,9 +2,11 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:ui';
 
+import 'package:base/constant/color_constant.dart';
 import 'package:base/event/event_bus.dart';
 import 'package:base/http/http_utils.dart';
 import 'package:base/navigator/navigator_util.dart';
+import 'package:base/util/date_utils.dart';
 import 'package:base/util/platform_utils.dart';
 import 'package:base/util/sp_utils.dart';
 import 'package:base/widget/base_widget.dart';
@@ -13,18 +15,16 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/api_constant.dart';
-import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/constant/statistics_constant.dart';
 import 'package:zgene/models/archive_des_model.dart';
 import 'package:zgene/models/content_model.dart' as cm;
 import 'package:zgene/pages/buy/ordering_page.dart';
 import 'package:zgene/pages/home/home_getHttp.dart';
+import 'package:zgene/util/chat_robot_utils.dart';
 import 'package:zgene/util/common_utils.dart';
-import 'package:zgene/util/date_utils.dart';
 import 'package:zgene/util/login_base.dart';
 import 'package:zgene/util/time_utils.dart';
-import 'package:zgene/util/ui_uitls.dart';
 import 'package:zgene/util/umeng_utils.dart';
 import 'package:zgene/widget/base_web_view.dart';
 
@@ -133,7 +133,7 @@ class _BuyPageState extends BaseWidgetState<ProductDetailPage> {
     UmengUtils.onEvent(StatisticsConstant.PRODUCTS_BUY, {
       StatisticsConstant.KEY_UMENG_L2: StatisticsConstant.BUY_DETAILS_SERVICE
     });
-    UiUitls.showChatH5(context);
+    ChatRobotUtils.showChatH5(context);
     return super.customRightBtnTap(context);
   }
 

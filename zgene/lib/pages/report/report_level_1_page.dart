@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'dart:ui';
 
+import 'package:base/constant/color_constant.dart';
 import 'package:base/http/http_utils.dart';
 import 'package:base/widget/base_widget.dart';
 import 'package:base/widget/my_inherited_widget.dart';
@@ -9,11 +10,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/api_constant.dart';
-import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/models/report_des_model.dart';
 import 'package:zgene/models/report_list_model.dart';
 import 'package:zgene/models/report_summary_model.dart';
-import 'package:zgene/util/ui_uitls.dart';
+import 'package:zgene/util/image_color_utils.dart';
 
 import 'report_level_1_body_page.dart';
 
@@ -375,7 +375,7 @@ class _ReportLevel1PageState extends BaseWidgetState<ReportLevel1Page>
           height: 168,
           decoration: BoxDecoration(
               image: DecorationImage(
-            image: AssetImage(UiUitls.getReportListIcon(widget.id)),
+            image: AssetImage(ImageColorUtils.getReportListIcon(widget.id)),
             fit: BoxFit.fill,
           )),
           padding: EdgeInsets.fromLTRB(30, 22, 0, 0),
@@ -435,7 +435,7 @@ class _ReportLevel1PageState extends BaseWidgetState<ReportLevel1Page>
             width: 12,
             margin: EdgeInsets.only(right: 6),
             decoration: BoxDecoration(
-              gradient: UiUitls.getTipColor(item.color),
+              gradient: ImageColorUtils.getTipColor(item.color),
               shape: BoxShape.circle,
               border: Border.all(
                 color: Colors.white,

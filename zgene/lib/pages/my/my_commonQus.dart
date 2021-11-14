@@ -1,10 +1,10 @@
+import 'package:base/navigator/navigator_util.dart';
 import 'package:base/widget/base_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/models/content_model.dart';
-import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/home/home_getHttp.dart';
 import 'package:zgene/util/screen_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';

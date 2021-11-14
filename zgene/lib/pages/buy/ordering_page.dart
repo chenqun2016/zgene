@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:base/http/http_utils.dart';
+import 'package:base/navigator/navigator_util.dart';
 import 'package:base/util/platform_utils.dart';
 import 'package:base/util/sp_utils.dart';
 import 'package:base/widget/base_widget.dart';
@@ -20,7 +21,6 @@ import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/models/address_list_model.dart';
 import 'package:zgene/models/archive_des_model.dart';
-import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/my/my_order_list.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';

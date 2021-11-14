@@ -1,3 +1,4 @@
+import 'package:base/navigator/navigator_util.dart';
 import 'package:base/util/sp_utils.dart';
 import 'package:base/widget/base_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,7 +10,6 @@ import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/config_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
-import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/my/my_about_us.dart';
 import 'package:zgene/widget/base_web.dart';
 

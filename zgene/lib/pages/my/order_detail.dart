@@ -11,7 +11,6 @@ import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/constant/common_constant.dart';
 import 'package:zgene/constant/sp_constant.dart';
 import 'package:zgene/models/order_list_model.dart';
-import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/date_utils.dart';
 import 'package:zgene/util/ui_uitls.dart';
@@ -453,7 +452,7 @@ class _OrderDetailState extends BaseWidgetState<OrderDetailPage> {
   _onTapEvent(index) {
     switch (index) {
       case 1: //跟踪物流
-        NavigatorUtil.orderStepNavigator(context, _model.status, _model);
+        CommonUtils.orderStepNavigator(context, _model.status, _model);
         break;
       case 2: //联系客服
         // NavigatorUtil.push(context, contantUsPage());

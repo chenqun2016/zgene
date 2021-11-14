@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 ///这个组件用来重新加载整个child Widget的。当我们需要重启APP的时候，可以使用这个方案
@@ -6,14 +5,14 @@ import 'package:flutter/material.dart';
 class RestartWidget extends StatefulWidget {
   final Widget child;
 
-  RestartWidget({Key key,  this.child})
+  RestartWidget({Key? key, required this.child})
       : assert(child != null),
         super(key: key);
 
   static restartApp(BuildContext context) {
-    final _RestartWidgetState state =
-    context.findAncestorStateOfType<_RestartWidgetState>();
-    state.restartApp();
+    final _RestartWidgetState? state =
+        context.findAncestorStateOfType<_RestartWidgetState>();
+    state!.restartApp();
   }
 
   @override

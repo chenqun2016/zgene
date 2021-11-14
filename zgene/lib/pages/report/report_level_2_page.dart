@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:base/http/http_utils.dart';
 import 'package:base/widget/base_widget.dart';
+import 'package:base/widget/progress_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zgene/constant/api_constant.dart';
@@ -11,7 +12,6 @@ import 'package:zgene/models/report_list_detail_model.dart';
 import 'package:zgene/pages/report/item/report_result.dart';
 import 'package:zgene/pages/report/item/report_sciencedetail.dart';
 import 'package:zgene/pages/tabs/report_page.dart';
-import 'package:zgene/widget/progress_page.dart';
 import 'package:zgene/widget/star_shape_border.dart';
 
 ///报告详情页

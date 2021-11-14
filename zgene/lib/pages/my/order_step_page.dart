@@ -8,7 +8,6 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
 import 'package:zgene/models/order_list_model.dart';
-import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/widget/my_stepper.dart';
 
@@ -273,7 +272,7 @@ class _OrderStepPageState extends BaseWidgetState<OrderStepPage> {
       color: ColorConstant.TextMainColor,
       onPressed: _isButtomActive(model)
           ? () async {
-              await NavigatorUtil.orderStepNavigator(
+              await CommonUtils.orderStepNavigator(
                   context, model.status, order);
               getHttp();
             }

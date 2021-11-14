@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:base/event/event_bus.dart';
 import 'package:base/http/http_utils.dart';
+import 'package:base/navigator/navigator_util.dart';
 import 'package:base/util/sp_utils.dart';
 import 'package:base/widget/base_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -17,7 +18,6 @@ import 'package:zgene/constant/statistics_constant.dart';
 import 'package:zgene/models/content_model.dart';
 import 'package:zgene/models/msg_event.dart';
 import 'package:zgene/models/userInfo_model.dart';
-import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/bindcollector/qr_scanner_page.dart';
 import 'package:zgene/pages/home/home_getHttp.dart';
 import 'package:zgene/pages/my/my_about_z.dart';

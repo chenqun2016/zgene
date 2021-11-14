@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'dart:developer';
 
 import 'package:base/http/http_utils.dart';
+import 'package:base/navigator/navigator_util.dart';
 import 'package:base/util/platform_utils.dart';
 // import 'dart:js' as js;
 import 'package:flutter/cupertino.dart';
@@ -13,7 +14,6 @@ import 'package:zgene/configure.dart'
     if (dart.library.html) 'package:zgene/configure_web.dart';
 import 'package:zgene/constant/api_constant.dart';
 import 'package:zgene/constant/color_constant.dart';
-import 'package:zgene/navigator/navigator_util.dart';
 import 'package:zgene/pages/bindcollector/bind_collector_page.dart';
 import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/dia_log.dart';

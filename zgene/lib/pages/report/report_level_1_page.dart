@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:base/http/http_utils.dart';
 import 'package:base/widget/base_widget.dart';
 import 'package:base/widget/my_inherited_widget.dart';
+import 'package:base/widget/progress_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,7 +14,6 @@ import 'package:zgene/models/report_des_model.dart';
 import 'package:zgene/models/report_list_model.dart';
 import 'package:zgene/models/report_summary_model.dart';
 import 'package:zgene/util/ui_uitls.dart';
-import 'package:zgene/widget/progress_page.dart';
 
 import 'report_level_1_body_page.dart';
 

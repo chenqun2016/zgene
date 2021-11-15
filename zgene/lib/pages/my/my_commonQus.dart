@@ -116,7 +116,7 @@ class _CommonQusListPageState extends BaseWidgetState<CommonQusListPage> {
           print(link);
           NavigatorUtil.push(
               context,
-              BaseWebView(
+              ZgeneWebView(
                 url: link,
                 title: content.title,
                 showTitle: "常见问题",

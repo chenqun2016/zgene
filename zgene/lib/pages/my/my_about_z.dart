@@ -227,7 +227,7 @@ class _AboutZPageState extends BaseWidgetState<AboutZPage> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => BaseWebView(
+                builder: (context) => ZgeneWebView(
                       url: CommonConstant.BASE_API,
                       title: "Z基因官网",
                     )));

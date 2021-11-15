@@ -30,7 +30,7 @@ class ChatRobotUtils {
     print("url==" + url);
     NavigatorUtil.push(
         context,
-        BaseWebView(
+        ZgeneWebView(
           url: url,
           title: "智能客服",
           isShare: false,

@@ -508,7 +508,7 @@ class _BindCollectorPageState extends BaseWidgetState<BindCollectorPage> {
                     ..onTap = () {
                       NavigatorUtil.push(
                           context,
-                          BaseWebView(
+                          ZgeneWebView(
                             title: "《隐私政策》",
                             url: CommonConstant.privacy,
                           ));

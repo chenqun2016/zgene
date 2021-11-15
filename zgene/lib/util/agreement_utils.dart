@@ -85,14 +85,14 @@ class AgreementUtils {
                                   if (key == '《用户协议》') {
                                     NavigatorUtil.push(
                                         context,
-                                        BaseWebView(
+                                        ZgeneWebView(
                                           url: CommonConstant.agreement,
                                           title: "用户协议",
                                         ));
                                   } else if (key == '《个人信息保护政策》') {
                                     NavigatorUtil.push(
                                         context,
-                                        BaseWebView(
+                                        ZgeneWebView(
                                           url: CommonConstant.privacy,
                                           title: "个人信息保护政策",
                                         ));

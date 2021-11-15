@@ -9,6 +9,7 @@ import 'package:base/navigator/navigator_util.dart';
 import 'package:base/util/date_utils.dart';
 import 'package:base/util/platform_utils.dart';
 import 'package:base/util/sp_utils.dart';
+import 'package:base/widget/base_web_view.dart';
 import 'package:base/widget/base_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:card_swiper/card_swiper.dart';
@@ -26,7 +27,6 @@ import 'package:zgene/util/common_utils.dart';
 import 'package:zgene/util/login_base.dart';
 import 'package:zgene/util/time_utils.dart';
 import 'package:zgene/util/umeng_utils.dart';
-import 'package:zgene/widget/base_web_view.dart';
 
 ///产品详情页面
 class ProductDetailPage extends StatefulWidget {

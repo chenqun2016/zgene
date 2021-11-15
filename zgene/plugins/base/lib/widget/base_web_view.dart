@@ -3,11 +3,11 @@ import 'package:base/util/platform_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-///封装的WebView
+///用于页面中的webview，解决高度太高报错的问题
 class BasePageWebView extends StatefulWidget {
   final String url;
 
-  BasePageWebView({Key key, this.url}) : super(key: key);
+  BasePageWebView({Key? key, required this.url}) : super(key: key);
 
   @override
   _WebViewWidgetState createState() => _WebViewWidgetState();
@@ -21,7 +21,7 @@ class _WebViewWidgetState extends State<BasePageWebView>
 // 是否显示加载动画
   double _progress = 0;
   String _url = "";
-  WebViewController _webViewController;
+  WebViewController? _webViewController;
   double _webViewHeight = 1;
 
   @override
@@ -61,13 +61,15 @@ class _WebViewWidgetState extends State<BasePageWebView>
 
   Future<void> _onPageFinished(BuildContext context, String url) async {
     try {
-      double newHeight = double.parse(
-        await _webViewController
-            .evaluateJavascript("document.documentElement.scrollHeight;"),
-      );
-      setState(() {
-        _webViewHeight = newHeight;
-      });
+      if (null != _webViewController) {
+        double newHeight = double.parse(
+          await _webViewController!
+              .evaluateJavascript("document.documentElement.scrollHeight;"),
+        );
+        setState(() {
+          _webViewHeight = newHeight;
+        });
+      }
     } catch (e) {
       print(e);
     }

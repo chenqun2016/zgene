@@ -194,7 +194,7 @@ class CommonUtils {
           if (null != archives) {
             NavigatorUtil.push(
                 context,
-                BaseWebView(
+                ZgeneWebView(
                     url: ApiConstant.getH5DetailUrl(archives.id.toString()),
                     title: archives.title));
           }
@@ -202,7 +202,7 @@ class CommonUtils {
         case 1:
           NavigatorUtil.push(
               context,
-              BaseWebView(
+              ZgeneWebView(
                 url: url,
                 title: "",
               ));
@@ -285,7 +285,7 @@ class CommonUtils {
           //     ));
           Global.navigatorKey.currentState.pushAndRemoveUntil(
               new MaterialPageRoute(
-                  builder: (BuildContext context) => BaseWebView(
+                  builder: (BuildContext context) => ZgeneWebView(
                         url: url,
                         title: "",
                       )),
@@ -477,7 +477,7 @@ class CommonUtils {
       case 50:
         return NavigatorUtil.push(
             context,
-            BaseWebView(
+            ZgeneWebView(
               url: ApiConstant.getSFH5DetailUrl(_order.reSfNo),
               title: "物流跟踪",
               isShare: false,
@@ -486,7 +486,7 @@ class CommonUtils {
       case 20:
         return NavigatorUtil.push(
             context,
-            BaseWebView(
+            ZgeneWebView(
               url: ApiConstant.getSFH5DetailUrl(_order.sfNo),
               title: "物流跟踪",
               isShare: false,

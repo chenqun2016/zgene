@@ -32,11 +32,6 @@ dependencies:
   base:
     path: plugins/base
   cupertino_icons: ^1.0.2
-
-
-
-
-  flutter_inappwebview: ^5.3.2
   url_launcher: ^6.0.9
   flutter_native_splash: ^1.2.1
   connectivity: ^3.0.6
@@ -46,7 +41,6 @@ dependencies:
   image_picker: ^0.8.3+2
   path_provider: ^2.0.2
   card_swiper: ^1.0.4
-
   video_player: ^2.1.14
   chewie:
     path: plugins/chewie-master
@@ -54,11 +48,6 @@ dependencies:
   flutter_pickers: ^2.1.1
   # easy_web_view2: ^0.0.3
   # flutter_webview_plugin: ^0.3.11
-  easy_web_view: 
-    git:
-      url: https://gitee.com/benshar-com/easy_web_view.git
-      ref: master
-  # easy_web_view: ^1.5.0
   fluwx: ^3.6.1+1
   sign_in_with_apple: ^3.1.0
   event_bus: ^2.0.0
@@ -66,7 +55,6 @@ dependencies:
   qr_code_scanner: ^0.5.2
   # jshare_flutter_plugin: ^2.1.2
   flutter_native_image: ^0.0.6+1
-  webview_flutter: ^2.0.12
   cached_network_image: ^3.1.0
 #  getuiflut: ^0.2.7
   getuiflut:

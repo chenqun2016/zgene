@@ -365,7 +365,8 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) => BaseWebView(
+                                              builder: (context) =>
+                                                  ZgeneWebView(
                                                     url: CommonConstant.privacy,
                                                     title: "个人信息保护政策",
                                                   )));
@@ -394,7 +395,8 @@ class _MainLoginPageState extends BaseWidgetState<MainLoginPage> {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) => BaseWebView(
+                                              builder: (context) =>
+                                                  ZgeneWebView(
                                                     url: CommonConstant
                                                         .agreement,
                                                     title: "用户协议",

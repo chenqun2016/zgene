@@ -99,7 +99,7 @@ class _ProblemNavState extends State<ProblemNav>
       onTap: () {
         NavigatorUtil.push(
             context,
-            BaseWebView(
+            ZgeneWebView(
                 url: ApiConstant.getH5DetailUrl(archives.id.toString()),
                 title: archives.title,
                 showTitle: "常见问题"));

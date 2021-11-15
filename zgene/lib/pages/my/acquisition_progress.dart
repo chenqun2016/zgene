@@ -307,7 +307,7 @@ class _OacqusitionProgressPageState
                   if ((steps.indexOf(model) == 1 && _position == 2)) {
                     NavigatorUtil.push(
                         context,
-                        BaseWebView(
+                        ZgeneWebView(
                           url: ApiConstant.getSFH5DetailUrl(order.order.reSfNo),
                           title: "物流跟踪",
                           isShare: false,
@@ -340,7 +340,7 @@ class _OacqusitionProgressPageState
                 case 60:
                   NavigatorUtil.push(
                       context,
-                      BaseWebView(
+                      ZgeneWebView(
                         url: ApiConstant.getSFH5DetailUrl(order.order.reSfNo),
                         title: "物流跟踪",
                         isShare: false,
@@ -349,7 +349,7 @@ class _OacqusitionProgressPageState
                 case 70:
                   NavigatorUtil.push(
                       context,
-                      BaseWebView(
+                      ZgeneWebView(
                         url: ApiConstant.getSFH5DetailUrl(order.order.reSfNo),
                         title: "物流跟踪",
                         isShare: false,
